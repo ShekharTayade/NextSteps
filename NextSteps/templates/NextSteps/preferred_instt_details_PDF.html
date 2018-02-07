@@ -1,0 +1,99 @@
+{% load static %}
+    <div class="showcase block block-border-bottom-grey">
+        <div class="container">
+
+        <h3 class="block-title">Preferred Institute Details</h3>
+
+           
+            <!-- Render the table -->
+            <div class="near_by_hotel_wrapper">
+                <div class="near_by_hotel_container">
+
+
+                    <table id="tableOne" class="table no-border custom_table dataTable no-footer dtr-inline">
+
+                        <thead>
+                            <tr>                        
+                                <th style="width:45%">Institute</th>
+                                <th style="width:35%">Program</th>
+                                <th style="width:15%">Quota & Seats</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>            
+
+                            {% for il in insttUserList %}
+                            
+                            <tr>
+                                    
+                                <td id = "insttName"> {{il.Institute__instt_name}} <br />
+
+                                    {{ il.Institute__address_1 }} 
+                                    
+                                    {% if il.Institute__address_2 %}
+                                        &nbsp;{{ il.Institute__address_2 }}<br />
+                                    {% endif %}
+                                    
+                                    {% if il_.Institute__address_3 %}
+                                        &nbsp;{{ il.Institute__address_3 }} &nbsp;
+                                    {% endif %}
+                                    
+                                    {{ il.Institute__city }} &nbsp; {{ il.Institute__state }} &nbsp; {{ il.Institute__pin_code }} &nbsp;
+                                    
+                                    {{ il.Institute__country }} <br />
+                                    {% if il.Institute__phone_number %}
+                                       <i class="fa fa-fw fa-phone-square"></i>&nbsp; {{il.Institute__phone_number}}&nbsp; &nbsp;
+                                    {% endif %}   
+                                    {% if il.Institute__email_id %}
+                                        <i class="fa fa-fw fa-paper-plane"></i>&nbsp; {{ il.Institute__email_id }} &nbsp; &nbsp;
+                                    {% endif %}
+                                    
+                                    {% if il.Institute__website %}
+                                        <a href = "http://{{ il.Institute__website }}"> {{il.Institute__website}} </a>
+                                    {% endif %}
+        
+                                    </td>
+                                <td class="align-middle"> {{il.Program__program_code}}&nbsp;-&nbsp; 4 Years</td>
+                                <td class="align-middle"> 
+                                {% for e in progUserList %}
+                                    {% if e.Program__program_code == il.Program__program_code and e.Institute__instt_code == il.Institute__instt_code %} 
+                                        {{e.StudentCategory__description}}&nbsp;-&nbsp;{{e.number_of_seats }} <br />
+                                    {% endif %}
+                                {% empty %}
+                                    Data not available
+                                {% endfor %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>                   
+                </div>
+            </div>
+
+
+        </div>
+     </div>
+
+
+ 
+
+    <script>
+        function fixRowSpan(selector) {
+            selector.each(function () {
+                var values = $(this).find("tr>td:first-of-type")
+                console.log("Values...........") 
+                console.log(values) 
+                var run = 1
+                for (var i=values.length-1;i>-1;i--){
+                    if ( values.eq(i).text()=== values.eq(i-1).text()){
+                        values.eq(i).remove()
+                        run++
+                    }else{
+                        values.eq(i).attr("rowspan",run)
+                        run = 1
+                    }
+                }
+            })
+        }
+    </script>
+

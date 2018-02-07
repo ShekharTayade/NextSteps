@@ -1,0 +1,214 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps.html' %}
+{% load static %}
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+    <div id="highlighted-slider" class="container">
+    </div>
+
+{% endblock slide-show %}
+
+<!-- Override features block -->
+{% block features %}
+    <div class="showcase block block-border-bottom-grey">
+        <div class="container">
+            <h3 class="block-title">Renew Subscription</h3>
+
+            {% if validSubscription == True %}
+                <h3 class="text-primary">You have subscriptions.....don't need renewal yet.</h3>
+            {% else %}
+                <form action="{% url 'renew_subscription_confirm' %}" method='post' id='subsForm'>
+                {% csrf_token %}
+                <h5 class="text-primary">Your subscription will be renewed with following details</h5>
+                    <div class="near_by_hotel_wrapper">
+                        <div class="near_by_hotel_container">
+                            <table id="tabletwo" class="table no-border custom_table dataTable no-footer dtr-inline">
+                                <thead>
+                                    <tr>
+                                        <th style="width:25%">Registration</th>
+                                        <th style="width:30%">Subscription Start</th>
+                                        <th style="width:30%">Subscription End</th>
+                                        <th style="width:15%">Fee</th>
+                                    </tr>
+                                </thead>
+                                <tbody>            
+                                    <tr>             
+                                        <td class="align-middle" > {{ regDate | date:"DATE_FORMAT" }}</td>
+                                        <td id= "subs_start_date" class="align-middle" > </td>
+                                        <td class="align-middle" id="subs_end_date" > <input type="date" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"></td>
+                                        <td class="align-middle" > <i class="fa fa-inr" aria-hidden="true">&nbsp;</i>250</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <input style="display:none" class="form-control" type="text" value='250' id="totalFee_nv" name='totalFee'>
+                    <input style="display:none" class="form-control" type="text" value={{ regDate }} id="regDate_nv" name='regDate'>
+                    <input style="display:none" class="form-control" type="text" value='250' id="subsFee_nv" name='subsFee'>
+                    <input style="display:none" class="form-control" type="text" value='' id="subsStartDate_nv" name='subsStartDate'>
+                    <input style="display:none" class="form-control" type="text" value='' id="subsEndDate_nv" name='subsEndDate'>
+                    
+                    <span style="float:center"><button id="subs" class="btn btn-primary" type='submit' formmethod='post' value='submit' form = 'subsForm'>Make Payment</button></span>
+                    </form>
+                {% if useraccount %}
+                    <br />
+                    <br />
+                    <h5 class="text-muted">Your previous subscriptions</h5>
+                    <div class="near_by_hotel_wrapper">
+                        <div class="near_by_hotel_container">
+                            <table id="tableOne" class="table no-border custom_table dataTable no-footer dtr-inline">
+                                <thead>
+                                    <tr>
+                                        <th style="width:15%">Registration</th>
+                                        <th style="width:30%">Subscription </th>
+                                        <th style="width:30%">Fee Paid</th>
+                                        <th style="width:25%">Promotion</th>
+                                    </tr>
+                                </thead>
+                                <tbody>            
+                                    <!-- iterating over List -->  
+                                    {% for ua in useraccount %}
+                                        <tr>             
+                                            <td class="align-middle" > {{ ua.registration_date }}</td>
+                                            <td class="align-middle" > 
+                                                Effective <br /> 
+                                                From: {{ ua.subscription_start_date }} <br/> 
+                                                To: {{ ua.subscription_end_date }} 
+                                            </td>
+                                            <td class="align-middle" > 
+                                                Total - <i class="fa fa-inr" aria-hidden="true"></i>&nbsp; {{ ua.total_amount}} <small>(Including tax)</small><br /> 
+                                                Subscription - <i class="fa fa-inr" aria-hidden="true"></i>&nbsp; {{ua.subscription_amount}} <small>(+ tax)</small>                                            
+                                            </td>
+                                            <td class="align-middle" > 
+                                                {% if ua.PromotionCode_id != "NONE" %}
+                                                    Promo Code:&nbsp;{{ ua.PromotionCode_id}}<br />
+                                                    Discount: &nbsp;{{ua.discount_percent}}%
+                                                {% else %}
+                                                   None
+                                                {% endif %} 
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>        
+                {% endif %}
+            {% endif %}
+        </div>
+     </div>
+
+
+    <script>
+    
+        window.onload = setDates();
+    
+        function setDates()
+        {   
+                    
+            var d = new Date();
+            var month = new Array();
+            month[0] = "Jan";
+            month[1] = "Feb";
+            month[2] = "Mar";
+            month[3] = "Apr";
+            month[4] = "May";
+            month[5] = "Jun";
+            month[6] = "Jul";
+            month[7] = "Aug";
+            month[8] = "Sep";
+            month[9] = "Oct";
+            month[10] = "Nov";
+            month[11] = "Dec";
+            var m = month[d.getMonth()];        
+
+            var y = d.getFullYear();
+            var dt = d.getDate();
+
+            var dt_end = add_year(d); 
+
+            var d_end = dt_end.getDate();
+            var m_end = month[dt_end.getMonth()];
+            var y_end = dt_end.getFullYear();
+            
+            document.getElementById("subs_start_date").innerHTML = m + ". " + dt + ", " + y;
+            document.getElementById("subs_end_date").innerHTML = m_end + ". " + d_end + ", " + y_end;
+            
+            document.getElementById("subsStartDate_nv").value = m + ". " + dt + ", " + y;
+            document.getElementById("subsEndDate_nv").value = m_end + ". " + d_end + ", " + y_end;
+            document.getElementById("regDate_nv").value = "{{regDate|date:"DATE_FORMAT"}}";
+        }
+        
+        function add_year(dt)
+        {
+
+            var y = dt.getFullYear();
+            var m = dt.getMonth();
+            var d = dt.getDate();
+            
+            y=y+1;
+            d = d-1;
+            
+            if (d < 1){
+                d = 1;
+                m = m - 1;
+                if (m < 1){
+                    m=12;
+                    y=y-1;
+                }
+            }
+            
+            var dt_ret = stringToDate((d + "/" + m + "/" + y), "dd/MM/yyyy", "/");
+            return dt_ret;
+        }
+                  
+                 
+    
+        function stringToDate(_date,_format,_delimiter)
+        {
+                var formatLowerCase=_format.toLowerCase();
+                var formatItems=formatLowerCase.split(_delimiter);
+                var dateItems=_date.split(_delimiter);
+                var monthIndex=formatItems.indexOf("mm");
+                var dayIndex=formatItems.indexOf("dd");
+                var yearIndex=formatItems.indexOf("yyyy");
+                var month=parseInt(dateItems[monthIndex]);
+                var formatedDate = new Date(dateItems[yearIndex],month,dateItems[dayIndex]);
+                return formatedDate;
+        }        
+            
+        
+    </script>
+
+{% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->
+

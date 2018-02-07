@@ -1,0 +1,124 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps.html' %}
+
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+{% endblock slide-show %}
+
+<!-- Override features block -->
+{% block features %}
+    <div class="showcase block block-border-bottom-grey">
+        <div class="container">
+    
+            <h3 class="block-title">JEE Opening and Closing Ranks</h3>
+
+            <form action="{% url 'JEE_ranks' %}" method='post' id='SubmitFilter'>
+                {% csrf_token %}
+ 
+                <div class="row">
+                    <div class="col-xs-6 col-sm-3 col-md-2">
+                        <div class="panel panel-info">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading">
+                                <h6 class="panel-title">Select Years</h6>
+                            </div>
+                        
+                            <!-- List group -->
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    2015
+                                    <div class="year-switch pull-right">
+                                        <input id="SwitchOptionInfo1" name="Switch2015" type="checkbox"/>
+                                        <label for="SwitchOptionInfo1" class="label-info"></label>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    2016
+                                    <div class="year-switch pull-right">
+                                        <input id="SwitchOptionInfo2" name="Switch2016" type="checkbox"/>
+                                        <label for="SwitchOptionInfo2" class="label-info"></label>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    2017
+                                    <div class="year-switch pull-right">
+                                        <input id="SwitchOptionInfo3" name="Switch2017" type="checkbox"/>
+                                        <label for="SwitchOptionInfo3" class="label-info"></label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>            
+                    </div>
+                    
+                    <div class="col-xs-6 col-sm-3 col-md-2">
+                        <div class="panel panel-info">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading">
+                                <h6 class="panel-title">Instt Type</h6>
+                            </div>
+                        
+                            <!-- List group -->
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    IIT
+                                    <div class="year-switch pull-right">
+                                        <input id="SwitchOptionInfo4" name="SwitchIIT" type="checkbox"/>
+                                        <label for="SwitchOptionInfo4" class="label-info"></label>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    NIT
+                                    <div class="year-switch pull-right">
+                                        <input id="SwitchOptionInfo5" name="SwitchNIT" type="checkbox"/>
+                                        <label for="SwitchOptionInfo5" class="label-info"></label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>            
+                    </div>
+                </div>
+    
+                <button class='btn btn-more' type='submit' formmethod='post' value='submit' form = 'SubmitFilter'><i class="fa fa-plus"></i>Get Details</button>
+  
+            </form>        
+        
+        </div>
+    </div>
+
+{% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->
+
+
+
+
+
+
+

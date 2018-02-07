@@ -1,0 +1,54 @@
+{% extends 'NextSteps/NextSteps.html' %}
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+
+{% endblock slide-show %}
+
+<!-- Override features block -->
+{% block features %}
+
+    <div class="showcase block block-border-bottom-grey">
+        <div class="container">
+
+            <h3 class="block-title">Select Filter to Research Institutes</h3>
+    
+        	<select id="stateList" name= "stateList" multiple='multiple'>
+                      <option value = "s1"> State1 </option> 
+                      <option value = "s2"> State2 </option> 
+                      <option value = "s3"> State3 </option> 
+                      <option value = "s4"> State4 </option> 
+         	</select>
+     	
+     	</div>
+    </div>
+	
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+                alert("In the Fn");
+                document.querySelector("#stateList").onchange=changeEventHandler;
+        },false);
+
+
+        function changeEventHandler(event){
+            if (!event.target.value)
+                alert('Select an option');
+            else
+                alert( event.target.value + ' selected');
+        }
+    </script>
+
+{% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->

@@ -1,0 +1,174 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps.html' %}
+
+{% load static %}
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+{% endblock slide-show %}
+
+<!-- Override features block -->
+{% block features %}
+    <div class="showcase block block-border-bottom-grey">
+        <div class="container">
+    
+            <h3 class="block-title">Institutes by Type</h3>
+
+
+            <div class="near_by_hotel_wrapper">
+                <div class="near_by_hotel_container">
+                
+                    <div class="col-sm-6">
+                        Institute Name<input type="text" id="myInput" style="background-image: url('{% static 'img/searchicon.png' %} ');" onkeyup="myFunction()" placeholder="Search in Institute name and address..">   
+                    </div>
+                    <div class="col-sm-6">
+                        City<input type="text" id="myInput1" style="background-image: url('{% static 'img/searchicon.png' %} ');" onkeyup="myFunction()" placeholder="Search in City..">   
+                    </div>
+                    {% if insttcount > 0 %}
+                        <span style="text-align:left;">
+                            <small>Number of Institutes found: {{insttcount}}</small> 
+                        </span>                
+                    {% endif %}    
+                    <table id="tableOne" class="table table-responsive no-border custom_table dataTable no-footer dtr-inline">
+                        <thead>
+                            <tr>
+                                <th style="width:15%">Type</th>
+                                <th style="width:35%">Name and Address</th>
+                                <th style="width:15%">City</th>
+                                <th style="width:15%">State</th>
+                                <th style="width:20%">Contact Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>            
+                                    {% for il in insttList %}      
+                                        <tr>       
+                                            <td class="align-middle" > {{il.InstituteType__description}}</td>
+                                            <td class="align-middle" > 
+                                            {{ il.instt_name }} <br />
+                                                {{ il.address_1 }} 
+                                                {% if il.address_2 %}
+                                                    &nbsp;{{ il.address_2 }}
+                                                {% endif %}
+                                                
+                                                {% if il_.address_3 %}
+                                                    <br />{{ il.address_3 }}
+                                                {% endif %}
+                                            </td>
+                                            <td class="align-middle" > {{il.city}}</td>
+                                            <td class="align-middle" > {{il.state}}</td>
+                                            <td class="align-middle" > 
+                                                {% if il.phone_number %}
+                                                    <i class="fa fa-fw fa-phone-square"></i>&nbsp; {{il.phone_number}}&nbsp; &nbsp;
+                                                {% endif %}   
+                                                {% if il.email_id %}
+                                                    <i class="fa fa-fw fa-paper-plane"></i>&nbsp; {{ il.email_id }} &nbsp; &nbsp;
+                                                {% endif %}
+                                                
+                                                {% if il.website %}
+                                                    <a href = "http://{{ il.website }}"> {{il.website}} </a><br />
+                                                {% endif %}
+                                                
+                                            </td>
+                                        </tr>
+                                    {% empty %}
+                                        <p >- No Institutes found, please <a href="{% url 'instt_type_filter' %}">revise</a> your filter -</p>
+                                    {% endfor %}
+
+                        </tbody>
+                    </table>                   
+                </div>
+
+
+                {% if insttList.has_other_pages %}
+                  <ul class="pagination">
+                    {% if insttList.has_previous %}
+                      <li><a href="?page={{ insttList.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&laquo;</span></li>
+                    {% endif %}
+                    {% for i in insttList.paginator.page_range %}
+                      {% if insttList.number == i %}
+                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                      {% else %}
+                        <li><a href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if insttList.has_next %}
+                      <li><a href="?page={{ insttList.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                      <li class="disabled"><span>&raquo;</span></li>
+                    {% endif %}
+                  </ul>
+                {% endif %}                    
+
+
+            </div>    
+        
+        </div>
+    </div>
+
+
+<script>
+    function myFunction() {
+      // Declare variables 
+      var input, input1, filter, filter1, table, tr, td, i;
+      input = document.getElementById("myInput");
+      input1 = document.getElementById("myInput1");
+      filter = input.value.toUpperCase();
+      filter1 = input1.value.toUpperCase();
+      table = document.getElementById("tableOne");
+      tr = table.getElementsByTagName("tr");
+    
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1];
+        td1 = tr[i].getElementsByTagName("td")[2];
+        if ((td) || (td1)) {
+          if ((td.innerHTML.toUpperCase().indexOf(filter) > -1) && (td1.innerHTML.toUpperCase().indexOf(filter1) > -1)){
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        } 
+      }
+    }
+
+</script>
+
+
+{% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->
+
+
+
+
+
+
+
+

@@ -1,0 +1,210 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps.html' %}
+
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+{% endblock slide-show %}
+
+<!-- Override features block -->
+{% block features %}
+    <div class="showcase block block-border-bottom-grey">
+        <div class="container">
+    
+            <h3 class="block-title">Institute Survey Ranking</h3>
+            <small>* The survey ranking as published by the National Institutional Ranking Framework (NIRF) is used </small>
+                <div class="row">
+                
+                    <div class="col-xs-4 col-sm-3 col-md-2">
+                        <div class="panel panel-info">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading">
+                                <h6 class="panel-title">Select Years</h6>
+                            </div>
+                        
+                            <!-- List group -->
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <span id="SwitchOptionInfo1_text">2015</span>
+                                    <div class="year-switch pull-right">
+                                        <input id="SwitchOptionInfo1" name="Switch2015" type="checkbox" onchange="setRankFilter()"/>
+                                        <label for="SwitchOptionInfo1" class="label-info"></label>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <span id="SwitchOptionInfo2_text">2016</span>
+                                    <div class="year-switch pull-right">
+                                        <input id="SwitchOptionInfo2" name="Switch2016" type="checkbox" onchange="setRankFilter()"/>
+                                        <label for="SwitchOptionInfo2" class="label-info"></label>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <span id="SwitchOptionInfo3_text">2017</span>
+                                    <div class="year-switch pull-right">
+                                        <input id="SwitchOptionInfo3" name="Switch2017" type="checkbox" onchange="setRankFilter()"/>
+                                        <label for="SwitchOptionInfo3" class="label-info"></label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>            
+                    </div>
+                    
+                    <div class="col-xs-8 col-sm-9 col-md-10">
+                
+                        <div class="panel panel-info">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading">
+                                <h6 class="panel-title">Select Institutes Ranking -</h6>
+                            </div>
+                
+                            <div class="panel-body">
+                            <div class="col-xs-12 col-sm-6 col-md-6">
+                                <p> From </p>
+                                <div class="range range-primary">
+                                    <input type="range" name="range" min="1" max="100" value="1" onchange="rangePrimary.value=value; setRankFilter()">
+                                    <output id="rangePrimary" >1</output>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6">
+                                <p> To </p>
+                                <div class="range range-info">
+                                    <input type="range" name="range" min="1" max="100" value="10" onchange="rangeInfo.value=value; setRankFilter()">
+                                    <output id="rangeInfo">10</output>
+                                </div>
+                            </div>
+                            </div>
+                            <p style="padding-left:30px" id="msg" class="text-primary"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">   
+                    <div  class="col-xs-12 col-sm-12 col-md-12">    
+                        <table id="tableOne" class="table table-responsive no-border custom_table dataTable no-footer dtr-inline">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%">Year</th>
+                                    <th style="width:45%">Institute</th>
+                                    <th style="width:20%">Discipline</th>
+                                    <th style="width:15%">Survey Rank</th>
+                                </tr>
+                            </thead>
+                            <tbody>            
+                                    {% for i in insttList %}      
+                                        <tr>       
+                                            <td class="align-middle" > {{ i.year}}</td>
+                                            <td class="align-middle" > {{ i.Institute__instt_name }}, &nbsp;{{i.Institute__city}}</td>
+                                            <td class="align-middle" > {{ i.Discipline_id }}</td>
+                                            <td class="align-middle" >{{i.rank }}</td>
+                                        </tr>
+                                    {% empty %}
+                                        <p >- No Institutes found, please <a href="{% url 'JEE_ranks_filter' %}">revise</a> your filter -</p>
+                                    {% endfor %}
+                            </tbody>
+                        </table>                   
+                    </div>
+                </div>            
+                            
+                        
+        </div>
+    </div>
+
+    <script>
+        window.onload = setRankFilter()
+    
+        function setRankFilter()
+        {
+                
+            var table = document.getElementById("tableOne");
+            var tr = table.getElementsByTagName("tr");
+
+            var chkbx1=document.getElementById('SwitchOptionInfo1');
+            var chkbx2=document.getElementById('SwitchOptionInfo2');
+            var chkbx3=document.getElementById('SwitchOptionInfo3');
+            
+            var from = Number(document.getElementById('rangePrimary').innerHTML);
+            var to = Number(document.getElementById('rangeInfo').innerHTML);
+            
+            if (from > to ) {
+                alert("From can't be greater than To. Please adjust the Ranking From and To");
+                document.getElementById('msg').innerHTML = "From can't be greater than To. Please adjust the Ranking From and To";
+                return;
+            } else {
+                document.getElementById('msg').innerHTML = "";
+            }
+
+            var yearchk = "";
+            if (chkbx1.checked) {
+                if (yearchk== "") {
+                    yearchk = document.getElementById('SwitchOptionInfo1_text').innerHTML
+                } else {
+                    yearchk = yearchk + "|" + document.getElementById('SwitchOptionInfo1_text').innerHTML
+                }                
+            }
+            if (chkbx2.checked) {
+                if (yearchk== "") {
+                    yearchk = document.getElementById('SwitchOptionInfo2_text').innerHTML
+                } else {
+                    yearchk = yearchk + "|" + document.getElementById('SwitchOptionInfo2_text').innerHTML
+                }                
+            }
+            if (chkbx3.checked) {
+                if (yearchk== "") {
+                    yearchk = document.getElementById('SwitchOptionInfo3_text').innerHTML
+                } else {
+                    yearchk = yearchk + "|" + document.getElementById('SwitchOptionInfo3_text').innerHTML
+                }                
+            }
+            
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                td1 = tr[i].getElementsByTagName("td")[3];
+                if ((td) || (td1))  {
+                    if ((td.innerHTML.search(yearchk) > -1) && ((Number(td1.innerHTML) >= from) && (Number(td1.innerHTML) <= to))){
+                        tr[i].style.display = "";
+                    } else {
+                       tr[i].style.display = "none";
+                    }
+                } 
+            }
+    
+                            
+        }   
+    </script>
+
+    
+{% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->
+
+
+
+
+
+
+

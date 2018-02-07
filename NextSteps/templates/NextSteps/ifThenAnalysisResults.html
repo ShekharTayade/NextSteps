@@ -1,0 +1,199 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps.html' %}
+{% load static %}
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+    <div id="highlighted-slider" class="container">
+    </div>
+
+{% endblock slide-show %}
+
+<!-- Override features block -->
+{% block features %}
+    <div class="showcase block block-border-bottom-grey">
+        <div class="container">
+
+            <h3 class="block-title">
+                Seat Probablity Analysis Results
+            </h3>
+            <div class = "row">
+                <div class="w3-container w3-text-deep-orange">
+                    <h5>Your selections were</h5>
+                </div>
+            </div>    
+            
+            <table id="tableOne" class="table table-responsive no-border custom_table dataTable no-footer dtr-inline">
+                <thead>
+                    <tr>
+                        <th style="width:30%">Rank Range</th>
+                        <th style="width:40%">Programs</th>
+                        <th style="width:30%">Institutes</th>
+                    </tr>
+                </thead>
+                <tbody> 
+                    <tr>
+                        <td>           
+                            {{ rankFrom }}&nbsp;-&nbsp;{{ rankTo }}<br />
+                            ({{rankType}})
+                            {% if rankType == "MAIN" %}
+                                <br />Home State: &nbsp;{{homestate}}            
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% for p in progs %} 
+                                <li>{{ p }}</li>
+                            {% empty %}
+                                None
+                            {% endfor %}
+                        </td>
+                        <td>
+                            {% for i in instts %} 
+                                <li>{{ i }}</li>
+                            {% empty %}
+                                None
+                            {% endfor %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>            
+
+            <div class = "row">
+                <div class="w3-container w3-text-deep-orange">
+                    <h5>Based on above selections following table displays the seat probabilitites for you</h5>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <p class="text-muted">Use these filters to narrow the results</p>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            Program Name<input type="text" id="myInput" style="background-image: url('{% static 'img/searchicon.png' %} ');" onkeyup="myFunction()" placeholder="Enter text to search in Programs..">   
+                        </div>
+                        <div class="col-xs-6">
+                            Institute<input type="text" id="myInput1" style="background-image: url('{% static 'img/searchicon.png' %} ');" onkeyup="myFunction()" placeholder="Enter text to search in Institutes...">   
+                        </div>
+                    </div>  
+                </div>
+            </div>
+
+
+    
+                <div class="col-xs-8 col-sm-12 col-md-12">            
+                    {% if resultCnt == 0 %}
+                        <span style="text-align:left;">
+                            <span ><small>No match found!!! Please make your selections again!</small></span>
+                        </span>                
+                    {% else %}      
+                        <span style="text-align:left;">
+                            <span ><small>Number of Programs found: {{resultCnt}}</small></span> 
+                        </span>                
+                    {% endif %}
+                </div>
+
+
+            <table id="tabletwo" class="table table-responsive no-border custom_table dataTable no-footer dtr-inline">
+                <thead>
+                    <tr>
+                        <th style="width:40%">Program</th>
+                        <th style="width:35%">Institute</th>
+                        <th style="width:10%">Opening Rank</th>
+                        <th style="width:10%">Closing Rank</th>
+                        <th style="width:5%">Quota</th>
+                    </tr>
+                </thead>
+                <tbody> 
+                    <tr>
+                        {% for r in resultSet %}
+                            <td>
+                                {{ r.Program_id }}
+                            </td>
+                            <td>
+                                {{ r.Institute__instt_name }}
+                            </td>
+                            <td>
+                                {{ r.opening_rank}}
+                            </td>
+                            <td>
+                                {{ r.closing_rank }}
+                            </td>
+                             <td>
+                                Quota:&nbsp;{{ r.quota }}&nbsp;
+                            </td>
+                   </tr>
+                        {% endfor %}
+                </tbody>
+            </table>
+            {% if resultCnt > 0 %}
+                <div class="w3-container w3-text-deep-orange">
+                    <small><p class="text-primary">*Disclaimer: Please note that this is purely based on pervious year opening and closing ranks
+                    of the Institutes and by no means may exactly depict your chances. The closing ranks can vary significantly year on year. 
+                    However, it would sure assist you as you assess your chances.</p></small>
+                </div>
+            {% endif %}
+
+        </div>
+     </div>
+
+    <!-- Based on the use input in Programs and Institute input boxes, filter the rows in table -->
+     <script>
+        function myFunction() {
+          // Declare variables 
+          var input, input1, filter, filter1, table, tr, td, i;
+          input = document.getElementById("myInput");
+          input1 = document.getElementById("myInput1");
+          filter = input.value.toUpperCase();
+          filter1 = input1.value.toUpperCase();
+          table = document.getElementById("tabletwo");
+          tr = table.getElementsByTagName("tr");
+        
+          // Loop through all table rows, and hide those who don't match the search query
+          for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            td1 = tr[i].getElementsByTagName("td")[1];
+            if ((td) || (td1)) {
+              if ((td.innerHTML.toUpperCase().indexOf(filter) > -1) && (td1.innerHTML.toUpperCase().indexOf(filter1) > -1)){
+                tr[i].style.display = "";
+              } else {
+                tr[i].style.display = "none";
+              }
+            } 
+          }
+        }
+    
+    </script>
+
+
+{% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->
+

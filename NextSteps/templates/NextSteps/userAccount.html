@@ -1,0 +1,129 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps.html' %}
+{% load static %}
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+    <div id="highlighted-slider" class="container">
+
+        <!-- You content for the slide-show page here -->
+
+    </div>
+
+{% endblock slide-show %}
+
+<!-- Override features block -->
+{% block features %}
+    <div class="showcase block block-border-bottom-grey">
+        <div class="container">
+            <h3 class="block-title">Your Account Information</h3>
+
+            
+            <div class="row" id="contact">
+    
+                <div class="col-xs-12 col-sm-6 col-md-3">
+
+                    {% if reg_found %}
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h5 class="panel-title">Subscription!</h5>
+                            </div>
+                                {% if subs_active %}
+                                    <div class="panel-body">
+                                        <p> Your Subscription is valid up to {{ subs_end_dt }}</p>
+                                    </div>                        
+                                    <div class="alert alert-danger">
+                                        You may renew subscription before expiry date so you don't pay for registration again!
+                                    </div>
+                                {% else %}
+                                    <div class="panel-body">
+                                        <p class="text-primary"> Your Subscription expired on {{ subs_end_dt }}!!</p>
+                                    </div>                        
+                                    <div class="alert alert-danger">
+                                        Please register and subscribe <a href="{% url 'payment' %}">here!</a>
+                                    </div>
+                                {% endif %}            
+                        </div>
+                    {% else %}
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h5 class="panel-title">Please Register!</h5>
+                            </div>
+                            <div class="panel-body">
+                                <p> You have not registered to use the powerful features of NextSteps</p>
+                            </div>                        
+                            <div class="alert alert-danger">
+                               Please register and subscribe <a href="{% url 'payment' %}">here!</a>
+                            </div>
+                        </div>
+                    {% endif %}                        
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-7">
+                            
+                    <div class="near_by_hotel_wrapper">
+                        <div class="near_by_hotel_container">
+                            <table id="tableOne" class="table no-border custom_table dataTable no-footer dtr-inline">
+                                <thead>
+                                    <tr>
+                                        <th style="width:15%">Registration</th>
+                                        <th style="width:30%">Subscription </th>
+                                        <th style="width:30%">Fee Paid</th>
+                                    </tr>
+                                </thead>
+                                <tbody>            
+                                    <!-- iterating over List -->  
+                                    {% for ua in useraccount %}
+                                        <tr>             
+                                            <td class="align-middle" > {{ ua.registration_date }}</td>
+                                            <td class="align-middle" > 
+                                                Effective <br /> 
+                                                From: {{ ua.subscription_start_date }} <br/> 
+                                                To: {{ ua.subscription_end_date }} 
+                                            </td>
+                                            <td class="align-middle" > 
+                                                Total - <i class="fa fa-inr" aria-hidden="true"></i>&nbsp; {{ ua.total_amount}} <small>(Including tax)</small><br /> 
+                                                Subscription - <i class="fa fa-inr" aria-hidden="true"></i>&nbsp; {{ua.subscription_amount}} <small>(+ tax)</small>                                            
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+     </div>
+
+{% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->
+

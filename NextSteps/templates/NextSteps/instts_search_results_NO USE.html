@@ -1,0 +1,174 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps.html' %}
+
+
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+{% endblock slide-show %}
+
+<!-- Override features block -->
+{% block features %}
+    <div class="showcase block block-border-bottom-grey">
+        <div class="container">
+
+        <h3 class="block-title">Institute Details</h3>
+
+            From the options below please select the type of details you are interested in, select the desired Insititutes and click "Get Details" button.
+            <br />
+            <br />
+            <form action="{% url 'Institute_Programs'  %}" method='post' id='SubmitSearch'>
+
+                <label class="radio-inline">
+                    <input type="radio" name="optradio" value="ProgramsAndSeats" checked="checked">Programs & Seats
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="optradio" value="ImportantDates">Important Dates
+                </label>
+                <label class="radio-inline" >
+                    <input type="radio" name="optradio" value="AdminssionRoutes">Admission Routes
+                </label>
+                <label class="radio-inline" >
+                    <input type="radio" name="optradio" value="SurveyDetails">Survey Details
+                </label>
+        
+                <br />
+                <button id="btn" class='btn btn-more' type='submit' formmethod='post' value='submit' form = 'SubmitSearch'><i class="fa fa-plus"></i>Get Details</button>
+                &nbsp;&nbsp;&nbsp;<br />
+                
+                {% csrf_token %}
+    
+                <!-- creating an invisible text field to submit the search filters to the view "SearchInstts"
+                    This will get submitted along with this form and will be available in the view through the session-->
+                <input style="display:None" class="form-control" type="text" id="selectedInstts_nv" name='selectedInstts'>
+    
+            </form>
+            <br />                
+            
+            {% if insttList.count == 0 %}
+                <p style="text-align:left;">
+                    No Institutes found!!! Please select the filter again!
+                    <span style="float:right;"><small>* The Institute rank is based on the NIRF survey</small></span>
+                </p>                
+            {% else %}    
+                <p style="text-align:left;">
+                    Number of Institutes found: {{insttList.count}} 
+                    <span style="float:right;"><small>* The Institute rank is based on the NIRF survey</small></span>
+                </p>                
+            {% endif %}
+
+            &nbsp;&nbsp;<input type="checkbox" id="selectAll" onclick="selectAll()">&nbsp;&nbsp;Select All
+<!--            <p align="right" ><small>* The Institute rank is based on the NIRF survey</small></p> -->
+
+
+            <!-- Render the table -->
+            <div class="table-responsive table-bordered table-striped" style="overflow-x:auto; ">
+                <table class="table table-hover" id="Listtable">
+                    <thead style="background-color:#428BCA; color:white">
+                        <tr>
+                            <th style="width:5%">Select</th>
+                            <th style="width:30%">Name</th>
+                            <th style="width:10%">Institute Rank*</th>
+                            <th style="width:55%"> Address</th>
+                            <th style="width:10%">Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>            
+
+                        {% for il in insttList %}
+                        <tr>
+                            <td><input type="checkbox" name = "instt"></td>
+                                
+                            <td id = "insttName"> {{il.instt_name}} </td>
+                            
+                            <td class="align-middle"> 
+                                {% for iRank in insttRanking %}
+                                    {% if iRank.Institute_id == il.instt_code %}
+                                        <span class="label label-primary">{{ iRank.rank }}</span>
+                                    {% endif %}
+                                {% endfor %}    
+                            </td>
+
+                            <td class="align-middle"> {{ il.address_1 }} 
+                                    
+                                {% if il.address_2 %}
+                                    &nbsp;{{ il.address_2 }}<br />
+                                {% endif %}
+                                    
+                                {% if il_.address_3 %}
+                                    &nbsp;{{ il.address_3 }}<br />
+                                {% endif %}
+                                    
+                                {{ il.city }} &nbsp; {{ il.state }} &nbsp; {{ il.pin_code }} &nbsp;
+                                    
+                                {{ il.country }} <br />
+                                {% if il.phone_number %}
+                                   <i class="fa fa-fw fa-phone-square"></i>&nbsp; {{il.phone_number}}&nbsp; &nbsp;
+                                {% endif %}   
+                                {% if il.email_id %}
+                                    <i class="fa fa-fw fa-paper-plane"></i>&nbsp; {{ il.email_id }} &nbsp; &nbsp;
+                                {% endif %}
+                                    
+                                {% if il.website %}
+                                    <a href = "http://{{ il.website }}"> {{il.website}} </a><br />
+                                {% endif %}
+        
+                            </td>
+                    
+                            <td class="align-middle"> {{il.InstituteType_id}} </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>	               
+            </div>
+        </div>
+    </div>
+
+    <!-- JQuery solution to get all the institute names for the institutes selected by user -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" ></script>
+    <script type="text/javascript">
+    
+        $(document).ready(function(){
+            $("form").submit(function(){
+                var Iname = ''
+                $('#Listtable input[type="checkbox"]:checked').each(function(){
+                    var $row = $(this).parents('tr'); 
+                    Inst = $row.find('td:eq(1)').html();
+                    Inst = $.trim(Inst)
+                    Iname = Iname + Inst + ";";
+                });
+                $("#selectedInstts_nv").val(Iname);    
+            });
+        });
+    </script>
+
+{% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->
+

@@ -1,0 +1,321 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps.html' %}
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+
+{% endblock slide-show %}
+
+<!-- Override features block -->
+{% block features %}
+
+    <div class="showcase block block-border-bottom-grey">
+        <div class="container">
+
+        <h3 class="block-title">Select Filter to Research Institutes</h3>
+
+            <!-- the contents of this form are not visible except for the "Submit" button. The form items are set via the script and are submitted to the request -->
+            <form action="{% url useview %}" method='get' id='SubmitSearch'>
+
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                Instructions for Search</h4>
+                            <span class="pull-right clickable"><i class="glyphicon glyphicon-minus"></i></span>
+                        </div>
+                        <div class="panel-body">
+                            Please use the various tabs below to narrow your search for Institutes. After you have made the selections please click the "Submit" button to obtain the list of Institutions.
+                        </div>
+                    </div>
+
+                <button class='btn-primary' type='submit' formmethod='get' value='submit' form = 'SubmitSearch'>Submit</button>                
+                {% csrf_token %}
+    
+                <!-- creating an invisible form items to submit the search filters to the view "SearchInstts-->
+                <input style="display:none;" class="form-control" type="text" id="StateSelections_nv" name='StateValues'>
+                <input style="display:none;" class="form-control" type="text" id="CitySelections_nv" name='CityValues'>
+                <input style="display:none;" class="form-control" type="text" id="TypeSelections_nv" name='TypeValues'>
+            </form>
+            
+            <div class="left">
+                <div class="item active">
+                    <span class="glyphicon glyphicon-th-list"></span>
+                    Geography
+                </div>
+                <div class="item">
+                    <span class="glyphicon glyphicon-log-out"></span>
+                    Discipline
+                </div>
+                <div class="item">
+                    <span class="glyphicon glyphicon-log-in"></span>
+                    <a href="#state" data-toggle="tab">States</a>
+                </div> 
+                <div class="item">
+                    <span class="glyphicon glyphicon-random"></span>
+                    <a href="#city" id= "Scity" data-toggle="tab">Cities</a>
+                </div>
+                <div class="item">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    <a href="#insttype" data-toggle="tab">Instt Type</a>
+                </div>    
+            </div>
+
+                            
+            <div class="right">
+                <div class="inner-addon right-addon" id="state">
+                        
+                    {% if instt_StateList %}
+                        <div>
+                            <p style="#a9a9a9">Selections:&nbsp;<i class='text-primary' id="StateSelections"></i></p>
+                                                                                        
+                            <select  id="stateList" style= "list-style:none; min-width:350px" multiple='multiple' size='10' onkeyup = "getMultipleSelectedValue('State')" ontouchend="getMultipleSelectedValue('State')"  onclick="getMultipleSelectedValue('State')" > 
+                                {% for il in instt_StateList %}
+                                    <option class = "list-group-item" style="list-style: none;">{{il.state}}</option> 
+                                {% endfor %}    
+                            </select>           
+                        </div>
+        
+                    {% else %}
+                        <p>Something wrong here, no states found. Please report it using the contact form below.</p>
+                    {% endif %}
+        
+                </div>
+                
+                <div class="inner-addon right-addon" id="city">
+                    
+                    {% if instt_CityList %}
+                        <div>
+                            <p style="#a9a9a9">Selections:&nbsp;<i class='text-primary' id="CitySelections"></i></p>
+                                                
+                            <select id="cityList" class="list-group"  style= "list-style:none; min-width:350px;" multiple='multiple' size='10' onkeyup = "getMultipleSelectedValue('City')" onclick ="getMultipleSelectedValue('City')">
+                                {% for il in instt_CityList %}
+                                    <option class = "list-group-item" style="list-style: none;"> {{ il.city }} </option>
+                                {% endfor %}    
+                            </select>           
+                        </div>
+                    {% else %}
+                        <p>Something wrong here, no cities found. Please report it using the contact form below.</p>
+                    {% endif %}                
+                    
+                </div>
+        
+        
+                <div class="inner-addon right-addon" id="insttype">
+        
+                    {% if instt_typeList %}
+                        <div>                                        
+                            <p style="#a9a9a9">Selections:&nbsp;<i class='text-primary' id="TypeSelections"></i></p>
+    
+                            <select class="list-group" id="typeList" style= "list-style : none; min-width:350px" multiple='multiple' size='6' onkeyup = "getMultipleSelectedValue('Type')" onclick ="getMultipleSelectedValue('Type')">
+                            {% for il in instt_typeList %}
+                                <option class = "list-group-item" style="list-style: none;"> {{ il.description }} </option>
+                            {% endfor %}    
+                            </select>           
+                        </div>
+                    {% else %}
+                        <p>Something wrong here, no types found. Please report it using the contact form below.</p>
+                    {% endif %}                
+                </div>
+    
+            </div>
+        </div>
+    </div>
+
+
+    <!-- loading Jquery is required for following scripts to run-->
+
+    {% load static %}
+    <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
+
+    <!-- Script to dynamically change the city list based on the selected states -->
+    <!-- This script makes an AJAX call to the server with the state list as parameters and get the city list in return -->
+    <script>
+        $("#Scity").focus(function () {
+            console.log( "in the script" );
+            var sl = $("#StateSelections_nv").val();
+            console.log( sl );
+            
+
+        $.ajax({
+            url: '{% url "Get_Cities" %}',
+            data: {
+            'stateList': sl
+            },
+            dataType: 'json',
+            success: function (data) {
+                
+                var txt = "<p style='#a9a9a9'>Selections:\&nbsp;<i class='text-primary' id='CitySelections'></i></p>";
+                txt += "<select id='cityList' class='list-group' style= 'list-style : none; min-width:350px;' multiple='multiple' size='10' onkeyup = 'getMultipleSelectedValue(\"City\")' onclick ='getMultipleSelectedValue(\"City\")'>";
+                $.each(data, function(index, element) {
+                    txt += "<option class = 'list-group-item' style='list-style: none;'>" + data[index].city + "</option>";
+                });
+                txt += "</select>"; 
+                console.log("Final Txt = " + txt);
+                
+                $("#city").html(txt);                        
+                $("#CitySelections_nv").val("");
+
+            }
+        });
+        })          
+            
+    </script>
+
+    <!-- Set the city form input value to blank when the state is changed -->
+    <script>
+
+        $("#stateList").change(function () {
+            console.log( "State Change" );
+            $("#CitySelections_nv").val("");
+        })
+    </script>    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+                document.querySelector("#stateList").onchange=changeEventHandler;
+        },false);
+
+
+        function changeEventHandler(event){
+            if (!event.target.value)
+                alert('Select an option');
+            else
+                alert( event.target.value + ' selected');
+                document.getElementById("StateSelections").innerHTML = event.target.value;
+                document.getElementById("StateSelections_nv").value = event.target.value;            
+        }
+    </script>
+
+                
+        
+    <!-- Script to get the values selected and display those on page as well set in the invisible form fields -->
+    <!-- These values will get submitted as use clicked on the submit button -->    
+    <script>
+        function getMultipleSelectedValue(theElement)
+        {
+          switch (theElement){
+          case 'State':
+            var x=document.getElementById("stateList");
+            break;
+          case 'City':
+            var x=document.getElementById("cityList");
+            break;
+          case 'Type':
+            var x=document.getElementById("typeList");
+            break;
+          case 'Ranking':
+            var x=document.getElementById("rankingList");
+            break;
+          case 'Cutoff':
+            var x=document.getElementById("cutoffList");
+            break;
+          case 'Quota':
+            var x=document.getElementById("quotaList");
+            break;
+          }  
+          
+          var selVals = "";
+          var firstLoop = true;
+          for (var i = 0; i < x.options.length; i++) {
+             if(x.options[i].selected ==true){
+                if(firstLoop){
+                   selVals = x.options[i].value;
+                   firstLoop = false;
+                } else {   
+                    selVals = selVals + "," + x.options[i].value;
+                }
+            }
+          }
+          switch (theElement){
+          case 'State':
+            document.getElementById("StateSelections").innerHTML = selVals;
+            document.getElementById("StateSelections_nv").value = selVals;            
+            break;
+          case 'City':
+            document.getElementById("CitySelections").innerHTML = selVals;
+            document.getElementById("CitySelections_nv").value = selVals;
+            break;
+          case 'Type':
+            document.getElementById("TypeSelections").innerHTML = selVals;
+            document.getElementById("TypeSelections_nv").value = selVals;
+            break;
+          case 'Ranking':
+            document.getElementById("RankingSelections").innerHTML = selVals;
+            document.getElementById("RankingSelections_nv").value = selVals;
+            break;
+          case 'Cutoff':
+            document.getElementById("CutoffSelections").innerHTML = selVals;
+            document.getElementById("CutoffSelections_nv").value = selVals;
+            break;
+          case 'Quota':
+            document.getElementById("QuotaSelections").innerHTML = selVals;
+            document.getElementById("QuotaSelections_nv").value = selVals;
+            break;
+          }  
+        }
+    </script>
+
+
+ <!--Script for the panel (Search Insturctions) -->
+    <script>    
+         $(document).on('click', '.panel-heading span.clickable', function (e) {
+            var $this = $(this);
+            if (!$this.hasClass('panel-collapsed')) {
+                $this.parents('.panel').find('.panel-body').slideUp();
+                $this.addClass('panel-collapsed');
+                $this.find('i').removeClass('glyphicon-minus').addClass('glyphicon-plus');
+            } else {
+                $this.parents('.panel').find('.panel-body').slideDown();
+                $this.removeClass('panel-collapsed');
+                $this.find('i').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+            }
+        });
+        $(document).on('click', '.panel div.clickable', function (e) {
+            var $this = $(this);
+            if (!$this.hasClass('panel-collapsed')) {
+                $this.parents('.panel').find('.panel-body').slideUp();
+                $this.addClass('panel-collapsed');
+                $this.find('i').removeClass('glyphicon-minus').addClass('glyphicon-plus');
+            } else {
+                $this.parents('.panel').find('.panel-body').slideDown();
+                $this.removeClass('panel-collapsed');
+                $this.find('i').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+            }
+        });
+        $(document).ready(function () {
+            $('.panel-heading span.clickable').click();
+            $('.panel div.clickable').click();
+        });
+
+    </script>
+
+
+{% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->

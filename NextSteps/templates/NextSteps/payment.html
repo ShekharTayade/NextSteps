@@ -1,0 +1,286 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps.html' %}
+{% load static %}
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+<!--    <div id="highlighted-slider" class="container">
+
+        <h3>Registration and Subscription Payment</h3>        
+        
+    </div>
+-->
+{% endblock slide-show %}
+
+<!-- Override features block -->
+{% block features %}
+    <div class="showcase block block-border-bottom-grey"  onload="disableSubmit()">
+        <div class="container">
+            <h3 class="block-title">
+                Sign Up
+            </h3>
+        
+                <form action="{% url 'subscription_start' %}" method='post' id='paymntForm'>
+                    {% csrf_token %}
+<!--                    <input style="display:none;" class="form-control" type="text" id="regFee_nv" name='regFee'> -->                    
+                    <input style="display:none;" class="form-control" type="text" value='250' id="subsFee_nv" name='subsFee'>
+                    <input style="display:none;" class="form-control" type="text" value='1425' id="totalFee_nv" name='totalFee'>
+                    <input style="display:none;" class="form-control" type="text" value='' id="promoCode_nv" name='promoCode'>
+                    <input style="display:none;" class="form-control" type="text" value='' id="percent_nv" name='percentDisc'>
+                    <input style="display:none;" class="form-control" type="text" value='' id="errmsg_nv" name='err_msg'>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h5 class="panel-title">Registration</h5>
+                                </div>
+                                <div class="panel-body">
+                                    <p>One time registrtion fee towards user account creation and maintenance.</p>
+                                    <p><span class="glyphicon glyphicon-ok"></span>&nbsp; One time fee</p> 
+                                    <p><span class="glyphicon glyphicon-ok"></span>&nbsp; One (1) user account</p> 
+                                    <p><span class="glyphicon glyphicon-ok"></span>&nbsp; Full NextSteps access with subscription</p> 
+                                    <br />
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="col-sm-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h5 class="panel-title">Subscription</h5>
+                                </div>
+                                <div class="panel-body">
+                                    <p>Subscription fee towards 1 year access to NextSteps.</p>
+                                    <p><span class="glyphicon glyphicon-ok"></span>&nbsp; NextSteps access for 1 year from the date of subscription</p> 
+                                    <p><span class="glyphicon glyphicon-ok"></span>&nbsp; Access to existing and new features, information added to NextSteps during the subscription validity period</p> 
+                                    <p><span class="glyphicon glyphicon-ok"></span>&nbsp; Option to renew before completion of 1 year subscription</p> 
+                                    <p><span class="glyphicon glyphicon-ok"></span>&nbsp; Option to renew expired subscription with additional fee</p> 
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+    
+                    <div class="row">
+    
+                        <div class="col-sm-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h5 class="panel-title"  id="totalPay"><strong>You Pay a Total of <span id="totalSum"> <i class="fa fa-inr" aria-hidden="true">&nbsp;</i> 1425 </span></strong></h5>
+                                </div>
+    
+    <!--                        <div class="panel-heading" id="totalPay"><strong>You Pay a Total of <span id="totalSum"> Rs. 1425 </span></strong></div> -->
+                                <div class="panel-body">
+                                    <p> <small> Includes...</small> </p>
+                                    <p id="reg">1.  Registration Fee <span id="regAmt"> <i class="fa fa-inr" aria-hidden="true">&nbsp;</i> 1000 </span><small>+ 18% gst</small></p>
+                                    <p id="subs">2.  1 Year Subscription Fee <i class="fa fa-inr" aria-hidden="true">&nbsp;</i> 250 <small>+ 18% gst</small></p>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="col-sm-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h5 class="panel-title">Promotion Code</h5>
+                                </div>
+                                <div class="panel-body">
+                                    If you have a promotion code, please enter it here.
+                                    <br />
+                                    <br />
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" type="button" onclick="setTotalSum()">Apply!</button>
+                                        </span>
+                                        <input id="promo" type="text" style="text-transform:uppercase" class="form-control" name="promocode" placeholder="Enter promo code...">
+                                    </div>
+                                    <p id="usermsg" class="text-primary"><p>  
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                    <input type="checkbox" id="tnc" name="tnc" onchange="activateButton(this)">
+                        I have read and understood the <a href="#" class="text-primary">terms and conditions</a> before signing up.
+                    <br />
+     
+                    <button id="paymnt" class="btn btn-primary" type='submit' formmethod='post' value='submit' form = 'paymntForm' onclick="checkTnC()">Proceed to Pay</button>
+                    <span style="float:right"><a href= "{% url 'index' %}" class="btn btn-primary">Register later & Goto Home Page</a></span>
+                    <br />
+                    <p id="tnc_errXXX" class="text-primary"></p>
+                    <div id="tnc_err" style="display:none;" class="alert alert-danger">
+                        <button type="button" class="close float:left" data-dismiss="">×</button>
+                            To proceed to pay please read and accept terms and condition by checking the checkbox!
+                    </div>
+                    <div class="w3-panel w3-pale-yellow w3-card">
+                        <p>You can choose to Register and Subscribe later and can continue to use the basic SEARCH features. 
+                        However you would miss out on real power of NextSteps features that will help you save a lot of time and effort.<br />
+                        If you don't wish to register now, please click on "Register Later and Goto Home Page" button on the right side.
+                        You can always come back later for Registration.</p>
+                    </div>
+                </form>
+            
+       </div>
+    </div>
+
+    {% load static %}
+    <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
+    
+    
+    <script>
+        function checkTnC() {
+            var chkbox = document.getElementById("tnc");
+            var sts = chkbox.checked
+            var msg = document.getElementById("tnc_err");
+            if (sts) {
+                msg.style.display = "none";
+            } else {
+                msg.style.display = "block";
+            }
+        }
+    </script>
+    
+    
+    <script>
+    function activateButton(element) {
+
+        checkTnC();
+        sts = element.checked;
+        if(sts) {        
+            document.getElementById("paymnt").disabled = false;
+            
+        }
+        else  {
+            document.getElementById("paymnt").disabled = true;
+        }
+    }   
+    </script>
+
+    <script>
+       $(document).ready(function () {
+            activateButton($("#tnc"));
+        });
+    </script>
+
+    <script>
+        function setTotalSum() {
+        var discVal = document.getElementById("promo").value;
+        
+        <!-- Get details for the user entered promo code. GetPromoDisc will set other values in _nv. -->
+        getPromoDisc(discVal);
+    }
+    </script>
+    
+    <script>
+        function getPromoDisc(pcode){
+            console.log("Input to GetPromoDisc " + pcode)
+            $.ajax({
+            url: '{% url "Get_Promo_Details" %}',
+            data: {
+            'promoCode': pcode
+            },
+            dataType: 'json',
+            success: function (data) {
+                
+                $.each(data, function(index, element) {
+                    console.log("Loop Index - " + index)
+                    percent= data[index].discount_percent;
+                    err_msg =data[index].err_msg;
+                    $("#percent_nv").val(percent)                    
+                    $("#errmsg_nv").val(err_msg)                    
+
+                    switch (err_msg) {
+                        case "00":
+                            <!-- Calculatation -->
+                            var discountamt = 1000 * percent / 100;
+                            var regamt = 1000 - discountamt;
+                            var tamt = (1000 - discountamt + 250); 
+                            var totalamt = tamt + (tamt * 18 / 100);
+
+                            <!-- set the discount adjusted values on the page -->
+                            $("#totalSum").html( '<i class="fa fa-inr" aria-hidden="true">&nbsp;</i>' + totalamt );
+                            $("#regAmt").html('<i class="fa fa-inr" aria-hidden="true">&nbsp;</i>' + regamt);
+    
+                            <!-- set other _nv fields -->
+                            $("#regFee_nv").val(regamt);
+                            $("#subsFee_nv").val("250");
+                            $("#totalFee_nv").val(totalamt);
+                            $("#promoCode_nv").val(pcode);
+                            alert ("Congratulations! " + percent + "% discount on registration fee is applied");
+                            $("#usermsg").html("Congratulations! " + percent + "% discount on registration fee is applied");
+                            break;
+
+                        case "01": 
+                            alert("Invalid Promo code entered. Please check the code and try again.");
+                            $("#regAmt").html('<i class="fa fa-inr" aria-hidden="true">&nbsp;</i>' +' 1000');
+                            $("#totalSum").html('<i class="fa fa-inr" aria-hidden="true">&nbsp;</i>' + ' 1425');
+
+                            $("#regFee_nv").val("1000");
+                            $("#subsFee_nv").val("250");
+                            $("#totalFee_nv").val("1425");
+                            $("#promoCode_nv").val(pcode);
+                            $("#usermsg").html("Invalid Promo code entered. Please check the code and try again.");
+                            break;
+                        case "02":
+                            $("#regAmt").html('<i class="fa fa-inr" aria-hidden="true">&nbsp;</i>' + ' 1000');
+                            $("#totalSum").html('<i class="fa fa-inr" aria-hidden="true">&nbsp;</i>' + ' 1425');
+                            alert("Sorry, this promotion has expired.");
+
+                            $("#regFee_nv").val("1000");
+                            $("#subsFee_nv").val("250");
+                            $("#totalFee_nv").val("1425");
+                            $("#promoCode_nv").val(pcode);
+                            $("#usermsg").html("Sorry, this promotion has expired.");
+                            break;
+                        case "03":
+                            $("#regAmt").html('<i class="fa fa-inr" aria-hidden="true">&nbsp;</i>' + ' 1000');
+                            $("#totalSum").html('<i class="fa fa-inr" aria-hidden="true">&nbsp;</i>' + ' 1425');
+                            alert("Sorry, this promotion has not been initiated yet.");
+
+                            $("#regFee_nv").val("1000");
+                            $("#subsFee_nv").val("250");
+                            $("#totalFee_nv").val("1425");
+                            $("#promoCode_nv").val(pcode);
+                            $("#usermsg").html("Sorry, this promotion has not been initiated yet.");
+                            break;
+                    }
+                });
+                }
+            });
+        }
+    </script>
+
+
+{% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->
+

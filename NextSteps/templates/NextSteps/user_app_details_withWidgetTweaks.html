@@ -1,0 +1,1344 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+    <div id="highlighted-slider" class="container">
+    </div>
+
+{% endblock slide-show %}
+
+<!-- Override features block -->
+{% block features %}
+    <div class="showcase block block-border-bottom-grey">
+        <div class="container">
+
+            <h3 class="block-title">Save Your College Application Details</h3>
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h5 class="panel-title">Please Note</h5>
+                </div>
+                <div class="panel-body">
+                    <div class="col-xs-12" >
+                        <small>You can record the details that you wish to keep so those can be readily referred
+                        to whenever and wherever required.
+                        We understand your privacy concerns. We will not share this information with anyone or use it in any manner without your consent.
+                        This is only for you to keep this information in one place, have it easily accesible and use it as and when required. You can skip the details that you don't want to save.</small>
+                    </div>
+                </div>
+            </div>
+            <form method='post' enctype='multipart/form-data' id='save' novalidate>
+            {% csrf_token %}
+            
+            {% if form.errors%}
+                
+                <div class="alert alert-warning alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Following inputs have issues !</strong> Please browse through all the sections to fix and then save the details.
+                    {%for e in form.errors%}
+                        <li>{{e}}</li>
+                    {% endfor %}  
+                </div>    
+                        
+            {% endif %} 
+            <div class="row">
+                <div class="col-xs-2">
+                    <div class="left ">
+                        <ul class="nav-tabs">
+                            <a href="#tab1" data-toggle="tab">
+                            <li class="item-menu active" >
+                                <span style="left: 15px;" class="glyphicon glyphicon-user"></span> 
+                                <span class="menu">Name & Personal Details</span>
+                            </li>
+                            </a> 
+                            <a href="#tab2" data-toggle="tab">
+                                <li class="item-menu">
+                                    <span style="left: 15px;" class="glyphicon glyphicon-map-marker"></span> 
+                                    <span class="menu">Address/Contact Details</span>
+                                </li>
+                            </a>
+                           <a href="#tab3" data-toggle="tab">
+                                <li class="item-menu">
+                                    <span style="left: 15px;" class="glyphicon glyphicon-education"></span> 
+                                    <span class="menu">Previous Education Details</span>
+                                </li>
+                            </a>                    
+                            <a href="#tab4" data-toggle="tab">
+                                <li class="item-menu">
+                                    <span style="left: 15px;" class="glyphicon glyphicon-user"></span> 
+                                    <span class="menu">Parents/Guardian</span>
+                                </li>
+                            </a>
+                            <a href="#tab5" data-toggle="tab">
+                                <li class="item-menu">
+                                    <span style="left: 15px;" class="glyphicon glyphicon-camera"></span> 
+                                    <span class="menu">Photo/Signature</span>
+                                </li>
+                            </a>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-xs-10">
+                    <div >
+  
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="tab1">
+                                <h4>Name and Personal Details</h4>
+
+ 
+                               <div class="form-group">
+                                    {{ form.name.label_tag }}
+                                    {% if form.is_bound %}
+                                        {% if form.name.errors %}
+                                
+                                            {% render_field form.name class="form-control is-invalid" %}
+                                            {% for error in form.name.errors %}
+                                                <div class="invalid-feedback">
+                                                  {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                
+                                        {% else %}
+                                            {% render_field form.name class="form-control is-valid" %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% render_field form.name class="form-control" %}
+                                    {% endif %}
+                                
+                                    {% if form.name.help_text %}
+                                        <small class="form-text text-muted">
+                                            {{ form.name.help_text }}
+                                        </small>
+                                    {% endif %}
+                                </div>
+ 
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            {{ form.date_of_birth.label_tag }}
+                                            {% if form.is_bound %}
+                                                {% if form.date_of_birth.errors %}
+                                        
+                                                    {% render_field form.date_of_birth class="form-control is-invalid" %}
+                                                    {% for error in form.date_of_birth.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.date_of_birth class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.date_of_birth class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.date_of_birth.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.date_of_birth.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class = "col-sm-4"> 
+                                       <div class="form-group">
+                                            {{ form.gender.label_tag }}
+                                            {% if form.is_bound %}
+                                                {% if form.gender.errors %}
+                                        
+                                                    {% render_field form.gender class="form-control is-invalid" %}
+                                                    {% for error in form.gender.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.gender class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.gender class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.gender.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.gender.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class = "col-sm-4"> 
+
+                                        <div class="form-group">
+                                            {{ form.StudentCategory.label_tag }}
+                                            {% if form.is_bound %}
+                                                {% if form.StudentCategory.errors %}
+                                        
+                                                    {% render_field form.StudentCategory class="form-control is-invalid" %}
+                                                    {% for error in form.StudentCategory.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.StudentCategory class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.StudentCategory class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.StudentCategory.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.StudentCategory.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <b>Are you a Person with Disability?</b>
+                                            {% if form.is_bound %}
+                                                {% if form.form.person_with_disability.errors %}
+                                        
+                                                    {% render_field form.person_with_disability class="form-control is-invalid" %}
+                                                    {% for error in form.person_with_disability.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.person_with_disability class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.person_with_disability class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.person_with_disability.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.person_with_disability.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>                       
+                                    </div>
+                                    
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            {{ form.percetage_of_disability.label_tag }}
+                                            {% if form.is_bound %}
+                                                {% if form.percetage_of_disability.errors %}
+                                        
+                                                    {% render_field form.percetage_of_disability class="form-control is-invalid" %}
+                                                    {% for error in form.percetage_of_disability.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.percetage_of_disability class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.percetage_of_disability class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.percetage_of_disability.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.percetage_of_disability.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>                       
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            {{ form.aadhaar_number.label_tag }}
+                                            {% if form.is_bound %}
+                                                {% if form.aadhaar_number.errors %}
+                                        
+                                                    {% render_field form.aadhaar_number class="form-control is-invalid" %}
+                                                    {% for error in form.aadhaar_number.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.aadhaar_number class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.aadhaar_number class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.aadhaar_number.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.aadhaar_number.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>                       
+                                    </div>
+
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            {{ form.state_of_eligibility.label_tag }}
+                                            {% if form.is_bound %}
+                                                {% if form.state_of_eligibility.errors %}
+                                        
+                                                    {% render_field form.state_of_eligibility class="form-control is-invalid" %}
+                                                    {% for error in form.state_of_eligibility.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.state_of_eligibility class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.state_of_eligibility class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.state_of_eligibility.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.state_of_eligibility.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>                       
+                                    </div>
+
+
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            {{ form.nationality.label_tag }}
+                                            {% if form.is_bound %}
+                                                {% if form.nationality.errors %}
+                                        
+                                                    {% render_field form.nationality class="form-control is-invalid" %}
+                                                    {% for error in form.nationality.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.nationality class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.nationality class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.nationality.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.nationality.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>                       
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            <div role="tabpane2" class="tab-pane fade in " id="tab2">
+                                <h4>Address & Contact Details</h4>
+
+                               <div class="form-group">
+                                    {{ form.address.label_tag }}
+                                    {% if form.is_bound %}
+                                        {% if form.address.errors %}
+                                
+                                            {% render_field form.address class="form-control is-invalid" %}
+                                            {% for error in form.address.errors %}
+                                                <div class="invalid-feedback">
+                                                  {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                
+                                        {% else %}
+                                            {% render_field form.address class="form-control is-valid" %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% render_field form.address class="form-control" %}
+                                    {% endif %}
+                                
+                                    {% if form.address.help_text %}
+                                        <small class="form-text text-muted">
+                                            {{ form.address.help_text }}
+                                        </small>
+                                    {% endif %}
+                                </div>
+
+
+                                <div class="row">
+                                
+                                    <div class = "col-sm-4">
+                                        <div class="form-group">
+                                            {{ form.locality.label_tag }}
+                                            {% if form.is_bound %}
+                                                {% if form.locality.errors %}
+                                        
+                                                    {% render_field form.locality class="form-control is-invalid" %}
+                                                    {% for error in form.locality.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.locality class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.locality class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.locality.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.locality.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <div class = "col-sm-4">
+
+                                        <div class="form-group">
+                                            {{ form.city_town_village.label_tag }}
+                                            {% if form.is_bound %}
+                                                {% if form.city_town_village.errors %}
+                                        
+                                                    {% render_field form.city_town_village class="form-control is-invalid" %}
+                                                    {% for error in form.city_town_village.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.city_town_village class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.city_town_village class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.city_town_village.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.city_town_village.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class = "col-sm-4">
+                                        <div class="form-group">
+                                            {{ form.district.label_tag }}
+                                            {% if form.is_bound %}
+                                                {% if form.district.errors %}
+                                        
+                                                    {% render_field form.district class="form-control is-invalid" %}
+                                                    {% for error in form.district.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.district class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.district class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.district.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.district.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+
+                                    <div class = "col-sm-4">
+                                       <div class="form-group">
+                                            {{ form.pin_code.label_tag }}
+                                            {% if form.is_bound %}
+                                                {% if form.pin_code.errors %}
+                                        
+                                                    {% render_field form.pin_code class="form-control is-invalid" %}
+                                                    {% for error in form.pin_code.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.pin_code class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.pin_code class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.pin_code.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.pin_code.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                    </div>        
+
+                                    <div class = "col-sm-4">
+        
+                                       <div class="form-group">
+                                            {{ form.state.label_tag }}
+                                            {% if form.is_bound %}
+                                                {% if form.state.errors %}
+                                        
+                                                    {% render_field form.state class="form-control is-invalid" %}
+                                                    {% for error in form.state.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.state class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.state class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.state.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.state.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+        
+                                    <div class = "col-sm-4">
+        
+                                        <div class="form-group">
+                                            {{ form.Country.label_tag }}
+                                            {% if form.is_bound %}
+                                                {% if form.Country.errors %}
+                                        
+                                                    {% render_field form.Country class="form-control is-invalid" %}
+                                                    {% for error in form.Country.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.Country class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.Country class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.Country.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.Country.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>        
+
+                            
+                                <div class="row">
+
+                                    <div class = "col-sm-4">
+                                       <div class="form-group">
+                                            {{ form.email_id.label_tag }}
+                                            {% if form.is_bound %}
+                                                {% if form.email_id.errors %}
+                                        
+                                                    {% render_field form.email_id class="form-control is-invalid" %}
+                                                    {% for error in form.email_id.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.email_id class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.email_id class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.email_id.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.email_id.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                    </div>        
+
+                                    <div class = "col-sm-4">
+        
+                                       <div class="form-group">
+                                            {{ form.phone_number.label_tag }}
+                                            {% if form.is_bound %}
+                                                {% if form.phone_number.errors %}
+                                        
+                                                    {% render_field form.phone_number class="form-control is-invalid" %}
+                                                    {% for error in form.phone_number.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.phone_number class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.phone_number class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.phone_number.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.phone_number.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+        
+                                </div>        
+
+                            </div>
+                            
+
+
+                            <div role="tabpane3" class="tab-pane fade in " id="tab3">
+                                <h4>Education Details</h4>
+                                
+                                <div class="row">
+
+                                    <div class = "col-sm-6">
+                                        <h5>Class 10th (High School)</h5>
+                                        <div class="form-group">
+                                            <b>Year of Passing</b>
+                                            {% if form.is_bound %}
+                                                {% if form.class_10th_year_of_passing.errors %}
+                                        
+                                                    {% render_field form.class_10th_year_of_passing class="form-control is-invalid" %}
+                                                    {% for error in form.class_10th_year_of_passing.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.class_10th_year_of_passing class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.class_10th_year_of_passing class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.class_10th_year_of_passing.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.class_10th_year_of_passing.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                        <div class="form-group">
+                                            <b>Percentage or CGPA</b>
+                                            {% if form.is_bound %}
+                                                {% if form.class_10th_percentage_cgpa.errors %}
+                                        
+                                                    {% render_field form.class_10th_percentage_cgpa class="form-control is-invalid" %}
+                                                    {% for error in form.class_10th_percentage_cgpa.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.class_10th_percentage_cgpa class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.class_10th_percentage_cgpa class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.class_10th_percentage_cgpa.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.class_10th_percentage_cgpa.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                        <div class="form-group">
+                                            <b>School Address</b>
+                                            {% if form.is_bound %}
+                                                {% if form.class_10th_school_address.errors %}
+                                        
+                                                    {% render_field form.class_10th_school_address class="form-control is-invalid" %}
+                                                    {% for error in form.class_10th_school_address.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.class_10th_school_address class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.class_10th_school_address class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.class_10th_school_address.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.class_10th_school_address.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                        <div class="form-group">
+                                            <b>Exam Board/University</b>
+                                            {% if form.is_bound %}
+                                                {% if form.class_10th_board_or_university.errors %}
+                                        
+                                                    {% render_field form.class_10th_board_or_university class="form-control is-invalid" %}
+                                                    {% for error in form.class_10th_board_or_university.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.class_10th_board_or_university class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.class_10th_board_or_university class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.class_10th_board_or_university.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.class_10th_board_or_university.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+
+                                    </div>
+                                    
+                                    
+                                    
+                                    <div class = "col-sm-6">
+                                        <h5>Class 12th (PU/Qualifying Exam)</h5>
+                                        <div class="form-group">
+                                            <b>Year of Passing</b>
+                                            {% if form.is_bound %}
+                                                {% if form.class_12th_year_of_passing.errors %}
+                                        
+                                                    {% render_field form.class_12th_year_of_passing class="form-control is-invalid" %}
+                                                    {% for error in form.class_12th_year_of_passing.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.class_12th_year_of_passing class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.class_12th_year_of_passing class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.class_12th_year_of_passing.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.class_12th_year_of_passing.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                        <div class="form-group">
+                                            <b>Percentage or CGPA</b>
+                                            {% if form.is_bound %}
+                                                {% if form.class_12th_percentage_cgpa.errors %}
+                                        
+                                                    {% render_field form.class_12th_percentage_cgpa class="form-control is-invalid" %}
+                                                    {% for error in form.class_12th_percentage_cgpa.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.class_12th_percentage_cgpa class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.class_12th_percentage_cgpa class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.class_12th_percentage_cgpa.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.class_12th_percentage_cgpa.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                        <div class="form-group">
+                                            <b>School Address</b>
+                                            {% if form.is_bound %}
+                                                {% if form.class_12th_school_address.errors %}
+                                        
+                                                    {% render_field form.class_12th_school_address class="form-control is-invalid" %}
+                                                    {% for error in form.class_12th_school_address.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.class_12th_school_address class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.class_12th_school_address class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.class_12th_school_address.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.class_12th_school_address.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                        <div class="form-group">
+                                            <b>Exam Board/University</b>
+                                            {% if form.is_bound %}
+                                                {% if form.class_12th_board_or_university.errors %}
+                                        
+                                                    {% render_field form.class_12th_board_or_university class="form-control is-invalid" %}
+                                                    {% for error in form.class_12th_board_or_university.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.class_12th_board_or_university class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.class_12th_board_or_university class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.class_12th_board_or_university.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.class_12th_board_or_university.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+
+                                    </div>
+                                    
+                                    
+                                    
+                                    
+                                </div>
+                            </div>
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+    
+                            <div role="tabpane4" class="tab-pane fade in " id="tab4">
+                                <h4>Parents/Guardian</h4>
+                                
+                                <div class="row">
+                                    <div class = "col-sm-4">
+                                        <h5>Mother's Details</h5>
+                                        <div class="form-group">
+                                            <b>Name</b>
+                                            {% if form.is_bound %}
+                                                {% if form.mothers_name.errors %}
+                                        
+                                                    {% render_field form.mothers_name class="form-control is-invalid" %}
+                                                    {% for error in form.mothers_name.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.mothers_name class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.mothers_name class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.mothers_name.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.mothers_name.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <b>Qualification</b>
+                                            {% if form.is_bound %}
+                                                {% if form.mothers_qualification.errors %}
+                                        
+                                                    {% render_field form.mothers_qualification class="form-control is-invalid" %}
+                                                    {% for error in form.mothers_qualification.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.mothers_qualification class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.mothers_qualification class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.mothers_qualification.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.mothers_qualification.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <b>Occupation</b>
+                                            {% if form.is_bound %}
+                                                {% if form.mothers_occupation.errors %}
+                                        
+                                                    {% render_field form.mothers_occupation class="form-control is-invalid" %}
+                                                    {% for error in form.mothers_occupation.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.mothers_occupation class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.mothers_occupation class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.mothers_occupation.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.mothers_occupation.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <b>Income</b>
+                                            {% if form.is_bound %}
+                                                {% if form.mothers_income.errors %}
+                                        
+                                                    {% render_field form.mothers_income class="form-control is-invalid" %}
+                                                    {% for error in form.mothers_income.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.mothers_income class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.mothers_income class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.mothers_income.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.mothers_income.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+
+                                    </div>        
+
+
+                                    <div class = "col-sm-4">
+                                        <h5>Father's Details</h5>
+                                        <div class="form-group">
+                                            <b>Name</b>
+                                            {% if form.is_bound %}
+                                                {% if form.fathers_name.errors %}
+                                        
+                                                    {% render_field form.fathers_name class="form-control is-invalid" %}
+                                                    {% for error in form.fathers_name.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.fathers_name class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.fathers_name class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.fathers_name.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.fathers_name.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <b>Qualification</b>
+                                            {% if form.is_bound %}
+                                                {% if form.fathers_qualification.errors %}
+                                        
+                                                    {% render_field form.fathers_qualification class="form-control is-invalid" %}
+                                                    {% for error in form.fathers_qualification.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.fathers_qualification class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.fathers_qualification class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.fathers_qualification.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.fathers_qualification.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <b>Occupation</b>
+                                            {% if form.is_bound %}
+                                                {% if form.fathers_occupation.errors %}
+                                        
+                                                    {% render_field form.fathers_occupation class="form-control is-invalid" %}
+                                                    {% for error in form.fathers_occupation.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.fathers_occupation class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.fathers_occupation class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.fathers_occupation.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.fathers_occupation.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <b>Income</b>
+                                            {% if form.is_bound %}
+                                                {% if form.fathers_income.errors %}
+                                        
+                                                    {% render_field form.fathers_income class="form-control is-invalid" %}
+                                                    {% for error in form.fathers_income.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.fathers_income class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.fathers_income class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.fathers_income.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.fathers_income.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+
+                                    </div>        
+
+
+
+                                    <div class = "col-sm-4">
+                                        <h5>Guardian's Details</h5>
+                                        <div class="form-group">
+                                            <b>Name</b>
+                                            {% if form.is_bound %}
+                                                {% if form.guardians_name.errors %}
+                                        
+                                                    {% render_field form.guardians_name class="form-control is-invalid" %}
+                                                    {% for error in form.guardians_name.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.guardians_name class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.guardians_name class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.guardians_name.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.guardians_name.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <b>Qualification</b>
+                                            {% if form.is_bound %}
+                                                {% if form.guardians_qualification.errors %}
+                                        
+                                                    {% render_field form.guardians_qualification class="form-control is-invalid" %}
+                                                    {% for error in form.guardians_qualification.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.guardians_qualification class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.guardians_qualification class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.guardians_qualification.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.guardians_qualification.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <b>Occupation</b>
+                                            {% if form.is_bound %}
+                                                {% if form.guardians_occupation.errors %}
+                                        
+                                                    {% render_field form.guardians_occupation class="form-control is-invalid" %}
+                                                    {% for error in form.guardians_occupation.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.guardians_occupation class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.guardians_occupation class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.guardians_occupation.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.guardians_occupation.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <b>Income</b>
+                                            {% if form.is_bound %}
+                                                {% if form.guardians_income.errors %}
+                                        
+                                                    {% render_field form.guardians_income class="form-control is-invalid" %}
+                                                    {% for error in form.guardians_income.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.guardians_income class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.guardians_income class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.guardians_income.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.guardians_income.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+
+                                    </div>        
+
+
+
+        
+                                </div>                                        
+                                
+                                
+                            </div>
+
+
+
+
+
+                            <div role="tabpane5" class="tab-pane fade in " id="tab5">
+                                <h4>Photo/Signature</h4>
+                                <div class="row">
+                                    <div class = "col-sm-6">
+                                        <h5>Upload Your Passport Size Photopgraph</h5>
+                                        <div class="form-group">
+                                            {% if form.is_bound %}
+                                                {% if form.candidate_photo.errors %}
+                                        
+                                                    {% render_field form.candidate_photo class="form-control is-invalid" %}
+                                                    {% for error in form.candidate_photo.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.candidate_photo class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.candidate_photo class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.candidate_photo.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.candidate_photo.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+
+                                        <h5>Upload Your Signature</h5>
+                                        <div class="form-group">
+                                            {% if form.is_bound %}
+                                                {% if form.candidate_signature.errors %}
+                                        
+                                                    {% render_field form.candidate_signature class="form-control is-invalid" %}
+                                                    {% for error in form.candidate_signature.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.candidate_signature class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.candidate_signature class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.candidate_signature.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.candidate_signature.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class = "col-sm-6">
+                                        <h5>Upload Parent's Signature</h5>
+                                        <div class="form-group">
+                                            {% if form.is_bound %}
+                                                {% if form.parent_signature.errors %}
+                                        
+                                                    {% render_field form.parent_signature class="form-control is-invalid" %}
+                                                    {% for error in form.parent_signature.errors %}
+                                                        <div class="invalid-feedback">
+                                                          {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                        
+                                                {% else %}
+                                                    {% render_field form.parent_signature class="form-control is-valid" %}
+                                                {% endif %}
+                                            {% else %}
+                                                {% render_field form.parent_signature class="form-control" %}
+                                            {% endif %}
+                                        
+                                            {% if form.parent_signature.help_text %}
+                                                <small class="form-text text-muted">
+                                                    {{ form.parent_signature.help_text }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+
+
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center"><button class="btn-primary btn-sm" type="submit">Save Details</button></div>
+                    
+                    
+                </div>
+                
+                
+            </div>
+            </form>
+ 
+	
+        </div>
+     </div>
+
+{% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->
+

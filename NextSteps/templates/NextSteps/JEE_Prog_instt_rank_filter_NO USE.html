@@ -1,0 +1,305 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps.html' %}
+
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+{% endblock slide-show %}
+
+<!-- Override features block -->
+{% block features %}
+    <div class="showcase block block-border-bottom-grey">
+        <div class="container">
+    
+            <h3 class="block-title">Find JEE Ranks</h3>
+
+            <form action="{% url 'instt_type_search_results' %}" method='post' id='SubmitFilter'>
+                {% csrf_token %}
+
+                <div class="row">
+                    <div class="col-xs-6"> 
+                        <div class = "panel panel-info">
+        
+                            <div class="panel-heading">
+                                <h5 class="panel-title">Use Your Preferences?</h5>
+                            </div>
+                    
+                            <div class="panel-body">
+                                <div id="prefRadio" class="col-xs-12" >
+                                    <label class="radio-inline">
+                                        <input type="radio" id="radioyes" checked="checked" onchange = "setPref()" name="optradio" value="ON">Yes
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" id = "radiono" onchange = "setPref()" name="optradio"  value="OFF">No
+                                    </label>
+                                </div>
+                                <p><small>Select 'Yes' to use the preferences that have set by you earlier.</small></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xs-6"> 
+                        <div class = "panel panel-info">
+        
+                            <div class="panel-heading">
+                                <h6 class="panel-title">Select Institute Type</h6>
+                            </div>
+                    
+                            <div class="panel-body">
+                                <div id="iitRadio" class="col-xs-12" >
+                                    <ul class="list-group">
+                                        <li class="list-group-item">
+                                            IIT &nbsp;<small>(Display IIT ranks)</small>
+                                            <div class="year-switch pull-right">
+                                                <input id= "IIT" name= "IIT" type="checkbox"/>
+                                                <label for= "IIT" class="label-info"></label>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item">
+                                            Non-IIT &nbsp;<small>(Display non-IIT ranks)</small>
+                                            <div class="year-switch pull-right">
+                                                <input id= "Non-IIT" name= "Non-IIT" type="checkbox"/>
+                                                <label for= "Non-IIT" class="label-info"></label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="row">
+                    <div id= "progUserPref" class="col-sm-6" >
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h5 class="panel-title">Select the Program Preferences</h5>
+                            </div>
+                            <div id = "progUserDiv" class="panel-body" style = "padding:0px">
+                                {% if programUserList.count > 0 %}
+                                    <select  id="progUserList" name ="progUserList" style= "list-style:none; min-width:350px; max-width:453px;" multiple='multiple' size='5'> 
+                                        {% for ip in programUserList %}
+                                            <option class = "list-group-item" style="list-style: none;">{{ ip.Program__description }}</option>
+                                        {% empty %}
+                                            You don't have any program preferences set currently. The result will not consider your preferences.    
+                                        {% endfor %}
+                                    </select>           
+                                {% else %}
+                                    <p style = "padding:10px" class="text-primary"><small>You don't have any Program preferences set currently. The result will not consider your preferences.</small></p>    
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div id= "insttUserPref" class="col-sm-6">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h5 class="panel-title">Select the Institute Preferences</h5>
+                            </div>
+                            <div id="insttUserDiv" class="panel-body" style = "padding:0px">
+                                {% if insttUserList.count > 0 %}
+                                    <select  id="insttUserList" name="insttUserList" style= "list-style:none; min-width:350px; max-width:453px;" multiple='multiple' size='5'> 
+                                        {% for ip in insttUserList %}
+                                            <option class = "list-group-item" style="list-style: none;">{{ ip.Institute__instt_name }}</option>
+                                        {% endfor %}
+                                    </select>           
+                                {% else %}
+                                    <p style = "padding:10px" class="text-primary"><small>You don't have any Institute preferences set currently. The result will not consider your preferences.</small></p>    
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    
+                </div>
+    
+                <button class='btn btn-more' type='submit' formmethod='post' value='submit' form = 'SubmitFilter'><i class="fa fa-plus"></i>Get Ranks</button>
+  
+            </form>        
+        
+        </div>
+    </div>
+
+
+    {% load static %}
+    <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            setPref();
+        });    
+    </script>
+    
+    
+    <script>
+        function setPref(){
+        
+            RadioYes = document.getElementById("radioyes").checked
+            RadioNo = document.getElementById("radiono").checked
+            
+            if (RadioYes) {
+                document.getElementById("IIT").disabled= true;
+                document.getElementById("Non-IIT").disabled= true;
+                document.getElementById("IIT").checked= false;
+                document.getElementById("Non-IIT").checked= false;
+                document.getElementById("progUserDiv").disabled= true;
+                document.getElementById("insttUserDiv").disabled= true;
+                
+            } else {
+                document.getElementById("IIT").disabled= false;
+                document.getElementById("Non-IIT").disabled= false;
+                document.getElementById("progUserDiv").disabled= false;
+                document.getElementById("insttUserDiv").disabled= false;
+            }
+        }
+    
+    </script>
+    
+    
+    
+    <script>
+    
+        $('#prefRadio input:radio').click(function() {
+        
+            if ($(this).val() === 'ON') {
+                var insttType= 'IIT';
+            } else if ($(this).val() === 'OFF') {
+                var insttType= 'NON-IIT';
+            } 
+ 
+        pref = document.querySelector('input[name=optradio]:checked').value;
+
+        if (pref == 'ON') {
+            insttOrProg = "INSTT"; 
+            $.ajax({
+                url: '{% url "get_user_instt_progs_by_type" %}',
+                data: {
+                'insttType': insttType, 'insttOrProg':insttOrProg
+                },
+                dataType: 'json',
+                success: function (data) {
+                    
+                    var txt = "";
+                                                
+                    txt = "<select id='insttUserList' name ='insttUserList' style= 'list-style:none; min-width:350px; max-width:453px;' multiple='multiple' size='5'>";
+                    $.each(data, function(index, element) {
+                        txt += "<option class = 'list-group-item' style='list-style: none;'>" + data[index].Institute__instt_name + "</option>";
+                    });
+                    txt += "</select>"; 
+
+                    $("#insttUserDiv").html(txt);                        
+                }
+            });
+    
+    
+            insttOrProg = "PROG"; 
+            $.ajax({
+                url: '{% url "get_instt_progs_by_type" %}',
+                data: {
+                'insttType': insttType, 'insttOrProg':insttOrProg
+                },
+                dataType: 'json',
+                success: function (data) {
+                    
+                    var txt = "";
+    
+                    txt = "<select  id='progUserList' name ='progUserList' style= 'list-style:none; min-width:350px; max-width:453px;' multiple='multiple' size='5'>";
+                    $.each(data, function(index, element) {
+                        txt += "<option class = 'list-group-item' style='list-style: none;'>" + data[index].Program__description + "</option>";
+                    });
+                    txt += "</select>"; 
+                    
+                    $("#progUserDiv").html(txt);                        
+                }
+            });
+        }
+
+        if (pref == 'OFF') {
+            insttOrProg = "INSTT"; 
+            $.ajax({
+                url: '{% url "get_instt_progs_by_type" %}',
+                data: {
+                'insttType': insttType, 'insttOrProg':insttOrProg
+                },
+                dataType: 'json',
+                success: function (data) {
+                    
+                    var txt = "";
+                                                
+                    txt = "<select id='instUsertList' name ='insttUserList' style= 'list-style:none; min-width:350px; max-width:453px;' multiple='multiple' size='5'>";
+                    $.each(data, function(index, element) {
+                        txt += "<option class = 'list-group-item' style='list-style: none;'>" + data[index].Institute__instt_name + "</option>";
+                    });
+                    txt += "</select>"; 
+                    
+                    $("#insttUserDiv").html(txt);                        
+                }
+            });
+    
+    
+            insttOrProg = "PROG"; 
+            $.ajax({
+                url: '{% url "get_instt_progs_by_type" %}',
+                data: {
+                'insttType': insttType, 'insttOrProg':insttOrProg
+                },
+                dataType: 'json',
+                success: function (data) {
+                    
+                    var txt = "";
+    
+                    txt = "<select  id='progUserList' name ='progUserList' style= 'list-style:none; min-width:350px; max-width:453px;' multiple='multiple' size='5'>";
+                    $.each(data, function(index, element) {
+                        txt += "<option class = 'list-group-item' style='list-style: none;'>" + data[index].Program__description + "</option>";
+                    });
+                    txt += "</select>"; 
+                    
+                    $("#progUserDiv").html(txt);                        
+                }
+            });
+        }
+
+        })          
+            
+    </script>    
+
+{% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->
+
+
+
+
+
+
+
