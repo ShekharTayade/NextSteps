@@ -24,10 +24,10 @@ from NextSteps.models import UserAppDetails
 from .common_views import *
 from .pdf_views import *
 
-from idlelib.colorizer import prog
-from reportlab.pdfgen import canvas
-from reportlab.lib.units import inch
-from reportlab.lib.pagesizes import letter, A4
+#from idlelib.colorizer import prog
+#from reportlab.pdfgen import canvas
+#from reportlab.lib.units import inch
+#from reportlab.lib.pagesizes import letter, A4
 
 @login_required
 @subscription_active
