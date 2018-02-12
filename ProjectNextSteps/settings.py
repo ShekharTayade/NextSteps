@@ -27,9 +27,6 @@ DATABASES = {
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-print("BASE_DIR")
-print(BASE_DIR)
-print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -146,18 +143,6 @@ STATICFILES_DIR = [
 ]
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
-
-print("STATICFILES_DIR")
-print(STATICFILES_DIR)
-print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-
-print("STATIC_ROOT")
-print(STATIC_ROOT)
-print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-
-
-print("PROJECT_DIR")
-print(PROJECT_DIR)
 
 
 LOGOUT_REDIRECT_URL = 'index'

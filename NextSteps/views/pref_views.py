@@ -502,7 +502,7 @@ def ifThenAnalysis(request):
     insttUserList = InsttUserPref.objects.filter(User__in=userid).values(
         'Institute__instt_name',  'Institute__InstituteType').distinct().order_by('Institute__instt_name')
     
-    return render(request, 'NextSteps/ifthenAnalysis.html', 
+    return render(request, 'NextSteps/ifThenAnalysis.html', 
             {'programUserList':programUserList, 'insttUserList':insttUserList,
             'countryUserList':countryUserList, 'disciplineUserList':disciplineUserList,
             'levelUserList':levelUserList, 'progList':progList, 
@@ -656,7 +656,7 @@ def ifThenAnalysisResults(request):
     
     resultCnt = len(resultSet)
              
-    return render(request, 'NextSteps/ifthenAnalysisResults.html', 
+    return render(request, 'NextSteps/ifThenAnalysisResults.html', 
             {'resultSet':resultSet, 'err':err,'rankFrom':rankFrom, 
              'rankTo':rankTo, 'progs':progs, 'instts':instts,
              'rankType':rankType, 'resultCnt':resultCnt, 'homestate':homestate})     

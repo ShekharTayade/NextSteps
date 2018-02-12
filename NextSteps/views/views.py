@@ -88,7 +88,7 @@ def NextStepslogin(request):
         
         else :
             
-            return render(request, 'NextSteps/Login.html', {
+            return render(request, 'NextSteps/login.html', {
                 'username' : request.user.username, 'invalid' : 'invalid'})
     else:
         return render(request, 'NextSteps/login.html')
