@@ -168,7 +168,6 @@ def subscriptionStart(request):
         useracct.save()
 
     except Error as e:
-        print(e)
         msg = 'Apologies!! Could not process the payment. Please use the contact us link at the bottom of this page to let us the details and we will help you.'
         pass_fail = 'FAIL'
 
@@ -216,11 +215,6 @@ def renewSubscriptionConfirm(request):
 
     pass_fail = 'PASS'
     msg = 'Subscription Renewed!'
-
-    print("In coming Dates......")
-    print(regStr)
-    print(subsStartStr)
-    print(subsEndStr)
     
     if regDate == "01/01/1900" or subsStartDate == "01/01/1900" or subsEndDate == "01/01/1900":
         pass_fail = 'FAIL'
@@ -255,7 +249,6 @@ def renewSubscriptionConfirm(request):
         useracct.save()
 
     except Error as e:
-        print(e)
         msg = 'Apologies!! Could not process your subscription renewal. Please use the contact us link at the bottom of this page to let us the details and we will help you.'
         pass_fail = 'FAIL'
 

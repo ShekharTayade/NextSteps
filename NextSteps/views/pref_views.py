@@ -421,7 +421,7 @@ def preferredInsttAdmRoutes(request):
 
     # Get the adm route details
     admRoutesUserList = InstituteAdmRoutes.objects.filter(Institute_id__in = insttList).values(
-        'Institute__instt_code', 'Program__program_code', 'adm_route', 'Description')
+        'Institute__instt_code', 'Program__program_code', 'adm_route', 'description')
     
     return render(request, 'NextSteps/preferred_instt_adm_routes.html', 
             {'insttUserList':insttUserList, 'admRoutesUserList':admRoutesUserList})
