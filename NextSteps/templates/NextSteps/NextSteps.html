@@ -677,7 +677,8 @@ Usage: data-block-bg-img="IMAGE-URL" to apply a background image clearly via jQu
             } else {
                 is_home = false;
             }
-            if (curr_url  == "http://192.168.0.108:7000/"){
+            
+            if (is_home){
                     $('[data-toggle="tooltip"]').tooltip("show");
             } else {
                 $('[data-toggle="tooltip"]').tooltip();   

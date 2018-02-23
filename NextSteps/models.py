@@ -434,7 +434,8 @@ class UserAppDetails(models.Model):
     district = models.CharField(max_length=300, blank=True, default='')
     pin_code = models.PositiveIntegerField(blank=True, null=True)
     state = models.CharField(max_length=100, blank=True, default = '')
-    Country = models.ForeignKey(Country, on_delete = models.PROTECT)
+    Country = models.ForeignKey(Country, on_delete = models.PROTECT, 
+        blank=True, null=True)
     phone_number = models.CharField(max_length=30, blank=True, default='')
     email_id = models.EmailField(blank=True, default='')
     aadhaar_number = models.CharField(max_length=12, blank=True, default='')
