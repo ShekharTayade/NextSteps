@@ -960,9 +960,13 @@ def JEE_prog_instt_rank_results(request):
 @login_required        
 def userAppDetailsView(request):
     if request.method == 'POST':
-        userid = User.objects.get(username = request.user)
-        userObj = UserAppDetails.objects.get(User = userid)
-        form = UserAppDetailsForm(request.POST, request.FILES, instance=userObj)
+        try:
+            userid = User.objects.get(username = request.user)
+            userObj = UserAppDetails.objects.get(User = userid)
+            form = UserAppDetailsForm(request.POST, request.FILES, instance=userObj)
+        except UserAppDetails.DoesNotExist:
+            form = UserAppDetailsForm(request.POST, request.FILES)
+            
         if form.is_valid():
             userapp = form.save(commit=False)
             userapp.User = request.user
