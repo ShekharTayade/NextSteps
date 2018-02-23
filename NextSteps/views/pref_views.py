@@ -386,7 +386,7 @@ def preferredInsttImpDates(request):
 
     # Get the imp dates details
     impDatesUserList = InstituteProgramImpDates.objects.filter(Institute_id__in = insttList).values(
-        'Institute__instt_code', 'Program__program_code', 'event', 'date')
+        'Institute__instt_code', 'Program__program_code', 'event', 'event_date')
     
     return render(request, 'NextSteps/preferred_instt_imp_dates.html', 
             {'insttUserList':insttUserList, 'impDatesUserList':impDatesUserList})
@@ -960,21 +960,20 @@ def JEE_prog_instt_rank_results(request):
 @login_required        
 def userAppDetailsView(request):
     if request.method == 'POST':
-        form = UserAppDetailsForm(request.POST, request.FILES)
+        userid = User.objects.get(username = request.user)
+        userObj = UserAppDetails.objects.get(User = userid)
+        form = UserAppDetailsForm(request.POST, request.FILES, instance=userObj)
         if form.is_valid():
-            try:
-                userid = User.objects.get(username = request.user)
-                userAppInst = UserAppDetails.objects.get(User = userid)
-                userApp = UserAppDetailsForm(request.POST, instance=userAppInst)
-                userApp.save()    
-            except UserAppDetails.DoesNotExist:
-                form.save()
+            userapp = form.save(commit=False)
+            userapp.User = request.user
+            userapp.save()
             return redirect('user_app_confirm')
     else:
         try:
             userid = User.objects.get(username = request.user)
             userObj = UserAppDetails.objects.get(User = userid)
             form = UserAppDetailsForm(instance=userObj)
+            
         except UserAppDetails.DoesNotExist:
             form = UserAppDetailsForm(initial={'User': request.user})
     return render(request, 'NextSteps/user_app_details_withWidgetTweaks.html', {
@@ -985,7 +984,6 @@ def userAppDetailsView(request):
 def userAppDetailsConfirm(request):
     
     return render(request, 'NextSteps/userAppConfirm.html')
-        
         
         
         

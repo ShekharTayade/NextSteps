@@ -12,7 +12,7 @@ class Country(models.Model):
     country_name = models.CharField(max_length=100, blank = True, null=True, unique=True)
 
     def __str__(self):
-        return models.Model.__str__(self)
+        return self.country_code
 
 # Model name - Level
 # This model will store all the levels that NextSteps will serve (ex. 
@@ -78,6 +78,9 @@ class StudentCategory(models.Model):
     category = models.CharField(max_length=50, primary_key=True)
     description = models.CharField(max_length=100, blank=True, null=True, unique=True)
 
+    def __str__(self):
+        return self.category
+
 
 # Model - EntranceExam
 # This model stores the Entrance Exam Types        
@@ -105,6 +108,8 @@ class Institute(models.Model):
     website = models.CharField(max_length=200, blank=True, default='')
     InstituteType = models.ForeignKey(InstituteType, on_delete=models.SET_NULL, 
         blank=True, null=True)
+    aicte_id = models.CharField(max_length=20, blank=True, default='')
+    abbreviation = models.CharField(max_length=20, blank=True, default='')
 
     def __str__(self):
         return models.Model.__str__(self)
@@ -178,14 +183,17 @@ class InstituteProgramImpDates(models.Model):
     Level = models.ForeignKey(Level, on_delete=models.PROTECT)
     Program = models.ForeignKey(Program, on_delete=models.PROTECT)
     event = models.CharField(max_length=500, blank=True, default='')
+    event_date = models.DateField(blank=True, null=True)
     event_order = models.IntegerField(blank=True, null=True)
-    date = models.CharField(max_length=500, blank=True, default='')
     # The date field above is intentionally Char type as it would store, date or a date range
     # or an approximate date/month etc., basically anything that will help users
     # know the general idea of what the important dates would be 
+    event_duration_days = models.IntegerField(blank=True, null=True)
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+    remarks= models.CharField(max_length=2000, blank=True, default='')
     def __str__(self):
         return models.Model.__str__(self)
-
 
 
 # Model - Survey
@@ -425,7 +433,7 @@ class UserAppDetails(models.Model):
     city_town_village = models.CharField(max_length=300, blank=True, default='')
     district = models.CharField(max_length=300, blank=True, default='')
     pin_code = models.PositiveIntegerField(blank=True, null=True)
-    state = models.CharField(max_length=100, blank=False, null=False)
+    state = models.CharField(max_length=100, blank=True, default = '')
     Country = models.ForeignKey(Country, on_delete = models.PROTECT)
     phone_number = models.CharField(max_length=30, blank=True, default='')
     email_id = models.EmailField(blank=True, default='')
@@ -442,9 +450,9 @@ class UserAppDetails(models.Model):
     guardians_qualification = models.CharField(max_length=200, blank=True, default='')
     guardians_occupation = models.CharField(max_length=200, blank=True, default='')
     guardians_income = models.CharField(max_length=200, blank=True, default='')
-    candidate_photo = models.ImageField(upload_to='uploads/%Y/%m/%d/')
-    candidate_signature = models.ImageField(upload_to='uploads/%Y/%m/%d/')
-    parent_signature = models.ImageField(upload_to='uploads/%Y/%m/%d/')
+    candidate_photo = models.ImageField(upload_to='uploads/%Y/%m/%d/', blank=True, null=True)
+    candidate_signature = models.ImageField(upload_to='uploads/%Y/%m/%d/', blank=True, null=True)
+    parent_signature = models.ImageField(upload_to='uploads/%Y/%m/%d/',  blank=True, null=True)
     
     def __str__(self):
         return models.Model.__str__(self)

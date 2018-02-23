@@ -2,6 +2,8 @@ from django.conf.urls import url
 
 from . import views
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
@@ -76,6 +78,9 @@ urlpatterns = [
     url(r'^findRanks/$', views.JEE_prog_instt_rank_filter, name='JEE_prog_instt_rank_filter'),
     url(r'^rankRsults/$', views.JEE_prog_instt_rank_results, name='JEE_prog_instt_rank_results'),
 
+    url(r'^calendar/$', views.calendar, name='calendar'),
+    url(r'^ajax/getUserInstts/$', views.getUserInstts, name='get_user_instts'),
+
 
     url(r'^userAppDetails/$', views.userAppDetailsView, name='user_app_details'),
     url(r'^userAppDetailsConfirm/$', views.userAppDetailsConfirm, name='user_app_confirm'),
@@ -83,3 +88,7 @@ urlpatterns = [
     
 ]
 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
+    

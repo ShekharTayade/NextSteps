@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 
-{% load static %}
 <head>
-    {% load static %}
     <meta charset="utf-8">
-    <title>NextSteps</title>
+    <title>NextSteps - As you search for the best engineering college for you, save your time and effort with NextSteps. It has features such as get details of engineering colleges in India, shortlist, track important dates, assess probability of a seat in 
+    IITs, NITs, all-in-one-place report, calendar for tracking he application process, know college opening/closing JEE ranks and much more. 
+    </title>
+    <meta name="keywords" content="search engineering colleges, engineering colleges, engineering college admission, engineering college application, engineering collges in India, engineering institutes, JEE seat probability,IIT, JEE, NIT, " />
+    
+    {% load static %}
     <link rel="icon" href="{% static 'img/target.ico' %}" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
@@ -35,6 +38,12 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900" rel="stylesheet">
+        
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.css"> -->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.0-rc.1/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.11.3.js"></script>
+  <script src="//code.jquery.com/ui/1.12.0-rc.1/jquery-ui.js"></script>
+
 
     <!-- Bootstrap CSS File -->
     <link href="{% static 'lib/bootstrap/css/bootstrap.min.css' %} " rel="stylesheet">
@@ -45,19 +54,28 @@
     <link href="{% static 'lib/owlcarousel/owl.carousel.min.css' %}" rel="stylesheet">
     <link href="{% static 'lib/owlcarousel/owl.theme.min.css' %}" rel="stylesheet">
     <link href="{% static 'lib/owlcarousel/owl.transitions.min.css' %}" rel="stylesheet">
- 
+
+    
+    <link href='http://fonts.googleapis.com/css?family=Economica' rel='stylesheet' type='text/css'>
+    
     <!-- Main Stylesheet File -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <!-- Calendar stylsheet -->
+    <link rel='stylesheet' href="{% static 'fullcalendar/css/fullcalendar.css' %}">
+
+    <script src="{% static 'fullcalendar/moment.min.js' %}"></script> 
+<!--    <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
+
+    <script src="{% static 'fullcalendar/jquery-ui.custom.min.js' %}"></script> -->
+    <script src="{% static 'fullcalendar/fullcalendar.min.js' %}"></script>
+
+
+
 
     <!--Your custom colour override - predefined colours are: colour-blue.css, colour-green.css, colour-lavander.css, orange is default-->
     <!--  <link href="#" id="colour-scheme" rel="stylesheet"> -->
 
-    <!-- =======================================================
-    Theme Name: Flexor
-    Theme URL: https://bootstrapmade.com/flexor-free-multipurpose-bootstrap-template/
-    Author: BootstrapMade.com
-    Author URL: https://bootstrapmade.com
-    ======================================================= -->
 </head>
 
 <body class="page-index has-hero">
@@ -102,7 +120,7 @@
     <div class="header">
         <div class="header-inner container">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <!--navbar-branding/logo - hidden image tag & site name so things like Facebook to pick up, actual logo set via CSS for flexibility -->
                     <a class="navbar-brand" href= "{% url 'index' %} " title="Home">
                         <h1 class="hidden">
@@ -114,8 +132,14 @@
                         <br /> NextSteps to Bright Future!! 
                     </div>
                 </div>
+                <div class="col-md-3">
+
+                </div>
                 <!--header rightside-->
-                <div class="col-md-4">
+                <div class="col-md-3">
+                
+                    <a href="{% url 'index' %} " class = "userguide pull-left" data-toggle="tooltip" title="User Guide" data-placement="bottom"><i class="fa fa-info-circle"></i></a>
+
                     <!--user menu-->
                     <ul class="list-inline user-menu pull-right">
                         <li class="user-button"><a class="btn btn-primary btn-hh-trigger" role="button" data-toggle="collapse" data-target=".header-hidden">Open</a></li>
@@ -178,17 +202,6 @@
                     <li class="icon-link">
                         <a href="{% url 'index' %} "><i class="fa fa-home"></i></a>
                     </li>
-<!--                    <li class="dropdown">
-                        <a href="#"  class="dropdown-toggle" data-toggle="dropdown">Search Institutes<b class="caret"></b></a>
-                        <ul class="dropdown-menu" >
-                            <li class="dropdown-header"><strong>Search By Various Paraters</strong></li>
-                            <li><a href="{% url 'instt_ranking_filter' %}" tabindex="-1" class="menu-item">Institute Survey Rankings</a></li>
-                            <li><a href="{% url 'search_filter' %}" tabindex="-1" class="menu-item">Programs & Seats</a></li>
-                            <li><a href="{% url 'JEE_ranks_filter' %}" tabindex="-1" class="menu-item">Opening/Closing JEE Ranks</a></li>
-                            <li><a href="{% url 'instt_cut_off_filter' %}" tabindex="-1" class="menu-item">Cut Off Scores</a></li>
-                            <li class="dropdown-footer">Select an option to get Instt details</li>
-                        </ul>
-                    </li> -->
                     <li class="dropdown dropdown-mm">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Search<b class="caret"></b></a>
                         <ul class="dropdown-menu dropdown-menu-mm dropdown-menu-persist">
@@ -197,7 +210,6 @@
                                     <li class="dropdown-header">Institutes...</li>
                                     <li><a href="{% url 'search_filter' %}" tabindex="-1" class="menu-item">Institutes by location</a></li>
                                     <li><a href="{% url 'instt_ranking_filter' %}" tabindex="-1" class="menu-item">Survey Rankings</a></li>
-<!--                                    <li><a href="{% url 'search_filter' %}" tabindex="-1" class="menu-item">Programs & Seats</a></li>  -->
                                     <li><a href="{% url 'instt_type_filter' %}" tabindex="-1" class="menu-item">Institutes by Type</a></li>
                                     <li><a href="{% url 'JEE_ranks_filter' %}" tabindex="-1" class="menu-item">Opening/Closing JEE Ranks</a></li>
                                     <li><a href="{% url 'instt_cut_off_filter' %}" tabindex="-1" class="menu-item">Cut Off Scores</a></li>
@@ -224,7 +236,7 @@
                             <li class="dropdown-header"><strong>Set your Preferences</strong></li>
                             <li><a href="{% url 'prefs' %}" tabindex="-1" class="menu-item">View/Set My Preferences</a></li>
                             <li><a href="{% url 'user_app_details' %}" tabindex="-1" class="menu-item">My College Application Details</a></li>
-                            <li><a href="#" tabindex="-1" class="menu-item">Notification Settings</a></li>
+                            <li><a href="#" style="display:none" tabindex="-1" class="menu-item">Notification Settings</a></li>
                         </ul>
                     </li>                    
                     <li class="dropdown dropdown-mm">
@@ -239,13 +251,13 @@
                                     <li><a href="{% url 'preferred_Instt_adm_routes' %}">Admission Routes</a></li>
                                     <li><a href="{% url 'preferred_Instt_Entrance' %}">Entrance Exams</a></li>
                                     <li><a href="{% url 'preferred_Instt_cons_report' %}">Consolidated Report</a></li>
-                                    <li><a href="#">Calendar</a></li>
+                                    <li><a href="{% url 'calendar' %}">Calendar</a></li>
                                 </ul>
                                 <ul class="col-md-6">
                                     <li class="dropdown-header">JEE Menu</li>
                                     <li><a href="{% url 'JEE_prog_instt_rank_filter' %}">Institute, Program Ranks</a></li>
                                     <li><a href="{% url 'if_then_analysis' %}">Seat Probability </a></li>
-                                    <li><a href="#">JEE Preference Suggestions </a></li>
+                                    <li><a href="#" style="display:none">JEE Preference Suggestions </a></li>
                                 </ul>
                             </li>
                             <li class="dropdown-footer">
@@ -255,7 +267,7 @@
                             </li>
                         </ul>
                     </li>
-<!--                    <li><a href="#">Your Profile</a></li> -->
+
                 </ul>
             </div>
               <!--/.navbar-collapse -->
@@ -421,8 +433,29 @@
                 Registration and Subscription
             </h2>
             <div class="row">
+
                 <div class="col-md-3">
                     <div class="panel panel-default panel-pricing text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                            Sign Up
+                            </h4>
+                        </div>
+                        <div class="panel-pricing-price"><i class="fa fa-inr" aria-hidden="true">&nbsp;</i><span class="digits">0</span>                        </div>
+                        <div class="panel-body">
+                            <ul class="list-dotted">
+                                <li>1 User Account</li>
+                                <li>No cost</li>
+                                <li>Search Institute Details</li>
+                                <li>To get full power of NextSteps, Register and Subscribe anytime and save your time and effort</li>
+                            </ul>
+                            <a href= "{% url 'signup' %}" class="btn btn-primary btn-sm">Sign Up</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="panel panel-default panel-pricing panel-pricing-highlighted text-center">
                         <div class="panel-heading">
                             <h4 class="panel-title">
                             Registration
@@ -435,7 +468,7 @@
                                 <li>1 User Account</li>
                                 <li>Access to All the Institutes in Database</li>
                                 <li>One Time Fee</li>
-                                <li>With Subscription Access to All NextSteps Features </li>
+                                <li>Access to All NextSteps Features, with Subscription </li>
                             </ul>
                             <a href= "{% url 'signup' %}" class="btn btn-primary btn-sm">Register and Subscribe</a>
                         </div>
@@ -454,14 +487,14 @@
                         <div class="panel-body">
                             <ul class="list-dotted">
                                 <li>Unlimited Access for 1 Year</li>
-                                <li>Access to New Features during the Subscription Period
+                                <li>Access to New Features added during the Subscription Period</li>
                                 <li>Option to renew before completion of 1 year</li>
                                 <br />
                             </ul>
                         </div>
                     </div>
                 </div>
-                
+
             </div>    
             
         </div>
@@ -529,30 +562,6 @@ Usage: data-block-bg-img="IMAGE-URL" to apply a background image clearly via jQu
                   <i class="fa fa-phone fa-fw text-primary"></i>
                 </h4>
  
-<!--                <div class="text-center text-primary"><a type="submit">Send Message</button></div> -->
-<!--                <div class="text-center text-primary"><a href="{% url 'contact_us' %}" class="btn btn-default" role="button">Send Message</a> </div> -->
- 
-<!--                <div class="form">
-                    <div id="sendmessage">Your message has been sent. Thank you!</div>
-                    <div id="errormessage"></div>
-                    <form action="" method="post" role="form" class="contactForm">
-                        <div class="form-group">
-                            <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
-                            <div class="validation"></div>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
-                            <div class="validation"></div>
-                        </div>
-                        <div class="form-group">
-                            <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
-                            <div class="validation"></div>
-                        </div>
-                        <div class="text-center"><button type="submit">Send Message</button></div>
-                    </form>
-                </div> -->
             </div>  
 
             <div class="col-md-3">
@@ -599,8 +608,42 @@ Usage: data-block-bg-img="IMAGE-URL" to apply a background image clearly via jQu
     </div>
   </footer>
 
+
+  <!-- 
+
+    <div class="modal fade" id="help" role="dialog">
+        <div class="modal-dialog">
+                    
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">User Guide</h4>
+                </div>
+                <div class="modal-body">
+                    <p class = "text-center"> Would you like a brief on how to use this website?</p>
+                    <div class="text-center">
+                        <a href="#" class="btn btn-info" role="Yes">Yes </a>                
+                        <a href="#" class="btn btn-info" role="No">No</a>                
+                    </div>
+                    <br />
+                    <br />
+                    <br />
+                    <div class="text-center">
+                        <input id='shoHelpchk' type="checkbox" onclick="setShowHelp(this)">&nbsp;Don't show this message again
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+-->
+    
+
+
   <!-- Required JavaScript Libraries -->
-  <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
+<!--  <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>  -->
+ 
   <script src="{% static 'lib/bootstrap/js/bootstrap.min.js' %}"></script>
   <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
   <script src="{% static 'lib/stellar/stellar.min.js' %}"></script>
@@ -619,10 +662,93 @@ Usage: data-block-bg-img="IMAGE-URL" to apply a background image clearly via jQu
 
   <!-- Scripts required for popper dropdown menu being used on user link, after user is logged in -->
   <!-- <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script> -->
-  <script src="{% static 'js/popper.js' %}"></script> 
- <!-- <script src="{% static 'js/bootstrap.min.js' %}"></script> -->
+<!--  <script src="{% static 'js/popper.js' %}"></script>  -->
 
+    <script>
+        $(document).ready(function(){
 
+            $('[data-toggle="tooltip"]').tooltip();   
+        
+            curr_url = window.location.href;
+            var arr = curr_url.split("/");
+            var is_home = true;
+            if (arr[3] == 0) {
+                is_home = true;
+            } else {
+                is_home = false;
+            }
+            if (curr_url  == "http://192.168.0.108:7000/"){
+                    $('[data-toggle="tooltip"]').tooltip("show");
+            } else {
+                $('[data-toggle="tooltip"]').tooltip();   
+                    $('[data-toggle="tooltip"]').tooltip("hide");
+            }
+        });
+    </script>
+
+    <script>
+        $(window).load(function()
+        {
+            setTimeout(function(){
+            $('[data-toggle="tooltip"]').tooltip("hide");
+            }, 5000);            
+        });
+    </script>
+    
+
+    <script>
+//        $(window).load(function()
+//       {
+        
+//            var shoHelp = getCookie('show_help');
+//            if (shoHelp == 'YES' || shoHelp == '' ) {
+//                $('#help').modal('show');
+//            } else {
+//                $('#help').modal('hide');
+//            } 
+//            if (shoHelp == 'NO') {
+//               $('#help').modal('hide');
+//          } 
+//       });
+    </script>
+        
+    <script>
+        function setShowHelp(ele){
+ 
+            if (ele.checked == false) {
+                var d = new Date();
+                d.setTime(d.getTime() + (365*24*60*60*1000));
+                var expires = "expires="+ d.toUTCString();
+                document.cookie = "show_help=YES" + ";" + expires + ";";
+            }
+            if (ele.checked == true) {
+                var d = new Date();
+                d.setTime(d.getTime() + (365*24*60*60*1000));
+                var expires = "expires="+ d.toUTCString();
+                document.cookie = "show_help=NO" + ";" + expires + ";";
+            }
+        }            
+    </script>
+    
+    <script>
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for(var i = 0; i <ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }    
+    </script>
+    
+    
   <!-- logout after an inactivity of 30 min (30 * 60 *1000) -->
   <script type="text/javascript"> 
     var t; 

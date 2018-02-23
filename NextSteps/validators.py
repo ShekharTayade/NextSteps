@@ -17,3 +17,9 @@ def validate_contact_name(value):
          raise ValidationError(_('Enter a valid name. It may contain only English letters, '
         'numbers, and @/./+/-/_ characters.'))
      
+def validate_image_size(value):
+    limit = 50 * 1024
+    if value.size > limit:
+         raise ValidationError(_('Please upload image with size <= 50KB.'))
+        
+     

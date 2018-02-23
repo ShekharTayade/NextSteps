@@ -48,7 +48,7 @@
                             <tr>                        
                                 <th style="width:35%">Institute</th>
                                 <th style="width:35%">Program</th>
-                                <th style="width:30%">Important Date</th>
+                                <th style="width:30%">Important Dates</th>
                             </tr>
                         </thead>
 
@@ -89,7 +89,7 @@
                                 <td class="align-middle"> 
                                     {% for e in impDatesUserList %}
                                         {% if e.Program__program_code == il.Program__program_code and e.Institute__instt_code == il.Institute__instt_code%} 
-                                            <span ><i class="fa fa-calendar text-primary"></i>&nbsp;{{e.event}} &nbsp;-&nbsp;{{e.date}}</span><br />
+                                            <span ><i class="fa fa-calendar text-primary"></i>&nbsp;{{e.event}} &nbsp;-&nbsp;{{e.event_date}}</span><br />
                                         {% endif %}
                                     {% endfor %}
                                 </td>

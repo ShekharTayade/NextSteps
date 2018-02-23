@@ -2,12 +2,23 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from NextSteps.models import ContactForm, UserAppDetails
-from NextSteps.validators import validate_NextSteps_email, validate_contact_name
+from NextSteps.validators import validate_NextSteps_email, validate_contact_name, validate_image_size
 
 from django.core.validators import validate_slug, MinLengthValidator
 
 from django.contrib.admin.widgets import AdminDateWidget
 from django.forms.fields import DateField
+
+
+from string import Template
+from django.utils.safestring import mark_safe
+from django.forms import ImageField
+
+class PictureWidget(forms.widgets.Widget):
+    def render(self, name, value, attrs=None):
+        html =  Template("""<img src="$link"/>""")
+        return mark_safe(html.substitute(link=value))
+
 
 
 class SignUpForm(UserCreationForm):
@@ -49,18 +60,25 @@ class UserAppDetailsForm(forms.ModelForm):
             attrs={'rows':2, 'placeholder': 'Enter school address'}
         ),
         max_length=3000,
-        help_text='The max length is 3000 characters.')
+        help_text='The max length is 3000 characters.',
+        required=False)
     
     class_12th_school_address = forms.CharField(
         widget=forms.Textarea(
             attrs={'rows':2, 'placeholder': 'Enter school/college address'}
         ),
         max_length=3000,
-        help_text='The max length is 3000 characters.')
+        help_text='The max length is 3000 characters.',
+        required=False)
     
+    candidate_photo = forms.ImageField(
+        validators=[validate_image_size],
+        required=False
+    )
+
     class Meta:
         model = UserAppDetails
-        fields = ['User', 'name', 'date_of_birth', 'gender',
+        fields = ['name', 'date_of_birth', 'gender',
                   'mothers_name', 'mothers_qualification',
                   'mothers_occupation', 'mothers_income', 
                   'fathers_name', 'fathers_qualification',

@@ -50,18 +50,24 @@
             </div>
             <form method='post' enctype='multipart/form-data' id='save' novalidate>
             {% csrf_token %}
-            
-            {% if form.errors%}
-                
-                <div class="alert alert-warning alert-dismissable">
+
+            {% if form.errors %}
+                <!-- Error messaging -->
+                <div id="errors" class="alert alert-warning alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    <strong>Following inputs have issues !</strong> Please browse through all the sections to fix and then save the details.
-                    {%for e in form.errors%}
-                        <li>{{e}}</li>
-                    {% endfor %}  
-                </div>    
-                        
+                    <div class="inner">
+                        <p>There were some errors in the information you entered. Please correct the following:</p>
+                        {{ form.non_field_errors }}
+                        <ul>
+                            {% for field in form %}
+                                {% if field.errors %}<li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <!-- /Error messaging -->
             {% endif %} 
+                    
             <div class="row">
                 <div class="col-xs-2">
                     <div class="left ">
@@ -1229,6 +1235,10 @@
                                 <div class="row">
                                     <div class = "col-sm-6">
                                         <h5>Upload Your Passport Size Photopgraph</h5>
+                                        <p>
+                                        <img src = "{{ object.candidate_photo.url }}">
+                                        </p>
+                                        
                                         <div class="form-group">
                                             {% if form.is_bound %}
                                                 {% if form.candidate_photo.errors %}
@@ -1253,6 +1263,8 @@
                                                 </small>
                                             {% endif %}
                                         </div>
+
+
 
                                         <h5>Upload Your Signature</h5>
                                         <div class="form-group">
@@ -1310,7 +1322,7 @@
                                     </div>
                                 </div>
 
-
+                                
                                 
                                 
                             </div>
@@ -1329,6 +1341,22 @@
 	
         </div>
      </div>
+
+<script>
+    $(document).ready( function(){
+        console.log($().jquery);
+        $( "#id_date_of_birth" ).datepicker({
+                dateFormat: "yy-mm-dd",
+                defaultDate: "-17y",
+                changeMonth: true,
+                changeYear: true,
+                onClose: function( selectedDate ) {
+                    $( "#id_birth_date" ).datepicker( "option", "minDate", selectedDate );
+                    }
+        });
+    });
+
+</script>    
 
 {% endblock features %}
 

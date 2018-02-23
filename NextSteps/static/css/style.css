@@ -2874,6 +2874,8 @@ button.qty-change{
         text-decoration: none;
         font-weight: bold;
     } 
+    
+    
     span.menu{
         padding-left: 17px;
     }
@@ -2883,3 +2885,43 @@ button.qty-change{
         margin-left: 15px;
         width: 190px
     }
+    
+    
+ /*********** Tooltip ****************/
+.userguide + .tooltip > .tooltip-inner {
+    background-color: #ff5821; 
+    color: #FFFFFF; 
+    border: 1px solid #ff5821; 
+    padding: 5px;
+    font-size: 12px;
+}
+  
+/* Tooltip on top */
+.userguide + .tooltip.top > .tooltip-arrow {
+    border-top: 5px solid green;
+}
+/* Tooltip on bottom */
+.userguide + .tooltip.bottom > .tooltip-arrow {
+    border-bottom: 5px solid #ff5821;
+}
+/* Tooltip on left */
+.userguide + .tooltip.left > .tooltip-arrow {
+    border-left: 5px solid red;
+}
+/* Tooltip on right */
+.userguide + .tooltip.right > .tooltip-arrow {
+    border-right: 5px solid #ff5821;
+}
+
+
+.invalid-feedback {
+  color: #ff5821;
+}
+
+
+
+
+/*************Calendar ****************/
+#calendar {
+    margin: 15px auto;
+}
