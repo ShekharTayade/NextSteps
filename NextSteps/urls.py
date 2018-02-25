@@ -84,6 +84,9 @@ urlpatterns = [
 
     url(r'^userAppDetails/$', views.userAppDetailsView, name='user_app_details'),
     url(r'^userAppDetailsConfirm/$', views.userAppDetailsConfirm, name='user_app_confirm'),
+    
+    url(r'^user_guide/$', views.user_guide, name='user_guide'),
+    
 
     
 ]

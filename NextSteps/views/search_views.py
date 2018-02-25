@@ -256,14 +256,10 @@ def getCitiesforStates(request):
 
     stateVals = request.GET.get('stateList', 'Blank').split(",")
     
-    print(stateVals)
-    
     if stateVals == ['']:
         insttList = list(Institute.objects.values('city').distinct().order_by('city'))
     else:
         insttList = list(Institute.objects.filter(state__in=stateVals).values('city').distinct().order_by('city'))
-
-    print(insttList)
 
     return JsonResponse(insttList, safe=False)    
 
@@ -470,11 +466,6 @@ def searchProgram (request):
     programVals = request.POST.get('ProgramValues', '').split(";")
 
 
-    print(countryVals)
-    print(disciplineVals)
-    print(levelVals)
-    print(programVals)
-
     # Set flags to know if user selected country, discipline and level
     if countryVals == ['']:
         countryFlag = False
@@ -512,8 +503,6 @@ def searchProgram (request):
     # Order the Queryset
     insttList = insttList.order_by('Institute__state', 'Institute__city', 'Institute__instt_name')
     insttcount = len(insttList)
-    print("insttcount")
-    print(insttcount)
       
     insttIds = insttList.values('Institute__instt_code')
       
@@ -539,7 +528,6 @@ def seatQuotaFilter(request):
     levelList = Level.objects.all()
     quotaList = InstituteProgramSeats.objects.values("StudentCategory__description").distinct()
 
-    print(quotaList)
  
     return render(request, 'NextSteps/seat_quota_filter.html', {
         'countryList': countryList, 'disciplineList':disciplineList, 

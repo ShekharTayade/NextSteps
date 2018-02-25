@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>NextSteps - As you search for the best engineering college for you, save your time and effort with NextSteps. It has features such as get details of engineering colleges in India, shortlist, track important dates, assess probability of a seat in 
+    <title>NextSteps - As you search for the best engineering college, save your time and effort with 'NextSteps'. It has features such as get details of engineering colleges in India, shortlist, track important dates, assess probability of a seat in 
     IITs, NITs, all-in-one-place report, calendar for tracking he application process, know college opening/closing JEE ranks and much more. 
     </title>
     <meta name="keywords" content="search engineering colleges, engineering colleges, engineering college admission, engineering college application, engineering collges in India, engineering institutes, JEE seat probability,IIT, JEE, NIT, " />
@@ -131,6 +131,7 @@
                         Your Digital Assistant!!
                         <br /> NextSteps to Bright Future!! 
                     </div>
+                    <a href="{% url 'user_guide' %} " class = "userguide pull-right" data-toggle="tooltip" title="User Guide" data-placement="right"><i class="fa fa-question-circle fa-lg"></i></a>
                 </div>
                 <div class="col-md-3">
 
@@ -138,7 +139,6 @@
                 <!--header rightside-->
                 <div class="col-md-3">
                 
-                    <a href="{% url 'index' %} " class = "userguide pull-left" data-toggle="tooltip" title="User Guide" data-placement="bottom"><i class="fa fa-info-circle"></i></a>
 
                     <!--user menu-->
                     <ul class="list-inline user-menu pull-right">
@@ -598,7 +598,7 @@ Usage: data-block-bg-img="IMAGE-URL" to apply a background image clearly via jQu
           <ul class="list-inline pull-right">
             <li><a href="#">Terms</a></li>
             <li><a href="#">Privacy</a></li>
-            <li><a href="#">Contact Us</a></li>
+            <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
           </ul>
         </div>
       </div>
@@ -607,9 +607,6 @@ Usage: data-block-bg-img="IMAGE-URL" to apply a background image clearly via jQu
 
     </div>
   </footer>
-
-
-  <!-- 
 
     <div class="modal fade" id="help" role="dialog">
         <div class="modal-dialog">
@@ -622,8 +619,7 @@ Usage: data-block-bg-img="IMAGE-URL" to apply a background image clearly via jQu
                 <div class="modal-body">
                     <p class = "text-center"> Would you like a brief on how to use this website?</p>
                     <div class="text-center">
-                        <a href="#" class="btn btn-info" role="Yes">Yes </a>                
-                        <a href="#" class="btn btn-info" role="No">No</a>                
+                        <a href="{% url 'user_guide' %}" class="btn btn-info" role="Yes">Yes </a>                
                     </div>
                     <br />
                     <br />
@@ -665,26 +661,26 @@ Usage: data-block-bg-img="IMAGE-URL" to apply a background image clearly via jQu
 <!--  <script src="{% static 'js/popper.js' %}"></script>  -->
 
     <script>
-        $(document).ready(function(){
+//        $(document).ready(function(){
 
-            $('[data-toggle="tooltip"]').tooltip();   
+//            $('[data-toggle="tooltip"]').tooltip();   
         
-            curr_url = window.location.href;
-            var arr = curr_url.split("/");
-            var is_home = true;
-            if (arr[3] == 0) {
-                is_home = true;
-            } else {
-                is_home = false;
-            }
+//            curr_url = window.location.href;
+//            var arr = curr_url.split("/");
+//            var is_home = true;
+//            if (arr[3] == 0) {
+//                is_home = true;
+//            } else {
+//                is_home = false;
+//            }
             
-            if (is_home){
-                    $('[data-toggle="tooltip"]').tooltip("show");
-            } else {
-                $('[data-toggle="tooltip"]').tooltip();   
-                    $('[data-toggle="tooltip"]').tooltip("hide");
-            }
-        });
+//            if (is_home){
+//                    $('[data-toggle="tooltip"]').tooltip("show");
+//            } else {
+//                $('[data-toggle="tooltip"]').tooltip();   
+//                    $('[data-toggle="tooltip"]').tooltip("hide");
+//            }
+//        });
     </script>
 
     <script>
@@ -698,19 +694,31 @@ Usage: data-block-bg-img="IMAGE-URL" to apply a background image clearly via jQu
     
 
     <script>
-//        $(window).load(function()
-//       {
+        $(window).load(function()
+        {
         
-//            var shoHelp = getCookie('show_help');
-//            if (shoHelp == 'YES' || shoHelp == '' ) {
-//                $('#help').modal('show');
-//            } else {
-//                $('#help').modal('hide');
-//            } 
-//            if (shoHelp == 'NO') {
-//               $('#help').modal('hide');
-//          } 
-//       });
+            var shoHelp = getCookie('show_help');
+
+            curr_url = window.location.href;
+            var arr = curr_url.split("/");
+            var is_home = true;
+            if (arr[3] == 0) {
+                is_home = true;
+            } else {
+                is_home = false;
+            }
+
+            if (is_home) { 
+                if (shoHelp == 'YES' || shoHelp == '' ) {
+                    $('#help').modal('show');
+                } else {
+                    $('#help').modal('hide');
+                } 
+                if (shoHelp == 'NO') {
+                   $('#help').modal('hide');
+                } 
+            }
+        });
     </script>
         
     <script>

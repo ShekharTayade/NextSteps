@@ -49,7 +49,6 @@ def isSubsActive(request):
         
         useracct = UserAccount.objects.filter(User = userObj).order_by('subscription_end_date')
         for ua in useracct:
-            print(ua.subscription_start_date)
             if ua.subscription_end_date > timezone.now():
                 ret=True
                 break

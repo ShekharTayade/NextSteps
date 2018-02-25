@@ -339,3 +339,9 @@ def getPromoDetails(request):
     promoDetails = [{'discount_percent':discount_percent,'err_msg':err_msg}]
     
     return JsonResponse(promoDetails, safe=False)    
+
+
+def user_guide(request):
+    
+        return render(request, 'NextSteps/user_guide.html')
+    
