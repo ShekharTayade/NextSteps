@@ -51,7 +51,77 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'widget_tweaks',
+    'social_django',
+    
+    # Added for 'allauth'
+    ## 'django.contrib.auth',  -- This is already included
+    'django.contrib.sites',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',    
+
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.instagram',
+    'allauth.socialaccount.providers.linkedin',
+    'allauth.socialaccount.providers.linkedin_oauth2',
+    'allauth.socialaccount.providers.twitter',
+    
 ]
+
+SITE_ID = 2
+
+ACCOUNT_EMAIL_REQUIRED=True
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 3
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_UNIQUE_EMAIL = True
+
+#ACCOUNT_SIGNUP_FORM_CLASS = 'NextSteps.forms.SignUpForm'
+
+SOCIALACCOUNT_EMAIL_REQUIRED = ACCOUNT_EMAIL_REQUIRED
+#SOCIALACCOUNT_AUTO_SIGNUP = False
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'METHOD': 'js_sdk',
+        'SCOPE': ['email', 'public_profile', 'user_friends'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'INIT_PARAMS': {'cookie': True},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',
+            'verified',
+            'locale',
+            'timezone',
+            'link',
+            'gender',
+            'updated_time',
+        ],
+        'EXCHANGE_TOKEN': True,
+        #'LOCALE_FUNC': 'path.to.callable',
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v2.8',
+    },
+    
+    
+ 'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+        
+}
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -61,6 +131,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'ProjectNextSteps.urls'
@@ -73,10 +144,12 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',
+                'django.template.context_processors.request',                
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',                
             ],
         },
     },
@@ -120,6 +193,18 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Authentication Backends added for social media
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.facebook.FacebookOAuth2',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -147,11 +232,21 @@ STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
 LOGOUT_REDIRECT_URL = 'index'
 
-LOGIN_REDIRECT_URL = 'index'
+LOGOUT_URL = 'logout'
+
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
+LOGIN_REDIRECT_URL = 'checkSubscription'
 
 LOGIN_URL = 'login'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+# Cookie expiry in 2 weeks
+SESSION_COOKIE_AGE = 1209600
+
+
+
+SOCIAL_AUTH_FACEBOOK_KEY = '422941031462052'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = 'd3a4babaafb10e5e352b018d419921e3'  # App Secret
 
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -164,7 +259,6 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
 
 DEFAULT_FROM_EMAIL = 'NextSteps <info@NextSteps.co.in>'
 EMAIL_SUBJECT_PREFIX = '[NextSteps] '
-
 
 
 MEDIA_URL = '/media/'

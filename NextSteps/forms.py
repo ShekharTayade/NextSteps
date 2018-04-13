@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from NextSteps.models import ContactForm, UserAppDetails
+from NextSteps.models import ContactForm, UserAppDetails, UserProfile, ReferNextSteps
 from NextSteps.validators import validate_NextSteps_email, validate_contact_name, validate_image_size
 
 from django.core.validators import validate_slug, MinLengthValidator
@@ -19,13 +19,62 @@ class PictureWidget(forms.widgets.Widget):
         html =  Template("""<img src="$link"/>""")
         return mark_safe(html.substitute(link=value))
 
-
-
 class SignUpForm(UserCreationForm):
     email = forms.CharField(max_length=254, required=True, widget=forms.EmailInput())
     class Meta:
         model = User
-        fields = ('username', 'email', 'password1', 'password2')
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 
+                 'password2')
+    #, 'date_of_brith', 'address','city','state',
+    #             'education')
+        
+    # This method is required for 'allauth'
+    '''
+    def signup(self, request, user):
+        
+        import pdb
+        pdb.set_trace()
+        
+        
+       # Save user
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        user.save()
+
+        import pdb
+        pdb.set_trace()
+
+        # Save user profile data
+        userprofile, created = models.UserProfile.objects.get_or_create(user=user)
+        user.userprofile.date_of_birth = self.cleaned_data['date_of_birth']
+        user.userprofile.address= self.cleaned_data['address']
+        user.userprofile.city = self.cleaned_data['city']
+        user.userprofile.state = self.cleaned_data['state']
+        user.userprofile.phone_number = self.cleaned_data['phone_number']
+        user.userprofile.education = self.cleaned_data['education']
+        
+        user.userprofile.save()        
+    '''
+        
+class UserProfileForm(forms.ModelForm):
+    address = forms.CharField(
+        widget=forms.Textarea(
+            attrs={'rows':2, 'placeholder': 'Enter address'}
+        ),
+        max_length=2000,
+        help_text='The max length is 3000 characters.',
+        required=False)
+
+    education = forms.CharField( widget=forms.TextInput(
+        attrs={'placeholder': 'Please enter the currently pursuing (ex. X, XI, XII, B.E. etc.)'}
+        ),
+        required=False
+    )
+
+    
+    class Meta:
+        model = UserProfile
+        fields = ('date_of_birth', 'gender', 'address', 'city', 'state', 'phone_number', 'education')
 
 class ContactUsForm(forms.ModelForm):
 
@@ -97,4 +146,35 @@ class UserAppDetailsForm(forms.ModelForm):
                   'guardians_income', 'candidate_photo', 'candidate_signature',
                   'parent_signature'
                   ]
+
+
+class ReferNextStepsForm(forms.ModelForm):
+
+    name = forms.CharField( widget=forms.TextInput(
+        attrs={'placeholder': 'Please enter the name of your friend'}
+        )
+    )
+
+    email_id = forms.EmailField(widget=forms.EmailInput(
+        attrs={'placeholder':"Please enter your friend's email id"}), 
+        required=False)
+    
+
+    phone_number = forms.CharField(widget=forms.TextInput(
+        attrs={'placeholder':"Please enter your friend's 10 digit mobile number"}
+        ), required=False)
+
+    message = forms.CharField(
+        widget=forms.TextInput(
+            attrs={'placeholder': 'Write a line for your friend'}
+        ),
+        max_length=2000,
+        help_text='The max length is 2000 characters.')
+  
+    class Meta:
+        model = ReferNextSteps
+        fields = ['name', 'email_id', 'phone_number', 'message']
+        
+
+
         

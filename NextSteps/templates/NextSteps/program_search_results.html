@@ -29,7 +29,7 @@
     <div class="showcase block block-border-bottom-grey">
         <div class="container">
     
-            <h3 class="block-title">List of Institutes</h3>
+            <h3 class="block-title">List of Institutes for Selected Programs</h3>
 
 
             <div class="near_by_hotel_wrapper">
@@ -199,6 +199,12 @@
                 $this.find('i').removeClass('glyphicon-plus').addClass('glyphicon-minus');
             }
         });
+        
+        $(document).ready(function () {
+            $('.panel-heading span.clickable').click();
+            $('.panel div.clickable').click();
+        });        
+     
 
     </script>
 

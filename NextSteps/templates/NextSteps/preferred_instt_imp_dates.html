@@ -46,9 +46,9 @@
 
                         <thead>
                             <tr>                        
-                                <th style="width:35%">Institute</th>
-                                <th style="width:35%">Program</th>
-                                <th style="width:30%">Important Dates</th>
+                                <th style="width:30%">Institute</th>
+                                <th style="width:25%">Program</th>
+                                <th style="width:45%">Important Dates</th>
                             </tr>
                         </thead>
 
@@ -89,14 +89,25 @@
                                 <td class="align-middle"> 
                                     {% for e in impDatesUserList %}
                                         {% if e.Program__program_code == il.Program__program_code and e.Institute__instt_code == il.Institute__instt_code%} 
-                                            <span ><i class="fa fa-calendar text-primary"></i>&nbsp;{{e.event}} &nbsp;-&nbsp;{{e.event_date}}</span><br />
+                                            <span ><i class="fa fa-calendar text-primary"></i>&nbsp;{{e.event}} &nbsp;-&nbsp;{{e.event_date}}
+                                            {% if e.end_date %}
+                                                &nbsp;to&nbsp;{{e.end_date}}</span><br />
+                                            {% else %}
+                                                </span><br />
+                                            {% endif %}
                                         {% endif %}
                                     {% endfor %}
                                 </td>
                             </tr>
                             {% endfor %}
                         </tbody>
-                    </table>                   
+                    </table>         
+                    
+                    <h6 class="text-primary">* Disclaimer: Displays the important dates as availale from the respective institutes.
+                    This data may not be available for some institutes. <br />
+                    It may not be accurate as it is likely to change from time-to-time. Every effort is made to keep it current.</h6>
+
+                              
                 </div>
             </div>
 

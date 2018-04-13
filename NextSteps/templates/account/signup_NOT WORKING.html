@@ -1,0 +1,160 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps.html' %}
+
+
+{% block right_side_header %}
+{% endblock right_side_header %}
+
+{% block menu %}
+{% endblock menu %}
+
+
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+    <div id="highlighted-slider" class="container">
+
+		<!-- You content for the slide-show page here -->
+
+    </div>
+
+{% endblock slide-show %}
+
+<!-- Override features block -->
+{% block features %}
+    <div class="showcase block block-border-bottom-grey">
+        <div class="container">
+	
+
+            <form method="post" novalidate>
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                            Sign Up
+                            </h3>
+                        </div>
+                        <div class="well">
+                        If you have a social media account, you can directly login using that account. 
+                        Please go to "Login" page if you want use your social media account instead 
+                        of creating new one with NextSteps.
+                        </div>
+                        <div class="panel-body">
+
+                                {% include 'includes/form.html' %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-sm-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                            Profile
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+ 
+                            <fieldset>
+
+                                <div class="form-group has-float-label">
+                                    <div class="input-group input-group-lg">
+                                        <span class="input-group-addon"><i class="fa fa-user-circle-o "></i></span>
+                                        <input id = "id_date_of_birth"  name = "date_of_birth" type="text" class="form-control" placeholder="Date of Brith">
+                                    </div>
+                                </div>
+
+                                <div class="form-group has-float-label">
+                                    <div class="input-group input-group-lg">
+                                        <span class="input-group-addon"><i class="fa fa-user-circle-o "></i></span>
+                                        <input name = "address" type="text" class="form-control" placeholder="Address">
+                                    </div>
+                                </div>
+ 
+                                <div class="form-group has-float-label">
+                                    <div class="input-group input-group-lg">
+                                        <span class="input-group-addon"><i class="fa fa-user-circle-o "></i></span>
+                                        <input name = "city" type="text" class="form-control" placeholder="City">
+                                    </div>
+                                </div>
+                                <div class="form-group has-float-label">
+                                    <div class="input-group input-group-lg">
+                                        <span class="input-group-addon"><i class="fa fa-user-circle-o "></i></span>
+                                        <input name = "state" type="text" class="form-control" placeholder="State">
+                                    </div>
+                                </div>
+                                <div class="form-group has-float-label">
+                                    <div class="input-group input-group-lg">
+                                        <span class="input-group-addon"><i class="fa fa-user-circle-o "></i></span>
+                                        <input name = "phone_number" type="text" class="form-control" placeholder="Phone Number">
+                                    </div>
+                                </div>
+                                <div class="form-group has-float-label">
+                                    <div class="input-group input-group-lg">
+                                        <span class="input-group-addon"><i class="fa fa-user-circle-o "></i></span>
+                                        <input name = "Eduction" type="text" class="form-control" placeholder="Eduction (Ex. Class X, XI, XII etc.)">
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>                    
+            <button type="submit" class="btn btn-primary">Sign Me Up</button>
+            </form>        
+
+
+
+        </div>
+     </div>
+
+<script>
+    $(document).ready( function(){
+
+        $( "#id_date_of_birth" ).datepicker({
+                dateFormat: "yy-mm-dd",
+                defaultDate: "-17y",
+                changeMonth: true,
+                changeYear: true,
+                onClose: function( selectedDate ) {
+                    $( "#id_birth_date" ).datepicker( "option", "minDate", selectedDate );
+                    }
+        });
+    });
+
+</script>    
+
+
+{% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->
+

@@ -50,24 +50,24 @@
                             <ul>
                                 <li>Preferences</li>
                                     <ul>
-                                        <li>Set your Programs/Institutes <a href="{url %'prefs' %}">preferences</a>, <a href= "#">notification settings</a> and <a href= "#">record your application details</a></li>
+                                        <li>Set your Programs/Institutes <a href="{% url 'prefs' %}">preferences</a>, and <a href= "{% url 'user_app_details' %}">record your application details</a></li>
                                     </ul>
                                 <li>Your Space</li>
                                     <ul>
                                         <li>Preferecnes Based</li>
                                             <ul>
-                                                <li> For your preferred institutes get <a href="{% url 'preferred_Instt_Details' %}">details of programs & seats</a>, <a href="{% url 'preferred_Instt_ImpDates' %}">important dates</a>, ways to get admission, <a href= "{% url 'preferred_Instt_Entrance' %}">entrance exam</a> details, and get a <a href= "#">consolidated report</a> and a <a href= "#">calendar</a>.</li> 
+                                                <li> For your preferred institutes get <a href="{% url 'preferred_Instt_Details' %}">details of programs & seats</a>, <a href="{% url 'preferred_Instt_ImpDates' %}">important dates</a>, ways to get admission, <a href= "{% url 'preferred_Instt_Entrance' %}">entrance exam</a> details, and get a <a href= "{% url 'preferred_Instt_cons_report' %}">consolidated report</a> and a <a href= "{% url 'calendar' %}">calendar</a>.</li> 
                                             </ul>
                                         <li>JEE related details</li>
                                             <ul>
-                                                <li>As you get your JEE rank, know the <a href= "#">best preferences</a> to be used for seat allocation</li>
-                                                <li>Based on your anticiapted JEE rank range, know <a href= "#">chances</a> of getting a seat in your preferred institutes and programs</li>
+                                                <li>Based on your anticiapted JEE rank range, know <a href= "{% url 'if_then_analysis' %}">chances</a> of getting a seat in your preferred institutes and programs</li>
+                                                <li>Search for the <a href= "{% url 'JEE_prog_instt_rank_filter' %}">JEE opening, closing ranks</a> for various institutes and programs</li>
                                             </ul>
                                     </ul>
                             </ul>            
                         </div>
                         <div  class="alert alert-success">
-                            Click <a href="#" class="alert-link"> here</a> to understand these features in details!
+                            Click <a href="{% url 'user_guide' %}" class="alert-link"> here</a> to understand these features in details!
                             <span style="float: right"><a href="{% url 'index' %} "><i class="fa fa-home">Home</i></a></span>
                         </div>
                                     

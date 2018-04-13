@@ -17,9 +17,9 @@ from NextSteps.models import Institute, InstituteType, InstituteSurveyRanking
 from NextSteps.models import Country, Discipline, Level, Program, InstitutePrograms
 from NextSteps.models import CountryUserPref, DisciplineUserPref, LevelUserPref
 from NextSteps.models import ProgramUserPref, InsttUserPref, InstituteProgramSeats
-from NextSteps.models import InstituteProgramEntrance, InstituteProgramImpDates
+from NextSteps.models import InstituteEntranceExam, InstituteProgramImpDates
 from NextSteps.models import StudentCategory, StudentCategoryUserPref, InstituteAdmRoutes
-from NextSteps.models import UserAppDetails
+from NextSteps.models import UserAppDetails, UserProfile
 
 from .common_views import *
 from .pdf_views import *
@@ -81,6 +81,16 @@ def userPrefConfirm(request):
     disciplineVals = ["Engineering"]
     levelVals = ["Undergraduation"]
     ############################################################################
+
+    print(countryVals)
+    print(disciplineVals)
+    print(levelVals)
+    print(programVals)
+    print(insttVals)
+    print(stuCatVals)
+
+
+
             
     # Get the user object for the logged user
     usr = get_object_or_404(User, username=request.user)
@@ -102,6 +112,7 @@ def userPrefConfirm(request):
     
     msg = ''
     pass_fail = 'FAIL'
+
     
     try:
     
@@ -157,9 +168,10 @@ def userPrefConfirm(request):
                                         if i.instt_code == ip.Institute_id:
                                             p = get_object_or_404(Program, program_code = ip.Program_id)
                                             insttPref = InsttUserPref(Country = c, Discipline = d, Level = l, Program = p, Institute = i, User=usr)
+                                            insttPref.save()
                                 else:
                                     insttPref = InsttUserPref(Country = c, Discipline = d, Level = l, Institute = i, User=usr)
-                                insttPref.save()
+                                    insttPref.save()
                                     
                     else: 
                         for i in instt:
@@ -168,9 +180,10 @@ def userPrefConfirm(request):
                                     if i.instt_code == ip.Institute_id:
                                         p = get_object_or_404(Program, program_code = ip.Program_id)
                                         insttPref = InsttUserPref(Country = c, Discipline = d, Level = null, Program = p, Institute = i, User=usr)
+                                        insttPref.save()
                             else:
                                 insttPref = InsttUserPref(Country = c, Discipline = d, Level = l, Institute = i, User=usr)
-                            insttPref.save()
+                                insttPref.save()
                         
     
         #Set default as status PASS and the success message
@@ -237,6 +250,7 @@ def getPrograms(request):
 
     # Get all records first
     progList = InstitutePrograms.objects.values('Program__description').distinct().order_by('Program__description')
+
 
     if countryVals != 'Blank' :
         cnt = Country.objects.filter(country_name__in=countryVals)
@@ -353,8 +367,8 @@ def preferredInsttEntrance(request):
     insttList = Institute.objects.filter(instt_name__in = insttNames).values('instt_code')
 
     # Get the entrance exams Details
-    entranceUserList = InstituteProgramEntrance.objects.filter(Institute_id__in = insttList).values(
-        'Institute__instt_code', 'Program__program_code', 'EntranceExam__entrance_exam_code', 'EntranceExam__description')
+    entranceUserList = InstituteEntranceExam.objects.filter(Institute_id__in = insttList).values(
+        'Institute__instt_code', 'EntranceExam__entrance_exam_code', 'EntranceExam__description')
     
     return render(request, 'NextSteps/preferred_instt_entrance.html', 
             {'insttUserList':insttUserList, 'entranceUserList':entranceUserList})
@@ -383,10 +397,24 @@ def preferredInsttImpDates(request):
 
     # Get Institute Ids
     insttList = Institute.objects.filter(instt_name__in = insttNames).values('instt_code')
+    
+    #Get Program IDs
+    progIdUser = programUserList.values('Program_id')
+
+
+    print("progIdUser")
+    print(progIdUser)
 
     # Get the imp dates details
-    impDatesUserList = InstituteProgramImpDates.objects.filter(Institute_id__in = insttList).values(
-        'Institute__instt_code', 'Program__program_code', 'event', 'event_date')
+    impDatesUserList = InstituteProgramImpDates.objects.filter(Institute_id__in = insttList, Program_id__in=progIdUser).values(
+        'Institute__instt_code', 'Program__program_code', 'event', 'event_date', 'end_date', 'remarks').order_by('event_date')
+
+    print("insttUserList")
+    print(insttUserList)
+
+
+    print("impDatesUserList")
+    print(impDatesUserList)
     
     return render(request, 'NextSteps/preferred_instt_imp_dates.html', 
             {'insttUserList':insttUserList, 'impDatesUserList':impDatesUserList})
@@ -411,7 +439,7 @@ def preferredInsttAdmRoutes(request):
         'Institute__instt_name','Institute__address_1', 'Institute__address_2',
         'Institute__address_3','Institute__city', 'Institute__state', 'Institute__pin_code',
         'Institute__phone_number','Institute__email_id','Institute__website',
-        'Institute__InstituteType_id', 'Program__program_code').order_by(
+        'Institute__InstituteType_id').order_by(
             'Institute__Country', 'Institute__city', 'Institute__instt_name')
 
     insttNames = insttUserList.values('Institute__instt_name')
@@ -421,7 +449,7 @@ def preferredInsttAdmRoutes(request):
 
     # Get the adm route details
     admRoutesUserList = InstituteAdmRoutes.objects.filter(Institute_id__in = insttList).values(
-        'Institute__instt_code', 'Program__program_code', 'adm_route', 'description')
+        'Institute__instt_code', 'adm_route', 'description')
     
     return render(request, 'NextSteps/preferred_instt_adm_routes.html', 
             {'insttUserList':insttUserList, 'admRoutesUserList':admRoutesUserList})
@@ -664,6 +692,7 @@ def ifThenAnalysisResults(request):
  
 def getUserInsttProgramByType(request):
 
+    
     insttType = request.GET.get('insttType', 'Blank')
     insttOrProg= request.GET.get('insttOrProg', 'Blank')
     
@@ -719,8 +748,9 @@ def getUserInsttProgramByType(request):
     else:
         # Get the overall Programs and then apply filters
         progList = InsttUserPref.objects.exclude(
-            Institute__InstituteType_id = "IIT").values('Program__description')
-            
+                Institute__InstituteType_id = "IIT").filter(
+                Institute__jee_flag = 'Y').values('Program__description')
+
         if countryList != [''] :
             progList = progList.filter(Country__in=countryList).values('Program__description')
 
@@ -732,11 +762,11 @@ def getUserInsttProgramByType(request):
 
         progList = progList.distinct().order_by('Program__description') 
 
-    
         # Get the overall Institutes and then apply filters
         insttList = InsttUserPref.objects.exclude(
-            Institute__InstituteType_id = "IIT").values('Institute__instt_name')
-            
+                Institute__InstituteType_id = "IIT").filter(
+                Institute__jee_flag = 'Y').values('Institute__instt_name')
+
         if countryList.exists() :
             insttList = insttList.filter(Country__in=countryList).values(
                 'Institute__instt_name').distinct()
@@ -750,7 +780,7 @@ def getUserInsttProgramByType(request):
 
         insttList = insttList.distinct().order_by('Institute__instt_name') 
     
-    
+
     
     if insttOrProg == "INSTT":
         return JsonResponse(list(insttList), safe=False)     
@@ -762,8 +792,8 @@ def getInsttProgramByType(request):
 
     insttType = request.GET.get('insttType', 'Blank')
     insttOrProg= request.GET.get('insttOrProg', 'Blank')
-    
-    
+
+
     if insttType == 'IIT':
         
         # Get the overall Programs and then apply filters
@@ -772,17 +802,22 @@ def getInsttProgramByType(request):
 
 
         # Get the overall Institutes and then apply filters
-        insttList = InstitutePrograms.objects.filter(
-            Institute__InstituteType_id = "IIT").values('Institute__instt_name').distinct().order_by('Institute__instt_name')
+        insttList = Institute.objects.filter(
+            InstituteType_id = "IIT").values('instt_name').distinct().order_by('instt_name')
         
     else:
         # Get the overall Programs and then apply filters
         progList = InstitutePrograms.objects.exclude(
-            Institute__InstituteType_id = "IIT").values('Program__description').distinct().order_by('Program__description') 
+            Institute__InstituteType_id = "IIT").filter(
+                Institute__jee_flag = 'Y').values('Program__description').distinct().order_by('Program__description') 
     
         # Get the overall Institutes and then apply filters
-        insttList = InstitutePrograms.objects.exclude(
-            Institute__InstituteType_id = "IIT").values('Institute__instt_name').distinct().order_by('Institute__instt_name') 
+        #insttList = InstitutePrograms.objects.exclude(
+        #    Institute__InstituteType_id = "IIT").values('Institute__instt_name').distinct().order_by('Institute__instt_name') 
+        
+        insttList = Institute.objects.exclude(InstituteType_id = 'IIT').filter(
+                jee_flag = 'Y').values('instt_name')
+
     
     if insttOrProg == "INSTT":
         return JsonResponse(list(insttList), safe=False)     
@@ -910,40 +945,40 @@ def JEE_prog_instt_rank_results(request):
     if rankType == 'MAIN':
         results = InstituteJEERanks.objects.exclude(
             Institute__InstituteType_id = 'IIT').values('Discipline_id', 'Level_id',
-            'Program_id', 'Institute__instt_name', 'Institute_id', 'Institute__state', 'opening_rank', 
-            'closing_rank', 'quota','StudentCategory_id').order_by('Program_id', 'closing_rank')
+            'Program_id', 'year', 'Institute__instt_name', 'Institute_id', 'Institute__state', 'opening_rank', 
+            'closing_rank', 'quota','StudentCategory_id').order_by('Program_id', 'StudentCategory_id', 'year', 'Institute_id', 'closing_rank')
     
     if rankType == 'ADV':
         results = InstituteJEERanks.objects.filter( 
             Institute__InstituteType_id = 'IIT').values(
-            'Discipline_id', 'Level_id', 'Program_id', 'Institute_id', 
+            'Discipline_id', 'Level_id', 'Program_id', 'year', 'Institute_id', 
             'Institute__instt_name', 'Institute__state', 'opening_rank', 
-            'closing_rank', 'quota','StudentCategory_id').order_by('Program_id', 'closing_rank')
+            'closing_rank', 'quota','StudentCategory_id').order_by('Program_id', 'StudentCategory_id', 'year', 'Institute_id', 'closing_rank')
 
     if len(progs) > 0 :
-        results = results.filter(Program__description__in=progs ).order_by('Program_id', 'closing_rank')
+        results = results.filter(Program__description__in=progs ).order_by('Program_id', 'StudentCategory_id', 'year', 'Institute_id', 'closing_rank')
 
     if len(instts) > 0 :
-        results = results.filter(Institute__instt_name__in=instts).order_by('Program_id', 'closing_rank')
+        results = results.filter(Institute__instt_name__in=instts).order_by('Program_id', 'StudentCategory_id', 'year', 'Institute_id', 'closing_rank')
 
     err = False
 
     # if User preferences are being used, then filter the results for those.    
     if useUserPrefs:
         if disciplineList != ['']:
-            results = results.filter(Discipline_id__in=disciplineList).order_by('Program_id', 'closing_rank')
+            results = results.filter(Discipline_id__in=disciplineList).order_by('Program_id', 'StudentCategory_id', 'year', 'Institute_id', 'closing_rank')
         if levelList != ['']:
-            results = results.filter(Level_id__in=levelList).order_by('Program_id', 'closing_rank')
+            results = results.filter(Level_id__in=levelList).order_by('Program_id', 'StudentCategory_id', 'year', 'Institute_id', 'closing_rank')
 
         if progs != ['']:
-            results = results.filter(Program_id__in=progList).order_by('Program_id', 'closing_rank')
+            results = results.filter(Program_id__in=progList).order_by('Program_id', 'StudentCategory_id', 'year', 'Institute_id', 'closing_rank')
         if instts != ['']:
-            results = results.filter(Institute_id__in=insttList).order_by('Program_id', 'closing_rank')
+            results = results.filter(Institute_id__in=insttList).order_by('Program_id', 'StudentCategory_id', 'year', 'Institute_id', 'closing_rank')
                 
 
     if results == [] :
         err = True
-        results = InstituteJEERanks.objects.filter(Institute__instt_name__in=instts).order_by('Program_id', 'closing_rank')
+        results = InstituteJEERanks.objects.filter(Institute__instt_name__in=instts).order_by('Program_id', 'StudentCategory_id', 'year', 'Institute_id', 'closing_rank')
     
     resultCnt = len(results)
              
@@ -955,10 +990,9 @@ def JEE_prog_instt_rank_results(request):
         
         
         
-        
-        
 @login_required        
 def userAppDetailsView(request):
+    
     if request.method == 'POST':
         try:
             userid = User.objects.get(username = request.user)
@@ -975,11 +1009,29 @@ def userAppDetailsView(request):
     else:
         try:
             userid = User.objects.get(username = request.user)
-            userObj = UserAppDetails.objects.get(User = userid)
+            userObj = UserAppDetails.objects.get(User = userid)                
             form = UserAppDetailsForm(instance=userObj)
             
         except UserAppDetails.DoesNotExist:
-            form = UserAppDetailsForm(initial={'User': request.user})
+            
+            try:
+                userprofile = UserProfile.objects.get(User_id = userid)
+                gender = userprofile.gender
+                state_of_eligibility = userprofile.state
+                address = userprofile.address
+                city_town_village= userprofile.city
+                state = userprofile.state
+                phone_number = userprofile.phone_number
+                email_id = userid.email
+                form = UserAppDetailsForm(initial={'User': request.user, 
+                    'gender':gender, 'state_of_eligibility': state_of_eligibility,
+                    'address':address, 'city_town_village':city_town_village,
+                    'state':state, 'phone_number':phone_number,
+                    'email_id':email_id})
+                
+            except UserProfile.DoesNotExist:
+                form = UserAppDetailsForm(initial={'User': request.user})
+                
     return render(request, 'NextSteps/user_app_details_withWidgetTweaks.html', {
         'form': form    
     })

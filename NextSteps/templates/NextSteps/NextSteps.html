@@ -56,7 +56,7 @@
     <link href="{% static 'lib/owlcarousel/owl.transitions.min.css' %}" rel="stylesheet">
 
     
-    <link href='http://fonts.googleapis.com/css?family=Economica' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Economica' rel='stylesheet' type='text/css'>
     
     <!-- Main Stylesheet File -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
@@ -128,10 +128,13 @@
                         </h1>
                     </a>
                     <div class="navbar-slogan">
-                        Your Digital Assistant!!
+                        Your Online Assistant!!
                         <br /> NextSteps to Bright Future!! 
                     </div>
-                    <a href="{% url 'user_guide' %} " class = "userguide pull-right" data-toggle="tooltip" title="User Guide" data-placement="right"><i class="fa fa-question-circle fa-lg"></i></a>
+
+                    <a href="{% url 'user_guide' %} " class = "userguide pull-right" data-toggle="tooltip" title="User Guide" data-placement="right">
+                        <i class="fa fa-book fa-lg"></i>
+                    </a>
                 </div>
                 <div class="col-md-3">
 
@@ -139,7 +142,7 @@
                 <!--header rightside-->
                 <div class="col-md-3">
                 
-
+                    {% block right_side_header %}
                     <!--user menu-->
                     <ul class="list-inline user-menu pull-right">
                         <li class="user-button"><a class="btn btn-primary btn-hh-trigger" role="button" data-toggle="collapse" data-target=".header-hidden">Open</a></li>
@@ -156,8 +159,10 @@
                                 </a>
 
                                 <ul class="dropdown-menu" style="color:#343331; background:#ff5821;">
-                                    <li><a href="{% url 'user_account' %}">My Account</a></li>
                                     <li><a href="{% url 'logout' %}">Logout</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="{% url 'user_account' %}">My Account</a></li>
+                                    <li><a href="{% url 'user_profile' %}">My Profile</a></li>
                                     <li><a href= "{% url 'password_change' %}">Change Password</a></li>
                                     
                                     {% if REG_MENU == "SHOW_REG_MENU" %}
@@ -177,10 +182,16 @@
                             <li class="user-login"><i class="fa fa-sign-in text-primary"></i> <a href= "{% url 'login' %}">Login</a></li>
                         {% endif %}
                     </ul>
+                    
+                    {% endblock right_side_header %}
+
                 </div>
             </div>
         </div>  
     </div>
+    
+    {% block menu %}
+
     <div class="container">
         <div class="navbar navbar-default">
             <!--mobile collapse menu button-->
@@ -215,9 +226,10 @@
                                     <li><a href="{% url 'instt_cut_off_filter' %}" tabindex="-1" class="menu-item">Cut Off Scores</a></li>
                                 </ul>
                                 <ul class="col-md-6">
-                                    <li class="dropdown-header">Programs...</li>
+                                    <li class="dropdown-header">More...</li>
                                     <li><a href="{% url 'program_filter' %}">Programs </a></li>
                                     <li><a href="{% url 'seat_quota_filter' %}">Seats Categories & Quotas</a></li>
+                                    <li><a href="{% url 'search_entrance_exams' %}">Entrance Exams</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -234,8 +246,8 @@
                         <!-- Dropdown Menu -->
                         <ul class="dropdown-menu" >
                             <li class="dropdown-header"><strong>Set your Preferences</strong></li>
-                            <li><a href="{% url 'prefs' %}" tabindex="-1" class="menu-item">View/Set My Preferences</a></li>
-                            <li><a href="{% url 'user_app_details' %}" tabindex="-1" class="menu-item">My College Application Details</a></li>
+                            <li><a href="{% url 'prefs' %}" tabindex="-1" class="menu-item">View/Set Preferred Institutes</a></li>
+                            <li><a href="{% url 'user_app_details' %}" tabindex="-1" class="menu-item">College Application Details</a></li>
                             <li><a href="#" style="display:none" tabindex="-1" class="menu-item">Notification Settings</a></li>
                         </ul>
                     </li>                    
@@ -257,7 +269,8 @@
                                     <li class="dropdown-header">JEE Menu</li>
                                     <li><a href="{% url 'JEE_prog_instt_rank_filter' %}">Institute, Program Ranks</a></li>
                                     <li><a href="{% url 'if_then_analysis' %}">Seat Probability </a></li>
-                                    <li><a href="#" style="display:none">JEE Preference Suggestions </a></li>
+                                    <li><a href="#">Compare Institute ranks </a></li>
+                                    <li><a href="#">JEE Preference Suggestions </a></li>
                                 </ul>
                             </li>
                             <li class="dropdown-footer">
@@ -273,6 +286,9 @@
               <!--/.navbar-collapse -->
         </div>
     </div>
+    
+    {% endblock menu %}
+    
     <!-- Slide Show -->
     
     <div class="hero" id="highlighted">
@@ -290,9 +306,9 @@
                                     Welcome to <span class="text-primary">NextSteps</span>
                                 </h3>
                                 <h4>
-                                    Search best fit colleges for you, shortlist, order by their ranking, programs. Organize yourself for the application processes, get notifications for important dates. Create your profile to ease applications to various institutes.
+                                    Search best fit colleges, shortlist, find programs, seats, institute ranking. Organize yourself for the application processes, calendar for important dates. Create your profile to ease applications to various institutes.
                                 </h4>
-                                <p>Your perfect buddy to find your next best college, research colleges, anlayze, organize your application process, get notifications and get on the way forward for your bright future.
+                                <p>Your online assistant as you find best college and save your time & effort. Helps you to research colleges, anlayze, organize your application process, get calendar for important dates and get on the way forward for your bright future.
                                 </p>
                                 {% if user.is_authenticated == 'False' %}
                                     <a href="{'signup'" class="btn btn-more btn-lg i-right">Sign Up Now <i class="fa fa-plus"></i></a>
@@ -344,7 +360,7 @@
                     <a href="#" class="overlay-wrapper">
                     <img src="{% static 'img/showcase/research.png' %}" alt="Project 1 image" class="img-responsive underlay">
                     <span class="overlay">
-                        <span class="overlay-content"> <span class="h4">Find/Research Institutes</span> </span>
+                        <span class="overlay-content"> <span class="h4">Get Institute Details</span> </span>
                     </span>
                     </a>
                     <div class="item-details bg-noise">
@@ -358,7 +374,7 @@
                     <a href="#" class="overlay-wrapper">
                         <img src="{% static 'img/showcase/preferences.jpg' %}" alt="Project 2 image" class="img-responsive underlay">
                         <span class="overlay">
-                        <span class="overlay-content"> <span class="h4">Record Your Prefereces</span> </span>
+                        <span class="overlay-content"> <span class="h4">Record Your Preferences</span> </span>
                         </span> 
                     </a>
                     <div class="item-details bg-noise">
@@ -370,14 +386,14 @@
                 </div>
                 <div class="item">
                     <a href="#" class="overlay-wrapper">
-                        <img src="{% static 'img/showcase/organize.jpg' %}" alt="Project 3 image" class="img-responsive underlay">
+                        <img src="{% static 'img/showcase/calendar.png' %}" alt="Project 3 image" class="img-responsive underlay">
                         <span class="overlay">
-                        <span class="overlay-content"> <span class="h4">Organize</span> </span>
+                        <span class="overlay-content"> <span class="h4">Calendar</span> </span>
                         </span>
                     </a>
                     <div class="item-details bg-noise">
                         <h4 class="item-title">
-                            <a href="#">Organize</a>
+                            <a href="#">Calendar</a>
                         </h4>
                         <a href="#" class="btn btn-more"><i class="fa fa-plus"></i>Read more</a>
                     </div>
@@ -449,7 +465,9 @@
                                 <li>Search Institute Details</li>
                                 <li>To get full power of NextSteps, Register and Subscribe anytime and save your time and effort</li>
                             </ul>
-                            <a href= "{% url 'signup' %}" class="btn btn-primary btn-sm">Sign Up</a>
+                            {% if user.is_authenticated == False %}
+                                <a href= "{% url 'signup' %}" class="btn btn-primary btn-sm">Sign Up</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -470,7 +488,9 @@
                                 <li>One Time Fee</li>
                                 <li>Access to All NextSteps Features, with Subscription </li>
                             </ul>
-                            <a href= "{% url 'signup' %}" class="btn btn-primary btn-sm">Register and Subscribe</a>
+                            {% if REG_MENU == "SHOW_REG_MENU" %}
+                                <a href= "{% url 'signup' %}" class="btn btn-primary btn-sm">Register and Subscribe</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -487,8 +507,8 @@
                         <div class="panel-body">
                             <ul class="list-dotted">
                                 <li>Unlimited Access for 1 Year</li>
-                                <li>Access to New Features added during the Subscription Period</li>
-                                <li>Option to renew before completion of 1 year</li>
+                                <li>New Features added during the Subscription Period</li>
+                                <li>Option to renew before expiry</li>
                                 <br />
                             </ul>
                         </div>
@@ -524,7 +544,11 @@ Usage: data-block-bg-img="IMAGE-URL" to apply a background image clearly via jQu
         </h3>
                 
         <p>
-            <a href="{% url 'signup' %}" class="btn btn-more btn-lg i-right">Join them today! <i class="fa fa-angle-right"></i></a>
+            {% if user.is_authenticated == False %}
+                <a href="{% url 'signup' %}" class="btn btn-more btn-lg i-right">Join them today! <i class="fa fa-angle-right"></i></a>
+            {% else %}
+                <a href="{% url 'refer_NextSteps' %}" class="btn btn-more btn-lg i-right">Refer NextSteps to Your Friend! <i class="fa fa-angle-right"></i></a>
+            {% endif %}
         </p>
     </div>
     {% endblock jointhem-blog %}
@@ -609,7 +633,7 @@ Usage: data-block-bg-img="IMAGE-URL" to apply a background image clearly via jQu
   </footer>
 
     <div class="modal fade" id="help" role="dialog">
-        <div class="modal-dialog">
+        <div id="userguidemodal" class="modal-dialog">
                     
             <div class="modal-content">
                 <div class="modal-header">
@@ -633,7 +657,29 @@ Usage: data-block-bg-img="IMAGE-URL" to apply a background image clearly via jQu
         </div>
     </div>
 
--->
+
+
+    <div class="modal fade bd-example-modal-sm" id="promo" role="dialog">
+        <div id="promocode" class="modal-dialog modal-sm">
+                    
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><strong>Promotion</strong></h4>
+                </div>
+                <div class="modal-body">
+                    <p class = "text-center"> An Offer for you....</p>
+                    <br />
+                    <p class = "text-center tex_primary"> Specially for you, a discount of <strong>20%</strong> on Registration. </p>
+                    <p class = "text-center"> Use Promo Code <strong>"MY20OFF"</strong> when you register. </p>
+                    <br />
+                    <p class = "text-center"> This is a limited perod offer for only one month, so please Hurry!! </p>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
     
 
 
@@ -689,6 +735,14 @@ Usage: data-block-bg-img="IMAGE-URL" to apply a background image clearly via jQu
             setTimeout(function(){
             $('[data-toggle="tooltip"]').tooltip("hide");
             }, 5000);            
+
+            setTimeout(function(){
+              $('#promo').modal('hide')
+            }, 20000);            
+
+            setTimeout(function(){
+              $('#help').modal('hide')
+            }, 5000);            
         });
     </script>
     
@@ -718,6 +772,11 @@ Usage: data-block-bg-img="IMAGE-URL" to apply a background image clearly via jQu
                    $('#help').modal('hide');
                 } 
             }
+            
+            {% if REG_MENU == "SHOW_REG_MENU" %}
+                $('#promo').modal('show');
+            {% endif %}
+            
         });
     </script>
         

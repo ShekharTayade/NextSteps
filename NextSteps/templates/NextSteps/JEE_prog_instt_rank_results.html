@@ -108,8 +108,9 @@
             <table id="tabletwo" class="table table-responsive no-border custom_table dataTable no-footer dtr-inline">
                 <thead>
                     <tr>
+                        <th style="width:5%">Year</th>
                         <th style="width:35%">Program</th>
-                        <th style="width:35%">Institute</th>
+                        <th style="width:30%">Institute</th>
                         <th style="width:10%">Opening Rank</th>
                         <th style="width:10%">Closing Rank</th>
                         <th style="width:5%">Quota</th>
@@ -119,6 +120,9 @@
                 <tbody> 
                     <tr>
                         {% for r in results %}
+                            <td>
+                                {{ r.year }}
+                            </td>
                             <td>
                                 {{ r.Program_id }}
                             </td>

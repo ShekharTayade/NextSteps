@@ -35,7 +35,7 @@
     <div class="showcase block block-border-bottom-grey">
         <div class="container">
 
-            <h3 class="block-title">Select the Programs</h3>
+            <h3 class="block-title">Select the Category and Prorgams</h3>
 
             <div class="block">
                 <div class="row" style="margin-left:0px">
@@ -175,9 +175,7 @@
         </div>
     </div>
 
-    <!-- loading Jquery is required for following scripts to run-->
-    {% load static %}
-    <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
+
 
     <!-- Script to dynamically change the Program preferences based on the selected countries, disciplines -->
     <!-- This script makes an AJAX call to the server with the list as parameters and gets the Program list in return -->
@@ -325,6 +323,11 @@
             }
         });
 
+        $(document).ready(function () {
+            $('.panel-heading span.clickable').click();
+            $('.panel div.clickable').click();
+        });
+        
     </script>
 
     

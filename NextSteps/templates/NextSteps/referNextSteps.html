@@ -1,0 +1,102 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps.html' %}
+
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+    <div id="highlighted-slider" class="container">
+    </div>
+
+{% endblock slide-show %}
+
+<!-- Override features block -->
+{% block features %}
+    <div class="showcase block block-border-bottom-grey">
+        <div class="container">
+
+            <h3 class="block-title">
+                Refer NextSteps!
+            </h3>
+        
+
+            <div class="row" id="contact">
+    
+                <div class="col-md-2">
+                
+                    <div>
+                        
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+    
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                    
+                        {% include 'includes/form.html' %}
+                    
+                        <!-- <div class="text-center"><button class="btn-primary btn-sm" type="submit">
+                        Refer<i class="fa fa-angle-right"></i></button></div> -->
+                        <button class='btn btn-more i-right' type='submit' formmethod='post' value='submit'>Refer <i class="fa fa-angle-right"></i></button>
+                        <br />
+                        <br />
+                        <br />
+                    </form>
+                </div>
+                <div class="col-md-1">
+                </div>    
+                <div class="col-md-3">
+                    <br />
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h5 class="panel-title">Contact</h5>
+                            </div>
+                        <div class="panel-body">
+                            <p>Email:</p> 
+                            <p><i class="fa fa-paper-plane" aria-hidden="true"></i>&nbsp;info@NextSteps.co.in</p> 
+                            <p>Phone:</p> 
+                            <p><i class="fa fa-phone" aria-hidden="true"></i>&nbsp;080 - 1234 5678</p>
+                            <p><i class="fa fa-calendar" aria-hidden="true"></i><small>(Monday through Friday, 9 am to 5 pm)</small></p>
+                            <p><i class="fa fa-website" aria-hidden="true"></i><a href="https://www.NextSteps.co.in">NextSteps.co.in</a></p>
+                        </div>
+                    </div>
+                        
+                </div>
+        
+            </div>
+            
+
+        </div>
+     </div>
+
+{% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->
+

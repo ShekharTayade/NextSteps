@@ -158,12 +158,12 @@
                                     {% endif %}
                                     
                                     {% if il.website %}
-                                        <a href = "http://{{ il.website }}"> {{il.website}} </a><br />
+                                        <a href = "{{ il.website }}"> {{il.website}} </a><br />
                                     {% endif %}
         
                                 </td>
                     
-                                <td class="align-middle"> {{il.InstituteType_id}} </td>
+                                <td class="align-middle"> {{il.InstituteType__description}} </td>
                             </tr>
                             {% endfor %}
                             {% endautoescape %}
@@ -198,12 +198,13 @@
             </div>
             </div>  <!-- ends second row -->        
             </div> <!-- Ends row div -->
+            <p class="text-primary"><small >* The Institue rank is displayed as published by NIRF.</small></p>
         </div>
     </div>
     
 
-    {% load static %}
-    <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
+<!--    {% load static %}
+    <script src="{% static 'lib/jquery/jquery.min.js' %}"></script> -->
 
     <!--Script for the panel (Insturctions to get details) -->
     <script>    
@@ -240,7 +241,7 @@
 
     
     <!-- JQuery solution to get all the institute names into the invisible input textbox for the institutes checked by user -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" ></script>
+<!--    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" ></script>  -->
     <script type="text/javascript">
         $(document).ready(function(){
             var Iname = ''

@@ -88,17 +88,18 @@
                                 <td class="align-middle"> {{il.Program__program_code}}&nbsp;-&nbsp; 4 Years</td>
                                 <td class="align-middle"> 
                                 {% for e in entranceUserList %}
-                                    {% if e.Program__program_code == il.Program__program_code and e.Institute__instt_code == il.Institute__instt_code%} 
+                                    {% if e.Institute__instt_code == il.Institute__instt_code%} 
                                         {{e.EntranceExam__entrance_exam_code}} &nbsp;-&nbsp;{{e.EntranceExam__description}}
                                     {% endif %}
-                                {% empty %}
-                                    No data available in Database
                                 {% endfor %}
                                 </td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>                   
+                    <h6 class="text-primary">* Disclaimer: Displays the entrance exams as availale from the respective institutes.
+                    This data may not be available for some institutes. Every effort is made to keep it current.</h6>
+
                 </div>
             </div>
 

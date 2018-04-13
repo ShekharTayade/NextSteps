@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse, Http404
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, get_user
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.models import User
 from django.http import JsonResponse
@@ -21,14 +21,16 @@ from django.template.context_processors import request
 
 from NextSteps.decorators import subscription_active
 
-from NextSteps.forms import SignUpForm, ContactUsForm
+from NextSteps.forms import SignUpForm, UserProfileForm, ContactUsForm, ReferNextStepsForm
 from NextSteps.models import Institute, InstituteType, InstituteSurveyRanking
 from NextSteps.models import Country, Discipline, Level, Program, InstitutePrograms
 from NextSteps.models import CountryUserPref, DisciplineUserPref, LevelUserPref
 from NextSteps.models import ProgramUserPref, InsttUserPref, PromotionCode
-from NextSteps.models import UserAccount
+from NextSteps.models import UserAccount, UserProfile
 
 from .common_views import *
+
+
 
 def index(request):
 
@@ -62,9 +64,24 @@ def index(request):
         else:
             REG_MENU = "NOSHOW_REG_MENU"
             SUBS_MENU = "SHOW_SUBS_MENU"
-            
-    response = render(request, 'NextSteps/NextSteps.html', {'REG_MENU':REG_MENU,
+    
+    au = request.user.is_authenticated
+    if au == False: 
+        response = render(request, 'NextSteps/NextSteps.html', {'REG_MENU':REG_MENU,
                     'SUBS_MENU':SUBS_MENU})
+    else:
+        
+        showReg = request.COOKIES.get('SHOW_REG', '')
+        
+        if showReg == 'YES' or showReg == '':
+            if regPending:
+                response =  render(request, 'NextSteps/checkSubsWithUser.html')
+            else:        
+                response = render(request, 'NextSteps/NextSteps.html', {'REG_MENU':REG_MENU,
+                            'SUBS_MENU':SUBS_MENU})
+        else:
+            response = render(request, 'NextSteps/NextSteps.html', {'REG_MENU':REG_MENU,
+                        'SUBS_MENU':SUBS_MENU})
     return response
 
 
@@ -74,9 +91,10 @@ def NextStepslogin(request):
     
         username = request.POST['username'] 
         password = request.POST['password']
+        email = request.POST['email']
         
-        user = authenticate(request, username=username, password=password)
-        
+        user = authenticate(request, email=email, username=username, password=password)
+       
         if user is not None :
             
             login(request, user)
@@ -91,25 +109,76 @@ def NextStepslogin(request):
             return render(request, 'NextSteps/login.html', {
                 'username' : request.user.username, 'invalid' : 'invalid'})
     else:
-        return render(request, 'NextSteps/login.html')
+        return render(request, 'NextSteps/login_allauth.html')
+
 
 
 def signup(request):
+    
     if request.method == 'POST':
         form = SignUpForm(request.POST)
+        userprofile_form = UserProfileForm(request.POST)
         if form.is_valid():
             user = form.save()
-            auth_login(request, user)
+            auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            userprofile = userprofile_form.save(commit=False)
+            userprofile.User = user
+            userprofile_form.save()
+            
             # After successful sign up redirect to payment page
             return redirect('payment')
     else:
         form = SignUpForm()
-    return render(request, 'NextSteps/signup.html', {'form': form})
+        userprofile_form = UserProfileForm()        
+#    return render(request, 'NextSteps/signup.html', {'form': form, 'userprofile_form': userprofile_form})
+    return render(request, 'NextSteps/SignUpWithProfile.html', {'form': form, 'userprofile_form': userprofile_form})
 
+
+def checkSubscription(request):
+    
+    print("Checking subscription===================================")
+    if isSubsActive:
+        print("TRUE")
+        return redirect('index')
+    else:
+        print("FALSE")
+        return render(request, 'NextSteps/checkSubsWithUser.html')
+        
+
+@login_required
+def userProfile(request):
+    if request.method == 'POST':
+
+        try:
+            userid = User.objects.get(username = request.user)
+            userObj = UserProfile.objects.get(User = userid)
+            form = UserProfileForm(request.POST, instance=userObj)
+        except UserProfile.DoesNotExist:
+            form = UserProfileForm(request.POST)
+            
+        if form.is_valid():
+            userprofile = form.save(commit=False)
+            userprofile.User = request.user
+            userprofile.save()
+            return redirect('userProfile_Confirm')        
+        
+    else:
+        try:
+            userid = User.objects.get(username = request.user)
+            userProfileObj = UserProfile.objects.get(User = userid)
+            form = UserProfileForm(instance=userProfileObj)                    
+        except UserProfile.DoesNotExist:
+            form = UserProfileForm(initial={'User': request.user})
+        
+#    return render(request, 'NextSteps/signup.html', {'form': form, 'userprofile_form': userprofile_form})
+    return render(request, 'NextSteps/userProfile.html', {'form': form})
+    
+    
+def userProfileConfirm(request):
+    return render(request, 'NextSteps/userProfileConfirm.html')
 
 
 @login_required
-#@subscription_active
 def payment (request):
     return render(request, 'NextSteps/payment.html')
 
@@ -344,4 +413,25 @@ def getPromoDetails(request):
 def user_guide(request):
     
         return render(request, 'NextSteps/user_guide.html')
+    
+
+@ login_required
+def referNextSteps(request):
+
+    if request.method == 'POST':
+        form = ReferNextStepsForm(request.POST)
+        if form.is_valid():
+            refer = form.save(commit=False)
+            refer.referred_by = request.user
+            refer.save()            
+            return redirect('referNextSteps_confirm')  
+    else:
+        form = ReferNextStepsForm()
+    return render(request, 'NextSteps/referNextSteps.html', {'form': form})
+
+def referNextSteps_confirm(request):
+    
+    return render(request, 'NextSteps/referNextSteps_confirm.html')
+
+    
     

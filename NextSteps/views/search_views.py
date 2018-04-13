@@ -5,12 +5,13 @@ from django.contrib.auth import login as auth_login
 from NextSteps.forms import SignUpForm
 from datetime import datetime
 from django.http import JsonResponse
+from django.db.models import Max
 
 from NextSteps.models import Institute, InstituteType, InstituteSurveyRanking
 from NextSteps.models import InstitutePrograms, InstituteProgramSeats
 from NextSteps.models import Country, Discipline, Level, Program
 from NextSteps.models import InstituteJEERanks, InstituteCutOffs, InstituteSurveyRanking
-from NextSteps.models import StudentCategory
+from NextSteps.models import StudentCategory, EntranceExam
 
 
 from django.contrib.auth.decorators import login_required
@@ -83,53 +84,40 @@ def SearchInstts(request):
     # Get the list of institutes based on the user selected states, cities and institute types. There can 8 combinations, so 8 cases to handle..
     # Case 1
     if stateFlag and not cityFlag and not typeFlag:
-        insttList = Institute.objects.filter(state__in=stateVals).values()
-        print("case 1")
-        
-        #'instt_id', 'instt_name', 'address_1', 'address_2', 'address_3', 'city', 'pin_code', 'country', 'email_id', 'website', 'InstituteType__description'
+        insttList = Institute.objects.filter(state__in=stateVals).values('instt_code', 'instt_name', 'address_1', 'address_2', 'address_3', 'city', 'state', 'pin_code', 'Country', 'phone_number', 'email_id', 'website', 'InstituteType__description')
         
     # Case 2
     if stateFlag and cityFlag and not typeFlag:
         insttList = Institute.objects.filter(state__in=stateVals).filter(
-            city__in=cityVals).values()
-        print("case 2")
+            city__in=cityVals).values('instt_code', 'instt_name', 'address_1', 'address_2', 'address_3', 'city', 'state', 'pin_code', 'Country', 'phone_number', 'email_id', 'website', 'InstituteType__description')
     
     # Case 3                
     if not stateFlag and cityFlag and not typeFlag:
-        insttList = Institute.objects.filter(city__in=cityVals).values()
-
-        print("case 3")
+        insttList = Institute.objects.filter(city__in=cityVals).values('instt_code', 'instt_name', 'address_1', 'address_2', 'address_3', 'city', 'state', 'pin_code', 'Country', 'phone_number', 'email_id', 'website', 'InstituteType__description')
 
     # Case 4
     if not stateFlag and not cityFlag and not typeFlag:
-        insttList = Institute.objects.values()
-        print("case 4")
+        insttList = Institute.objects.values('instt_code', 'instt_name', 'address_1', 'address_2', 'address_3', 'city', 'state', 'pin_code', 'Country', 'phone_number', 'email_id', 'website', 'InstituteType__description')
 
     # Case 5
     if stateFlag and not cityFlag and typeFlag:
         insttList = Institute.objects.filter(state__in=stateVals).filter(
-            InstituteType_id__in=insttType).values()
-        print("case 5")
+            InstituteType_id__in=insttType).values('instt_code', 'instt_name', 'address_1', 'address_2', 'address_3', 'city', 'state', 'pin_code', 'Country', 'phone_number', 'email_id', 'website', 'InstituteType__description')
 
     # Case 6
     if stateFlag and cityFlag and typeFlag:
         insttList = Institute.objects.filter(state__in=stateVals).filter(
-            city__in=cityVals).filter(InstituteType_id__in=insttType).values()
-
-        print("case 6")
+            city__in=cityVals).filter(InstituteType_id__in=insttType).values('instt_code', 'instt_name', 'address_1', 'address_2', 'address_3', 'city', 'state', 'pin_code', 'Country', 'phone_number', 'email_id', 'website', 'InstituteType__description')
 
     # Case 7
     if not stateFlag and cityFlag and typeFlag:
         insttList = Institute.objects.filter(city__in=cityVals).filter(
-            InstituteType_id__in=insttType).values()
-
-        print("case 7")
+            InstituteType_id__in=insttType).values('instt_code', 'instt_name', 'address_1', 'address_2', 'address_3', 'city', 'state', 'pin_code', 'Country', 'phone_number', 'email_id', 'website', 'InstituteType__description')
 
     # Case 8
     if not stateFlag and not cityFlag and typeFlag:
         insttList = Institute.objects.filter(
-            InstituteType_id__in=insttType).values()
-        print("case 8")
+            InstituteType_id__in=insttType).values('instt_code', 'instt_name', 'address_1', 'address_2', 'address_3', 'city', 'state', 'pin_code', 'Country', 'phone_number', 'email_id', 'website', 'InstituteType__description')
     
     # Order the Queryset
     insttListAll = insttList.order_by('state', 'city', 'instt_name')
@@ -138,11 +126,15 @@ def SearchInstts(request):
       
     # Get the Institute ids to get the respective rankings 
     insttIds = insttList.values('instt_code')
+
+    
+    #Get the latest year from Institute Ranking table
+    rankyear = InstituteSurveyRanking.objects.all().aggregate(Max('year'))
+    surveyyear = rankyear['year__max']
+    #currentYear = str(datetime.now().year)
     
     # get Institute Rankings
-    currentYear = str(datetime.now().year)
-    insttRanking = InstituteSurveyRanking.objects.filter(year=currentYear).filter(Institute_id__in=insttIds).values()
-
+    insttRanking = InstituteSurveyRanking.objects.filter(year=surveyyear).filter(Institute_id__in=insttIds).values()
 
     page = request.GET.get('page', 1)
     paginator = Paginator(insttListAll, 15)
@@ -619,5 +611,25 @@ def searchSeatQuota(request):
         'insttList':insttList,'programVals':programVals, 'seatquotaVals':seatquotaVals,
         'insttcount':insttcount})
 
+
+@login_required
+def searchEntranceExams(request):
+
+    countryList = Country.objects.all()
+    disciplineList = Discipline.objects.all()
+    levelList = Level.objects.all()
+    
+    # Hardcoding the filters on country, discipline and Level.  This needs to be
+    # removed later on and the front end filter needs to be implemented for user.
+    examList = EntranceExam.objects.filter(Country_id = 'India', 
+        Discipline_id = 'ENGG', Level_id = 'Undergrad').order_by('entrance_exam_code')
+
+
+    return render(request, 'NextSteps/entrance_exams.html', {
+        'countryList':countryList,'disciplineList':disciplineList, 
+        'levelList':levelList, 'examList':examList})
+    
+
+    
     
        

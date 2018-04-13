@@ -47,7 +47,6 @@
                         <thead>
                             <tr>                        
                                 <th style="width:35%">Institute</th>
-                                <th style="width:35%">Program</th>
                                 <th style="width:30%">Admission Routes</th>
                             </tr>
                         </thead>
@@ -84,21 +83,25 @@
                                         <a href = "http://{{ il.Institute__website }}"> {{il.Institute__website}} </a>
                                     {% endif %}
         
-                                    </td>
-                                <td class="align-middle"> {{il.Program__program_code}}&nbsp;-&nbsp; 4 Years</td>
+                                </td>
                                 <td class="align-middle"> 
                                 {% for a in admRoutesUserList %}
-                                    {% if a.Program__program_code == il.Program__program_code and a.Institute__instt_code == il.Institute__instt_code%} 
+                                    {% if a.Institute__instt_code == il.Institute__instt_code%} 
                                         {{a.adm_route}} &nbsp;-&nbsp;{{a.description}}
                                     {% endif %}
                                 {% empty %}
-                                    No data available in Database
+                                    - NA -
                                 {% endfor %}
                                 </td>
                             </tr>
                             {% endfor %}
                         </tbody>
-                    </table>                   
+                    </table>           
+                    
+                    <h6 class="text-primary">* Disclaimer: Displays the admission routes availale from the respective institutes.
+                    This data may not be available for some institutes. <br />
+                    It may not be accurately cover all the possible routes. Every effort is made to keep it current.</h6>
+                            
                 </div>
             </div>
 

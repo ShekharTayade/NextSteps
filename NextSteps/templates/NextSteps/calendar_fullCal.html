@@ -40,23 +40,138 @@
             <h3 class="block-title">
                 Calendar of Important Dates
             </h3>
-        
-            <button class="btn" onclick = "removeEve()">Remove Event</button>
-            <button id = "getD" class="btn">Add Events</button>
-            <button class="printBtn hidden-print">Print</button>
+<!--                    <div class="w3-panel w3-light-grey w3-card"> -->
+                        <div class="row">
+                            <div id="lbuttons" class="col-sm-3" >
+                                        <!--Event Operations:<br /> -->
 
+                                        <span class = "text-primary cal" id="addEvent" onclick="$( '#dialog' ).dialog('open')" data-toggle="tooltip" title="Add Your Own Event" data-placement="bottom">
+                                                <i class="fa fa-plus-square fa-2x"></i></span>&nbsp;&nbsp;&nbsp;
+                                        <!-- <button id="addEvent" class="btn-info" onclick="$( '#dialog' ).dialog('open')">Add Your Own</button> -->
+                                        <span class = "text-primary cal" onclick = "removeSelectedEvents()" data-toggle="tooltip" title="Remove Selected Event" data-placement="bottom">
+                                                <i class="fa fa-minus-square fa-2x"></i></span>&nbsp;&nbsp;&nbsp;
+                                        <!-- <button class="btn-primary" onclick = "removeSelectedEvents()">Remove Selected</button> -->
+                                        <span class = "text-primary cal" onclick="removeAllEvents()" data-toggle="tooltip" title="Remove All Events" data-placement="bottom">
+                                                <i class="fa fa-trash fa-2x"></i></span>&nbsp;&nbsp;&nbsp;
+                                        <!-- <button class="btn-primary" onclick="removeAllEvents()">Remove All</button> -->
+                                        <span class = "text-primary cal" onclick="resetCalendar()" data-toggle="tooltip" title="Reset Calendar" data-placement="bottom">
+                                                <i class="fa fa-refresh fa-2x"></i></span>&nbsp;&nbsp;&nbsp;
+                                        <!-- <button class="btn-primary" onclick="resetCalendar()">Reset</button> -->
+                                <!--    </div>
+                                </div> -->
+                            </div>
+                            <div id="cbuttons" class="col-sm-3" >
+                                <!--Save Calendar:<br />-->
+                                <span class = "text-primary cal" data-toggle="tooltip" title="Save Calendar" data-placement="bottom">
+                                        <i class="fa fa-save fa-2x"></i></span>
+                                <!-- <button class="btn-info" onclick="saveEvents()">Save</button> -->
+                            </div>
+                            <div id="empty" class="col-sm-4" >
+                            </div>
+                            <div id="rbuttons" class="col-sm-2" >
+                                <!--<span class = "pull-right">Print:</span><br/>-->
+                                <span class="text-primary cal" data-toggle="tooltip" title="Print Calendar" data-placement="bottom">
+                                        <i class="fa fa-print fa-2x"></i></span>
+                                <a href="{% url 'user_guide' %} " class = "userguide pull-right" data-toggle="tooltip" title="Calendar Guide" data-placement="bottom"><i class="fa fa-question-circle fa-2x"></i></a>
+                                <!-- <button class="printBtn pull-right">Print</button> -->
+                            </div>
+                        </div>
+                       <!-- <small>- To select/unselect an event, click on the event. The 'red' color indicates that it is selected.</small>
+                        <br /><small>- You can drag the border of an event to extend/reduce the dates. You can also click+hold an event and drop to move it to another date.</small>
+                        -->
+                    <!-- </div>  -->
+ 
+        
             <div id = "noEvents" class="text-primary">
             </div>
 
-
-            <div id='calendar'></div>
-    
-        </div>
-        
-        <div id = "insttUserDiv">
+            <div class="w3-panel w3-light-grey w3-card">
+                <div id='calendar'></div>
+            </div>
+            <h6 class="text-primary">* Disclaimer: Clendar displays the important dates as availale from the respective institutes.
+            This data may not be available for some institutes. <br />
+            It may not be accurate as it is likely to change from time-to-time. Every effort is made to keep it current.<br />
+            You can change these dates as per your plan and add or remove the events and save the calendar.</h6>
         </div>
         
      </div>
+
+    <div id="dialog" title="Create Event">
+    
+    
+        <form>
+
+        <div class="form-group">
+            <label for="instt_name">Institute Name:</label>
+            <input type="text" class="form-control" id="instt_name">
+        </div>
+
+        <div class="form-group">
+            <label for="title">Event:</label>
+            <input type="text" class="form-control" id="title" required>
+        </div>
+
+
+        <div class="form-group">
+            <label for="start_Date">Start Date:</label>
+            <input type="date" class="form-control" id="start_date" required>
+        </div>
+
+
+        <div class="form-group">
+            <label for="end_date">End Date:</label>
+            <input type="date" class="form-control" id="end_date">
+        </div>
+        
+        <input type="submit" value = "Create" id = "createE">
+            
+        </form>
+    </div>
+
+
+    <script>
+      $('#createE').on('click', function(e){
+            e.preventDefault();
+
+            if ($("#title").val() == null || $("#title").val() == ''){
+                alert("Event is required!");
+                return;
+            }
+
+            var start_date = $("#start_date").val();
+
+            if (start_date == '') {
+                alert("Start Date is required!");
+                return;
+            }
+            
+            createEve();
+          });
+    </script>
+
+
+    <script>
+        function createEve(){
+        
+            var instt_name = $("#instt_name").val();
+            var title = $("#title").val();
+            var start_date = $("#start_date").val();
+            var end_date = $("#end_date").val();
+            
+            id = Math.random();
+            var eve={id: id, instt_name : instt_name, title: title, start: start_date, end : end_date, remarks : ''};
+            $("#dialog").dialog("close");
+            $('#calendar').fullCalendar('renderEvent', eve, true);
+            
+        }
+    </script>
+    
+    <script>
+
+        $(function() {
+            $( "#dialog" ).dialog({autoOpen: false});
+        });
+    </script>
 
 
 <!-- for FULL CALENDAR --> 
@@ -74,29 +189,23 @@
             selectable : true,
             editable:true,
             defaultDate: today,
-        
-            select: function (startTime, endTime, allDay) {
-                //do something when space selected
-                //Show 'add event' modal
-                $('#createEventModal').modal('show');
-        
-                $('#submitButton').on('click',function(){
-                    var mockEvent = {title: 'myNewEvent!', start:startTime, end:endTime};
-                    $('#calendar').fullCalendar('renderEvent', mockEvent);
-                    $('#submitButton').unbind('click');
-                    $('#createEventModal').modal('hide');
-                });
-            },
+            
+            eventLimit : true, 
+
+            views: {
+                 month: {
+                   eventLimit: 3
+                 }
+             },
             
             eventClick: function(calEvent, jsEvent, view) {
         
-                //alert('Event: ' + calEvent.title);
-                //alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-                //alert('View: ' + view.name);
-        
-                // change the border color just for fun
-                $(this).css('border-color', 'red');
-        
+                if (calEvent.color == 'red'){
+                    calEvent.color = '';
+                } else {
+                    calEvent.color = 'red';
+                }
+                $('#calendar').fullCalendar( 'rerenderEvents' );
             },        
         
         
@@ -104,18 +213,64 @@
                 //alert('a day has been clicked!');
             },        
             
+            
+            eventMouseover: function( calEvent, jsEvent, view ) { 
+                
+                //$("#tip").html(calEvent.instt_name);
+
+                var tooltip = '<div class="tooltiptopicevent" style="width:auto;height:auto;color:#FFFFFF;background:#ff5821;position:absolute;z-index:10001;padding:10px 10px 10px 10px ;  line-height: 200%;">'
+                var txt = '';
+                
+                if (typeof calEvent.instt_name != 'undefined' && calEvent.instt_name != null){
+                    txt = txt +  "<strong>" + calEvent.instt_name + "</strong><br />";
+                }
+
+                if (calEvent.title) {
+                    txt = txt + '<small>' + calEvent.title+ '</small>'; 
+                }                    
+                if (calEvent.remarks) {
+                    txt = txt + '<br /> <small>' + calEvent.remarks + '</small>'; 
+                }
+                
+                tooltip = tooltip + txt;
+
+                $("body").append(tooltip);
+                $(this).mouseover(function (e) {
+                    $(this).css('z-index', 10000);
+                    $('.tooltiptopicevent').fadeIn('500');
+                    $('.tooltiptopicevent').fadeTo('10', 1.9);
+                }).mousemove(function (e) {
+                    $('.tooltiptopicevent').css('top', e.pageY + 10);
+                    $('.tooltiptopicevent').css('left', e.pageX + 20);
+                });
+    
+
+            },
+
+            eventMouseout: function (data, event, view) {
+                $(this).css('z-index', 8);
+    
+                $('.tooltiptopicevent').remove();
+
+            },            
+            
             header: {
                 left: 'today',
                 center: 'prevYear, prev, title, next, nextYear',
                 right: 'month,agendaWeek,agendaDay'
             },
+         
+            // every time the view updates, update the event list
+            //viewRender: function(view, element) {
+            //    var events = $('#calendar').fullCalendar('clientEvents');
+            //    handleViewChange(events);
+            //},
             
             });
-            
-        getInsttsDetails();
+
+            getInsttsDetails();           
+        
         });
-        
-        
     
     </script>    
 
@@ -127,21 +282,80 @@
     </script>
     
 
-
     <script>
-    function removeEve(){
-        //alert("Removing...");
-        $('#calendar').fullCalendar( 'removeEvents', 1 );
+    function removeSelectedEvents(){
+        var events = $('#calendar').fullCalendar('clientEvents');       
+        var selEveFound = false;
+
+        $.each(events, function( index, value ) {
+
+            if (value.color == 'red') {
+                selEveFound = true;
+                var eventID = value.id;
+                $('#calendar').fullCalendar('removeEvents', eventID );
+            }
+        });        
+        if (selEveFound == false){
+            alert("No event is selected!");
+        }
     }
     </script>
- 
+    
+    <script>
+    function removeAllEvents(){
+
+        ans = confirm("Are you sure you want to remove all events from the Calendar?")
+        if (ans) {
+            $('#calendar').fullCalendar('removeEvents' );
+            alert("All events removed! Please click on the save calendar icon if you want to save it.");
+        }
+    }
+    </script>
+        
+    <script>
+    function saveEvents(){
+    
+        var events = $('#calendar').fullCalendar('clientEvents');
+    
+        var json = JSON.stringify($("#calendar").fullCalendar("clientEvents").map(function(e) {
+            return {
+                start: e.start,
+                end: e.end,
+                title: e.title,
+                instt_name: e.instt_name,
+                id: e.id,
+                instt_id : e.instt_id,
+                remarks : e.remarks,
+            };
+        }));
+
+         //$.ajax(
+        //    {
+        //    url: '{% url "save_user_events" %}', 
+        //    data: events, 
+        //    dataType: 'text',
+        //    success: function (data) { alert('Your Calendar is saved!'); }
+        //    }            
+        //);
+        
+            $.ajax({url: '{% url "save_user_events" %}', data: json, dataType: 'text', type: 'POST',
+                success: function (data) {
+                    alert("Your Calendar is saved!"); },
+                error: function(xhr){
+                    alert("An error occured: " + xhr.status + " " + xhr.statusText); }
+        });
+    }
+        
+        
+    </script>
+         
     
     <script>
         function getEvents(){ 
         
             var events = $('#calendar').fullCalendar('clientEvents');
             if (events.length == 0 ){
-                $("#noEvents").html("No events found or you have not set the preferences."); 
+                $("#noEvents").html("No events found or you have not set the preferences. You can create your own events though."); 
             }
         }
             
@@ -162,31 +376,123 @@
                     insttDates = data;
                     $.each(data, function(index, element) {
                         var eve={title: 'New event', start: "2018-01-01"};
-                        eve.id= data[index].id
-                        eve.title = data[index].Institute__abbreviation + "-" + data[index].event;
+                        eve.id= data[index].id;
+                        eve.instt_name = data[index].Institute__instt_name;
+                        eve.instt_id = data[index].Institute_id;
+                        eve.title = data[index].event;
                         eve.start = data[index].event_date;
                         eve.end= data[index].end_date;
+                        eve.remarks= data[index].remarks;
                         $('#calendar').fullCalendar( 'renderEvent', eve, true);
                     });
                 }
             });       
+
             return insttDates;                     
         }
     </script>
     
+
     <script>
-    $("#getD").click(function(){
-        $.getJSON("{% url 'get_user_instts' %}", function(result){
-            $.each(result, function(i, field){
-                var eve={title: 'New event', start: "2018-01-01"};
-                eve.id= result[i].id
-                eve.title = result[i].Institute__abbreviation + "-" + result[i].event;
-                eve.start = result[i].event_date;
-                eve.end= result[i].end_date;
-                $('#calendar').fullCalendar( 'renderEvent', eve, true);
-            });
-        });
-    })    
+        function resetCalendar(){
+        
+            ans = confirm("Are you Sure? Your changes, including your previously saved change, will be lost. Events(dates) will be re-fetched from the NextSteps Database. You can make changes after the re-fetch.");
+        
+            if (ans == false) {
+                return;
+            }
+            var impDates = {};
+            $.ajax({url: '{% url "getInsttImpDates" %}', data: {}, dataType: 'json',
+                success: function (data) {
+                    insttDates = data;
+                    $('#calendar').fullCalendar( 'removeEvents');
+                    $.each(data, function(index, element) {
+                        var eve={title: 'New event', start: "2018-01-01"};
+                        eve.id= data[index].id;
+                        eve.instt_name = data[index].Institute__instt_name;
+                        eve.instt_id = data[index].Institute_id;
+                        eve.title = data[index].event;
+                        eve.start = data[index].event_date;
+                        eve.end= data[index].end_date;
+                        eve.remarks= data[index].remarks;
+                        
+                        $('#calendar').fullCalendar( 'renderEvent', eve, true);
+                    });
+                }
+            });       
+
+            alert("Calendar is updated with events from Database! Make changes as you need and save the Calendar to make it permanent.");
+            return;                     
+        }
+    </script>
+  
+    <script>
+    function addEvent(){
+    
+        var dateStr = prompt('Enter a date in YYYY-MM-DD format');
+        
+        if (dateStr == null){
+            return;
+        }
+
+        var date = moment(dateStr,"YYYY-MM-DD");
+        //var date = new Date(dateStr);
+
+        if (date.isValid() == false) {
+               alert('Date entered is incorrect, please try again');
+           return;
+        }
+        
+
+        var titlestr = prompt('Enter the name of the event');
+        if (titlestr == null){
+            return
+        }
+
+        id = Math.random();
+        var eve={title: 'New event', start: date};
+        eve.id= id;
+        //eve.instt_name = data[index].Institute__instt_name;
+        eve.title = titlestr;
+        eve.start = date;
+        //eve.end= data[index].end_date;
+        //eve.remarks= data[index].remarks;
+        
+        $('#calendar').fullCalendar('renderEvent', eve, true);
+    }
+    
+    
+
+
+    function stringToDate(_date,_format,_delimiter)
+    {
+                var formatLowerCase=_format.toLowerCase();
+                var formatItems=formatLowerCase.split(_delimiter);
+                var dateItems=_date.split(_delimiter);
+                var monthIndex=formatItems.indexOf("mm");
+                var dayIndex=formatItems.indexOf("dd");
+                var yearIndex=formatItems.indexOf("yyyy");
+                var month=parseInt(dateItems[monthIndex]);
+                month-=1;
+                var formatedDate = new Date(dateItems[yearIndex],month,dateItems[dayIndex]);
+                return formatedDate;
+    }    
+    
+    </script>    
+    
+    <script>
+    //$("#getD").click(function(){
+    //    $.getJSON("{% url 'get_user_instts' %}", function(result){
+    //        $.each(result, function(i, field){
+    //            var eve={title: 'New event', start: "2018-01-01"};
+    //            eve.id= result[i].id
+    //            eve.title = result[i].Institute__abbreviation + "-" + result[i].event;
+    //            eve.start = result[i].event_date;
+    //            eve.end= result[i].end_date;
+    //            $('#calendar').fullCalendar( 'renderEvent', eve, true);
+    //        });
+    //    });
+    //})    
     
     </script>
 

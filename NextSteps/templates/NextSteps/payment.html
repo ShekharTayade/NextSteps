@@ -126,7 +126,7 @@
                     <br />
      
                     <button id="paymnt" class="btn btn-primary" type='submit' formmethod='post' value='submit' form = 'paymntForm' onclick="checkTnC()">Proceed to Pay</button>
-                    <span style="float:right"><a href= "{% url 'index' %}" class="btn btn-primary">Register later & Goto Home Page</a></span>
+                    <span style="float:right"><a href= "{% url 'index' %}" class="btn btn-primary" onclick="setRegVal()">Register later & Goto Home Page</a></span>
                     <br />
                     <p id="tnc_errXXX" class="text-primary"></p>
                     <div id="tnc_err" style="display:none;" class="alert alert-danger">
@@ -271,6 +271,14 @@
         }
     </script>
 
+    <script>
+    function setRegVal() {
+        var d = new Date();
+        d.setTime(d.getTime() + (365*24*60*60*1000));
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = "SHOW_REG=YES" + ";" + expires + ";";
+    }
+    </script>
 
 {% endblock features %}
 

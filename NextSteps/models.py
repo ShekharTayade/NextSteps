@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth.validators import ASCIIUsernameValidator
 from django.db.models.fields import DecimalField
 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 # Model name - Country
 # This model will store all the countries that NextSteps will serve (ex. 
 # India, USA, UK, Australia etc.)
@@ -32,8 +35,8 @@ class Level(models.Model):
 # (ex. B.Tech Computer Science, M. Tech Mechanical, B.E. Electrical,
 # B. Tech Electronics and Communication, MBBS, BA LLB, BBA, BBM etc.)  
 class Program(models.Model):
-    program_code = models.CharField(max_length=500, primary_key = True)
-    description = models.CharField(max_length=500, blank = True, default='')
+    program_code = models.CharField(max_length=1000, primary_key = True)
+    description = models.CharField(max_length=1000, blank = True, default='')
     degree = models.CharField(max_length=300, blank = True, default='')
     
     def __str__(self):
@@ -56,7 +59,7 @@ class Discipline(models.Model):
 # This model stores the type of institute (ex. IIT, NIT, GEC, PEC etc.)
 class InstituteType(models.Model):
     instt_type_cd = models.CharField(max_length=8, primary_key=True)
-    description = models.CharField(max_length=100, blank=True, null=True, unique=True)
+    description = models.CharField(max_length=1000, blank=True, null=True, unique=True)
     
     def __str__(self):
         return models.Model.__str__(self)
@@ -66,7 +69,7 @@ class InstituteType(models.Model):
 # This model stores the Seat Quotas    
 class SeatQuota(models.Model):    
     seat_quota_code = models.CharField(max_length=50, primary_key=True)
-    description = models.CharField(max_length=100, blank=True, null=True, unique=True)
+    description = models.CharField(max_length=1000, blank=True, null=True, unique=True)
     
     def __str__(self):
         return models.Model.__str__(self)
@@ -84,18 +87,22 @@ class StudentCategory(models.Model):
 
 # Model - EntranceExam
 # This model stores the Entrance Exam Types        
-class EntranceExam(models.Model):
+class EntranceExam(models.Model):    
+    Country = models.ForeignKey(Country, on_delete = models.PROTECT)
+    Discipline = models.ForeignKey(Discipline, on_delete=models.PROTECT)
+    Level = models.ForeignKey(Level, on_delete=models.PROTECT)
     entrance_exam_code = models.CharField(max_length=50, primary_key=True)
-    description = models.CharField(max_length=200, blank=True, null=True, unique=True)
+    description = models.CharField(max_length=2000, blank=True, default='')
+    exam_level = models.CharField(max_length=50, blank=True, default='')
+    state = models.CharField(max_length=50, blank=True, default='')
     
     def __str__(self):
         return models.Model.__str__(self)
 
-
     
 class Institute(models.Model):
     instt_code = models.AutoField(primary_key=True)
-    instt_name = models.CharField(max_length=300, blank=False, unique=True)
+    instt_name = models.CharField(max_length=500, blank=False, unique=True)
     address_1 = models.CharField(max_length=300, blank=False, null=False)
     address_2 = models.CharField(max_length=300, blank=True, default='')
     address_3 = models.CharField(max_length=300, blank=True, default='')
@@ -110,6 +117,7 @@ class Institute(models.Model):
         blank=True, null=True)
     aicte_id = models.CharField(max_length=20, blank=True, default='')
     abbreviation = models.CharField(max_length=20, blank=True, default='')
+    jee_flag = models.CharField(max_length=1, blank=True, default='')
 
     def __str__(self):
         return models.Model.__str__(self)
@@ -153,7 +161,24 @@ class InstituteProgramEntrance(models.Model):
     def __str__(self):
         return models.Model.__str__(self)
 
+
+# Model - EntranceExamImpDates
+# This model stores the important dates for the Entrance Exams
+class EntranceExamImpDates(models.Model):    
+    id = models.AutoField(primary_key=True)
+    entrance_exam_code = models.CharField(max_length=50)
+    year = models.CharField(max_length=4, blank=False)
+    event = models.CharField(max_length=500, blank=True, default='')
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+    remarks= models.CharField(max_length=2000, blank=True, default='')
     
+    def __str__(self):
+        return self.year    
+
+
+
+
 # Model - InstituteProgramSeats
 # This model stores for each institute and for each discipline, program and 
 # level the seat quote and the seats available at the Institute.
@@ -174,6 +199,8 @@ class InstituteProgramSeats(models.Model):
      
     def __str__(self):
         return models.Model.__str__(self)
+    
+    
 
 class InstituteProgramImpDates(models.Model):
     id = models.AutoField(primary_key=True)
@@ -185,15 +212,49 @@ class InstituteProgramImpDates(models.Model):
     event = models.CharField(max_length=500, blank=True, default='')
     event_date = models.DateField(blank=True, null=True)
     event_order = models.IntegerField(blank=True, null=True)
-    # The date field above is intentionally Char type as it would store, date or a date range
-    # or an approximate date/month etc., basically anything that will help users
-    # know the general idea of what the important dates would be 
     event_duration_days = models.IntegerField(blank=True, null=True)
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     remarks= models.CharField(max_length=2000, blank=True, default='')
     def __str__(self):
         return models.Model.__str__(self)
+
+
+
+# Model - InstituteProgramEntrance
+# This model stores for each institute and for each discipline, program and 
+# level the Entrance exams used by the Institutes
+class InstituteEntranceExam(models.Model):
+    id = models.AutoField(primary_key=True)
+    Institute = models.ForeignKey(Institute, on_delete=models.PROTECT)
+    Country = models.ForeignKey(Country, on_delete = models.PROTECT)
+    Discipline = models.ForeignKey(Discipline, on_delete=models.PROTECT)
+    Level = models.ForeignKey(Level, on_delete=models.PROTECT)
+    EntranceExam = models.ForeignKey(EntranceExam, on_delete=models.SET_NULL, 
+        blank=True, null=True)
+    year = models.CharField(max_length=4, blank=True, default='')
+     
+    def __str__(self):
+        return models.Model.__str__(self)
+
+
+# Model - InstituteImpDates
+# When there is no entrance exam record in the EntranceExamImpDates,  This model stores 
+# for the institute the important dates
+class InstituteImpDates(models.Model):
+    id = models.AutoField(primary_key=True)
+    Institute = models.ForeignKey(Institute, on_delete=models.PROTECT)
+    Country = models.ForeignKey(Country, on_delete = models.PROTECT)
+    Discipline = models.ForeignKey(Discipline, on_delete=models.PROTECT)
+    Level = models.ForeignKey(Level, on_delete=models.PROTECT)
+    event = models.CharField(max_length=500, blank=True, default='')
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+    remarks= models.CharField(max_length=2000, blank=True, default='')
+
+    def __str__(self):
+        return models.Model.__str__(self)    
+
 
 
 # Model - Survey
@@ -259,7 +320,22 @@ class InstituteJEERanks(models.Model):
     def __str__(self):
         return models.Model.__str__(self)
     
+# Model - JEEMAINdates
+# This model stores the important dates for JEE MAIN 
+class JEEMAINdates(models.Model):
+    year = models.CharField(max_length=4, blank=False)
+    event = models.CharField(max_length=500, blank=True, default='')
+    event_date = models.DateField(blank=True, null=True)
+    event_order = models.IntegerField(blank=True, null=True)
+    event_duration_days = models.IntegerField(blank=True, null=True)
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+    remarks= models.CharField(max_length=2000, blank=True, default='')
     
+    def __str__(self):
+        return self.year
+    
+        
 # Model - InstituteCutOffs
 # This model stores for each institute and for each discipline, program, 
 # level, and each quota the cut off for the Institute. This applied where the 
@@ -267,6 +343,7 @@ class InstituteJEERanks(models.Model):
 class InstituteCutOffs(models.Model):
     id = models.AutoField(primary_key=True)
     Institute = models.ForeignKey(Institute, on_delete=models.PROTECT)
+    Country = models.ForeignKey(Country, on_delete = models.PROTECT)
     Discipline = models.ForeignKey(Discipline, on_delete=models.PROTECT)
     Level = models.ForeignKey(Level, on_delete=models.PROTECT)
     Program = models.ForeignKey(Program, on_delete=models.PROTECT)
@@ -286,9 +363,9 @@ class InstituteCutOffs(models.Model):
 class InstituteAdmRoutes(models.Model):
     id = models.AutoField(primary_key=True)
     Institute = models.ForeignKey(Institute, on_delete=models.PROTECT)
+    Country = models.ForeignKey(Country, on_delete = models.PROTECT)
     Discipline = models.ForeignKey(Discipline, on_delete=models.PROTECT)
     Level = models.ForeignKey(Level, on_delete=models.PROTECT)
-    Program = models.ForeignKey(Program, on_delete=models.PROTECT)
     adm_route = models.CharField(max_length=500, blank=False, null=False)    
     description = models.CharField(max_length=5000, blank=True, default='')
     
@@ -309,7 +386,7 @@ class InsttUserPref(models.Model):
     Institute = models.ForeignKey(Institute, on_delete = models.PROTECT)
 
     def __str__(self):
-        return models.Model.__str__(self)
+        return str(self.User)
     
 class StudentCategoryUserPref(models.Model):
     User = models.ForeignKey(User, on_delete = models.CASCADE)
@@ -324,7 +401,7 @@ class ProgramUserPref(models.Model):
     Program = models.ForeignKey(Program, on_delete=models.PROTECT)
 
     def __str__(self):
-        return models.Model.__str__(self)
+        return str(self.User)
 
 class LevelUserPref(models.Model):
     User = models.ForeignKey(User, on_delete = models.CASCADE)
@@ -352,30 +429,30 @@ class CountryUserPref(models.Model):
 # This model stores messages sent by NextSteps users.
 # Also, holds our responses/resolutions.
 class ContactForm(models.Model):
-    name = models.CharField(max_length=200, blank=False, null =False)
+    name = models.CharField(max_length=150, blank=False, null =False)
     email_id = models.EmailField(blank=False, null=False)
     phone_number = models.CharField(max_length=30, blank=True, default='')
     subject = models.CharField(max_length=200, blank=False, null =False)
     message = models.CharField(max_length=4000, blank=False, null =False)
     msg_datetime = models.DateTimeField(null=True, auto_now_add=True, editable=False)
-    response = models.CharField(max_length=1000, blank=True, default='',editable=False)
+    response = models.CharField(max_length=4000, blank=True, default='',editable=False)
     resp_datetime = models.DateTimeField(null=True, editable=False)
     reponded_by = models.CharField(max_length=30, blank=True, default='', editable=False)
     
     def __str__(self):
-        return models.Model.__str__(self)
+        return self.name
 
 
 # Model - PromotionCode
 # This model stores promotion codes for the promotions that NextSteps runs.
 class PromotionCode(models.Model):
-    promotion_code = models.CharField(max_length=200, primary_key=True)
+    promotion_code = models.CharField(max_length=20, primary_key=True)
     start_date = models.DateField(blank=False, null=False)
     end_date = models.DateField()
-    discount_percent = models.DecimalField(max_digits=4, decimal_places=2, blank=False, null=False)
+    discount_percent = models.DecimalField(max_digits=5, decimal_places=2, blank=False, null=False)
     
     def __str__(self):
-        return models.Model.__str__(self)
+        return self.promotion_code
 
 # Model UserAccount
 # Stores the registration, subscription, payment related information.
@@ -394,7 +471,7 @@ class UserAccount (models.Model):
     promotion_sys_msg = models.CharField(max_length=2, blank=True, default='')
 
     def __str__(self):
-        return models.Model.__str__(self)
+        return str(self.User)
 
     
 
@@ -428,7 +505,7 @@ class UserAppDetails(models.Model):
         blank=True, null=True)
     state_of_eligibility = models.CharField(max_length=200, blank=True, default='')
     nationality = models.CharField(max_length=200, blank=True, default='')
-    address = models.CharField(max_length=300, blank=True, default='')
+    address = models.CharField(max_length=2000, blank=True, default='')
     locality = models.CharField(max_length=300, blank=True, default='')
     city_town_village = models.CharField(max_length=300, blank=True, default='')
     district = models.CharField(max_length=300, blank=True, default='')
@@ -457,4 +534,58 @@ class UserAppDetails(models.Model):
     
     def __str__(self):
         return models.Model.__str__(self)
+    
+
+
+class UserProfile(models.Model):
+    GENDER_CHOICES = (
+        ('MALE', 'Male'),
+        ('FEMALE', 'Female'),
+    )
+    
+    User = models.OneToOneField(User, on_delete=models.CASCADE)
+    date_of_birth = models.DateField(null=True, blank=True, default='')
+    gender = models.CharField(
+        max_length=6,
+        choices=GENDER_CHOICES,
+        default='MALE',
+    )
+    address = models.CharField(max_length=2000, blank=True, default='')
+    city = models.CharField(max_length=100, blank=True, default='')
+    state = models.CharField(max_length=100, blank=True, default='')
+    phone_number = models.CharField(max_length=30, blank=True, default='')
+    education = models.CharField(max_length=30, blank=True, default='')
+
+    def __str__(self):
+        return str(self.User)
+    
+    
+class UserCalendar(models.Model):
+    id = models.DecimalField(primary_key=True, max_digits=30, decimal_places=25)
+    User = models.ForeignKey(User, on_delete=models.CASCADE,)
+    Institute = models.ForeignKey(Institute, on_delete=models.PROTECT,blank = True,null=True)
+    Country = models.ForeignKey(Country, on_delete = models.PROTECT,blank = True,null=True)
+    Discipline = models.ForeignKey(Discipline, on_delete=models.PROTECT,blank = True,null=True)
+    Level = models.ForeignKey(Level, on_delete=models.PROTECT,blank = True,null=True)
+    Program = models.ForeignKey(Program, on_delete=models.PROTECT,blank = True,null=True)
+    event = models.CharField(max_length=500, blank=True, default='')
+    event_date = models.DateField(blank=True, null=True)
+    event_order = models.IntegerField(blank=True, null=True)
+    event_duration_days = models.IntegerField(blank=True, null=True)
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+    remarks= models.CharField(max_length=2000, blank=True, default='')
+    
+    def __str__(self):
+        return str(self.User)   
+
+class ReferNextSteps(models.Model):
+    referred_by = models.ForeignKey(User, on_delete=models.CASCADE,)
+    name = models.CharField(max_length=150, blank=False, null=False)
+    email_id = models.EmailField(blank=True, null=True)
+    phone_number = models.CharField(max_length=30, blank=True, null=True)
+    message = models.CharField(max_length=2000, blank=False, null=False)
+
+    def __str__(self):
+        return str(self.User)   
     

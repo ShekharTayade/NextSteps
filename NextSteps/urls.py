@@ -1,14 +1,21 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 
 from . import views
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
 
+from allauth.account.views import LoginView
+
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^login/$', views.NextStepslogin, name='login'),
+    
     url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
+    url(r'^oauth/', include('social_django.urls', namespace='social')),    
+    
+    url(r'^accounts/', include('allauth.urls')),
+    
     url(r'^password/$', auth_views.PasswordChangeView.as_view(template_name='password_change.html'), name='password_change'),    
     url(r'^password/done/$', auth_views.PasswordChangeDoneView.as_view(template_name='password_change_done.html'), name='password_change_done'),
     
@@ -27,8 +34,12 @@ urlpatterns = [
     url(r'^contactus/$', views.contactUs, name='contact_us'),
     url(r'^contactusconfirm/$', views.contactUsConfirm, name='contact_us_confirm'),
 
+    url(r'^register/$', views.checkSubscription, name='checkSubscription'),
+
     
     url(r'^signup/$', views.signup, name='signup'),
+    url(r'^MyProfile/$', views.userProfile, name='user_profile'),
+    url(r'^ProfileSave/$', views.userProfileConfirm, name='userProfile_Confirm'),
     url(r'^payment/$', views.payment, name='payment'),
     url(r'^ajax/GetPromo/$', views.getPromoDetails, name='Get_Promo_Details'),    
     url(r'^subscriptionstart/$', views.subscriptionStart, name='subscription_start'),
@@ -60,7 +71,7 @@ urlpatterns = [
     url(r'^ProgramResults/$', views.searchProgram, name='program_search_results'),
     url(r'^SeatQuotaFilter/$', views.seatQuotaFilter, name='seat_quota_filter'),
     url(r'^SeatQuotaResults/$', views.searchSeatQuota, name='seat_quota_search_results'),
-
+    url(r'^EntranceExams/$', views.searchEntranceExams, name='search_entrance_exams'),
 
     
     url(r'^ajax/GetCities/$', views.getCitiesforStates, name='Get_Cities'),    
@@ -80,14 +91,16 @@ urlpatterns = [
 
     url(r'^calendar/$', views.calendar, name='calendar'),
     url(r'^ajax/getUserInstts/$', views.getUserInstts, name='get_user_instts'),
-
-
+    url(r'^ajax/saveEvents/$', views.save_user_events, name='save_user_events'),
+    url(r'^ajax/getInsttsDates/$', views.getInsttImpDates, name='getInsttImpDates'),
+    
     url(r'^userAppDetails/$', views.userAppDetailsView, name='user_app_details'),
     url(r'^userAppDetailsConfirm/$', views.userAppDetailsConfirm, name='user_app_confirm'),
     
     url(r'^user_guide/$', views.user_guide, name='user_guide'),
-    
 
+    url(r'^refer/$', views.referNextSteps, name='refer_NextSteps'),
+    url(r'^referdone/$', views.referNextSteps_confirm, name='referNextSteps_confirm'),
     
 ]
 

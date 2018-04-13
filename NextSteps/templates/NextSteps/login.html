@@ -60,6 +60,8 @@
 <!-- ======== @Region: body ======== -->
 
 <body class="fullscreen-centered page-login">
+
+
   <!--Change the background class to alter background image, options are: benches, boots, buildings, city, metro -->
     <div id="background-wrapper" class="benches" data-stellar-background-ratio="0.8">
 
@@ -102,7 +104,7 @@
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">
+                                        <input name="remember" type="checkbox" value="Remember Me" checked>
                                         Remember Me
                                     </label>
                                 </div>
@@ -122,17 +124,24 @@
                 
                                 </fieldset>
                             </form>
-                            <p class="m-b-0 m-t">Not signed up? <a href="{% url 'signup' %}">Sign up here</a>.</p>
-                            <p class="m-b-0 m-t"><a href="{% url 'password_reset' %}">Forgot username or Password?</a>.</p>
+                            <p class="m-b-0 m-t">
+                                <span style="float:right">Not signed up? <a href="{% url 'signup' %}">Sign up here</a></span>
+                                <span style="float:left"><a href="{% url 'password_reset' %}">Forgot username or Password?</a></span>
+                            </p>
+                
                         </div>
                     </div>
                 </div>
             </div>
             <!-- /row -->
+            
+
+            <a href="{% url 'social:begin' 'github' %}">Login with GitHub</a><br>
+            <a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a><br>
+            <a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
         </div>
     </div>
     <!-- Required JavaScript Libraries -->
-    <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'lib/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
     <script src="{% static 'lib/stellar/stellar.min.js' %}"></script>
@@ -148,6 +157,10 @@
     
     <!--Contactform script -->
     <script src="{% static 'contactform/contactform.js' %}"></script>
+
+
+
+
 
 </body>
 

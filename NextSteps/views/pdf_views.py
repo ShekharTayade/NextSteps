@@ -183,15 +183,15 @@ def buildConsRep(response, request):
                 progSeats = InstituteProgramSeats.objects.filter(
                     Institute_id=il["Institute__instt_code"], Program_id=ip["Program_id"], 
                     StudentCategory_id=stuCatId)
+                progDetailsTxt =  progDetailsTxt + "<br /><font name=Courier-Bold size=10><b>Number of Seats:</b></font> " 
                 if progSeats.exists():
-                    progDetailsTxt =  progDetailsTxt + "<br /><font name=Courier-Bold size=10><b>Number of Seats:</b></font> " 
                     for ps in progSeats:
                         if ps.number_of_seats > 0:
                             progDetailsTxt =  progDetailsTxt + " <font name=Courier-Bold size=10>" + str(ps.number_of_seats) + " (" + ps.quota + " quota) </font>"
                         else:
-                            progDetailsTxt =  progDetailsTxt + "<font name=Courier-Bold size=10> *N/A<font>"            
+                            progDetailsTxt =  progDetailsTxt + "<font name=Courier-Bold size=10> *n/a<font>"            
                 else:
-                    progDetailsTxt =  progDetailsTxt + "<br /><font name=Courier-Bold size=10> *N/A</font>"            
+                    progDetailsTxt =  progDetailsTxt + "<font name=Courier-Bold size=10> *n/a</font>"            
                 
                 
                 # Get Eetrance Exam Details
@@ -204,7 +204,7 @@ def buildConsRep(response, request):
                     for ee in entExam:
                         progDetailsTxt = progDetailsTxt + "  <font name=Courier-Bold size=10>" + ee["EntranceExam__description"] + ", </font>"
                     
-                year = "2016"
+                year = "2017"
 
                 # Get the JEE opening-closing ranks
                 insttJEERanks = InstituteJEERanks.objects.filter(year=year, Institute_id=il["Institute__instt_code"],
@@ -234,11 +234,9 @@ def buildConsRep(response, request):
                     for ia in insttAdmRoutes:
                         progDetailsTxt = progDetailsTxt + "<br /> <font name=Courier-Bold size=10>" + ia["adm_route"] + " - " + ia["description"] + "</font>"
                 
-                
                 prog = Paragraph( progDetailsTxt, style)
                 Story.append(prog)
                 Story.append(Spacer(1,0.2*inch))
-                    
                 
                 
                 

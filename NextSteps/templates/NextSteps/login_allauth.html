@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+<head>
+  <meta charset="utf-8">
+  <title>NextSteps...Your Buddy!</title>
+  <link rel="icon" href="{% static 'img/target.ico' %}" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="" name="keywords">
+  <meta content="" name="description">
+
+  <!-- Facebook Opengraph integration: https://developers.facebook.com/docs/sharing/opengraph -->
+  <meta property="og:title" content="">
+  <meta property="og:image" content="">
+  <meta property="og:url" content="">
+  <meta property="og:site_name" content="">
+  <meta property="og:description" content="">
+
+  <!-- Twitter Cards integration: https://dev.twitter.com/cards/  -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:title" content="">
+  <meta name="twitter:description" content="">
+  <meta name="twitter:image" content="">
+
+  <meta name="google-signin-client_id" content="292426078075-v5p5r6dq0t6vnqvm679h4bbncukjubpu.apps.googleusercontent.com">
+
+  <!-- Fav and touch icons -->
+  <link rel="shortcut icon" href="{% static 'img/target.png' %}">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'img/icons/114x114.png' %}">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'img/icons/72x72.png' %}">
+  <link rel="apple-touch-icon-precomposed" href="{% static 'img/icons/default.png' %}">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900" rel="stylesheet">
+
+  <!-- Bootstrap CSS File -->
+  <link href="{% static 'lib/bootstrap/css/bootstrap.min.css' %} " rel="stylesheet">
+
+  <!-- Libraries CSS Files -->
+  <link href="{% static 'lib/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+  <link href="{% static 'lib/owlcarousel/owl.carousel.min.css' %}" rel="stylesheet">
+  <link href="{% static 'lib/owlcarousel/owl.theme.min.css' %}" rel="stylesheet">
+  <link href="{% static 'lib/owlcarousel/owl.transitions.min.css' %}" rel="stylesheet">
+ 
+  <!-- Main Stylesheet File -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+  <!--Your custom colour override - predefined colours are: colour-blue.css, colour-green.css, colour-lavander.css, orange is default-->
+<!--  <link href="#" id="colour-scheme" rel="stylesheet"> -->
+
+  <!-- =======================================================
+    Theme Name: Flexor
+    Theme URL: https://bootstrapmade.com/flexor-free-multipurpose-bootstrap-template/
+    Author: BootstrapMade.com
+    Author URL: https://bootstrapmade.com
+  ======================================================= -->
+
+</head>
+
+<!-- ======== @Region: body ======== -->
+
+<body class="fullscreen-centered page-login">
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.12&appId=422941031462052&autoLogAppEvents=1';
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+
+
+  <!--Change the background class to alter background image, options are: benches, boots, buildings, city, metro -->
+    <div id="background-wrapper" class="benches" data-stellar-background-ratio="0.8">
+
+    <!-- ======== @Region: #content ======== -->
+        <div id="content">
+            <div class="header">
+                <div class="header-inner">
+                    <!--navbar-branding/logo - hidden image tag & site name so things like Facebook to pick up, actual logo set via CSS for flexibility -->
+                    <a class="navbar-brand center-block" href="{% url 'index' %}" title="Home">
+                        <h1 class="hidden">
+                            <img src="{% static 'img/NextStepsLogo1.png' %}" alt="NextSteps Logo">
+                            NextSteps
+                        </h1>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                            <strong>Use Your NextSteps Account or Social Media Account</strong>
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+ 
+                            {% load socialaccount %}
+                            {% providers_media_js %}
+
+
+<!--                            <div class="fb-login-button" data-width="30" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div> -->
+<!--                            <a class="btn" style="background:#1818e3; color: #ffffff" href="{% provider_login_url "facebook" method="js_sdk" %}">Login with Facebook </a>  -->
+                            <div class="well">
+                            <div class = "row">
+                                <div class = "col-sm-4">
+                                    <a href="{% provider_login_url "facebook" method="js_sdk" %}">
+                                      <img src="{% static 'img/fb_login.png' %}" alt="Facebook Login" style="height:38px;border:0;">
+                                    </a>
+                                </div>
+                                <div class = "col-sm-4">
+        <!--                           <div class="g-signin2" data-onsuccess="onSignIn"></div>                            -->
+                                    <a href="{% provider_login_url 'google' %}">
+                                      <img src="{% static 'img/google_login.png' %}" alt="Google Login" style="height:38px;border:0;">
+                                    </a>                            
+                                </div>
+                                <div class = "col-sm-4">
+                                    <a href="{% provider_login_url "twitter" %}">
+                                      <img src="{% static 'img/twitter_login.png' %}" alt="Twitter Login" style="height:38px;border:0;">
+                                    </a>
+                                </div>
+                            </div>
+                            </div>
+                            
+<!--                            <br />
+
+                            <div class="row">
+                                <div class="col-sm-5"><hr></div>
+                                <div class="col-sm-2">OR</div>
+                                <div class="col-sm-5"><hr></div>
+                            </div>
+-->                                                        
+                            <div class="text_primary"><strong>NextSteps Account</strong></div>
+                            
+                            <div class = "well">
+
+                            <form accept-charset="UTF-8" role="form" method="POST">
+                                {% csrf_token %}
+                                <fieldset>
+                                <div class="text-muted"><small>Enter (Username or Email) and Password to login</small></div>
+                                <div class="row">
+                                    <div class = "col-sm-6">
+                                        <div class="form-group has-float-label">
+                                            <div class="input-group input-group-lg">
+                                                <span class="input-group-addon"><i class="fa fa-user-circle-o "></i></span>
+                                                <input name = "username" type="text" class="form-control" placeholder="Username">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class = "col-sm-6">
+                                        <div class="form-group has-float-label">
+                                            <div class="input-group input-group-lg">
+                                                <span class="input-group-addon"><i class="fa fa-envelope "></i></span>
+                                                <input name = "email" type="text" class="form-control" placeholder="Email">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group has-float-label ">
+                                    <div class="input-group input-group-lg">
+                                            <span class="input-group-addon"><i class="fa fa-fw fa-lock"></i></span>
+                                            <input name = "password" type="password" class="form-control" placeholder="Password">
+                                    </div>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="remember" type="checkbox" value="Remember Me" checked>
+                                        Remember Me
+                                    </label>
+                                </div>
+
+                                <!-- To check if user is not authenticated and display an error message if not autheticated -->
+                                <!-- The view returns a value "invalid" in invalid key if use if not authenticated. -->
+                                {% if invalid == 'invalid' %}
+                                    <div class="alert alert-danger">
+                                      <button type="button" class="close" data-dismiss="alert"></button>
+                                      <h4>
+                                          Error!
+                                        </h4> Your username and password didn't match! Please try again.
+                                    </div>
+                                {% endif %}
+                  
+                                <input class="btn btn-lg btn-primary btn-block" type="submit" value="Login">
+                
+                                </fieldset>
+                            </form>
+
+                            </div> 
+
+                            <p class="m-b-0 m-t">
+                                <span style="float:left">Not signed up? <a href="{% url 'signup' %}">Sign up here</a></span>
+                                <span style="float:right"><a href="{% url 'password_reset' %}">Forgot Username or Password?</a></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+    </div>
+    <!-- Required JavaScript Libraries -->
+    <script src="{% static 'lib/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'lib/stellar/stellar.min.js' %}"></script>
+    <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
+    <script src="{% static 'lib/counterup/counterup.min.js' %}"></script>
+    <script src="{% static 'contactform/contactform.js' %}"></script>
+
+    <!-- Template Specisifc Custom Javascript File -->
+    <script src="{% static 'js/custom.js' %}"></script>
+    
+    <!--Custom scripts demo background & colour switcher - OPTIONAL -->
+    <script src="{% static 'js/color-switcher.js' %}"></script>
+    
+    <!--Contactform script -->
+    <script src="{% static 'contactform/contactform.js' %}"></script>
+
+
+
+
+
+</body>
+
+</html>
+
+
+
+
+
+
