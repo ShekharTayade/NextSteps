@@ -353,7 +353,7 @@
                                                 
                     txt = "<select id='insttUserList' name ='insttUserList' style= 'list-style:none; min-width:350px; max-width:453px;' multiple='multiple' size='5'>";
                     $.each(data, function(index, element) {
-                        txt += "<option class = 'list-group-item' style='list-style: none;'>" + data[index].Institute__instt_name + "</option>";
+                        txt += "<option class = 'list-group-item' style='list-style: none;'>" + data[index].instt_name + "</option>";
                     });
                     txt += "</select>"; 
 
@@ -398,7 +398,7 @@
                                                 
                     txt = "<select id='insttList' name ='insttList' style= 'list-style:none; min-width:350px; max-width:453px;' multiple='multiple' size='5'>";
                     $.each(data, function(index, element) {
-                        txt += "<option class = 'list-group-item' style='list-style: none;'>" + data[index].Institute__instt_name + "</option>";
+                        txt += "<option class = 'list-group-item' style='list-style: none;'>" + data[index].instt_name + "</option>";
                     });
                     txt += "</select>"; 
                     
