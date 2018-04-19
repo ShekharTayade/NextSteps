@@ -12,8 +12,9 @@ from reportlab.platypus import ListFlowable, ListItem
 from NextSteps.models import CountryUserPref, DisciplineUserPref, LevelUserPref, User
 from NextSteps.models import ProgramUserPref, InsttUserPref, InstituteProgramSeats
 from NextSteps.models import StudentCategory, StudentCategoryUserPref
-from NextSteps.models import InstituteProgramEntrance, InstituteSurveyRanking
+from NextSteps.models import InstituteEntranceExam, InstituteSurveyRanking
 from NextSteps.models import InstituteJEERanks, InstituteCutOffs, InstituteAdmRoutes
+
 
 PAGE_HEIGHT=defaultPageSize[1]
 PAGE_WIDTH=defaultPageSize[0]
@@ -169,9 +170,8 @@ def buildConsRep(response, request):
         Story.append(prg)
         Story.append(Spacer(1,0.2*inch))
 
-
         for ip in insttUserProgList:
-    
+
             
             if il["Institute__instt_code"] == ip["Institute__instt_code"] :
                 
@@ -187,22 +187,21 @@ def buildConsRep(response, request):
                 if progSeats.exists():
                     for ps in progSeats:
                         if ps.number_of_seats > 0:
-                            progDetailsTxt =  progDetailsTxt + " <font name=Courier-Bold size=10>" + str(ps.number_of_seats) + " (" + ps.quota + " quota) </font>"
+                            progDetailsTxt =  progDetailsTxt + " <font name=Courier size=10>" + str(ps.number_of_seats) + " (" + ps.quota + " quota) </font>"
                         else:
-                            progDetailsTxt =  progDetailsTxt + "<font name=Courier-Bold size=10> *n/a<font>"            
+                            progDetailsTxt =  progDetailsTxt + "<font name=Courier size=10> *N/A<font>"            
                 else:
-                    progDetailsTxt =  progDetailsTxt + "<font name=Courier-Bold size=10> *n/a</font>"            
+                    progDetailsTxt =  progDetailsTxt + "<font name=Courier size=10> *N/A</font>"            
                 
                 
                 # Get Eetrance Exam Details
-                entExam = InstituteProgramEntrance.objects.filter(
-                    Institute_id=il["Institute__instt_code"], 
-                    Program_id=ip["Program_id"]).values('EntranceExam__entrance_exam_code',
+                entExam = InstituteEntranceExam.objects.filter(
+                    Institute_id=il["Institute__instt_code"]).values('EntranceExam__entrance_exam_code',
                         'EntranceExam__description')
                 if entExam.exists():
-                    progDetailsTxt = progDetailsTxt + "<br /><font name=Courier-Bold size=10><b>Entrance Exam:</b></font> " 
+                    progDetailsTxt = progDetailsTxt + "<br /><font name=Courier-Bold size=10><b>Entrance Exam:</b></font><br /> " 
                     for ee in entExam:
-                        progDetailsTxt = progDetailsTxt + "  <font name=Courier-Bold size=10>" + ee["EntranceExam__description"] + ", </font>"
+                        progDetailsTxt = progDetailsTxt + ">>&nbsp;&nbsp;&nbsp;&nbsp;<font name=Courier size=10>" + ee["EntranceExam__description"] + "</font> <br />"
                     
                 year = "2017"
 
@@ -213,26 +212,27 @@ def buildConsRep(response, request):
                 year = "2017"
 
                 if insttJEERanks.exists():
-                    progDetailsTxt = progDetailsTxt + "<br /><font name=Courier-Bold size=10><b>" + year + " " + "JEE Opening and Closing Ranks:</b></font>" 
+                    progDetailsTxt = progDetailsTxt + "<br /><font name=Courier-Bold size=10><b>" + year + " " + "JEE Opening and Closing Ranks:</b></font><br />" 
                     for ir in insttJEERanks:
-                        progDetailsTxt = progDetailsTxt + "<br /> <font name=Courier-Bold size=10>" + ir.quota + " - Opening Rank: " + str(ir.opening_rank) + ", Closing Rank: " + str(ir.closing_rank) + "</font>"
+                        progDetailsTxt = progDetailsTxt + ">>&nbsp;&nbsp;&nbsp;&nbsp;<font name=Courier size=10>" + ir.quota + " - Opening Rank: " + str(ir.opening_rank) + ", Closing Rank: " + str(ir.closing_rank) + "</font> <br />"
                 
                 # Get the cut Offs
                 insttCutOffs = InstituteCutOffs.objects.filter(year=year, Institute_id=il["Institute__instt_code"],
                                 Program_id=ip["Program_id"], StudentCategory_id=stuCatId)
                 
                 if insttCutOffs.exists():
-                    progDetailsTxt = progDetailsTxt + "<br /><font name=Courier-Bold size=10><b>" + year + " " + "Cut Off:</b></font>" 
+                    progDetailsTxt = progDetailsTxt + "<br /><font name=Courier-Bold size=10><b>" + year + " " + "Cut Off:</b></font> <br />" 
                     for ic in insttCutOffs:
-                        progDetailsTxt = progDetailsTxt + "<br /> <font name=Courier-Bold size=10>" + ic.quota + " " + ic.cutOff + "</font>"
+                        progDetailsTxt = progDetailsTxt + ">>&nbsp;&nbsp;&nbsp;&nbsp;<font name=Courier size=10>" + ic.quota + " " + ic.cutOff + "</font> <br />"
 
                 # Get Admission Routes
-                insttAdmRoutes = InstituteAdmRoutes.objects.filter(Institute_id=il["Institute__instt_code"],
-                                Program_id=ip["Program_id"])
+                insttAdmRoutes = InstituteAdmRoutes.objects.filter(Institute_id=il["Institute__instt_code"])
+                
+
                 if insttAdmRoutes.exists():
-                    progDetailsTxt = progDetailsTxt + "<br /><font name=Courier-Bold size=10><b>" "Admission Routes:</b></font>" 
+                    progDetailsTxt = progDetailsTxt + "<br /><font name=Courier-Bold size=10><b>" "Admission Routes:</b></font> <br />" 
                     for ia in insttAdmRoutes:
-                        progDetailsTxt = progDetailsTxt + "<br /> <font name=Courier-Bold size=10>" + ia["adm_route"] + " - " + ia["description"] + "</font>"
+                        progDetailsTxt = progDetailsTxt + ">>&nbsp;&nbsp;&nbsp;&nbsp;<font name=Courier size=10>" + ia.adm_route + " - " + ia.description + "</font> <br />"
                 
                 prog = Paragraph( progDetailsTxt, style)
                 Story.append(prog)
@@ -247,7 +247,7 @@ def buildConsRep(response, request):
     l = HRFlowable(width="100%", thickness=1, lineCap='round', color=colors.grey, spaceBefore=1, spaceAfter=1, hAlign='LEFT', vAlign='BOTTOM', dash=None)
     Story.append(l)
 
-    disclaimerTxt = "<font name=Courier-Bold size=7>* Disclaimer: The information in this report is for your references only. While we do take all the care to ensure that information in our database is current and relevant, due to changes that can happen at any time we may not have the current information. Hence we do not claim that all the information is accurate.</font>" 
+    disclaimerTxt = "<font name=Courier size=7>* Disclaimer: The information in this report is for your references only. While we do take all the care to ensure that information in our database is current and relevant, due to changes that can happen at any time or we may not have the information available at the time you are printing report, we may not have the current information. Hence we do not claim that all the information is accurate. It is advised that students/parents may seek information directly from the institute for the latest.</font>" 
     disclaimer = Paragraph(disclaimerTxt, style)
     Story.append(disclaimer)   
 

@@ -87,7 +87,11 @@
                                 <td class="align-middle"> 
                                 {% for a in admRoutesUserList %}
                                     {% if a.Institute__instt_code == il.Institute__instt_code%} 
-                                        {{a.adm_route}} &nbsp;-&nbsp;{{a.description}}
+                                        <i class="fa fa-check"></i>{{a.adm_route}} 
+                                        {% if a.description %}
+                                            &nbsp;-&nbsp;{{a.description}}
+                                        {% endif %}
+                                        <br />
                                     {% endif %}
                                 {% empty %}
                                     - NA -
