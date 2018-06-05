@@ -10,6 +10,7 @@ from allauth.account.views import LoginView
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^login/$', views.NextStepslogin, name='login'),
+    url(r'^home/$', views.loggedIn_index, name='loggedInHome'),
     
     url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
     url(r'^oauth/', include('social_django.urls', namespace='social')),    
@@ -54,6 +55,13 @@ urlpatterns = [
     url(r'^ajax/GetPrograms/$', views.getPrograms, name='Get_Programs'),    
     url(r'^ajax/GetSeatPrograms/$', views.getSeatQuotaPrograms, name='Get_SeatQuota_Programs'),    
 
+
+    url(r'^institutelist/$', views.InsttList, name = 'instt_list'),
+    #url(r'^insttdetails/(?P<instt_code>\d+)/$', views.instt_all_details, name = 'instt_all_details'),
+    url(r'^insttdetails/$', views.instt_all_details, name = 'instt_all_details'),
+    url(r'^compareInstitutess/$', views.compare_instts, name = 'compare_instts'),
+
+
     url(r'^SearchFilter/$', views.SearchFilter, name = 'search_filter'),
     url(r'^SearchInstts/', views.SearchInstts, name = 'Search_Instts'),
     url(r'^SearchInsttTypeFilter/$', views.instituteTypeSearchFilter, name = 'instt_type_filter'),
@@ -86,6 +94,11 @@ urlpatterns = [
     url(r'^ajax/getInsttProgramByType/$', views.getInsttProgramByType, name='get_instt_progs_by_type'),
     url(r'^ajax/getUserInsttProgramByType/$', views.getUserInsttProgramByType, name='get_user_instt_progs_by_type'),
 
+    url(r'^ajax/getInsttsForPrograms/$', views.getInsttsForProgs, name='get_insttsForProgs'),
+    url(r'^ajax/getProgsForInstts/$', views.getProgsForInstts, name='get_progsForInstts'),
+
+
+
     url(r'^findRanks/$', views.JEE_prog_instt_rank_filter, name='JEE_prog_instt_rank_filter'),
     url(r'^rankRsults/$', views.JEE_prog_instt_rank_results, name='JEE_prog_instt_rank_results'),
 
@@ -101,6 +114,7 @@ urlpatterns = [
 
     url(r'^refer/$', views.referNextSteps, name='refer_NextSteps'),
     url(r'^referdone/$', views.referNextSteps_confirm, name='referNextSteps_confirm'),
+
     
 ]
 

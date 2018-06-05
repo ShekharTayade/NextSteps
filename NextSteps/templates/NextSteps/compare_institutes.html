@@ -1,0 +1,154 @@
+<!-- Extend the logged in user home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps_base.html' %}
+
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+{% endblock slide-show %}
+
+<!-- Override news-ad block from parent -->
+{% block news-ad %}
+{% endblock news-ad %}
+
+<!-- Override features block -->
+{% block features %}
+<div class="showcase block block-border-bottom-grey">
+    <div class="container">
+    
+        <h3 class="block-title">Institute Comparison</h3>
+        
+        <div class = "row">
+
+            <div class = "col-md-2">
+                
+            </div>
+
+            <!-- Render the four institutes name to be compared -->                
+            {% for il in instt_details%}
+                <div class = "col-md-2 instt-compare">
+                    {{il.instt_name}}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class = "row">
+            <div class = "col-md-2">
+            
+            </div>
+
+            <!-- Render the institute type to be compared -->                
+            {% for il in instt_details %}
+                <div style = "font-size:8px text-align:center" class = "col-md-2">
+                    <u><a href = "#">Add to preferred list</a></u>
+                </div>
+            {% endfor %}
+        </div>
+
+
+
+        <div class = "row">
+            <div class = "col-md-2 compare-category">
+                Location
+            </div>
+
+            <!-- Render the institute type to be compared -->                
+            {% for il in instt_details %}
+                <div class = "col-md-2 instt-compare-details">
+                    {{il.city}},&nbsp;{{il.state}}
+                </div>
+            {% endfor %}
+        </div>
+
+
+        
+        <div class = "row">
+            <div class = "col-md-2 compare-category">
+                Type
+            </div>
+
+            <!-- Render the institute type to be compared -->                
+            {% for il in instt_details %}
+                <div class = "col-md-2 instt-compare-details">
+                    {{il.InstituteType__description}}
+                </div>
+            {% endfor %}
+        </div>
+        
+        <div class = "row">
+            <div class = "col-md-2 compare-category">
+                Survey Rank
+            </div>
+        </div>
+        <!-- Each survey year to be a separate row -->
+        {% for yr in ranking_years %}
+            <div class = "row">
+                <div class = "col-md-2 instt-compare-details-sub">
+                    <p class = "pull-right">{{yr.year}}</p>
+                </div>
+    
+                <!-- Render institute ranking -->                
+                {% for il in instt_details %}
+                <div class = "col-md-2 instt-compare-details-sub">
+                    {% for r in survey_rankings %}
+                        {% if r.Institute_id == il.instt_code and r.year == yr.year %}
+                            <span class="label label-primary">{{r.rank}}</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+
+        <div class = "row">
+            <div class = "col-md-2 compare-category">
+                Entrance Exam
+            </div>
+
+            {% for il in instt_details %}
+                <div class = "col-md-2 instt-compare-details">
+                {% for ee in entrance_exams %}
+                    {% if il.instt_code == ee.Institute_id %}
+                        {{ ee.EntranceExam_id }}&nbsp;
+                    {% endif %}
+                {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+
+
+        <div class = "row">
+            <div class = "col-md-2 compare-category">
+                Programs
+            </div>
+        
+            {% for il in instt_details %}
+                <div class = "col-md-2 instt-compare-details">
+                    <ul>
+                    {% for p in progs %}
+                        {% if il.instt_code == p.Institute_id %}
+                            <li>{{ p.Program_id}}</li>
+                        {% endif %}
+                    {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+            
+        </div>
+
+        
+        
+    </div>
+</div>
+ {% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->
+

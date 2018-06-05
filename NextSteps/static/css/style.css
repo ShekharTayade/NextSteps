@@ -2420,8 +2420,13 @@ ul.nav-tabs.nav-tabs-right > li:last-child {
 
 
 
-
+/***************************************************************/
+/***************************************************************/
+/***************************************************************/
 /*******                NextSteps Additions              *******/   
+/***************************************************************/
+/***************************************************************/
+/***************************************************************/
 
 /* for the panels in payments page */
  .panel.panel-blue {
@@ -2531,7 +2536,7 @@ body {
     background: rgb(60,60,60);
     color: white;
     padding: 0px 8px;
-    font-size: 16px;
+    font-size: 14px;
     border: 0 none !important;
     border-top: 0 none !important;
 }
@@ -2545,7 +2550,7 @@ body {
 }
 
 .custom_table tbody tr td {
-    background: #fff none repeat scroll 0 0;
+/*    background: #fff none repeat scroll 0 0; */
     border-top: 0 none !important;
     margin-bottom: 20px;
     padding: 10px 8px;
@@ -2554,8 +2559,6 @@ body {
 .near_by_hotel_wrapper table tr td {
     border-right: 1px solid #d2d1d1;
 }
-
-
 
 
 /********** JEE Ranks filter - Switches *********************/
@@ -2826,12 +2829,13 @@ button.qty-change{
     border-radius: 50%;
     background: #fff;
     border: 1px solid #e3e3e3;
+    padding:5px !important;
 }
 
 .qty-input{
     margin: auto;
     height: 30px;
-    width: 75px;
+    width: 70px !important;
     text-align: center;
 }
 
@@ -2940,15 +2944,9 @@ button.qty-change{
 }
 
 
-
-
-
 .invalid-feedback {
   color: #ff5821;
 }
-
-
-
 
 /*************Calendar ****************/
 #calendar {
@@ -2956,23 +2954,378 @@ button.qty-change{
 }
 
 
-
-
 /************ modal  ***************/
 #promocode{
-   position:fixed;
-   top:auto;
-   right:auto;
-   left:auto;
-   bottom:0;
-   font-size:15px;
- 
+
 }
 
-.modal-body {
- 
+.modal-body, .modal-content {
+    padding:0px; 
 }
 .modal-header{
-   font-size:15px;
+    font-size:12px;
+    padding:2px; 
+    color:#ffffff;
 }
 
+
+
+/* ************  Search on home page slides 1 ************* */
+.home-search {
+    background-image: url(../img/home-searchicon.png); 
+    background-position: left;
+    border-radius: 5px; 
+    background:#383838; 
+    opacity: 0.65; 
+    width:500px; 
+    color:#d6d6d6; 
+    border:0px; 
+    padding: 5px 5px 5px 18px;
+}
+
+
+/* ********** To include horizontal scrolling ******* */
+.hscroll {
+    width : 350px;
+    white-space:wrap;
+    overflow-x:auto;
+    overflow-y:auto;   
+ }
+
+ 
+/* ******   Set Preferences Page ********** */
+/* Style the form */
+#prefForm {
+  background-color: #ffffff;
+  margin: 10px auto;
+  padding: 15px;
+  width: 100%;
+  min-width: 300px;
+}
+
+/* Style the input fields */
+input {
+  padding: 5px;
+  font-size: 14px;
+  font-family: Raleway;
+  border: 1px solid #aaaaaa;
+}
+
+/* Mark input boxes that gets an error on validation: */
+input.invalid {
+  background-color: #ffdddd;
+}
+
+.pref-head {
+    background-color: #686868;   
+    color: #ffffff;
+}
+
+/* Hide all steps by default: */
+.pref_tab {
+  display: none;
+}
+
+/* Make circles that indicate the steps of the form: */
+.step {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbbbbb;
+  border: none; 
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.5;
+}
+
+/* Mark the active step: */
+.step.active {
+  opacity: 1;
+}
+
+/* Mark the steps that are finished and valid: */
+.step.finish {
+  background-color: #4CAF50;
+}
+ 
+ 
+ /* ************************** */
+ .empty-space-100px {
+    height : 100px;
+}
+
+ .empty-space-50px {
+    height : 50px;
+}
+
+
+/****************dropdown  on User name fix *********************/ 
+.fix-user-nm-pos {
+    display:inline-block;
+}
+
+
+/********* Styling for logged user home ***********/
+.userHome {
+    border-bottom-color : #ff5821;
+    border-bottom : 1px;
+    min-height: 400px;
+}
+
+/*******************   Side Bar Nav, Logged in User Home ************************/
+body,html{
+    height: 100%;
+  }
+  
+    nav.sidebar, .main{
+    -webkit-transition: margin 200ms ease-out;
+      -moz-transition: margin 200ms ease-out;
+      -o-transition: margin 200ms ease-out;
+      transition: margin 200ms ease-out;
+  }
+
+  .main{
+    padding: 10px 10px 0 10px;
+  }
+
+ @media (min-width: 765px) {
+
+    .main{
+      position: absolute;
+      width: calc(100% - 40px); 
+      margin-left: 40px;
+      float: right;
+    }
+
+    nav.sidebar:hover + .main{
+      margin-left: 200px;
+    }
+
+    nav.sidebar.navbar.sidebar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand {
+      margin-left: 0px;
+    }
+
+
+/********* Setting the width of dropdown equal to the button ****************/
+.dropdown-menu {
+    width: 100%; 
+}
+
+
+.custom-tbl {
+/*    border-collapse: separate;
+    border-spacing: 0 10px; 
+    margin-top: -10px !important; */
+}
+
+.custom-tbl thead tr th {
+    font-size: 14px;
+    border: 0 none !important;
+    border-top: 0 none !important;
+}
+.custom-tbl tbody tr {
+/*    -moz-box-shadow: 0 2px 3px #e0e0e0;
+    -webkit-box-shadow: 0 2px 3px #e0e0e0;
+    box-shadow: 0 2px 3px #e0e0e0; */
+    border-bottom : 1px solid #ff5821;
+}
+
+.custom-tbl tbody tr td {
+/*    background: #fff none repeat scroll 0 0; */
+    padding-top: 20px;
+    padding-bottom:5px;
+    padding-left:0px;
+    padding-right:0px;
+    
+    border-top: 0 none !important;
+    font-size: 14px !important;
+}
+
+.global-filter{
+    background-color: Gainsboro;   
+    color: #000000;   
+    padding: 5px;
+    border-radius: 35px;
+    font-size:12px;
+    margin:5px 0px;
+}
+
+
+/********** Authenticated user - first block **************/
+.welcomeuser{
+    background-color: #ff5821 !important; 
+    border:2px; 
+    padding:15px;  
+    display:table; 
+    width:100%;
+}
+
+.welcomeuser-blank, .welcomeuser-menu{
+    display: table-cell;
+}
+
+.welcomeuser-cell{
+    color:#000000;
+    background-color: #ffffff; 
+    display: table-cell; 
+    padding :15px;
+    width: 500px;
+}
+
+.prod-features-img{
+    float: left;
+}
+
+.prod-features-head{
+    font-size:14px;
+}
+
+.prod-features-text{
+    font-size:9px;
+}
+
+
+
+
+/************ Coupans/Promos **********/
+.coupon {
+    border: 4px dotted #bbb;
+    width: 100%;
+    height:100%;
+    border-radius: 15px;
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.coupan-container {
+    padding: 5px 25px;
+    background-color: #f1f1f1;
+}
+
+.promo {
+    background: #ccc;
+    padding: 3px;
+}
+
+.expire {
+    color: red;
+}
+
+.news-ad{
+    width : 100%;
+    padding: 5px 5px;
+    background-color: #000000;
+    color: #ffffff;
+}
+
+
+
+/*********** Marquee on news ticket/ad *******/
+.marquee {
+    width: 100%;
+    margin: 0 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.marquee span {
+    display: inline-block;
+    padding-left: 100%;  /* show the marquee just outside the paragraph */
+    animation: marquee 15s linear infinite;
+}
+
+.marquee span:hover {
+    animation-play-state: paused
+}
+
+/* Make it move */
+@keyframes marquee {
+    0%   { transform: translate(0, 0); }
+    100% { transform: translate(-100%, 0); }
+}
+
+
+.table-wrap-cols{
+    table-layout:fixed;
+    width:100%;
+}
+
+.table-wrap-cols td{
+    white-space: -o-pre-wrap; 
+    word-wrap: break-word;
+    white-space: pre-wrap; 
+    white-space: -moz-pre-wrap; 
+    white-space: -pre-wrap; 
+}    
+
+.accordian-head {
+    color : #ffffff !important; 
+    background-color : #837e7c;
+    font-weight : bold;
+    padding:8px !important;
+}
+
+.instt-compare{
+    background-color: #686868;   
+    color: #ffffff;   
+    padding: 5px;
+    border-radius: 5px;
+    font-size:13px;
+    margin:5px 0px;
+    text-align:center;
+    height:50px;
+}
+
+.instt-compare-details{
+    font-size:12px;
+    text-align:center;
+    border:2px solid #ffffff;
+    padding: 5px;
+}
+
+.instt-compare-details-sub{
+    font-size:12px;
+    margin:5px 0px;
+    text-align:center;
+    border:2px solid #ffffff;
+}
+
+.compare-category{
+    border:2px solid #ffffff;
+    border-color:#ffffff !important; 
+    text-align:right;
+    background-color: #686868;   
+    color: #ffffff;   
+    padding: 5px;
+}
+
+
+.pref-table tr:hover {
+    background-color: Gainsboro;
+}
+
+#avlProgTbl tr.clicked { 
+    background: #ccd; 
+}
+#avlProgTbl tr.highlight { 
+    background: #eef; 
+}
+
+#avlInsttTbl tr.clicked { 
+    background: #ccd; 
+}
+#avlInsttTbl tr.highlight { 
+    background: #eef; 
+}
+
+/*
+ * Row with equal height columns
+ * --------------------------------------------------
+ */
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}

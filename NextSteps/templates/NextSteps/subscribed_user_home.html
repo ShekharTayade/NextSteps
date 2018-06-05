@@ -1,0 +1,99 @@
+
+<!-- Extend the logged in user home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/signedup_user_home.html' %}
+{% load static %}
+
+
+{% block welcomeuser-cell %}
+    {{ block.super }}
+{% endblock welcomeuser-cell %}
+
+<!-- Override features block from parent -->
+{% block features %}
+    <div class="showcase block block-border-bottom-grey">
+        <div class="container">
+        
+            <h3 class="block-title">
+                Productivity Features
+            </h3>
+        
+            <div class="row" >
+                <div class="clearfix">
+                    <div class = "col-sm-3">
+                        <a href = "{% url 'prefs' %}">
+                            <img src="{% static 'img/pref-icon.png' %}" class="img-responsive prod-features-img" alt="Set/View Preferences">
+                            <span class = "prod-features-head"><strong>Set/View Your Preferences</strong></span><br />
+                            <span class = "prod-features-text">so you can get the focused information</span>
+                        </a>
+                    </div>
+                    <div class = "col-sm-3">
+                        <a href = "{% url 'preferred_Instt_cons_report' %}">
+                            <img src="{% static 'img/info.png' %}" class="img-responsive prod-features-img" alt="Important Information">
+                            <span class = "prod-features-head"><strong>Get Important Information</strong></span><br />
+                            <span class = "prod-features-text">on your preferred institutes</span>
+                        </a>
+                    </div>
+                    <div class = "col-sm-3">
+                        <a href = "{% url 'calendar' %}">
+                            <img src="{% static 'img/calendar-icon.png' %}" class="img-responsive prod-features-img" alt="Calendar">
+                            <span class = "prod-features-head"><strong>Calendar</strong></span><br />
+                            <span class = "prod-features-text">of important dates</span>
+                        </a>
+                    </div>
+                    <div class = "col-sm-3">
+                        <a href = "#">
+                            <img src="{% static 'img/to-do.png' %}" class="img-responsive prod-features-img" alt="To-Do List" >
+                            <span class = "prod-features-head"><strong>To-Do List</strong></span><br />
+                            <span class = "prod-features-text">to help organize yourself with the applications to institutes</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row" style = "margin:20px">
+                    <div class = "col-sm-3">
+                        <a href = "{% url 'if_then_analysis' %}">
+                            <img src="{% static 'img/probability.png' %}" class="img-responsive prod-features-img" alt="Assess JEE Seat Chances">
+                            <span class = "prod-features-head"><strong>Assess Seat Chances</strong></span><br />
+                            <span class = "prod-features-text">of securing a JEE seat</span>
+                        </a>
+                    </div>
+                    <div class = "col-sm-3">
+                        <a href = "{% url 'JEE_prog_instt_rank_filter' %}">
+                            <img src="{% static 'img/rank-range.png' %}" class="img-responsive prod-features-img" alt="JEE Ranks">
+                            <span class = "prod-features-head"><strong>JEE Ranks</strong></span><br />
+                            <span class = "prod-features-text">opening closing ranks by programs, institutes</span>
+                        </a>
+                    </div>
+                    <div class = "col-sm-3">
+                        <a href = "{% url 'compare_instts' %}">
+                            <img src="{% static 'img/compare.png' %}" class="img-responsive prod-features-img" alt="Compare">
+                            <span class = "prod-features-head"><strong>Compare Institutes</strong></span><br />
+                            <span class = "prod-features-text">on various parameters</span>
+                        </a>
+                    </div>
+                    <div class = "col-sm-3">
+                        <a href = "{% url 'user_app_details' %}">
+                            <img src="{% static 'img/record.jpg' %}" class="img-responsive prod-features-img" alt="Record Application Details">
+                            <span class = "prod-features-head"><strong>Record Details</strong></span><br />
+                            <span class = "prod-features-text">so you save time & effort while applying to various institutes</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+<script>
+    $(document).ready(function(){
+        $(".welcomeuser-cell").append("Below are the productivity features that will help you save time & effort and get yourself organized.");
+    });
+</script>
+
+{% endblock features %}
+
+{% block misson-statement %}
+
+{% endblock misson-statement %}
+
+
+{% block jointhem-blog %}
+{% endblock jointhem-blog %}

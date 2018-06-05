@@ -11,12 +11,14 @@ from NextSteps.models import Institute, InstituteType, InstituteSurveyRanking
 from NextSteps.models import InstitutePrograms, InstituteProgramSeats
 from NextSteps.models import Country, Discipline, Level, Program
 from NextSteps.models import InstituteJEERanks, InstituteCutOffs, InstituteSurveyRanking
-from NextSteps.models import StudentCategory, EntranceExam
+from NextSteps.models import StudentCategory, EntranceExam, InstituteEntranceExam
 
+from NextSteps.decorators import subscription_active
 
 from django.contrib.auth.decorators import login_required
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import QueryDict
 
 @login_required
 def SearchFilter(request):
@@ -44,7 +46,243 @@ def SearchFilter(request):
     return render(request, 'NextSteps/search_filter.html', { 
             'instt_StateList' : instt_StateList, 'instt_CityList' : instt_CityList, 
             'instt_typeList' : instt_typeList, 'countryList':countryList,
-            'disciplineList': disciplineList, 'levelList':levelList})
+            'disciplineList': disciplineList, 'levelList':levelList })
+
+@login_required
+def InsttList(request):
+
+    '''
+    if request.method == 'POST':
+        request.session['instts-details-post'] = request.POST
+        
+        request.session['country-list'] = request.POST.getlist('countryList', [])        
+        request.session['discipline-list'] = request.POST.getlist('disciplineList', [])        
+        request.session['level-list'] = request.POST.getlist('levelList', [])        
+        request.session['state-list'] = request.POST.getlist('stateList', [])        
+        request.session['city-list'] = request.POST.getlist('cityList', [])        
+        request.session['insttType-list'] = request.POST.getlist('insttTypeList', [])        
+        request.session['insttRankYr-list'] = request.POST.getlist('insttRankYrList', [])        
+        request.session['insttRankRange-list'] = request.POST.getlist('insttRankRange', [])        
+        request.session['program-list'] = request.POST.getlist('programList', [])        
+        
+        countryVals = request.POST.getlist('countryList', [])
+        disciplineVals = request.POST.getlist('disciplineList', [])
+        levelVals = request.POST.getlist('levelList', [])
+        stateVals = request.POST.getlist('stateList', [])
+        cityVals = request.POST.getlist('cityList', [])
+        insttTypeVals = request.POST.getlist('insttTypeList', [])
+        insttRankYrVals = request.POST.getlist('insttRankYrList', [])
+        insttRankRangeVals = request.POST.getlist('insttRankRange', [])
+        programVals  = request.POST.getlist('programList', [])
+    
+        
+    else:
+        if 'country-list' in request.session:
+            countryVals = request.session['country-list']
+        else:
+            countryVals = []
+        
+        if 'discipline-list' in request.session:
+            disciplineVals = request.session['discipline-list']
+        else:
+            disciplineVals = []
+
+        if 'level-list' in request.session:
+            levelVals = request.session['level-list']
+        else:
+            levelVals = []
+
+        if 'state-list' in request.session:
+            stateVals = request.session['state-list']
+        else:
+            stateVals = []
+
+        if 'city-list' in request.session:
+            cityVals = request.session['city-list']
+        else:
+            cityVals = []
+
+        if 'insttType-list' in request.session:
+            insttTypeVals = request.session['insttType-list']
+        else:
+            insttTypeVals = []
+
+        if 'insttRankYr-list' in request.session:
+            insttRankYrVals= request.session['insttRankYr-list']
+        else:
+            insttRankYrVals = []
+            
+        if 'insttRankRange' in request.session:
+            insttRankRangeVals = request.session['insttRankRange']
+        else:
+            insttRankRangeVals = []
+
+        if 'program-list' in request.session:
+            programVals = request.session['program-list']
+        else:
+            programVals = []
+
+
+        request.method = 'POST'        
+    '''    
+
+    countryVals = request.POST.getlist('countryList', [])
+    disciplineVals = request.POST.getlist('disciplineList', [])
+    levelVals = request.POST.getlist('levelList', [])
+    stateVals = request.POST.getlist('stateList', [])
+    cityVals = request.POST.getlist('cityList', [])
+    insttTypeVals = request.POST.getlist('insttTypeList', [])
+    insttRankYrVals = request.POST.getlist('insttRankYrList', [])
+    insttRankRangeVals = request.POST.getlist('insttRankRange', [])
+    programVals  = request.POST.getlist('programList', [])
+
+ 
+    insttList = Institute.objects.values(
+        'instt_code', 'instt_name', 'address_1', 'address_2', 'address_3', 
+        'city', 'state', 'pin_code', 'Country', 'phone_number', 
+        'email_id', 'website', 'InstituteType__description')
+
+
+    # Order the Queryset
+    insttList = insttList.order_by('state', 'city', 'instt_name')
+
+    #Apply filters
+    if stateVals:
+        insttList = insttList.filter(state__in = stateVals)
+
+    if insttTypeVals:
+        insttList = insttList.filter(InstituteType__description__in = insttTypeVals)
+
+    if programVals:
+        progInstList = InstitutePrograms.objects.filter(Program_id__in = programVals).values('Institute_id')
+        insttList = insttList.filter(instt_code__in = progInstList)
+
+      
+    insttCount = len(insttList)
+      
+    # Get the Institute ids to get the respective rankings 
+    insttIds = insttList.values('instt_code')
+
+    
+    #Get the latest year from Institute Ranking table
+    rankyear = InstituteSurveyRanking.objects.all().aggregate(Max('year'))
+    surveyyear = rankyear['year__max']
+    #currentYear = str(datetime.now().year)
+    
+    # get Institute Rankings
+    insttRanking = InstituteSurveyRanking.objects.filter(year=surveyyear).filter(Institute_id__in=insttIds).values()
+
+    '''
+    page = request.GET.get('page', 1)
+    paginator = Paginator(insttList, 15)
+    
+    try:
+        insttList = paginator.page(page)
+    except PageNotAnInteger:
+        insttList = paginator.page(1)
+    except EmptyPage:
+        insttList = paginator.page(paginator.num_pages)
+    '''
+    
+#    return render(request, 'NextSteps/instts_search_results.html',{})
+    return render(request, 'NextSteps/institute_list.html', {    
+        'insttList':insttList,'insttRanking':insttRanking, 'insttCount':insttCount,
+        'stateVals':stateVals, 'cityVals':cityVals, 'insttTypeVals':insttTypeVals, 
+        'insttRankYrVals':insttRankYrVals, 'programVals':programVals,
+        'countryList':countryVals, 'disciplineList': disciplineVals, 
+        'levelList':levelVals})
+    
+    
+    
+@login_required
+def instt_all_details(request):
+
+    instt_code = []
+    instt_code = request.POST.getlist("instt_code", [])
+
+    # Get basic instt details    
+    instt_details = Institute.objects.filter(instt_code__in = instt_code).values(
+        'instt_code', 'instt_name', 'address_1', 'address_2', 'address_3', 
+        'city', 'state', 'pin_code', 'Country', 'phone_number', 
+        'email_id', 'website', 'InstituteType_id', 'InstituteType__description')
+    
+    # Get programs
+    progs = InstitutePrograms.objects.filter(Institute_id__in = instt_code).values(
+        'Institute_id', 'Program_id')
+
+    # Get survey ranking
+    survey_rankings = InstituteSurveyRanking.objects.filter(
+        Institute_id__in = instt_code).order_by('Survey_id', 'year')
+    
+    # Get JEE opening/closing ranks
+    jee_ranks = InstituteJEERanks.objects.filter(Institute_id__in = instt_code).order_by(
+        'Program_id', 'year', 'StudentCategory_id', 'quota')
+    
+    # Cut_offs
+    cut_offs= InstituteCutOffs.objects.filter(Institute_id__in = instt_code)
+    
+    # Set Quotas and numbers
+    program_seats = InstituteProgramSeats.objects.filter(
+        Institute_id__in = instt_code).values('Program_id', 
+            'StudentCategory__description', 'quota', "number_of_seats").order_by(
+            'Program_id', 'StudentCategory__description', 'quota')
+    
+    # Entrance Exams
+    entrance_exams = InstituteEntranceExam.objects.filter(
+        Institute_id__in = instt_code).values('year', 'EntranceExam_id', 'EntranceExam__description')
+    
+    
+    return render(request, 'NextSteps/institute_all_details.html', {    
+        'instt_details':instt_details,'progs':progs, 'survey_rankings':survey_rankings,
+        'jee_ranks':jee_ranks, 'cut_offs':cut_offs, 'program_seats':program_seats, 
+        'entrance_exams':entrance_exams})
+
+
+@login_required
+@subscription_active
+def compare_instts(request):
+
+    instt_code = []
+    instt_code = request.POST.getlist("selectedInsttCodes", [])
+
+    # Get basic instt details    
+    instt_details = Institute.objects.filter(instt_code__in = instt_code).values(
+        'instt_code', 'instt_name', 'city', 'state', 
+        'InstituteType_id', 'InstituteType__description')
+    
+    # Get programs
+    progs = InstitutePrograms.objects.filter(Institute_id__in = instt_code).values(
+        'Institute_id', 'Program_id')
+
+    # Get survey ranking
+    survey_rankings = InstituteSurveyRanking.objects.filter(
+        Institute_id__in = instt_code).order_by('Survey_id', 'year').order_by(
+            'year')
+        
+    ranking_years =  InstituteSurveyRanking.objects.values(
+        'year').distinct().order_by('year')
+
+    print(ranking_years)
+    
+    # Get JEE opening/closing ranks
+    jee_ranks = InstituteJEERanks.objects.filter(Institute_id__in = instt_code).order_by(
+        'Program_id', 'year', 'StudentCategory_id', 'quota')
+    
+    # Cut_offs
+    cut_offs= InstituteCutOffs.objects.filter(Institute_id__in = instt_code)
+    
+    # Entrance Exams
+    entrance_exams = InstituteEntranceExam.objects.filter(
+        Institute_id__in = instt_code).values('year', 'Institute_id', 
+            'EntranceExam_id', 'EntranceExam__description')
+    
+    
+    return render(request, 'NextSteps/compare_institutes.html', {    
+        'instt_details':instt_details,'progs':progs, 'survey_rankings':survey_rankings,
+        'jee_ranks':jee_ranks, 'cut_offs':cut_offs,'entrance_exams':entrance_exams,
+        'ranking_years':ranking_years})
+
+
 
 @login_required
 def SearchInstts(request):
@@ -291,6 +529,7 @@ def instituteTypeSearchResults(request):
         'instt_name', 'address_1', 'address_2', 'address_3', 'city', 'state', 
         'Country_id','pin_code', 'phone_number', 'email_id','website', 
         'InstituteType__description').order_by('Country','state','city')
+    
     
     insttcount = len(insttList)
 

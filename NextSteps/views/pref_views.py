@@ -40,7 +40,9 @@ def userPref(request):
     levelList = Level.objects.all()
     insttProgList = InstitutePrograms.objects.filter(Country__in=countryList, 
                 Discipline__in=disciplineList, Level__in=levelList,
-                Program__in=programList ).values('Institute__instt_name').order_by('Institute__instt_name')
+                Program__in=programList ).values('Institute__instt_name',
+                'Program_id')
+    insttList = insttProgList.distinct().values('Institute__instt_name').order_by('Institute__instt_name')
     stuCategoryList = StudentCategory.objects.values('description').order_by('description').distinct()
     
     # Get user id
@@ -52,27 +54,169 @@ def userPref(request):
     programUserList = ProgramUserPref.objects.filter(User__in=userid).values('Program__description').order_by('Program__description')
     levelUserList = LevelUserPref.objects.filter(User__in=userid).values('Level__level_name')
     insttUserList = InsttUserPref.objects.filter(User__in=userid).values('Institute__instt_name').order_by('Institute__instt_name').distinct()
+    
     stuUserCat = StudentCategoryUserPref.objects.filter(User__in=userid).values('StudentCategory__description').order_by('StudentCategory__description').distinct()
 
-    return render(request, 'NextSteps/userPrefs.html', {
+    return render(request, 'NextSteps/pref_setViewPrefs.html', {
         'countryList': countryList, 'disciplineList':disciplineList, 
         'levelList':levelList, 'programList':programList,
-        'insttProgList':insttProgList,
+        'insttProgList':insttProgList, 'insttList':insttList,
         'countryUserList':countryUserList, 'disciplineUserList':disciplineUserList,
         'programUserList':programUserList, 'stuUserCat':stuUserCat, 'stuCategoryList':stuCategoryList,
         'levelUserList':levelUserList, 'insttUserList':insttUserList })
+
+
+def getInsttsForProgs(request):
+    countryVals = request.GET.getlist('cntList', [])
+    disciplineVals = request.GET.getlist('discList', [])
+    levelVals = request.GET.getlist('lvlList', [])
+    programVals  = request.GET.getlist('progList[]', [])
+
+    # There might be white spaces in the array items. Let's remove those
+    cntList = []
+    for c in countryVals:
+        c = c.strip()
+        cntList.append(c)        
+
+    discList = []
+    for d in disciplineVals:
+        d = d.strip()
+        discList.append(d)        
+
+    lvlList = []
+    for l in levelVals:
+        l = l.strip()
+        lvlList.append(l)        
+
+    progList = []
+    for p in programVals:
+        p = p.strip()
+        progList.append(p)        
+
+
+    # Get country, discipline and level Codes
+    countryCodes = Country.objects.filter(country_name__in = cntList).values(
+            'country_code')
+    disciplineCodes = Discipline.objects.filter(description__in = discList).values(
+            'discipline_code')
+    levelCodes = Level.objects.filter(level_name__in = lvlList).values(
+            'level_code')
+    
+    if progList:
+        insttList = InstitutePrograms.objects.filter(Country__in=countryCodes, 
+                    Discipline__in=disciplineCodes, Level__in=levelCodes,
+                    Program_id__in=progList ).values(
+                        'Institute__instt_name').distinct().order_by('Institute__instt_name')
+    else:
+        insttList = InstitutePrograms.objects.filter(Country__in = countryCodes, 
+                    Discipline__in=disciplineCodes, Level__in=levelCodes).values(
+                        'Institute__instt_name').distinct().order_by('Institute__instt_name')
+        
+    return JsonResponse(list(insttList), safe=False)    
+    
+
+def getProgsForInstts(request):
+    countryVals = request.GET.getlist('cntList', [])
+    disciplineVals = request.GET.getlist('discList', [])
+    levelVals = request.GET.getlist('lvlList', [])
+    insttNmVals  = request.GET.getlist('insttList[]', [])
+
+    # There might be white spaces in the array items. Let's remove those
+    cntList = []
+    for c in countryVals:
+        c = c.strip()
+        cntList.append(c)        
+
+    discList = []
+    for d in disciplineVals:
+        d = d.strip()
+        discList.append(d)        
+
+    lvlList = []
+    for l in levelVals:
+        l = l.strip()
+        lvlList.append(l)        
+
+    insttnmList = []
+    for i in insttNmVals:
+        i = i.strip()
+        insttnmList.append(i)        
+
+
+    # Get country, discipline and level Codes
+    countryCodes = Country.objects.filter(country_name__in = cntList).values(
+            'country_code')
+    disciplineCodes = Discipline.objects.filter(description__in = discList).values(
+            'discipline_code')
+    levelCodes = Level.objects.filter(level_name__in = lvlList).values(
+            'level_code')
+    
+    if insttnmList:
+        progList = InstitutePrograms.objects.filter(Country__in=countryCodes, 
+                    Discipline__in=disciplineCodes, Level__in=levelCodes,
+                    Institute__instt_name__in=insttnmList).values(
+                        'Program_id').distinct().order_by('Program_id')
+    else:
+        progList = InstitutePrograms.objects.filter(Country__in=countryCodes, 
+                    Discipline__in=disciplineCodes, Level__in=levelCodes).values(
+                        'Program_id').distinct().order_by('Program_id')
+                        
+    return JsonResponse(list(progList), safe=False)    
+
 
 @login_required
 @subscription_active
 def userPrefConfirm(request):
 
+
+    countryVals = request.GET.getlist('countryList', [])
+    disciplineVals = request.GET.getlist('disciplineList', [])
+    levelVals = request.GET.getlist('levelList', [])
+    stuCatVals = request.GET.getlist('stuCategoryList', [])
+    programVals  = request.GET.getlist('prefProgramsList', [])
+    insttVals = request.GET.getlist('prefInstitutesList', [])
+
+    # There might be white spaces in the array items. Let's remove those
+    cntList = []
+    for c in countryVals:
+        c = c.strip()
+        cntList.append(c)        
+
+    discList = []
+    for d in disciplineVals:
+        d = d.strip()
+        discList.append(d)        
+
+    lvlList = []
+    for l in levelVals:
+        l = l.strip()
+        lvlList.append(l)        
+
+    stuCatList = []
+    for s in stuCatVals:
+        s = s.strip()
+        stuCatList.append(s)        
+
+    insttnmList = []
+    for i in insttVals:
+        i = i.strip()
+        insttnmList.append(i)        
+
+    progList = []
+    for p in programVals:
+        p = p.strip()
+        progList.append(p)        
+
+    
+    """
     countryVals = request.GET.get('CountryValues', 'Blank').split(";")
     disciplineVals = request.GET.get('DisciplineValues', 'Blank').split(";")
     levelVals = request.GET.get('LevelValues', 'Blank').split(";")
     programVals = request.GET.get('ProgramValues', 'Blank').split(";")
     insttVals = request.GET.get('InsttValues', 'Blank').split(";")
     stuCatVals = request.GET.get('stuCatValues', 'Blank').split(";")
-    
+    """
+
     ############################################################################
     # Currently on "India" as country, "Engineering" as Discipline and 
     # "Undergraduation" as Level ae supported by NextSteps
@@ -82,26 +226,17 @@ def userPrefConfirm(request):
     levelVals = ["Undergraduation"]
     ############################################################################
 
-    print(countryVals)
-    print(disciplineVals)
-    print(levelVals)
-    print(programVals)
-    print(insttVals)
-    print(stuCatVals)
-
-
-
             
     # Get the user object for the logged user
     usr = get_object_or_404(User, username=request.user)
     
     # Get the Querysets for the various preferences 
-    cnt = Country.objects.filter(country_name__in=countryVals)
-    disc = Discipline.objects.filter(description__in=disciplineVals)
-    level = Level.objects.filter(level_name__in=levelVals)
-    prog = Program.objects.filter(description__in=programVals)
-    instt = Institute.objects.filter(instt_name__in=insttVals)
-    stuCat = StudentCategory.objects.filter(description__in=stuCatVals)
+    cnt = Country.objects.filter(country_name__in=cntList)
+    disc = Discipline.objects.filter(description__in=discList)
+    level = Level.objects.filter(level_name__in=lvlList)
+    prog = Program.objects.filter(description__in=progList)
+    instt = Institute.objects.filter(instt_name__in=insttnmList)
+    stuCat = StudentCategory.objects.filter(description__in=stuCatList)
     
     # Get Instt, prog and Student Category codes
     insttCode = instt.values("instt_code")
@@ -498,11 +633,11 @@ def ifThenAnalysis(request):
     progList = progList.distinct().order_by('Program__description') 
 
         
-    insttProgList = InstitutePrograms.objects.values('Institute__instt_name', 'Institute__InstituteType').filter(
+    insttList = InstitutePrograms.objects.values('Institute__instt_name', 'Institute__InstituteType').filter(
         Q( Institute__InstituteType_id = "IIT") | Q(Institute__InstituteType_id = "NIT")
         ).values('Institute__instt_name')
     
-    insttProgList = insttProgList.distinct().order_by('Institute__instt_name')
+    insttList = insttList.distinct().order_by('Institute__instt_name')
     
     stateList = InstitutePrograms.objects.values('Institute__state').filter(
         Q( Institute__InstituteType_id = "IIT") | Q(Institute__InstituteType_id = "NIT")
@@ -510,17 +645,17 @@ def ifThenAnalysis(request):
 
     if countryList.exists() :
         progList = progList.filter(Country__in=countryList).values('Program__description').distinct().order_by('Program__description')
-        insttProgList = insttProgList.filter(Country__in=countryList).values('Institute__instt_name',  
+        insttList = insttList.filter(Country__in=countryList).values('Institute__instt_name',  
                             'Institute__InstituteType').distinct().order_by('Institute__instt_name')
                 
     if disciplineList.exists() :
         progList = progList.filter(Discipline__in=disciplineList).values('Program__description').distinct().order_by('Program__description')
-        insttProgList = insttProgList.filter(Discipline__in=disciplineList).values('Institute__instt_name',  
+        insttList = insttList.filter(Discipline__in=disciplineList).values('Institute__instt_name',  
                             'Institute__InstituteType').distinct().order_by('Institute__instt_name')
 
     if levelList.exists() :
         progList = progList.filter(Level__in=levelList).values('Program__description').distinct().order_by('Program__description')
-        insttProgList = insttProgList.filter(Level__in=levelList).values('Institute__instt_name',  
+        insttList = insttList.filter(Level__in=levelList).values('Institute__instt_name',  
                             'Institute__InstituteType').distinct().order_by('Institute__instt_name')
 
 
@@ -530,52 +665,56 @@ def ifThenAnalysis(request):
     insttUserList = InsttUserPref.objects.filter(User__in=userid).values(
         'Institute__instt_name',  'Institute__InstituteType').distinct().order_by('Institute__instt_name')
     
-    return render(request, 'NextSteps/ifThenAnalysis.html', 
+    return render(request, 'NextSteps/seat_chances_assessment.html', 
             {'programUserList':programUserList, 'insttUserList':insttUserList,
             'countryUserList':countryUserList, 'disciplineUserList':disciplineUserList,
             'levelUserList':levelUserList, 'progList':progList, 
-            'insttProgList':insttProgList, 'stateList':stateList  })
+            'insttList':insttList, 'stateList':stateList  })
     
     
 @login_required
 @subscription_active
 def ifThenAnalysisResults(request):
 
-    optradio = request.POST.get('optradio', 'BLANK')
-    optradio1 = request.POST.get('optradio1', 'BLANK')
-    rankFromMAINVal = request.POST.get('from', 'BLANK')
-    rankToMAINVal = request.POST.get('to', 'BLANK')
-    rankFromADVVal = request.POST.get('from1', 'BLANK')
-    rankToADVVal = request.POST.get('to1', 'BLANK')
-    progUserVals  = request.POST.getlist('progUserList', [])
-    insttUserVals = request.POST.getlist('insttUserList', [])
+    use_prefRadio = request.POST.get('use_prefRadio', 'BLANK')
+    chooseProgsInstts = request.POST.get('chooseProgsInstts', 'BLANK')
+    rankFrom= request.POST.get('rankFrom', 'BLANK')
+    rankTo = request.POST.get('rankTo', 'BLANK')
+    mainAdvRadio = request.POST.get('mainAdvRadio', 'BLANK')
+    homestate = request.POST.get('homestate', 'BLANK')
+    #rankFromADVVal = request.POST.get('from1', 'BLANK')
+    #rankToADVVal = request.POST.get('to1', 'BLANK')
+    #progUserVals  = request.POST.getlist('progUserList', [])
+    #insttUserVals = request.POST.getlist('insttUserList', [])
     progVals  = request.POST.getlist('progList', [])
     insttVals = request.POST.getlist('insttList', [])
-    button = request.POST.get('submitbuttonMAIN', 'BLANK')
-    homestate = request.POST.get('homestate', 'BLANK')
-    button1 = request.POST.get("submitbuttonADV", 'BLANK')
+    #button = request.POST.get('submitbuttonMAIN', 'BLANK')
+    #button1 = request.POST.get("submitbuttonADV", 'BLANK')
 
     # Get the student Category
     userid = User.objects.filter(username = request.user).values('id')
     stuUserCat = StudentCategoryUserPref.objects.filter(User_id__in = userid)
-    
+ 
     category = ''
     for c in stuUserCat:
         category = c.StudentCategory_id
     
     stuCat = StudentCategory.objects.filter(category = category)
     
-    if optradio == "ON":
+    import pdb
+    pdb.set_trace()
+    
+    if use_prefRadio == "ON":
         useUserPrefs = True
-        progs = progUserVals
-        instts = insttUserVals
+    #    progs = progUserVals
+    #    instts = insttUserVals
         #progs = Program.objects.filter(description__in=progUserVals)
         #instts = Institute.objects.filter(instt_name__in=insttUserVals)
         
-    if optradio == 'OFF':
-        useUserPrefs = False
-        progs = progVals
-        instts = insttVals
+    #if optradio == 'OFF':
+    #    useUserPrefs = False
+    #    progs = progVals
+    #    instts = insttVals
 
     # Get user preferences. JEE is India specific and The Institute JEE Ranking table doesn't have Country,
     # hence not using the Country preference.

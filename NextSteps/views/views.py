@@ -27,6 +27,13 @@ from NextSteps.models import Country, Discipline, Level, Program, InstituteProgr
 from NextSteps.models import CountryUserPref, DisciplineUserPref, LevelUserPref
 from NextSteps.models import ProgramUserPref, InsttUserPref, PromotionCode
 from NextSteps.models import UserAccount, UserProfile
+from django.db.models import Max, Min
+from NextSteps.models import Institute, InstituteType, InstituteSurveyRanking
+from NextSteps.models import InstitutePrograms, InstituteProgramSeats
+from NextSteps.models import Country, Discipline, Level, Program
+from NextSteps.models import InstituteSurveyRanking
+from NextSteps.models import StudentCategory, EntranceExam
+
 
 from .common_views import *
 
@@ -66,8 +73,23 @@ def index(request):
             SUBS_MENU = "SHOW_SUBS_MENU"
     
     au = request.user.is_authenticated
+    
+    url = 'NextSteps/NextSteps_base.html'
+    # Redirect based on the user category - anonymous, signed-up or subscribed
+        
+    if request.user.is_anonymous:
+        url = 'NextSteps/NextSteps_base.html'
+    else:
+        if activeSubs:
+            url = 'NextSteps/subscribed_user_home.html'
+        else:
+            url = 'NextSteps/signedup_user_home.html'
+            
+    
     if au == False: 
-        response = render(request, 'NextSteps/NextSteps.html', {'REG_MENU':REG_MENU,
+        #response = render(request, 'NextSteps/NextSteps_base.html', {'REG_MENU':REG_MENU,
+        #            'SUBS_MENU':SUBS_MENU})
+        response = render(request, url, {'REG_MENU':REG_MENU,
                     'SUBS_MENU':SUBS_MENU})
     else:
         
@@ -76,17 +98,88 @@ def index(request):
         if showReg == 'YES' or showReg == '':
             if regPending:
                 response =  render(request, 'NextSteps/checkSubsWithUser.html')
-            else:        
-                response = render(request, 'NextSteps/NextSteps.html', {'REG_MENU':REG_MENU,
-                            'SUBS_MENU':SUBS_MENU})
-        else:
-            response = render(request, 'NextSteps/NextSteps.html', {'REG_MENU':REG_MENU,
+            else:     
+                if au == False:   
+                    #response = render(request, 'NextSteps/NextSteps_base.html', {'REG_MENU':REG_MENU,
+                    #                'SUBS_MENU':SUBS_MENU})
+                    response = render(request, url, {'REG_MENU':REG_MENU,
+                                    'SUBS_MENU':SUBS_MENU})
+                else:
+                    #return redirect('loggedInHome')
+                    #response = render(request, 'NextSteps/NextSteps_base.html', {'REG_MENU':REG_MENU,
+                    #    'SUBS_MENU':SUBS_MENU})
+                    response = render(request, url, {'REG_MENU':REG_MENU,
                         'SUBS_MENU':SUBS_MENU})
+                
+        else:
+            if au == False:   
+                #return redirect('loggedInHome')
+                #response = render(request, 'NextSteps/NextSteps_base.html', {'REG_MENU':REG_MENU,
+                #        'SUBS_MENU':SUBS_MENU})
+                response = render(request, url, {'REG_MENU':REG_MENU,
+                        'SUBS_MENU':SUBS_MENU})
+            else:
+                    #return redirect('loggedInHome')
+                    #response = render(request, 'NextSteps/NextSteps.html', {'REG_MENU':REG_MENU,
+                    #    'SUBS_MENU':SUBS_MENU})
+                    response = render(request, url, {'REG_MENU':REG_MENU,
+                        'SUBS_MENU':SUBS_MENU})
+                
+    return response
+
+
+def loggedIn_index(request):
+    regPending = False
+    activeSubs = False
+
+
+    # Check if it's a registered user
+    if isUserRegistered(request):
+        regPending = False
+        # If user is registered then Check if subscription is active
+        if isSubsActive(request):
+            activeSubs = True
+        else:
+            activeSubs = False
+    else:
+        regPending  = True
+        
+    if regPending == True:
+        REG_MENU = "SHOW_REG_MENU"
+        SUBS_MENU = "NOSHOW_SUBS_MENU"
+    else:
+        if activeSubs:
+            SUBS_MENU = "NOSHOW_SUBS_MENU"
+            REG_MENU = "NOSHOW_REG_MENU"
+        else:
+            REG_MENU = "NOSHOW_REG_MENU"
+            SUBS_MENU = "SHOW_SUBS_MENU"
+
+    # Get the values for the dropdown filters
+    countryList = Country.objects.all()
+    disciplineList = Discipline.objects.all()
+    levelList = Level.objects.all()
+    instt_StateList = Institute.objects.values('state').distinct().order_by('state')
+    instt_CityList = Institute.objects.values('city').distinct().order_by('city') 
+    instt_typeList = InstituteType.objects.values('description').order_by('description')
+    programList = Program.objects.values('description').order_by('description')
+    entranceExam = EntranceExam.objects.all()
+    rank_range = InstituteSurveyRanking.objects.values('year').distinct().annotate(max_rank = Max('rank'), min_rank = Min('rank'));
+    
+
+    response = render(request, 'NextSteps/signedup_user_home.html', {'REG_MENU':REG_MENU,
+            'SUBS_MENU':SUBS_MENU,
+            'countryList':countryList, 'disciplineList':disciplineList,
+            'levelList' :levelList, 'instt_StateList':instt_StateList,
+            'instt_CityList':instt_CityList, 'instt_typeList':instt_typeList,
+            'programList':programList, 'entranceExam':entranceExam,
+            'rank_range':rank_range})
+
     return response
 
 
 def NextStepslogin(request):
-
+    
     if request.method == 'POST':
     
         username = request.POST['username'] 
@@ -102,11 +195,12 @@ def NextStepslogin(request):
             if not request.POST.get('remember', None):
                 request.session.set_expiry(0)   
                        
+            #return redirect('loggedInHome')
             return redirect('index')
         
         else :
             
-            return render(request, 'NextSteps/login.html', {
+            return render(request, 'NextSteps/login_allauth.html', {
                 'username' : request.user.username, 'invalid' : 'invalid'})
     else:
         return render(request, 'NextSteps/login_allauth.html')
@@ -433,5 +527,5 @@ def referNextSteps_confirm(request):
     
     return render(request, 'NextSteps/referNextSteps_confirm.html')
 
-    
+ 
     

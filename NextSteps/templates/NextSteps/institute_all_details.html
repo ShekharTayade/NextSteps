@@ -1,0 +1,498 @@
+<!-- Extend the logged in user home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps_base.html' %}
+
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+{% endblock slide-show %}
+
+<!-- Override news-ad block from parent -->
+{% block news-ad %}
+{% endblock news-ad %}
+
+<!-- Override features block -->
+{% block features %}
+<div class="showcase block block-border-bottom-grey">
+    <div class="container">
+    
+        <h3 class="block-title">Institute Details</h3>
+
+        {% autoescape off %}
+        {% for il in instt_details%}
+            <table id="insttTbl" class="table custom-tbl" 
+                data-toggle="table"
+                data-minimum-count-columns="2"
+                data-show-footer="false"
+                data-row-style="rowStyle"
+                data-classes="table table-no-bordered">
+        
+                <thead>
+                    <tr>                        
+                        <th style="width:10%" data-field="state" data-visible="false"></th>
+                        <th style="width:10%" data-field="city" data-visible="false"></th>
+                        <th style="width:10%" data-field="instt_code" data-visible="false"></th>
+                        <th style="width:70%" data-field="instt" data-sortable="false"></th>
+                        <th style="width:30%" data-field="oth" data-sortable="false"></th>
+                        <th style="width:0%" data-field="rank" data-visible="false"></th>
+                    </tr>
+                </thead>
+
+                <tbody>            
+                
+                    <tr>
+                        <td id = "state" name="state">{{il.state}}</td>
+                        <td id = "city" name="city">{{il.city}}</td>
+                        <td id = "instt_code" name="instt_code">{{il.instt_code}}</td>
+                        <td class = "pull-left" id = "instt" name="instt"> <strong>{{il.instt_name}}</strong>
+                    
+                            <br />{{ il.address_1 }} 
+                            
+                            {% if il.address_2 %}
+                                &nbsp;{{ il.address_2 }}<br />
+                            {% endif %}
+                            
+                            {% if il_.address_3 %}
+                                &nbsp;{{ il.address_3 }}<br />
+                            {% endif %}
+                            
+                            {{ il.city }} &nbsp; {{ il.state }} &nbsp; {{ il.pin_code }} &nbsp;
+                            
+                            {{ il.country }} <br />
+                            {% if il.phone_number %}
+                               <i class="fa fa-fw fa-phone-square"></i>&nbsp; {{il.phone_number}}&nbsp; &nbsp;
+                            {% endif %}   
+                            {% if il.email_id %}
+                                <i class="fa fa-fw fa-paper-plane"></i>&nbsp; {{ il.email_id }};
+                            {% endif %}
+                            <br />
+                            {% if il.website %}
+                                <i class="fa fa-globe"></i> &nbsp; <a href = "{{ il.website }}"> {{ il.website }} </a>
+                            {% endif %}
+
+                        </td>
+
+
+            
+                        <td id = "oth" name="oth"> <strong>Type:</strong> &nbsp;{{ il.InstituteType__description }}<br /> 
+                            {% for iRank in survey_rankings %}
+                                {% if iRank.Institute_id == il.instt_code %}
+                                    <strong>Rank: &nbsp;</strong><span class="label label-primary">{{ iRank.rank }}</span>&nbsp; <small>({{iRank.Survey_id}}, &nbsp;{{iRank.year }})</small>
+                                {% endif %}
+                            {% endfor %}    
+                        </td>
+                        <td id = "rank" name="rank">{{iRank.rank}}</td>
+                    </tr>
+                </tbody>
+            </table>                   
+        
+            
+            
+            <div class="panel-group" id="accordion">
+
+
+                {% if survey_rankings %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class = "accordian-head" data-toggle="collapse" data-parent="#accordion" href="#survey_rank">Survey Ranking
+                                    <i id = "survey_caret"  class = "fa fa-caret-down pull-right" style="font-size:24px"></i>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="survey_rank" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class = row>
+                                    <table id="surveyTbl" class="table custom-tbl" 
+                                        data-toggle="table"
+                                        data-show-footer="false"
+                                        data-row-style="rowStyle"
+                                        data-classes="table table-no-bordered">
+                                        <thead>
+                                            <tr>                        
+                                                <th style="width:70%" data-field="survey">Survey</th>
+                                                <th style="width:20%" data-field="year" data-sortable="false">Year</th>
+                                                <th style="width:10%" data-field="rank" data-sortable="false">Rank</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>            
+                                            {% for s in survey_rankings %}
+                                                <tr>
+                                                    <td>{{s.Survey_id}}</td>
+                                                    <td>{{s.year}}</td>
+                                                    <td>{{s.rank}}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+
+
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class = "accordian-head" data-toggle="collapse" data-parent="#accordion" href="#prog">Program
+                            <i id = "progCaret" class = "fa fa-caret-down pull-right" style = "font-size:24px"></i>
+                        </a>
+                        </h4>
+                    </div>
+                    <div id="prog" class="panel-collapse collapse">
+                        <div class="panel-body" style = "padding:10px">
+                            <div class = row>
+                                {% for s in progs %}
+                                <div class = "col-xs-3">
+                                    <span ><i class="fa fa-check"></i>&nbsp;{{ s.Program_id }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+  
+  
+                {% if program_seats %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class = "accordian-head" data-toggle="collapse" data-parent="#accordion" href="#prog_seats">Program Seats
+                                <i id = "progseats_caret"  class = "fa fa-caret-down pull-right" style="font-size:24px"></i></a>
+                            </h4>
+                        </div>
+                        <div id="prog_seats" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class = row>
+                                    <table id="progseatsTbl" class="table table-hover table-expandable" 
+                                        data-toggle="table"
+                                        data-show-footer="false"
+                                        data-row-style="rowStyle"
+                                        data-classes="table table-no-bordered">
+                                        <thead>
+                                            <tr>                        
+                                                <th style="width:100%"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>        
+                                            <!-- Regroup data to display by Program_id -->
+                                            {% regroup program_seats by Program_id as progSeats_list %}    
+
+                                            {% for Prog in progSeats_list %}
+                                            <tr>
+                                                <td colspan="2"><strong>{{ Prog.grouper }}</strong>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <div style = "width:50%">
+                                                        <table class="table" 
+                                                            data-toggle="table-bordered">
+                                                            <thead>
+                                                                <tr>                        
+                                                                    <th style="width:65%">Category</th>
+                                                                    <th style="width:20%">Quota</th>
+                                                                    <th style="width:15%">Seats</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {% for program in Prog.list %}
+                                                                <tr>
+                                                                    <td>{{ program.StudentCategory__description }}</td>
+                                                                    <td>{{ program.quota }}</td>
+                                                                    <td> {{ program.number_of_seats }}</td>
+                                                                </tr>
+                                                                {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>               
+
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+
+                {% if jee_ranks %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class = "accordian-head" data-toggle="collapse" data-parent="#accordion" href="#jee_ranks">JEE Opening/Closing Ranks
+                                    <i id = "jee_caret"  class = "fa fa-caret-down pull-right" style="font-size:24px"></i>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="jee_ranks" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class = row>
+                                        <table id="jeeTbl" class="table table-hover table-expandable table-sticky-header" 
+                                            data-toggle="table"
+                                            data-show-footer="false"
+                                            data-row-style="rowStyle"
+                                            data-classes="table table-no-bordered">
+                                    
+                                            <thead>
+                                                <tr>                        
+                                                    <th style="width:100%" data-field="Program"></th>
+                                                </tr>
+<!--                                                <tr>                        
+                                                    <th style="width:5%" data-field="Year" >Year</th>
+                                                    <th style="width:55%" data-field="Program" data-sortable="false">Program</th>
+                                                    <th style="width:20%" data-field="Category" data-sortable="false">Category</th>
+                                                    <th style="width:10%" data-field="Quota" data-sortable="false">Quota</th>
+                                                    <th style="width:5%" data-field="Opening Rank" data-sortable="false">Opening Rank</th>
+                                                    <th style="width:5%" data-field="Closing Rank" data-sortable="false">Closing Rank</th>
+                                                </tr> -->
+                                            </thead>
+                                            <tbody>          
+                                            
+                                            <!-- Regroup data to display by Program_id -->
+                                            {% regroup jee_ranks by Program_id as prog_list %}    
+
+                                            {% for Prog in prog_list %}
+                                            <tr>
+                                                <td colspan="2"><strong>{{ Prog.grouper }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <div style = "width:70%">
+
+                                                    <table class="table" 
+                                                        data-toggle="table-bordered">
+                                                        <thead>
+                                                            <tr>                        
+                                                                <th style="width:5%" data-field="Year" >Year</th>
+                                                                <th style="width:20%" data-field="Category" data-sortable="false">Category</th>
+                                                                <th style="width:10%" data-field="Quota" data-sortable="false">Quota</th>
+                                                                <th style="width:5%" data-field="Opening Rank" data-sortable="false">Opening Rank</th>
+                                                                <th style="width:5%" data-field="Closing Rank" data-sortable="false">Closing Rank</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>        
+                                                            {% for program in Prog.list %}
+                                                            <tr>
+                                                                <td name="year">{{program.year}}</td>
+                                                                <td name="category">{{program.StudentCategory_id}}</td>
+                                                                <td name="quota">{{program.quota}}</td>
+                                                                <td name="opening">{{program.opening_rank}}</td>
+                                                                <td name="closing">{{program.closing_rank}}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+
+
+                {% if cut_offs %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class = "accordian-head" data-toggle="collapse" data-parent="#accordion" href="#cutoff"><Cut-Offs
+                                    <i id = "cutoff_caret"  class = "fa fa-caret-down pull-right" style="font-size:24px"></i>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="cutoff" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class = row>
+                                        <table id="cutoffTbl" class="table table-hover table-expandable table-sticky-header" 
+                                            data-toggle="table"
+                                            data-show-footer="false"
+                                            data-row-style="rowStyle"
+                                            data-classes="table table-no-bordered">
+                                    
+                                            <thead>
+                                                <tr>                        
+                                                    <th style="width:100%" data-field="Program"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>          
+                                            
+                                            <!-- Regroup data to display by Program_id -->
+                                            {% regroup cut_offs by Program_id as prog_list %}    
+
+                                            {% for Prog in prog_list %}
+                                            <tr>
+                                                <td colspan="2"><strong>{{ Prog.grouper }}</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <div style = "width:70%">
+
+                                                    <table class="table" 
+                                                        data-toggle="table-bordered">
+                                                        <thead>
+                                                            <tr>                        
+                                                                <th style="width:5%" data-field="Year" >Year</th>
+                                                                <th style="width:20%" data-field="Category" data-sortable="false">Category</th>
+                                                                <th style="width:10%" data-field="Quota" data-sortable="false">Quota</th>
+                                                                <th style="width:5%" data-field="Opening Rank" data-sortable="false">Cut Off</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>        
+                                                            {% for program in Prog.list %}
+                                                            <tr>
+                                                                <td name="year">{{program.year}}</td>
+                                                                <td name="category">{{program.StudentCategory_id}}</td>
+                                                                <td name="quota">{{program.quota}}</td>
+                                                                <td name="closing">{{program.cutOff}}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+
+
+
+                {% if entrance_exams %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a class = "accordian-head" data-toggle="collapse" data-parent="#accordion" href="#entrance">Entrance Exams
+                                    <i id = "entrance_caret"  class = "fa fa-caret-down pull-right" style="font-size:24px"></i>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="entrance" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class = row>
+                                        <table id="entranceTbl" class="table table-wrap-cols" 
+                                            data-classes="table table-no-bordered">
+                                    
+                                            <thead>
+                                                <tr>                        
+                                                    <th style="width:10%" data-field="Year">Year</th>
+                                                    <th style="width:20%" data-field="Entrance">Entrance Exam</th>
+                                                    <th style="width:85%" data-field="Desc">Description</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>          
+                                                {% for ent in entrance_exams%}
+                                                    <tr>
+                                                        <td name="year">{{ent.year}}</td>
+                                                        <td name="Entrance">{{ent.EntranceExam_id}}</td>
+                                                        <td name="Desc">{{ent.EntranceExam__description}}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                    </table>
+                                            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+
+            </div>  <!-- Accordian End -->  
+  
+        {% endfor %}
+        {% endautoescape %}
+    </div>
+</div>
+
+<script>         
+     $(document).ready(function(){
+      $("#prog").on("hide.bs.collapse", function(){
+        $("#progCaret").removeClass("fa fa-caret-up pull-right").addClass("fa fa-caret-down pull-right");
+      });
+      $("#prog").on("show.bs.collapse", function(){
+        $("#progCaret").removeClass("fa fa-caret-down pull-right").addClass("fa fa-caret-up pull-right");
+      });
+      
+      $("#prog_seats").on("hide.bs.collapse", function(){
+        $("#progseats_caret").removeClass("fa fa-caret-up pull-right").addClass("fa fa-caret-down pull-right");
+      });
+      $("#prog_seats").on("show.bs.collapse", function(){
+        $("#progseats_caret").removeClass("fa fa-caret-down pull-right").addClass("fa fa-caret-up pull-right");
+      });
+      
+      $("#jee_ranks").on("hide.bs.collapse", function(){
+        $("#jee_caret").removeClass("fa fa-caret-up pull-right").addClass("fa fa-caret-down pull-right");
+      });
+      $("#jee_ranks").on("show.bs.collapse", function(){
+        $("#jee_caret").removeClass("fa fa-caret-down pull-right").addClass("fa fa-caret-up pull-right");
+      });
+
+      $("#survey_rank").on("hide.bs.collapse", function(){
+        $("#survey_caret").removeClass("fa fa-caret-up pull-right").addClass("fa fa-caret-down pull-right");
+      });
+      $("#survey_rank").on("show.bs.collapse", function(){
+        $("#survey_caret").removeClass("fa fa-caret-down pull-right").addClass("fa fa-caret-up pull-right");
+      });
+ 
+      $("#cutoff").on("hide.bs.collapse", function(){
+        $("#cutoff_caret").removeClass("fa fa-caret-up pull-right").addClass("fa fa-caret-down pull-right");
+      });
+      $("#cutoff").on("show.bs.collapse", function(){
+        $("#cutoff_caret").removeClass("fa fa-caret-down pull-right").addClass("fa fa-caret-up pull-right");
+      });
+
+      $("#entrance").on("hide.bs.collapse", function(){
+        $("#entrance_caret").removeClass("fa fa-caret-up pull-right").addClass("fa fa-caret-down pull-right");
+      });
+      $("#entrance").on("show.bs.collapse", function(){
+        $("#entrance_caret").removeClass("fa fa-caret-down pull-right").addClass("fa fa-caret-up pull-right");
+      });
+
+    });
+</script>
+  
+
+<script> 
+     function rowStyle(row, index) {
+       return {
+         classes: 'text-nowrap another-class',
+         css: {"border": "0px", "font-size": "12px"}
+       };
+     }
+     
+ </script>    
+
+     
+{% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->
+

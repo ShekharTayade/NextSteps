@@ -17,14 +17,12 @@
  -->
 
 <!-- Extend the home page to keep the same styling for header and footer sections. -->
-{% extends 'NextSteps/NextSteps.html' %}
+{% extends 'NextSteps/NextSteps_base.html' %}
 
 {% load static %}
 
 <!-- Override slide-show block from parent -->
 {% block slide-show %}
-    <div id="highlighted-slider" class="container">
-    </div>
 
 {% endblock slide-show %}
 

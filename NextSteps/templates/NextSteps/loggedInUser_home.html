@@ -1,0 +1,277 @@
+
+<!-- Extend the logged in user home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps_home.html' %}
+{% load static %}
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+
+
+{% endblock slide-show %}
+
+<!-- Override features block -->
+
+    {% block features %}
+
+
+    <div class="showcase block block-border-bottom-grey">
+        <div class="container">
+    
+            <div class ="userHome">
+
+ <!--           
+                <nav class="navbar navbar-default sidebar" role="navigation">
+                    <div class="container-fluid">
+                    <div class="navbar-header">
+                      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                      </button>      
+                    </div>
+                    <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+                      <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Location<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+                        <li class="active"><a href="#">Programs<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
+                        <li><a href="#">Institute Type<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-th-list"></span></a></li>        
+                        <li><a href="#">Institute Survey Rank<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-tags"></span></a></li>
+                        <li><a href="#">Entrance Exam<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-tags"></span></a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </nav>
+-->
+
+                <div class ="row" style = "background-color: #ff5821 !important; border:2px; padding:15px;  display:table; width:100%">
+                
+                    <div class = "" style=" display: table-cell;" >
+                    </div>
+                    <div class = "" style = "background-color: #ffffff; display: table-cell; padding :15px">
+                        <span style = "font-size:16px;"> <strong>Hi {{user.username}}!</strong></span>
+                        <br />
+                        Welcome to the NextSteps. <br />
+                        We can help you get started in your quest for best institute.
+                    </div>
+                    
+                    <div class = "" style=" display: table-cell;" >
+                        <br />&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                        <br />&nbsp;
+                    </div>
+                    <div class = "" style = "color:#000000; display: table-cell;">
+                        <li style = "margin-left:30px;">
+                            <strong><a href="#" style = "color:white !important; font-size:14px; ">Search Institutes</a></strong>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                            <!-- <small>&emsp;&emsp;Search institutes using various parameters</small> -->
+                        </li>     
+                        <li style = "margin-left:30px;">
+                            <strong><a href="#" style = "color:white !important; font-size:14px; ">Set Preferences</a></strong>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                            <!-- <small>&emsp;&emsp;Set/View your preferences so you can get the focused information</small> -->
+                        </li>
+                        <li style = "margin-left:30px;">
+                            <strong><a href="#" style = "color:white !important; font-size:14px; ">Programs</a></strong>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                            <!-- <small>&emsp;&emsp;Take look at various programs to choose from</small> -->
+                        </li>
+                        <li style = "margin-left:30px;">
+                            <strong><a href="#" style = "color:white !important; font-size:14px; ">Entrance Exams</a></strong>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                            <!-- <small>&emsp;&emsp;Take look at various entrance exams to may want to prepare for</small> -->
+                        </li>   
+                        <li style = "margin-left:30px;">
+                            <strong><a href="#" style = "color:white !important; font-size:14px; ">Survey Ranking</a></strong>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                            <!-- <small>&emsp;&emsp;Survey ranking and information on various institutes</small> -->
+                        </li>        
+                        <li style = "margin-left:30px;">
+                            <strong><a href="#" style = "color:white !important; font-size:14px; ">JEE Ranks</a></strong>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                            <!-- <small>&emsp;&emsp;Check out the opening, closing JEE ranks for various programs and institutes</small> -->
+                        </li>        
+                        
+                    </div>
+                </div>
+
+
+
+
+                <form id ="filterForm" action = "{% url 'instt_details' %}" method='post' >
+                {% csrf_token %}
+
+                    <div style="display:none;" class="row">
+                    
+                        <div class = "col-sm-3">
+                            <div class="form-group">
+                                <label for="countryList">Country</label>
+                                <select class="form-control" id="countryList" size ="10" multiple="multiple" name="countryList">
+                                    {% for i in countryList %}
+                                        <option> {{i.country_code}} </option>
+                                    {% endfor %}    
+                                </select>           
+                            </div>                      
+                        </div>
+                        <div class = "col-sm-3">
+                            <div class="form-group">
+                                <label for="countryList">Discipline</label>
+                                <select class="form-control" id="disciplineList" size ="10" multiple="multiple" name="disciplineList">
+                                    {% for i in disciplineList %}
+                                        <option> {{i.discipline_code}} </option>
+                                    {% endfor %}    
+                                </select>           
+                            </div>                      
+                        </div>
+                        <div class = "col-sm-3">
+                            <div class="form-group">
+                                <label for="countryList">Level</label>
+                                <select class="form-control" id="levelList" size ="10" multiple="multiple" name="levelList">
+                                    {% for i in levelList %}
+                                        <option> {{i.level_code}} </option>
+                                    {% endfor %}    
+                                </select>           
+                            </div>                      
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                    
+                        <div class = "col-sm-3">
+                            <div class="form-group">
+                                <label for="stateList">State</label>
+                                <select class="form-control" id="stateList" size ="10" multiple="multiple" name="stateList">
+                                    {% for il in instt_StateList %}
+                                        <option> {{il.state}} </option>
+                                    {% endfor %}    
+                                </select>           
+                            </div>                      
+                        </div>
+    
+                        <div class = "col-sm-3">
+                            <div class="form-group">
+                                <label for="cityList">City</label>
+                                <select class="form-control" id="cityList" size ="10" multiple="multiple" name="cityList">
+                                    {% for il in instt_CityList %}
+                                        <option> {{il.city}} </option>
+                                    {% endfor %}    
+                                </select>           
+                            </div>                      
+                        </div>
+    
+                        <div class = "col-sm-3">
+                            <div class="form-group">
+                                <label for="insttTypeList">Institute Type</label>
+                                <select class="form-control" id="insttTypeList" size ="10" multiple="multiple" name="insttTypeList">
+                                    {% for il in instt_typeList %}
+                                        <option> {{il.description}} </option>
+                                    {% endfor %}    
+                                </select>           
+                            </div>                      
+                        </div>
+    
+                        <div class = "col-sm-3">
+                            <div class="form-group">
+                                <label for="insttRankList">Institute Survey Ranking</label>
+                                <select class="form-control" id="insttRankList" size ="10" multiple="multiple" name="insttRankYrList">
+                                    {% for il in rank_range %}
+                                        <option> {{il.year}} </option>
+                                    {% endfor %}    
+                                </select>
+                            </div>
+                        </div>
+    
+                    </div>
+                    <div class="row">
+                        <div class = "col-sm-9">
+                            <div class="form-group">
+                                <label for="programList">Program</label>
+                                <select class="form-control" id="programList" multiple="multiple"  size ="10" name="programList">
+                                    {% for il in programList %}
+                                        <option> {{il.description}} </option>
+                                    {% endfor %}    
+                                </select>           
+                            </div>
+                        </div>
+    
+                    </div>
+                    
+    
+                    <div class = "empty-space-50px"></div>
+                    <button id = "submitbutton" name = "submitbutton" class='btn btn-more i-right' type='submit' formmethod='post' value='submit' form = 'filterForm'> <i class="fa fa-plus"></i> Get Results</button>
+                </form>                            
+            </div>
+
+        </div>
+     </div>
+
+
+
+   <script>
+    //$(function() {
+    //  //Calls the selectBoxIt method on your HTML select box.
+    //  $("#stateList").selectBoxIt();
+    // console.log(selectBoxIt.option("showFirstOption"));
+    //});
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#stateList').multiselect({
+            
+            enableCaseInsensitiveFiltering: true,
+                buttonWidth: '200px',
+                maxHeight: 300,
+            });
+
+            $('#cityList').multiselect({
+                enableCaseInsensitiveFiltering: true,
+                buttonWidth: '200px',
+                maxHeight: 300
+            });
+            
+            $('#programList').multiselect({
+                enableCaseInsensitiveFiltering: true,
+                buttonWidth: '200px',
+                maxHeight: 300
+            });
+            
+            $('#insttTypeList').multiselect({
+                enableCaseInsensitiveFiltering: true,
+                buttonWidth: '200px',
+                maxHeight: 300,
+                includeSelectAllOption: true,
+                enableHTML : true
+            });
+            $('#insttRankList').multiselect({
+                buttonWidth: '200px',
+                maxHeight: 300
+            });
+            
+        });
+    </script>
+    
+<script>
+$(document).ready(function(){
+  $("#stateInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#stateList option").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+  
+ $("#cityInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#cityList option").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });  
+  
+});
+</script>    
+    
+    
+{% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->
+

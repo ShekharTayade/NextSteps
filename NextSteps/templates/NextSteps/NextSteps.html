@@ -70,7 +70,14 @@
     <script src="{% static 'fullcalendar/jquery-ui.custom.min.js' %}"></script> -->
     <script src="{% static 'fullcalendar/fullcalendar.min.js' %}"></script>
 
+    <!-- Required libraries for "SelectBoxIt" -->
+    <link type="text/css" rel="stylesheet" href="http://gregfranko.com/jquery.selectBoxIt.js/css/jquery.selectBoxIt.css" />
+    <script src="{% static 'lib/SelectBoxIt/jquery.selectBoxIt.js' %}"></script>
 
+
+    <!-- bootstrap- multiselect -->
+    <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap-multiselect.css' %}" type="text/css"/>    
+ 
 
 
     <!--Your custom colour override - predefined colours are: colour-blue.css, colour-green.css, colour-lavander.css, orange is default-->
@@ -296,12 +303,40 @@
             {% block slide-show %}
             <!--Slideshow-->
             <div id="highlighted-slider" class="container">
-                <div class="item-slider" data-toggle="owlcarousel" data-owlcarousel-settings='{"singleItem":true, "navigation":true, "transitionStyle":"fadeUp"}'>
+                <div class="item-slider" data-toggle="owlcarousel" data-owlcarousel-settings='{"singleItem":true, "navigation":true, "transitionStyle":"fadeUp","autoPlay":5000, "stopOnHover":true}'>
                     <!--Slideshow content-->
                     <!--Slide 1-->
+
                     <div class="item">
                         <div class="row">
-                            <div class="col-md-6 col-md-push-6 item-caption">
+                            <div class="col-md-12 text-center-md item-caption">
+                                <h2 class="h1 text-weight-light">
+                                    <span class="text-primary">Welcome to NextSteps</span>
+                                </h2>
+                                <h4>
+                                    Your Buddy to Your Next Steps!
+                                </h4>
+                                <p>Perfect for searching colleges, rankings, application processess, know all the details and be ready!!</p>
+                                <a href="#" class="btn btn-more"><i class="fa fa-plus"></i> Learn More</a>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-center-md item-caption">
+                                    <div class = "empty-space-100px">
+                                    </div>
+                                    <input class = "home-search" style="background-image: url('{% static 'img/searchicon.png' %} '); background-repeat: no-repeat " type="text" placeholder="What is your NextStep? e.g. Engineering....">   
+                                </div>
+                            </div>
+                            
+<!--                            <div class="col-md-6 hidden-xs">
+                                <img src="{% static 'img/slides/slide2.png' %}" alt="Slide 2" class="center-block img-responsive">
+                            </div> -->
+                        </div>
+                    </div>
+
+                    <!--Slide 2-->
+                    <div class="item">
+                        <div class="row">
+                            <div class="col-md-12 text-center-md item-caption">
                                 <h3 class="h1 text-weight-light">
                                     Welcome to <span class="text-primary">NextSteps</span>
                                 </h3>
@@ -314,29 +349,13 @@
                                     <a href="{'signup'" class="btn btn-more btn-lg i-right">Sign Up Now <i class="fa fa-plus"></i></a>
                                 {% endif %}    
                             </div>
-                            <div class="col-md-6 col-md-pull-6 hidden-xs">
+<!--                            <div class="col-md-6 col-md-pull-6 hidden-xs">
                                 <img src="{% static 'img/slides/slide1.png' %}" alt="Slide 1" class="center-block img-responsive">
-                            </div>
+                            </div> -->
                         </div>
                     </div>
-                    <!--Slide 2-->
-                    <div class="item">
-                        <div class="row">
-                            <div class="col-md-6 text-right-md item-caption">
-                                <h2 class="h1 text-weight-light">
-                                    <span class="text-primary">Welcome to NextSteps</span>
-                                </h2>
-                                <h4>
-                                    You Buddy to Your NextSteps!
-                                </h4>
-                                <p>Perfect for searching colleges, rankings, application processess,know all the details and be ready!!</p>
-                                <a href="#" class="btn btn-more btn-lg"><i class="fa fa-plus"></i> Learn More</a>
-                            </div>
-                            <div class="col-md-6 hidden-xs">
-                                <img src="{% static 'img/slides/slide2.png' %}" alt="Slide 2" class="center-block img-responsive">
-                            </div>
-                        </div>
-                    </div>
+
+
                 </div>
             </div>
             {% endblock slide-show %}
@@ -355,7 +374,7 @@
                 Features
             </h2>
             <h5><span class="text-white">Here are the features that will help you choose the next institute best for you...</span></h5>
-            <div class="item-carousel" data-toggle="owlcarousel" data-owlcarousel-settings='{"items":4, "pagination":false, "navigation":true, "itemsScaleUp":true}'>
+            <div class="item-carousel" data-toggle="owlcarousel" data-owlcarousel-settings='{"items":4, "pagination":false, "navigation":true, "itemsScaleUp":true, "autoPlay":3000, "stopOnHover":true}'>
                 <div class="item">
                     <a href="#" class="overlay-wrapper">
                     <img src="{% static 'img/showcase/research.jpg' %}" alt="Project 1 image" class="img-responsive underlay">
@@ -437,7 +456,7 @@
         <div class="mission text-center block block-pd-sm block-bg-noise">
             <div class="container">
                 <h3 class="text-shadow-white">
-                    We are a digital solutions company based in Bengaluru. We are experienced professionals in building websites, applications, mobile apps, AI/ML solutions.
+                    We are a digital solutions company based in Bengaluru. We are experienced professionals driven company building websites, applications, mobile apps, AI/ML solutions.
                     <a href="{% url 'contact_us' %}" class="btn btn-more"><i class="fa fa-plus"></i>Get in touch</a>
                 </h3>
             </div>
@@ -668,7 +687,7 @@ Usage: data-block-bg-img="IMAGE-URL" to apply a background image clearly via jQu
                     <h4 class="modal-title"><strong>Promotion</strong></h4>
                 </div>
                 <div class="modal-body">
-                    <p class = "text-center"> An Offer for you....</p>
+                    <p class = "text-center"> An Offer....</p>
                     <br />
                     <p class = "text-center tex_primary"> Specially for you, a discount of <strong>20%</strong> on Registration. </p>
                     <p class = "text-center"> Use Promo Code <strong>"MY20OFF"</strong> when you register. </p>
@@ -680,8 +699,7 @@ Usage: data-block-bg-img="IMAGE-URL" to apply a background image clearly via jQu
         </div>
     </div>
 
-    
-
+ 
 
   <!-- Required JavaScript Libraries -->
 <!--  <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>  -->
@@ -691,7 +709,6 @@ Usage: data-block-bg-img="IMAGE-URL" to apply a background image clearly via jQu
   <script src="{% static 'lib/stellar/stellar.min.js' %}"></script>
   <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
   <script src="{% static 'lib/counterup/counterup.min.js' %}"></script>
-  <script src="{% static 'contactform/contactform.js' %}"></script>
 
   <!-- Template Specisifc Custom Javascript File -->
   <script src="{% static 'js/custom.js' %}"></script>
@@ -699,8 +716,10 @@ Usage: data-block-bg-img="IMAGE-URL" to apply a background image clearly via jQu
   <!--Custom scripts demo background & colour switcher - OPTIONAL -->
   <script src="{% static 'js/color-switcher.js' %}"></script>
 
-  <!--Contactform script -->
-  <script src="{% static 'contactform/contactform.js' %}"></script>
+
+
+   <script src="{% static 'js/bootstrap-multiselect.js' %}"></script>
+
 
   <!-- Scripts required for popper dropdown menu being used on user link, after user is logged in -->
   <!-- <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script> -->

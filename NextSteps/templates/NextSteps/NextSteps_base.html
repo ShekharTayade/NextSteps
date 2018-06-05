@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>NextSteps - As you search for the best engineering college, save your time and effort with 'NextSteps'. It has features such as get details of engineering colleges in India, shortlist, track important dates, assess probability of a seat in 
+    IITs, NITs, all-in-one-place report, calendar for tracking he application process, know college opening/closing JEE ranks and much more. 
+    </title>
+    <meta name="keywords" content="search engineering colleges, engineering colleges, engineering college admission, engineering college application, engineering collges in India, engineering institutes, JEE seat probability,IIT, JEE, NIT, " />
+    
+    {% load static %}
+    <link rel="icon" href="{% static 'img/target.ico' %}" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Facebook Opengraph integration: https://developers.facebook.com/docs/sharing/opengraph -->
+    <meta property="og:title" content="">
+    <meta property="og:image" content="">
+    <meta property="og:url" content="">
+    <meta property="og:site_name" content="">
+    <meta property="og:description" content="">
+
+    <!-- Twitter Cards integration: https://dev.twitter.com/cards/  -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="">
+    <meta name="twitter:title" content="">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image" content="">
+
+    <!-- Fav and touch icons -->
+    <link rel="shortcut icon" href="{% static 'img/target.png' %}">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'img/icons/114x114.png' %}">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'img/icons/72x72.png' %}">
+    <link rel="apple-touch-icon-precomposed" href="{% static 'img/icons/default.png' %}">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900" rel="stylesheet">
+        
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.css"> -->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.0-rc.1/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.11.3.js"></script>
+  <script src="//code.jquery.com/ui/1.12.0-rc.1/jquery-ui.js"></script>
+
+
+    <!-- Bootstrap CSS File -->
+    <link href="{% static 'lib/bootstrap/css/bootstrap.min.css' %} " rel="stylesheet">
+    <link href="https://cdn.rawgit.com/tonystar/float-label-css/v1.0.2/dist/float-label.min.css" rel="stylesheet">
+
+    <!-- Libraries CSS Files -->
+    <link href="{% static 'lib/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/owlcarousel/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/owlcarousel/owl.theme.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/owlcarousel/owl.transitions.min.css' %}" rel="stylesheet">
+
+    
+    <link href='https://fonts.googleapis.com/css?family=Economica' rel='stylesheet' type='text/css'>
+    
+    <!-- Main Stylesheet File -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <!-- Calendar stylsheet -->
+    <link rel='stylesheet' href="{% static 'fullcalendar/css/fullcalendar.css' %}">
+
+    <script src="{% static 'fullcalendar/moment.min.js' %}"></script> 
+    <script src="{% static 'fullcalendar/fullcalendar.min.js' %}"></script>
+
+
+    <!-- Required libraries for "SelectBoxIt"
+    <link type="text/css" rel="stylesheet" href="http://gregfranko.com/jquery.selectBoxIt.js/css/jquery.selectBoxIt.css" />
+    <script src="{% static 'lib/SelectBoxIt/jquery.selectBoxIt.js' %}"></script> -->
+
+
+    <!-- bootstrap- multiselect -->
+    <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap-multiselect.css' %}" type="text/css"/>    
+
+    <!-- Bootstrap-table -->
+    <link rel="stylesheet" href="{% static 'lib/bootstrap-table/bootstrap-table.css' %}">
+
+    <!-- Bootstrap-table-expandable -->
+    <link rel="stylesheet" href="{% static 'lib/bootstrap-table-expandable/css/bootstrap-table-expandable.css' %}">  
+    
+    <!-- JQuery DataTables -->
+    <link rel="stylesheet" type="text/css" href="{% static 'lib/DataTables/datatables.min.css' %}"/>    
+
+    <!-- Required JavaScript Libraries -->
+    <script src="{% static 'lib/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'lib/stellar/stellar.min.js' %}"></script>
+    <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
+    <script src="{% static 'lib/counterup/counterup.min.js' %}"></script>
+
+    <!-- Template Specific Custom Javascript File -->
+    <script src="{% static 'js/custom.js' %}"></script>
+    
+    <!--Custom scripts demo background & colour switcher - OPTIONAL -->
+    <script src="{% static 'js/color-switcher.js' %}"></script>
+    
+    <script src="{% static 'js/bootstrap-multiselect.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'lib/DataTables/datatables.min.js' %}"></script>
+
+
+    <!-- Bootstrap-table scripts -->
+    <script src="{% static 'lib/bootstrap-table/bootstrap-table.min.js' %}"></script>
+    <script src="{% static 'lib/bootstrap-table-expandable/js/bootstrap-table-expandable.js' %}"></script>
+
+
+    <!--Your custom colour override - predefined colours are: colour-blue.css, colour-green.css, colour-lavander.css, orange is default-->
+    <!--  <link href="#" id="colour-scheme" rel="stylesheet"> -->
+
+</head>
+
+<body class="page-index has-hero">
+<!--Change the background class to alter background image, options are: benches, boots, buildings, city, metro -->
+
+<div id="background-wrapper" class="buildings" data-stellar-background-ratio="0.1">
+
+    <!-- ======== @Region: #navigation ======== -->
+    <div id="navigation" class="wrapper">
+      <!--Hidden Header Region-->
+        <div class="header-hidden collapse">
+            <div class="header-hidden-inner container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <h3>About Us</h3>
+                        <p>NexSteps is a super app with great features to help you as you take your next career steps.</p>
+                        <p>Developed by <strong>NextSteps Solutions</strong> </p>
+                        <a href="#" class="btn btn-more"><i class="fa fa-plus"></i> Learn more</a>
+                    </div>
+                    <div class="col-md-3">
+                        <!--@todo: replace with company contact details-->
+                        <h3>
+                        </h3>
+                        <address>
+                            <strong>NextSteps Solutions</strong>
+                            <br /><abbr title="Address"><i class="fa fa-pushpin"></i></abbr>
+                            123, Suite #AB, ABC Business Park, Bengaluru 560078 India.
+                            <br />
+                            <abbr title="Phone"><i class="fa fa-phone"></i></abbr>
+                            080 (1234 5678)
+                            <br />
+                            <abbr title="Email"><i class="fa fa-envelope-alt"></i></abbr>
+                            info@NextSteps.com
+                        </address>
+                    </div>
+           
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Header & navbar-branding region-->
+    <div class="header">
+        <div class="header-inner container">
+            <div class="row">
+                <div class="col-md-6">
+                    <!--navbar-branding/logo - hidden image tag & site name so things like Facebook to pick up, actual logo set via CSS for flexibility -->
+                    <a class="navbar-brand" href= "{% url 'index' %} " title="Home">
+                        <h1 class="hidden">
+                            <img src="{% static 'img/NextStepsLogo2.png' %} " alt="NextSteps Logo">
+                        </h1>
+                    </a>
+                    <div class="navbar-slogan">
+                        Your Online Assistant
+                        <br /> NextSteps to Bright Future
+                    </div>
+
+                    <a href="{% url 'user_guide' %} " class = "userguide pull-right" data-toggle="tooltip" title="User Guide" data-placement="right">
+                        <i class="fa fa-book fa-lg"></i>
+                    </a>
+                </div>
+                <!-- <div class="col-md-3">
+
+                </div>  -->
+                <!--header rightside-->
+                <div class="col-md-6">
+                
+                    {% block right_side_header %}
+
+                    <!--user menu-->
+                    <ul class="list-inline user-menu pull-right">
+                        <li class="user-button"><a class="btn btn-primary btn-hh-trigger" role="button" data-toggle="collapse" data-target=".header-hidden">Open</a></li>
+                    </ul>                    
+                    <ul class="list-inline user-menu pull-right">
+                    
+                        <li class="user-register"><a href="{% url 'index' %}">Home</a></li>
+                        <li class="user-register"><a href="#">Learn More</a></li>
+
+                        <!-- check if a user has logged in. If yes, then instead of Sign up and Login, show the user nname -->
+                        {% if user.is_authenticated %}
+                            <!-- <li class="user-register"><a href="#" class="fa fa-user-circle-o text-primary "> {{ user.username }} </a></li> -->
+
+                            <div class="fix-user-nm-pos dropdown">
+                                <a href = "#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-user-circle-o text-primary"></i>
+                                    <u>{{user.username}}</u>
+                                </a>
+
+                                <ul class="dropdown-menu" style="color:#343331; background:#ff5821;">
+                                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="{% url 'user_account' %}">My Account</a></li>
+                                    <li><a href="{% url 'user_profile' %}">My Profile</a></li>
+                                    <li><a href= "{% url 'password_change' %}">Change Password</a></li>
+                                    
+                                    {% if REG_MENU == "SHOW_REG_MENU" %}
+                                        <li class="divider"></li>
+                                        <li><a href= "{% url 'payment' %}">Register and Subscribe</a></li>
+                                    {% endif %}
+                                                
+                                    {% if SUBS_MENU == "SHOW_SUBS_MENU" %}
+                                        <li class="divider"></li>
+                                        <li><a href= "{% url 'renew_subscription' %}">Renew Subscription</a></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+
+                        {% else %}
+                        
+                            <li class="user-register"><i class="fa fa-edit text-primary"></i> <a href="{% url 'signup' %}">Sign Up</a></li>
+                            <li class="user-login"><i class="fa fa-sign-in text-primary"></i> <a href= "{% url 'login' %}">Login</a></li>
+                        {% endif %}
+                    </ul>
+                    
+                    {% endblock right_side_header %}
+
+                </div>
+            </div>
+        </div>  
+    </div>
+    
+    <!-- Slide Show -->
+    <div class="hero" id="highlighted">
+        <div class="inner">
+            {% block slide-show %}
+            <!--Slideshow-->
+            <div id="highlighted-slider" class="container">
+                <div class="item-slider" data-toggle="owlcarousel" data-owlcarousel-settings='{"singleItem":true, "navigation":true, "transitionStyle":"fadeUp","autoPlay":5000, "stopOnHover":true}'>
+                    <!--Slideshow content-->
+
+                    <!--Slide 1-->
+                    <div class="item">
+                        <div class="row">
+                            <div class="col-md-12 text-center-md item-caption">
+                                <h2 class="h1 text-weight-light">
+                                    <span class="text-primary">Welcome to NextSteps</span>
+                                </h2>
+                                <h4>
+                                    Your Buddy to Your Next Steps!
+                                </h4>
+                                <p>Perfect for searching colleges, rankings, application processess, know all the details and be ready!!</p>
+                                <a href="#" class="btn btn-more"><i class="fa fa-plus"></i> Learn More</a>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-center-md item-caption">
+                                    <div class = "empty-space-100px">
+                                    </div>
+                                    <input class = "home-search" style="background-image: url('{% static 'img/searchicon.png' %} '); background-repeat: no-repeat " type="text" placeholder="What is your NextStep? e.g. Engineering....">   
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <!--Slide 2-->
+                    <div class="item">
+                        <div class="row">
+                            <div class="col-md-12 text-center-md item-caption">
+                                <h3 class="h1 text-weight-light">
+                                    Welcome to <span class="text-primary">NextSteps</span>
+                                </h3>
+                                <h4>
+                                    Search best fit colleges, shortlist, find programs, seats, institute ranking. Organize yourself for the application processes, calendar for important dates. Create your profile to ease applications to various institutes.
+                                </h4>
+                                <p>Your online assistant as you find best college and save your time & effort. Helps you to research colleges, anlayze, organize your application process, get calendar for important dates and get on the way forward for your bright future.
+                                </p>
+                                {% if user.is_authenticated == 'False' %}
+                                    <a href="{'signup'" class="btn btn-more btn-lg i-right">Sign Up Now <i class="fa fa-plus"></i></a>
+                                {% endif %}    
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            {% endblock slide-show %}
+        </div>
+    </div>
+    
+</div>
+
+
+<!-- News ticker / Ad Show -->
+{% block news-ad %}
+<div class="hero">
+    <div class="inner">
+        <div class = "news-ad marquee">
+        <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+        </div>
+    </div>
+</div>
+{% endblock news-ad %}
+
+<!--Showcase-->
+    {% block features %}
+    <div class="showcase block block-border-bottom-grey">
+        <div class="container">
+                
+            <h2 class="text-primary">
+                Features
+            </h2>
+            <h5><span class="text-white">Here are the features that will help you choose the next institute best for you...</span></h5>
+            <div class="item-carousel" data-toggle="owlcarousel" data-owlcarousel-settings='{"items":4, "pagination":false, "navigation":true, "itemsScaleUp":true, "autoPlay":3000, "stopOnHover":true}'>
+                <div class="item">
+                    <a href="#" class="overlay-wrapper">
+                    <img src="{% static 'img/showcase/research.jpg' %}" alt="Project 1 image" class="img-responsive underlay">
+                    <span class="overlay">
+                        <span class="overlay-content"> <span class="h4">Get Institute Details</span> </span>
+                    </span>
+                    </a>
+                    <div class="item-details bg-noise">
+                        <h4 class="item-title">
+                            <a href="#">Research/Find</a>
+                        </h4>
+                        <a href="#" class="btn btn-more"><i class="fa fa-plus"></i>Read more</a>
+                    </div>
+                </div>
+                <div class="item">
+                    <a href="#" class="overlay-wrapper">
+                        <img src="{% static 'img/showcase/preferences.jpg' %}" alt="Project 2 image" class="img-responsive underlay">
+                        <span class="overlay">
+                        <span class="overlay-content"> <span class="h4">Record Your Preferences</span> </span>
+                        </span> 
+                    </a>
+                    <div class="item-details bg-noise">
+                        <h4 class="item-title">
+                            <a href="#">Preferences</a>
+                        </h4>
+                        <a href="#" class="btn btn-more"><i class="fa fa-plus"></i>Read more</a>
+                    </div>
+                </div>
+                <div class="item">
+                    <a href="#" class="overlay-wrapper">
+                        <img src="{% static 'img/showcase/calendar.jpg' %}" alt="Project 3 image" class="img-responsive underlay">
+                        <span class="overlay">
+                        <span class="overlay-content"> <span class="h4">Calendar</span> </span>
+                        </span>
+                    </a>
+                    <div class="item-details bg-noise">
+                        <h4 class="item-title">
+                            <a href="#">Calendar</a>
+                        </h4>
+                        <a href="#" class="btn btn-more"><i class="fa fa-plus"></i>Read more</a>
+                    </div>
+                </div>
+                <div class="item">
+                    <a href="#" class="overlay-wrapper">
+                        <img src="{% static 'img/showcase/analyze.jpg' %}" alt="Project 4 image" class="img-responsive underlay">
+                        <span class="overlay">
+                        <span class="overlay-content"> <span class="h4">Analyze</span> </span>
+                        </span>
+                    </a>
+                    <div class="item-details bg-noise">
+                        <h4 class="item-title">
+                            <a href="#">Analyze</a>
+                        </h4>
+                        <a href="#" class="btn btn-more"><i class="fa fa-plus"></i>Read more</a>
+                    </div>
+                </div>
+                <div class="item">
+                    <a href="#" class="overlay-wrapper">
+                        <img src="{% static 'img/showcase/notifications.jpg' %}" alt="Project 5 image" class="img-responsive underlay">
+                        <span class="overlay">
+                        <span class="overlay-content"> <span class="h4">Notifications</span> </span>
+                        </span>
+                    </a>
+                    <div class="item-details bg-noise">
+                        <h4 class="item-title">
+                            <a href="#">Notifications</a>
+                        </h4>
+                        <a href="#" class="btn btn-more"><i class="fa fa-plus"></i>Read more</a>
+                    </div>
+                </div>  
+            </div>
+        </div>
+    </div>
+    {% endblock features %}
+
+
+    <!-- ======== @Region: #content ======== -->
+    {% block misson-statement %}
+    <div id="content">
+    <!-- Mission Statement -->
+        <div class="mission text-center block block-pd-sm block-bg-noise">
+            <div class="container">
+                <h3 class="text-shadow-white">
+                    We are a digital solutions company based in Bengaluru. We are experienced professionals driven company building websites, applications, mobile apps, AI/ML solutions.
+                    <a href="{% url 'contact_us' %}" class="btn btn-more"><i class="fa fa-plus"></i>Get in touch</a>
+                </h3>
+            </div>
+        </div>
+
+        <!-- Pricing -->
+        <div class="block-contained">
+            <h2 class="block-title">
+                Registration and Subscription
+            </h2>
+            <div class="row">
+
+                <div class="col-md-3">
+                    <div class="panel panel-default panel-pricing text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                            Sign Up
+                            </h4>
+                        </div>
+                        <div class="panel-pricing-price"><i class="fa fa-inr" aria-hidden="true">&nbsp;</i>
+                            <span class="digits">0</span>
+                        </div>
+                        <div class="panel-body">
+                            <ul class="list-dotted">
+                                <li>1 User Account</li>
+                                <li>No cost</li>
+                                <li>Search Institute Details</li>
+                                <li>Explore NextSteps features</li>
+                                <li>Signup & register to get access to all feature including productivity features to save time and effort</li>
+                            </ul>
+                            {% if user.is_authenticated == False %}
+                                <a href= "{% url 'signup' %}" class="btn btn-primary btn-sm">Sign Up</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="panel panel-default panel-pricing panel-pricing-highlighted text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                            Registration
+                            </h4>
+                        </div>
+                        <div class="panel-pricing-price"><i class="fa fa-inr" aria-hidden="true">&nbsp;</i><span class="digits">1250</span> + taxes
+                        </div>
+                        <div class="panel-body">
+                            <ul class="list-dotted">
+                                <li>1 User account</li>
+                                <li>Access to all the institutes in the database</li>
+                                <li>Includes one time registration and 1 yr subscription</li>
+                                <li>Access to ALL NextSteps seatures</li>
+                            </ul>
+                            {% if REG_MENU == "SHOW_REG_MENU" %}
+                                <a href= "{% url 'signup' %}" class="btn btn-primary btn-sm">Register</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="col-md-3">
+                    <div class="panel panel-default panel-pricing panel-pricing-highlighted text-center">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                Subscription Renewal
+                            </h4>
+                        </div>
+                        <div class="panel-pricing-price"><i class="fa fa-inr" aria-hidden="true">&nbsp;</i><span class="digits">250</span> + taxes
+                        </div>
+                        <div class="panel-body">
+                            <ul class="list-dotted">
+                                <li>No addtional registration fee</li>
+                                <li>Unlimited access for 1 Year</li>
+                                <li>Access to new features added during the subscription Period</li>
+                                <li>Option to renew before expiry</li>
+                                <br />
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>    
+            
+        </div>
+    </div>    
+    {% endblock misson-statement %}
+
+<!--
+Background image callout with CSS overlay
+Usage: data-block-bg-img="IMAGE-URL" to apply a background image clearly via jQuery .block-bg-overlay = overlays the background image, colour is inherited from block-bg-* classes .block-bg-overlay-NUMBER = determines opcacity value of overlay from 1-9 (default is 5) ie. .block-bg-overlay-2 or .block-bg-overlay-6
+-->
+    {% block jointhem-blog %}
+
+    <div class="block block-pd-sm block-bg-grey-dark block-bg-overlay block-bg-overlay-6 text-center" data-block-bg-img="{% static 'img/HNCK1088.jpg' %}" data-stellar-background-ratio="0.3">
+        
+<!--        <h2 class="h-xlg h1 m-a-0">
+          <span data-counter-up>1000s</span>s
+        </h2>
+        <h3 class="h-lg m-t-0 m-b-lg">
+          of Happy Students!
+        </h3>  -->
+        
+        <h2 class="h-lg h1 m-a-0">
+          Growing number
+        </h2>
+        <h3 class="m-t-0 m-b-lg">
+          of Registered Students!
+        </h3>
+                
+        <p>
+            {% if user.is_authenticated == False %}
+                <a href="{% url 'signup' %}" class="btn btn-more btn-lg i-right">Join them today! <i class="fa fa-angle-right"></i></a>
+            {% else %}
+                <a href="{% url 'refer_NextSteps' %}" class="btn btn-more btn-lg i-right">Refer NextSteps to Your Friend! <i class="fa fa-angle-right"></i></a>
+            {% endif %}
+        </p>
+    </div>
+    {% endblock jointhem-blog %}
+
+
+
+  <!-- ======== @Region: #footer ======== -->
+    <footer id="footer" class="block block-bg-grey-dark" data-block-bg-img="{% static 'img/bg_footer-map.png' %}" data-stellar-background-ratio="0.4">
+    <div class="container">
+
+        <div class="row" id="contact">
+
+            <div class="col-md-3">
+                <h4 class="">
+                    Developed By:
+                </h4>
+                <address>
+                    <strong>NextSteps Solutions</strong>
+                    <br />
+                    <i class="fa fa-map-pin fa-fw text-primary"></i> Suite 123, ABC Business Park, Bengaluru 560078 India
+                    <br />
+                    <i class="fa fa-phone fa-fw text-primary"></i> 080 1234 5678
+                    <br />
+                    <i class="fa fa-envelope-o fa-fw text-primary"></i> info@NextSteps.com
+                    <br />
+                </address>
+            </div>
+
+            <div class="col-md-6">
+                <h4 class="text-center">
+                  <i><u><a href="{% url 'contact_us' %}"> Contact Us</a></u></i>
+                  <br />
+                  <i class="fa fa-envelope fa-fw text-primary"></i>
+                  <i class="fa fa-paper-plane fa-fw text-primary"></i>
+                  <i class="fa fa-phone fa-fw text-primary"></i>
+                </h4>
+ 
+            </div>  
+
+            <div class="col-md-3 pull-right list-inline ">
+                <li><a href="#">Terms</a></li>
+                <li><a href="#">Privacy</a></li>
+
+            </div>
+<!--            <div class="col-md-3">
+            <h4 class="">
+                Follow Us On:
+            </h4>
+            social media icons
+            <div class="social-media social-media-stacked">
+            <a href="#"><i class="fa fa-twitter fa-fw"></i> Twitter</a>
+            <a href="#"><i class="fa fa-facebook fa-fw"></i> Facebook</a>
+            <a href="#"><i class="fa fa-linkedin fa-fw"></i> LinkedIn</a>
+            <a href="#"><i class="fa fa-google-plus fa-fw"></i> Google+</a>
+          </div> 
+        </div>-->
+
+      </div>
+
+<!--      <div class="row subfooter">
+        <div class="col-md-7">
+          <p>Copyright © TBD</p>
+          <div class="credits">
+              All the links in the footer should remain intact.
+              You can delete the links only if you purchased the pro version.
+              Licensing information: https://bootstrapmade.com/license/
+              Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Flexor
+            
+          </div>
+        </div> 
+        <div class="col-md-5">
+          <ul class="list-inline pull-right">
+            <li><a href="#">Terms</a></li>
+            <li><a href="#">Privacy</a></li>
+            <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>-->
+
+      <a href="#top" class="scrolltop">Top</a>
+
+    </div>
+    </footer>
+
+    <div class="modal fade" id="help" role="dialog">
+        <div id="userguidemodal" class="modal-dialog">
+                    
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">User Guide</h4>
+                </div>
+                <div class="modal-body">
+                    <p class = "text-center"> Would you like a brief on how to use this website?</p>
+                    <div class="text-center">
+                        <a href="{% url 'user_guide' %}" class="btn btn-info" role="Yes">Yes </a>                
+                    </div>
+                    <br />
+                    <br />
+                    <br />
+                    <div class="text-center">
+                        <input id='shoHelpchk' type="checkbox" onclick="setShowHelp(this)">&nbsp;Don't show this message again
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="promocode" tabindex="-1" role="dialog" data-backdrop ="true" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div id="promocontent" class="modal-dialog modal-sm">
+            <div class="modal-content" style="background-color:#ff5821">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">X</button>
+                    <p class="modal-title"><strong>An Offer...</strong></p>
+                </div>
+                <div class="modal-body">
+                    <div class="coupon">
+                        <div class="coupan-container text-center" style="background-color:#000000">
+                            <img src="{% static 'img/NextStepsLogo2.png' %} " alt="NextSteps">
+                        </div>
+                        <!-- Any picture to be displayed in the promo -->
+                        <!-- <img src="#" alt="..." style="width:100%;">  -->
+                        <div class="coupan-container" style="background-color:white">
+                            <h4><b>20% OFF ON THE REGISTRATION</b></h4>         
+                            <p>
+                                Hi {{user.username}},
+                                Specially for you! Avail a discount of <strong>20%</strong> when you Register and Subscribe.
+                            </p>
+                        </div>
+                        <div class="coupan-container">
+                            <p>Use Promo Code: <span class="promo">MY20OFF</span></p>
+                            <p class="expire">Expires: Jun 30, 2018</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+  <!-- Scripts required for popper dropdown menu being used on user link, after user is logged in -->
+  <!-- <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script> -->
+  <!--  <script src="{% static 'js/popper.js' %}"></script>  -->
+
+    <script>
+//        $(document).ready(function(){
+
+//            $('[data-toggle="tooltip"]').tooltip();   
+        
+//            curr_url = window.location.href;
+//            var arr = curr_url.split("/");
+//            var is_home = true;
+//            if (arr[3] == 0) {
+//                is_home = true;
+//            } else {
+//                is_home = false;
+//            }
+            
+//            if (is_home){
+//                    $('[data-toggle="tooltip"]').tooltip("show");
+//            } else {
+//                $('[data-toggle="tooltip"]').tooltip();   
+//                    $('[data-toggle="tooltip"]').tooltip("hide");
+//            }
+//        });
+    </script>
+
+    <script>
+        $(window).load(function()
+        {
+            setTimeout(function(){
+            $('[data-toggle="tooltip"]').tooltip("hide");
+            }, 5000);            
+
+            setTimeout(function(){
+              $('#promocode').modal('hide')
+            }, 15000);            
+
+            setTimeout(function(){
+              $('#help').modal('hide')
+            }, 5000);            
+        });
+    </script>
+    
+
+    <script>
+        $(window).load(function()
+        {
+        
+            var shoHelp = getCookie('show_help');
+
+            curr_url = window.location.href;
+            var arr = curr_url.split("/");
+            var is_home = true;
+            if (arr[3] == 0) {
+                is_home = true;
+            } else {
+                is_home = false;
+            }
+
+            if (is_home) { 
+                if (shoHelp == 'YES' || shoHelp == '' ) {
+                    $('#help').modal('show');
+                } else {
+                    $('#help').modal('hide');
+                } 
+                if (shoHelp == 'NO') {
+                   $('#help').modal('hide');
+                } 
+            }
+            
+            {% if REG_MENU == "SHOW_REG_MENU" %}
+            
+                $('#promocode').modal('show');
+                                
+            {% endif %}
+            
+        });
+        
+        
+        //function fileExists(url)
+        //{
+        //    var http = new XMLHttpRequest();
+        //    http.open('HEAD', url, false);
+        //    http.send();
+        //    return http.status!=404;
+        //}
+    </script>
+    
+    <script>
+    //$('document').ready( function() {
+    //    if (fileExists("{% static '/promotion/promotion.html' %}") == true) 
+    //    {
+    //        // file exists
+    //        $('#promocontent').load("{% static '/promotion/promotion.html' %}"); 
+    //    } else {
+    //        //file does not exists
+    //        $('#promocode').modal('hide');
+ 
+    //    }
+    //});
+    </script>
+     
+    <script>
+        function setShowHelp(ele){
+ 
+            if (ele.checked == false) {
+                var d = new Date();
+                d.setTime(d.getTime() + (365*24*60*60*1000));
+                var expires = "expires="+ d.toUTCString();
+                document.cookie = "show_help=YES" + ";" + expires + ";";
+            }
+            if (ele.checked == true) {
+                var d = new Date();
+                d.setTime(d.getTime() + (365*24*60*60*1000));
+                var expires = "expires="+ d.toUTCString();
+                document.cookie = "show_help=NO" + ";" + expires + ";";
+            }
+        }            
+    </script>
+    
+    <script>
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for(var i = 0; i <ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }    
+    </script>
+    
+    
+  <!-- logout after an inactivity of 30 min (30 * 60 *1000) -->
+  <script type="text/javascript"> 
+    var t; 
+    window.onload=resetTimer; 
+    document.onkeypress=resetTimer;
+    document.onmousemove=resetTimer; 
+    {% if user.is_authenticated %}
+        function logout() 
+        { location.href= "{% url 'logout' %}" 
+        alert("You are now logged out.")
+        } ;
+    {% endif %}
+    function resetTimer() 
+    { clearTimeout(t); 
+        {% if user.is_authenticated %}
+            t=setTimeout(logout,1800000) //logs out in 30 minutes 
+        {% endif %}
+        
+    } 
+  </script> 
+  
+  
+</body>
+
+<!-- FB -->
+<script>
+
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.11';
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+</script>
+
+</html>

@@ -1,0 +1,480 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps.html' %}
+
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+    <div id="highlighted-slider" class="container">
+
+        <!-- You content for the slide-show page here -->
+
+    </div>
+
+{% endblock slide-show %}
+
+<!-- Override features block -->
+{% block features %}
+    <div class="showcase block block-border-bottom-grey">
+        <div class="container">
+
+            <h4 class="block-title">Set Your Preferences</h4>
+            
+            <div class= "row">
+                 
+                    <form id="prefForm" action = "{% url 'prefConfirm' %}" method='post' onsubmit="return beforeFormSubmit();" >
+                    {% csrf_token %}
+                    
+                    <!-- One "pref_tab" for each step in the form: -->
+                    <div class="pref_tab">
+                        <div class="form-group">
+                            <label for="countryList">Geography:</label>
+                            <select class="form-control"  id="countryList" name="country"> 
+                                {% for il in countryList %}
+                                    <option>{{il.country_name}}</option> 
+                                {% endfor %}    
+                            </select>              
+                        </div>                    
+                    
+
+                        <div class="form-group">
+                            <label for="disciplineList">Discipline:</label>
+                            <select class="form-control" id="disciplineList" name="discipline">
+                                {% for il in disciplineList %}
+                                    <option> {{ il.description }} </option>
+                                {% endfor %}    
+                            </select>           
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="levelList">Level:</label>
+                            <select class="form-control" id="levelList" name="level">
+                                {% for il in levelList %}
+                                    <option> {{ il.level_name }} </option>
+                                {% endfor %}    
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="stuCatList">Your Student Category:</label>
+                            <select class="form-control" id = "stuCatList" name="stuCategory">
+                                {% for il in stuCategoryList %}
+                                    <option> {{ il.description }} </option>
+                                {% endfor %}    
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="pref_tab" style="text_align_center"><strong>Programs</strong>
+    
+                        <div class = "row">
+<!--                            <div class="col-sm-6 w3-panel w3-card"> -->
+                            <div class="col-sm-6">
+                                <label for="selProg">Available Programs:</label>
+                                <div class = "hscroll">
+                                    <select ondblclick = "toSelectedProg()" id="avlProg" multiple='multiple' size='10' name="avlPrograms">
+                                        {% for il in programList %}
+                                            <option> {{ il.description }} </option>
+                                        {% endfor %}    
+                                    </select>           
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="selProg">Selected Programs:</label>
+                                <div class = "hscroll">
+                                    <select ondblclick = "fromSelectedProg()" id="selProg" multiple='multiple' size='10' name="selPrograms">
+                                        {% for il in programUserList %}
+                                            <option> {{ il.Program__description }} </option>
+                                        {% endfor %}    
+                                    
+                                    </select>           
+                                </div>
+                            </div>
+                        </div>
+                        <div class = "row">
+    
+                            <div class = "col-sm-6" style="text-align:center">
+                                <span onclick = "toSelectedProg()"> <i class = "fa fa-chevron-circle-right fa-2x"></i></span>
+                            </div>
+    
+                            <div class = "col-sm-6" style="text-align:center">
+                                <span onclick = "fromSelectedProg()"> <i class = "fa fa-chevron-circle-left fa-2x"></i></span>
+                            </div>
+                        </div>
+                            <p class="text-muted"> <small>Click on the program and click arrow keys to move programs between the two boxes. To direcly move a program double click it. Hold down "Control" key, or "Command" key on a Mac, to select multiple programs.</small> </p>
+    
+                    </div>
+    
+
+
+                    <div class="pref_tab" style="text_align_center"><strong>Institutes</strong>
+    
+                        <div class = "row">
+<!--                            <div class="col-sm-6 w3-panel w3-card"> -->
+                            <div class="col-sm-6">
+                                <label for="avlInstt">Available Institutes:</label>
+                                <div class = "hscroll">
+                                    <select ondblclick = "toSelectedInstt()" id="avlInstt" multiple='multiple' size='10' name="avlInstts">
+                                        {% for il in insttProgList%}
+                                            <option> {{ il.Institute__instt_name }} </option>
+                                        {% endfor %}    
+                                    </select>           
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="selInstt">Selected Institutes:</label>
+                                <div class = "hscroll">
+                                    <select ondblclick = "fromSelectedInstt()" id="selInstt" multiple='multiple' size='10' name="selInstts">
+                                        {% for il in insttUserList%}
+                                            <option> {{ il.Institute__instt_name }} </option>
+                                        {% endfor %}    
+                                    </select>           
+                                </div>
+                            </div>
+                        </div>
+                        <div class = "row">
+    
+                            <div class = "col-sm-6" style="text-align:center">
+                                <span onclick = "toSelectedInstt()"> <i class = "fa fa-chevron-circle-right fa-2x"></i></span>
+                            </div>
+    
+                            <div class = "col-sm-6" style="text-align:center">
+                                <span onclick = "fromSelectedInstt()"> <i class = "fa fa-chevron-circle-left fa-2x"></i></span>
+                            </div>
+                        </div>
+                        <p class="text-muted"> <small>Click on the program and click arrow keys to move programs between the two boxes. To direcly move a program double click it. Hold down "Control" key, or "Command" key on a Mac, to select multiple programs.</small> </p>
+                            
+                    </div>
+    
+                    <div style="overflow:auto;">
+                      <div style="float:right;">
+                        <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                        <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                      </div>
+                    </div>
+                    
+                    <!-- Circles which indicates the steps of the form: -->
+                    <div style="text-align:center;margin-top:40px;">
+                      <span class="step"></span>
+                      <span class="step"></span>
+                      <span class="step"></span>
+                    </div>
+                    
+                </form>
+ 
+            </div> 
+ 
+                
+        </div>
+    </div>
+
+
+
+    <script>
+    //$(function() {
+      //Calls the selectBoxIt method on your HTML select box.
+    //  $("#avlProg").selectBoxIt();
+    // console.log(selectBoxIt.option("showFirstOption"));
+    //});
+    </script>
+
+    <script type="text/javascript">
+    //    $(document).ready(function() {
+    //        $('#avlProg').multiselect({
+    //        enableCaseInsensitiveFiltering: true
+    //        });
+
+        });
+    </script>
+
+
+    <!-- Script to dynamically change the Institute preferences based on the selected countries, disciplines, levels and programs -->
+    <!-- This script makes an AJAX call to the server with the list as parameters and gets the Institute list in return -->
+    <script>
+        $("#insttTab").focus(function () {
+            var cntList= $("#CountrySelections_nv").val();
+            var discList= $("#DisciplineSelections_nv").val();
+            var lvlList= $("#LevelSelections_nv").val();
+            var progList= $("#ProgramSelections_nv").val();
+ 
+        $.ajax({
+            url: '{% url "Get_Instts" %}',
+            data: {
+            'cntList': cntList, 'discList' : discList, 'lvlList' : lvlList, 'progList' : progList
+            },
+            dataType: 'json',
+            success: function (data) {
+                
+                var txt = "";
+                txt += "<select id='insttList' class='list-group' style= 'list-style : none; min-width:350px; max-width:475px;' multiple='multiple' size='10' onkeyup = 'getMultipleSelectedValue(\"Instt\")' onclick ='getMultipleSelectedValue(\"Instt\")'>";
+                $.each(data, function(index, element) {
+                    txt += "<option class = 'list-group-item' style='list-style: none;'>" + data[index].Institute__instt_name + "</option>";
+                });
+                txt += "</select>"; 
+                
+                $("#instt").html(txt);                        
+                $("#InsttSelections_nv").val("");
+
+            }
+        });
+        })          
+            
+    </script>
+
+
+
+     <!--Script for the panel (Instructions to set Preferences) -->
+    <script>    
+        $(document).on('click', '.panel-heading span.clickable', function (e) {
+            var $this = $(this);
+            if (!$this.hasClass('panel-collapsed')) {
+                $this.parents('.panel').find('.panel-body').slideUp();
+                $this.addClass('panel-collapsed');
+                $this.find('i').removeClass('glyphicon-minus').addClass('glyphicon-plus');
+            } else {
+                $this.parents('.panel').find('.panel-body').slideDown();
+                $this.removeClass('panel-collapsed');
+                $this.find('i').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+            }
+        });
+        $(document).on('click', '.panel div.clickable', function (e) {
+            var $this = $(this);
+            if (!$this.hasClass('panel-collapsed')) {
+                $this.parents('.panel').find('.panel-body').slideUp();
+                $this.addClass('panel-collapsed');
+                $this.find('i').removeClass('glyphicon-minus').addClass('glyphicon-plus');
+            } else {
+                $this.parents('.panel').find('.panel-body').slideDown();
+                $this.removeClass('panel-collapsed');
+                $this.find('i').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+            }
+        });
+
+        $(document).ready(function () {
+            $('.panel-heading span.clickable').click();
+            $('.panel div.clickable').click();
+        });
+    </script>
+
+    
+    <!-- Forcing the default values to be selected -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById("countryList").value= "India";
+            document.getElementById("disciplineList").value = "Engineering";
+            document.getElementById("levelList").value = "Undergraduation";
+            document.getElementById("stuCatList").value = "General / Open";
+        });
+    </script>
+ 
+    <!-- Force Select all the items in "selProg" so that all the values go when the form is submitted -->
+    <script>
+        //function beforeFormSubmit(){
+
+         //   for (i=0; i < selProg.length; i++) { 
+         //       selProg.options[i].selected = true; 
+         //   }
+         //   for (i=0; i < selInstt.length; i++) { 
+         //       selInstt.options[i].selected = true; 
+         //   }
+        //}
+    </script>
+ 
+    <script>
+        //prefForm.onsubmit = function (){
+
+          //  for (i=0; i < selProg.length; i++) { 
+          //      selProg.options[i].selected = true; 
+          //  }
+          //  for (i=0; i < selInstt.length; i++) { 
+          //      selInstt.options[i].selected = true; 
+          //  }
+       // }
+    </script>
+ 
+    <script>
+    function toSelectedProg() {
+        avlProgLen = avlProg.length ;
+        for ( i=0; i < avlProgLen ; i++){
+            if (avlProg.options[i].selected == true ) {
+                selProgLen = selProg.length;
+                selProg.options[selProgLen]= new Option(avlProg.options[i].text);
+            }
+        }
+
+        for ( i = (avlProgLen - 1); i>=0; i--){
+            if (avlProg.options[i].selected == true ) {
+                    avlProg.options[i] = null;
+            }
+        }
+    }
+
+    function fromSelectedProg() {
+        selProgLen = selProg.length ;
+        for ( i=0; i < selProgLen ; i++){
+            if (selProg.options[i].selected == true ) {
+                avlProgLen = avlProg.length;
+                avlProg.options[selProgLen]= new Option(selProg.options[i].text);
+            }
+        }
+
+        for ( i = (selProgLen - 1); i>=0; i--) {
+            if (selProg.options[i].selected == true ) {
+                selProg.options[i] = null;
+            }
+        }
+    }    
+    
+    function toSelectedInstt() {
+        avlInsttLen = avlInstt.length ;
+        for ( i=0; i < avlInsttLen ; i++){
+            if (avlInstt.options[i].selected == true ) {
+                selInsttLen = selInstt.length;
+                selInstt.options[selInsttLen]= new Option(avlInstt.options[i].text);
+            }
+        }
+
+        for ( i = (avlInsttLen - 1); i>=0; i--){
+            if (avlInstt.options[i].selected == true ) {
+                    avlInstt.options[i] = null;
+            }
+        }
+    }
+
+    function fromSelectedInstt() {
+        selInsttLen = selInstt.length ;
+        for ( i=0; i < selInsttLen ; i++){
+            if (selInstt.options[i].selected == true ) {
+                avlInsttLen = avlInstt.length;
+                avlInstt.options[selInsttLen]= new Option(selInstt.options[i].text);
+            }
+        }
+
+        for ( i = (selInsttLen - 1); i>=0; i--) {
+            if (selInstt.options[i].selected == true ) {
+                selInstt.options[i] = null;
+            }
+        }
+    }    
+    
+</script>
+    
+
+<script>
+
+    var currentTab = 0; // Current pref_tab is set to be the first pref_tab (0)
+    showTab(currentTab); // Display the current pref_tab
+    
+    function showTab(n) {
+      // This function will display the specified pref_tab of the form ...
+      var x = document.getElementsByClassName("pref_tab");
+      x[n].style.display = "block";
+      // ... and fix the Previous/Next buttons:
+      if (n == 0) {
+        document.getElementById("prevBtn").style.display = "none";
+      } else {
+        document.getElementById("prevBtn").style.display = "inline";
+      }
+      if (n == (x.length - 1)) {
+        document.getElementById("nextBtn").innerHTML = "Submit";
+      } else {
+        document.getElementById("nextBtn").innerHTML = "Next";
+      }
+      // ... and run a function that displays the correct step indicator:
+      fixStepIndicator(n)
+    }
+    
+    function nextPrev(n) {
+      // This function will figure out which pref_tab to display
+      var x = document.getElementsByClassName("pref_tab");
+      // Exit the function if any field in the current pref_tab is invalid:
+      if (n == 1 && !validateForm()) return false;
+      // Hide the current pref_tab:
+      x[currentTab].style.display = "none";
+      // Increase or decrease the current pref_tab by 1:
+      currentTab = currentTab + n;
+      // if you have reached the end of the form... :
+      if (currentTab >= x.length) {
+
+
+        // Select the values in Program and Institute boxes, so they get submitted with the form
+        for (i=0; i < selProg.length; i++) { 
+            selProg.options[i].selected = true; 
+        }
+        for (i=0; i < selInstt.length; i++) { 
+            selInstt.options[i].selected = true; 
+        }
+        ////
+        
+
+        //...the form gets submitted:
+        document.getElementById("prefForm").submit();
+        return false;
+      }
+      // Otherwise, display the correct pref_tab:
+      showTab(currentTab);
+    }
+    
+    function validateForm() {
+      // This function deals with validation of the form fields
+      var x, y, i, valid = true;
+      x = document.getElementsByClassName("pref_tab");
+      y = x[currentTab].getElementsByTagName("input");
+      // A loop that checks every input field in the current pref_tab:
+      for (i = 0; i < y.length; i++) {
+        // If a field is empty...
+        if (y[i].value == "") {
+          // add an "invalid" class to the field:
+          y[i].className += " invalid";
+          // and set the current valid status to false:
+          valid = false;
+        }
+      }
+      // If the valid status is true, mark the step as finished and valid:
+      if (valid) {
+        document.getElementsByClassName("step")[currentTab].className += " finish";
+      }
+      return valid; // return the valid status
+    }
+    
+    function fixStepIndicator(n) {
+      // This function removes the "active" class of all steps...
+      var i, x = document.getElementsByClassName("step");
+      for (i = 0; i < x.length; i++) {
+        x[i].className = x[i].className.replace(" active", "");
+      }
+      //... and adds the "active" class to the current step:
+      x[n].className += " active";
+    }
+
+</script>
+       
+{% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->
+

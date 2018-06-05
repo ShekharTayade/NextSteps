@@ -30,7 +30,13 @@
     <div class="showcase block block-border-bottom-grey">
         <div class="container">
 
-        <h3 class="block-title">Select Filter to Research Institutes</h3>
+        <h3 class="block-title">Select Filter to Research Institutes
+        
+                <div class = "pull-right">
+                    <span  style="border:1px solid #ff5821; padding:1px 3px 1px 3px" onclick = "applyFiler()"> <i class="fa fa-filter"></i></span>
+                </div>
+        
+        </h3>
 
             <!-- the contents of this form are not visible except for the "Submit" button. The form items are set via the script and are submitted to the request -->
             <form action="{% url 'Search_Instts' %}" method='post' id='SubmitSearch'>

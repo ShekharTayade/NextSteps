@@ -1,0 +1,676 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps_base.html' %}
+
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+{% endblock slide-show %}
+
+    
+<!-- Override features block -->
+{% block features %}
+    <div class="showcase block block-border-bottom-grey">
+        <div class="container">
+
+            <h4 class="block-title" style = "margin-bottom:15px;">Set Your Preferences</h4>
+            
+            <div class= "row">
+                    <!-- One "pref_tab" for each step in the form: -->
+                    <div class="pref_tab">
+                        <div class="form-group">
+                            <label for="countryList">Geography:</label>
+                            <select class="form-control"  id="countryList" name="country"> 
+                                {% for il in countryList %}
+                                    <option>{{il.country_name}}</option> 
+                                {% endfor %}    
+                            </select>              
+                        </div>                    
+                    
+
+                        <div class="form-group">
+                            <label for="disciplineList">Discipline:</label>
+                            <select class="form-control" id="disciplineList" name="discipline">
+                                {% for il in disciplineList %}
+                                    <option> {{ il.description }} </option>
+                                {% endfor %}    
+                            </select>           
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="levelList">Level:</label>
+                            <select class="form-control" id="levelList" name="level">
+                                {% for il in levelList %}
+                                    <option> {{ il.level_name }} </option>
+                                {% endfor %}    
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="stuCatList">Your Student Category:</label>
+                            <select class="form-control" id = "stuCatList" name="stuCategory">
+                                {% for il in stuCategoryList %}
+                                    <option> {{ il.description }} </option>
+                                {% endfor %}    
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="pref_tab" style="text_align:center">
+    
+                        <div class = "row">
+                            <div class = "col-sm-6" style = "padding-right:5px !important;">
+                                <div class = "row">
+                                    <div class = "col-sm-11" style = "padding-right:5px !important;">
+                                        <div class = "pref-head">Programs
+                                        </div> 
+                                        <div style = "height:260px; overflow: auto;  background-color:#ffffff; box-shadow: 10px 10px 5px gainsboro;">
+                                            <table id="avlProgTbl" class="display table table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for il in programList %}
+                                                    <tr ondblclick = "$(this).addClass('selected'); moveToPrefProgs($(this).closest('tr').find('td:eq(0)').text());">
+                                                        <td class="prog-row"> {{ il.description }} </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class = "col-sm-1" style="text-align:center; display: inline-block; padding:0px">
+                                        <span style = "vertical-align:middle; " onclick = "moveToPrefProgs('')"> <i class = "fa fa-chevron-circle-right fa-2x"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class = "col-sm-6" style = "overflow: auto;" >
+                                <div class = "pref-head">
+                                Your Preferences
+                                </div> 
+                                <div id = "prefProgs" style = "height:255px; overflow: auto; background-color:#ffffff; box-shadow: 10px 10px 5px gainsboro;">
+                                    {% if programUserList %}
+                                        {% for s in programUserList %}
+                                            <span style = "line-height:2.5; white-space:pre;" class = "global-filter">{{s.Program__description}}<i class="fa fa-close btn-inverse" onclick="removeProg( $(this).closest('span').text() ); $(this).closest('span').remove(); programChange()"></i></span>&emsp;
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <br />
+
+
+                        <!-- Start the Institute renders -->    
+                        <div class = "row">
+                            <div class = "col-sm-6" style = "padding-right:5px !important;">
+                                <div class = "row">
+                                    <div class = "col-sm-11" style = "padding-right:5px !important;">
+                                        <div class = "pref-head">
+                                            Institutes
+                                        </div> 
+                                        <div style = "height:260px; overflow: auto; background-color:#ffffff; box-shadow: 10px 10px 5px gainsboro;" >
+                                            <table id="avlInsttTbl" class="display table table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for il in insttList %}
+                                                    <tr ondblclick = "$(this).addClass('selected'); moveToPrefInstts($(this).closest('tr').find('td:eq(0)').text());">
+                                                        <td class = "instt-row"> {{ il.Institute__instt_name }} </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                                                        
+                                    <div class = "col-sm-1" style="text-align:center; vertical-align:middle; padding:0px">
+                                        <span style = "vertical-align:middle; " onclick = "moveToPrefInstts('')"> <i class = "fa fa-chevron-circle-right fa-2x"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class = "col-sm-6" style = "overflow: auto;" >
+                                <div class = "pref-head">
+                                Your Preferences
+                                </div> 
+                                <div id = "prefInstts" style = "height:255px; overflow: auto; background-color:#ffffff; box-shadow: 10px 10px 5px gainsboro;">
+                                    {% if insttUserList %}
+                                        {% for s in insttUserList %}
+                                            <span style = "line-height:2.5; white-space:pre;" class = "global-filter">{{s.Institute__instt_name}}<i class="fa fa-close btn-inverse" onclick="removeInstt($(this).closest('span').text()); $(this).closest('span').remove(); instituteChange()"></i></span>&emsp;
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+
+                    <br />
+                    <div style="overflow:auto;">
+                      <div style="float:right;">
+                        <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                        <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                      </div>
+                    </div>
+                    
+                    <!-- Circles which indicates the steps of the form: -->
+                    <div style="text-align:center;margin-top:40px;">
+                      <span class="step"></span>
+                      <span class="step"></span>
+                    </div>
+                    
+                    <div style = "display:none;" class = "nv_div">
+                    <form id="prefForm" action = "{% url 'prefConfirm' %}" method='get' >
+                        {% csrf_token %}
+                        <select id= "countryList_nv" name="countryList"> 
+                        </select>              
+                        <select id= "disciplineList_nv" name="disciplineList">
+                        </select>           
+                        <select id= "levelList_nv" name="levelList">
+                        </select>
+                        <select id = "stuCatList_nv" name="stuCategoryList">
+                        </select>
+                        <select id = "prefPrograms_nv" multiple='multiple' name="prefProgramsList" size='10'>
+                        </select>
+                        <select id = "prefInstitutes_nv" multiple='multiple' name="prefInstitutesList" size='10'>
+                        </select>
+        
+                    </form>
+                    </div>
+            </div> 
+ 
+                
+        </div>
+    </div>
+
+    <!-- Forcing the default values to be selected -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById("countryList").value= "India";
+            document.getElementById("disciplineList").value = "Engineering";
+            document.getElementById("levelList").value = "Undergraduation";
+            document.getElementById("stuCatList").value = "General / Open";
+        });
+    </script>
+ 
+   <script>
+    
+        var currentTab = 0; // Current pref_tab is set to be the first pref_tab (0)
+        showTab(currentTab); // Display the current pref_tab
+        
+        function showTab(n) {
+          // This function will display the specified pref_tab of the form ...
+          var x = document.getElementsByClassName("pref_tab");
+          x[n].style.display = "block";
+          // ... and fix the Previous/Next buttons:
+          if (n == 0) {
+            document.getElementById("prevBtn").style.display = "none";
+          } else {
+            document.getElementById("prevBtn").style.display = "inline";
+          }
+          if (n == (x.length - 1)) {
+            document.getElementById("nextBtn").innerHTML = "Save";
+          } else {
+            document.getElementById("nextBtn").innerHTML = "Next";
+          }
+          // ... and run a function that displays the correct step indicator:
+          fixStepIndicator(n)
+        }
+        
+        function nextPrev(n) {
+          // This function will figure out which pref_tab to display
+          var x = document.getElementsByClassName("pref_tab");
+          // Exit the function if any field in the current pref_tab is invalid:
+          if (n == 1 && !validateForm()) return false;
+          // Hide the current pref_tab:
+          x[currentTab].style.display = "none";
+          // Increase or decrease the current pref_tab by 1:
+          currentTab = currentTab + n;
+          // if you have reached the end of the form... :
+          if (currentTab >= x.length) {
+    
+    
+            // Select the values in Program and Institute boxes, so they get submitted with the form
+            //for (i=0; i < selProg.length; i++) { 
+            //    selProg.options[i].selected = true; 
+            //}
+            //for (i=0; i < selInstt.length; i++) { 
+            //    selInstt.options[i].selected = true; 
+            //}
+
+            // Poulate non visible programs and institutes list for form submission
+            populateNVselects()
+            ////
+            
+    
+            //...the form gets submitted:
+            document.getElementById("prefForm").submit();
+            
+            return false;
+          }
+          // Otherwise, display the correct pref_tab:
+          showTab(currentTab);
+        }
+        
+        function validateForm() {
+          // This function deals with validation of the form fields
+          var x, y, i, valid = true;
+          x = document.getElementsByClassName("pref_tab");
+          y = x[currentTab].getElementsByTagName("input");
+          // A loop that checks every input field in the current pref_tab:
+          for (i = 0; i < y.length; i++) {
+            // If a field is empty...
+            if (y[i].value == "") {
+              // add an "invalid" class to the field:
+              y[i].className += " invalid";
+              // and set the current valid status to false:
+              valid = false;
+            }
+          }
+          // No validation required
+          valid = true;
+          
+          // If the valid status is true, mark the step as finished and valid:
+          if (valid) {
+            document.getElementsByClassName("step")[currentTab].className += " finish";
+          }
+          return valid; // return the valid status
+        }
+        
+        function fixStepIndicator(n) {
+          // This function removes the "active" class of all steps...
+          var i, x = document.getElementsByClassName("step");
+          for (i = 0; i < x.length; i++) {
+            x[i].className = x[i].className.replace(" active", "");
+          }
+          //... and adds the "active" class to the current step:
+          x[n].className += " active";
+        }
+    
+    </script>    
+
+    <script>
+    // Instantiate Program and Institute tables    
+
+    var progTable;
+    var insttTable;
+    var selectedProgs = [];
+    var selectedInstts = [];
+    
+    $(document).ready(function() {
+        progTable = $('#avlProgTbl').DataTable( {
+        retrieve: true,
+        fixedHeader: true,
+        select: {
+            style: 'multi'
+        },
+        paging: false
+        } );
+
+
+        insttTable = $('#avlInsttTbl').DataTable( {
+        retrieve: true,
+        fixedHeader: true,
+        select: {
+            style: 'multi'
+        },
+        paging: false
+        } );
+
+    } );    
+    </script>
+        
+    <script>    
+        function getSelectedProgs(){
+            rows = progTable.rows( { selected: true } ).data();        
+            for (var i=0; i < rows.length ;i++){
+                selectedProgs.push(rows[i][0]);
+            }
+        }
+ 
+       function getSelectedInstts(){
+            rows = insttTable.rows( { selected: true } ).data();        
+            for (var i=0; i < rows.length ;i++){
+                selectedInstts.push(rows[i][0]);
+            }
+        }
+  
+    </script>
+    
+    <script>
+        function populateNVselects(){
+            //Get selected country and add to NV
+            var cnt = $('#countryList').find(":selected").text();
+            $('#countryList_nv')
+                .append($("<option></option>")
+                .attr("value", cnt)
+                .text( cnt )
+            );            
+            $("#countryList_nv").val(cnt);
+            
+            //Get selected discipline and add to NV
+            var disc = $('#disciplineList').find(":selected").text();
+            $('#disciplineList_nv')
+                .append($("<option></option>")
+                .attr("value", disc)
+                .text( disc )
+            );            
+            $("#disciplineList_nv").val(disc);
+            
+            //Get selected level and add to NV
+            var lvl = $('#levelList').find(":selected").text();
+            $('#levelList_nv')
+                .append($("<option></option>")
+                .attr("value", lvl)
+                .text( lvl )
+            );            
+            $("#levelList_nv").val(lvl);
+            
+            //Get selected stu cate and add to NV
+            var cat = $('#stuCatList').find(":selected").text();
+            $('#stuCatList_nv')
+                .append($("<option></option>")
+                .attr("value", cat)
+                .text( cat )
+            );            
+            $("#stuCatList_nv").val(cat);
+
+
+            //Get preferred programs and
+            //Populate non visible program select list for form submission
+            $("#prefProgs span").each(function(index, elem){
+                $('#prefPrograms_nv')
+                    .append($("<option></option>")
+                    .attr("value", $(this).text() )
+                    .text( $(this).text() ) );
+            }); 
+            $('#prefPrograms_nv option').prop('selected', true);
+
+            //Get the preferred institutes and 
+            //Populate non visible institutes select list for form submission
+            $("#prefInstts span").each(function(index, elem){
+                $('#prefInstitutes_nv')
+                    .append($("<option></option>")
+                    .attr("value", $(this).text())
+                    .text( $(this).text() ) );
+                $("#prefInstitutes_nv").val( $(this).text() );
+            }); 
+            $('#prefInstitutes_nv option').prop('selected', true);
+        }
+    </script>
+        
+
+    <script>
+        function moveToPrefProgs(prog) {
+
+            // Get the selected programs in the global array "selectedProgs"
+            getSelectedProgs();
+ 
+ 
+            // Get the programs already present in preferred programs DIV
+            var prog_arr = [];
+            $("#prefProgs span").each(function(index, elem){
+                prog_arr.push( $(this).text().trim() );
+            }); 
+            
+            // 'prog' input parameter is blank when the chevron is used to move to preferred programs.
+            if (prog === '') {
+                for (var i = 0; i< selectedProgs.length; i++ ) {
+
+                    prognm = selectedProgs[i].trim().replace(/&amp;/g, '&');
+                    
+                    // Check if the institutes is already present in the preferred programs DIV
+                    var found = false;
+                    for (j=0; j < prog_arr.length; j++) {
+                        if ( prog_arr[j].toLowerCase().trim() === prognm.toLowerCase().trim() ) {
+                        found = true;
+                        }
+                    }    
+                    if (found == false ) {
+                        $("#prefProgs").append('<span style = "line-height:2.5; white-space:pre;" class = "global-filter">' + prognm + '<i class="fa fa-close btn-inverse" onclick="removeProg($(this).closest(\'span\').text()); $(this).closest(\'span\').remove(); programChange()"></i></span>&emsp;');    
+                    }
+                }
+
+            } else {
+                
+                var found = false;
+                for (var i = 0; i< prog_arr.length; i++ ) {
+                    
+                    // Get the selected programsin the global array "selectedProgs"
+                    prefPrognm = prog_arr[i].trim().replace(/&amp;/g, '&');
+                    if ( prog.toLowerCase().trim() === prefPrognm.toLowerCase().trim() ) {
+                        found = true;
+                    }
+
+                }
+                if (found == false ) {
+                    $("#prefProgs").append('<span style = "line-height:2.5; white-space:pre;" class = "global-filter">' + prog + '<i class="fa fa-close btn-inverse" onclick="removeProg($(this).closest(\'span\').text()); $(this).closest(\'span\').remove(); programChange()"></i><\/span>&emsp;');
+                }
+            }
+            
+            // Empty the array
+            selectedProgs=[];
+
+            //Remove moved rows from the table
+            progTable.rows('.selected').remove().draw();
+            
+
+            //Call "programChange" function to update insttitue list
+            programChange();
+        }
+
+
+        function moveToPrefInstts(instt) {
+
+            // Get the selected institutes in the global array "selectedInstts"
+            getSelectedInstts();
+
+            // Get the institutes already present in preferred institutes DIV
+            var instt_arr = [];
+            $("#prefInstts span").each(function(index, elem){
+                instt_arr.push( $(this).text().trim() );
+            }); 
+
+             // 'instt' input parameter is blank when the chevron is used to move to preferred institutes.
+            if (instt === '') {
+                var len = selectedInstts.length;
+                for (var i = 0; i< len; i++ ) {
+                    insttnm = selectedInstts[i].trim().replace(/&amp;/g, '&');
+
+                    // Check if the institutes is already present in the preferred institutes DIV
+                    var found = false;
+                    for (j=0; j < instt_arr.length; j++) {
+                        if ( instt_arr[j].toLowerCase().trim() === insttnm.toLowerCase().trim() ) {
+                        found = true;
+                        }
+                    }    
+                    if (found == false ) {
+                        $("#prefInstts").append('<span style = "line-height:2.5; white-space:pre;" class = "global-filter">' + insttnm + '<i class="fa fa-close btn-inverse" onclick="removeInstt($(this).closest(\'span\').text()); $(this).closest(\'span\').remove(); instituteChange()"></i></span>&emsp;');    
+                    }
+                }
+                
+            } else {
+
+                var found = false;
+                for (var i = 0; i< instt_arr.length.length; i++ ) {
+
+                    prefInsttnm = instt_arrs[i].trim().replace(/&amp;/g, '&');
+                    if ( instt.toLowerCase().trim() === prefInsttnm.toLowerCase().trim() ) {
+                        found = true;
+                    }
+                }
+
+                if (found == false ) {
+    
+                    $("#prefInstts").append('<span style = "line-height:2.5; white-space:pre;" class = "global-filter">' + instt + '<i class="fa fa-close btn-inverse" onclick="removeInstt($(this).closest(\'span\').text()); $(this).closest(\'span\').remove(); ; instituteChange()"></i></span>&emsp;');    
+                }
+            }
+
+            // Empty the array
+            selectedInstts=[];
+
+            //Removed moved rows from the table
+            insttTable.rows('.selected').remove().draw();
+                
+            //Call "instituteChange" function to update insttitue list
+            instituteChange();
+        }
+
+    </script>
+                
+    <script>
+        // Add removed program from preferred to available programs
+        function removeProg(txt) {
+
+            if (txt != '' ){
+                //Check if the program already exists in the avlProgTbl
+                var cells = document.querySelectorAll("#avlProgTbl td");
+                var found = false;
+                for(var i = 0; i < cells.length; ++i){
+                    // This line checks for an exact match in a cell 
+                    if(cells[i].textContent.toLowerCase().trim() === txt.toLowerCase().trim()){
+                        found = true;
+                    }
+                }
+                if (found == false) {
+                    progTable.row.add([txt]).draw( false );
+                }
+            }
+        }
+
+        //Add removed institute from preferred to available institutes
+        function removeInstt(txt) {
+
+            if (txt != '' ){
+                //Check if the institute already exists in the avlInsttTbl
+                var cells = document.querySelectorAll("#avlInsttTbl td");
+                var found = false;
+                for(var i = 0; i < cells.length; ++i){
+                    // This line checks for an exact match in a cell 
+                    if(cells[i].textContent.toLowerCase().trim() === txt.toLowerCase().trim()){
+                        found = true;
+                    }
+                }
+                if (found == false) {
+                    insttTable.row.add([txt]).draw( false );
+                }
+            }
+        }
+    </script>
+    
+    
+    <script>
+        // On change in selected Programs, update the Institute table and preferred institutes
+        function programChange(){
+            //Get the preferred programs
+            var prog_arr = [];
+            $("#prefProgs span").each(function(index, elem){
+                prog_arr.push( $(this).text().trim() );
+            }); 
+
+            
+            // Update the Institute list and pref institutes
+            
+            // Remove all rows from the table
+            insttTable.rows().remove().draw();
+            
+            var cntList= $("#countryList option:selected").text().trim();
+            var discList= $("#disciplineList option:selected").text().trim();
+            var lvlList= $("#levelList option:selected").text().trim();
+     
+            $.ajax({
+                url: '{% url "get_insttsForProgs" %}',
+                data: {'cntList': cntList, 'discList' : discList, 'lvlList' : lvlList, 'progList[]' : prog_arr},
+                dataType: 'json',
+                success: function (data) {
+                    $.each(data, function(index, element) {
+                        insttTable.row.add([data[index].Institute__instt_name]).draw(false);
+                    });
+                insttTable.draw(); 
+
+                }
+            });
+
+        }          
+
+//        function bindDblclick() {
+//            $(this).addClass('selected'); 
+//            moveToPrefProgs($(this).closest('tr').find('td:eq(0)').text());
+//        };
+        
+        
+            
+
+        // On change in selected Programs, update the Institute table and preferred institutes
+        function instituteChange(){
+            //Get the preferred institutes
+            var instt_arr = [];
+            $("#prefInstts span").each(function(index, elem){
+                instt_arr.push( $(this).text().trim() );
+            }); 
+
+            
+            // Update the Institute list and pref institutes
+            
+            // Remove all rows from the table
+            progTable.rows().remove().draw();
+            
+            var cntList= $("#countryList option:selected").text().trim();
+            var discList= $("#disciplineList option:selected").text().trim();
+            var lvlList= $("#levelList option:selected").text().trim();
+     
+            $.ajax({
+                url: '{% url "get_progsForInstts" %}',
+                data: {'cntList': cntList, 'discList' : discList, 'lvlList' : lvlList, 'insttList[]' : instt_arr },
+                dataType: 'json',
+                success: function (data) {
+                    $.each(data, function(index, element) {
+                        progTable.row.add([data[index].Program_id]).draw(false);
+                    })
+                progTable.draw(); 
+                
+                }
+            });
+
+        }          
+            
+
+    </script>
+    
+{% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->
+
