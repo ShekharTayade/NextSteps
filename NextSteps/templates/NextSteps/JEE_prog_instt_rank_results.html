@@ -17,7 +17,7 @@
  -->
 
 <!-- Extend the home page to keep the same styling for header and footer sections. -->
-{% extends 'NextSteps/NextSteps.html' %}
+{% extends 'NextSteps/NextSteps_base.html' %}
 {% load static %}
 
 <!-- Override slide-show block from parent -->
@@ -41,12 +41,14 @@
                 </div>
             </div>    
             
-            <table id="tableOne" class="table table-responsive no-border custom_table dataTable no-footer dtr-inline">
+            <!-- <table id="tableOne" class="table table-responsive no-border custom_table dataTable no-footer dtr-inline"> -->
+            <table id="tableOne" class="display table table-striped table-bordered">
+                
                 <thead>
                     <tr>
-                        <th style="width:5%">Rank Type</th>
-                        <th style="width:50%">Programs</th>
-                        <th style="width:45%">Institutes</th>
+                        <th style="width:12%">Rank Type</th>
+                        <th style="width:46%">Programs</th>
+                        <th style="width:42%">Institutes</th>
                     </tr>
                 </thead>
                 <tbody> 
@@ -55,29 +57,35 @@
                             ({{rankType}})
                         </td>
                         <td>
-                            {% for p in progs %} 
-                                <li>{{ p }}</li>
-                            {% empty %}
-                                None
-                            {% endfor %}
+                            <ul>
+                                {% for p in progs %} 
+                                    <li>{{ p }}</li>
+                                {% empty %}
+                                    -&nbsp;None&nbsp;-
+                                {% endfor %}
+                            </ul>
                         </td>
                         <td>
-                            {% for i in instts %} 
-                                <li>{{ i }}</li>
-                            {% empty %}
-                                None
-                            {% endfor %}
+                            <ul>
+                                {% for i in instts %} 
+                                    <li>{{ i }}</li>
+                                {% empty %}
+                                    -&nbsp;None&nbsp;-
+                                {% endfor %}
+                            </ul>
                         </td>
                     </tr>
                 </tbody>
             </table>            
 
+            <br />
             <div class = "row">
                 <div class="w3-container w3-text-deep-orange">
                     <h5>Following table displays the opening and closing ranks</h5>
                 </div>
             </div>
 
+            <!-- 
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <p class="text-muted">Use these filters to narrow the results</p>
@@ -91,7 +99,7 @@
                             Institute<input type="text" id="myInput1" style="background-image: url('{% static 'img/searchicon.png' %} ');" onkeyup="myFunction()" placeholder="Enter text to search in Institutes...">   
                         </div>
             
-                    </div>  <!-- Ends first row -->            
+                    </div>  
                 </div>
             </div>
             <div class="col-xs-8 col-sm-12 col-md-12">            
@@ -105,7 +113,8 @@
                     </span>                
                 {% endif %}
             </div>
-            <table id="tabletwo" class="table table-responsive no-border custom_table dataTable no-footer dtr-inline">
+            -->
+            <table id="tableTwo" class="display table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th style="width:5%">Year</th>
@@ -147,35 +156,47 @@
             </table>
 
         </div>
-     </div>
+    </div>
 
-    <!-- Based on the use input in Programs and Institute input boxes, filter the rows in table -->
-     <script>
-        function myFunction() {
-          // Declare variables 
-          var input, input1, filter, filter1, table, tr, td, i;
-          input = document.getElementById("myInput");
-          input1 = document.getElementById("myInput1");
-          filter = input.value.toUpperCase();
-          filter1 = input1.value.toUpperCase();
-          table = document.getElementById("tabletwo");
-          tr = table.getElementsByTagName("tr");
+    <script>
+    $(document).ready(function() {
+      
+        table1 = $('#tableOne').DataTable( {
+        retrieve: true,
+        paging: false,
+        searching: false,
+        ordering: false,
+        info:     false        
+        } );
+
+        table2 = $('#tableTwo').DataTable( {
+        retrieve: true,
+        paging: true,
+        //dom: 'lBfrtip',
+        dom: '<"top"f>Brt<"bottom"ilp><"clear">',
+        buttons: [
+           'copy', 
+            {
+                extend: 'excel',
+                messageTop: 'JEE Opening & Closing Ranks',
+                title : "NextSteps"
+            },
+            
+            {
+                extend: 'pdf',
+                messageTop: 'JEE Opening & Closing Ranks',
+                title : "NextSteps"
+            },
+            {
+                extend: 'print',
+                messageTop: 'JEE Opening & Closing Ranks',
+                title : "NextSteps"            }
+        ]
         
-          // Loop through all table rows, and hide those who don't match the search query
-          for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            td1 = tr[i].getElementsByTagName("td")[1];
-            if ((td) || (td1)) {
-              if ((td.innerHTML.toUpperCase().indexOf(filter) > -1) && (td1.innerHTML.toUpperCase().indexOf(filter1) > -1)){
-                tr[i].style.display = "";
-              } else {
-                tr[i].style.display = "none";
-              }
-            } 
-          }
-        }
-    
+        } );
+    } );    
     </script>
+
 
 
 {% endblock features %}

@@ -17,7 +17,7 @@
  -->
 
 <!-- Extend the home page to keep the same styling for header and footer sections. -->
-{% extends 'NextSteps/NextSteps.html' %}
+{% extends 'NextSteps/NextSteps_base.html' %}
 
 {% load static %}
 <!-- Override slide-show block from parent -->
@@ -35,18 +35,20 @@
             <div class="near_by_hotel_wrapper">
                 <div class="near_by_hotel_container">
 
-                    <div class="panel panel-info">
+                    <div class="panel">
                         <div class="panel-heading">
                             <h5 class="panel-title">Selected Programs</h5>
                             <span class="pull-right clickable"><i class="glyphicon glyphicon-minus"></i></span>
                         </div>
                         <div class="panel-body">
                             {% for p in programVals %}
-                               {{p}},&nbsp;
+                               <!-- <p>{{p}}</p> -->
+                               <span style = "line-height:2.5; white-space:pre;" class = "global-filter">{{p}}</span>&emsp;
                             {% endfor %}
                         </div>
                     </div>
 
+                    <!--
                     <div class="col-sm-6">
                         Institute Name<input type="text" id="myInput" style="background-image: url('{% static 'img/searchicon.png' %} ');" onkeyup="myFunction()" placeholder="Search in Institute name and address..">   
                     </div>
@@ -61,8 +63,10 @@
                         <span style="float:right">
                             <small>Number of Institutes found: {{insttcount}}</small>
                         </span>                
-                    {% endif %}    
-                    <table id="tableOne" class="table table-responsive no-border custom_table dataTable no-footer dtr-inline">
+                    {% endif %}  
+                    -->  
+                    <!-- <table id="tableOne" class="table table-responsive no-border custom_table dataTable no-footer dtr-inline"> -->
+                    <table id="tableOne" class="display table table-striped table-bordered responsive">
                         <thead>
                             <tr>
                                 <th style="width:45%">Name and Address</th>
@@ -75,7 +79,7 @@
                         <tbody>            
                                     {% for il in insttList %}      
                                         <tr>       
-                                            <td class="align-middle text-primary" > 
+                                            <td class="align-middle" > 
                                             {{ il.Institute__instt_name }} <br />
                                                 {{ il.Institute__address_1 }} 
                                                 {% if il.Institute__address_2 %}
@@ -98,7 +102,7 @@
                                                 {% endif %}
                                                 
                                                 {% if il.Institute__website %}
-                                                    <a href = "http://{{ il.website }}"> {{il.Institute__website}} </a><br />
+                                                    <a href = "{{ il.Institute__website }}" target="_blank"> {{il.Institute__website}} </a><br />
                                                 {% endif %}
                                                 
                                             </td>
@@ -112,34 +116,33 @@
                 </div>
 
 
-                {% if insttList.has_other_pages %}
-                  <ul class="pagination">
-                    {% if insttList.has_previous %}
-                      <li><a href="?page={{ insttList.previous_page_number }}">&laquo;</a></li>
-                    {% else %}
-                        <li class="disabled"><span>&laquo;</span></li>
-                    {% endif %}
-                    {% for i in insttList.paginator.page_range %}
-                      {% if insttList.number == i %}
-                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-                      {% else %}
-                        <li><a href="?page={{ i }}">{{ i }}</a></li>
-                        {% endif %}
-                    {% endfor %}
-                    {% if insttList.has_next %}
-                      <li><a href="?page={{ insttList.next_page_number }}">&raquo;</a></li>
-                    {% else %}
-                      <li class="disabled"><span>&raquo;</span></li>
-                    {% endif %}
-                  </ul>
-                {% endif %}                    
-
-
             </div>    
         
         </div>
     </div>
 
+
+    <script>
+    // Instantiate Program and Institute tables    
+
+    var progTable;
+    
+    $(document).ready(function() {
+
+        //Get the preferred institutes
+        var instt_arr = [];
+            
+        progTable = $('#tableOne').DataTable( {
+            retrieve: true,
+            responsive: true,
+            fixedHeader: true,
+            select: false,
+            paging: true,
+            
+        } );
+    } );    
+    </script>
+        
 
     <script>
         function myFunction() {
@@ -169,9 +172,6 @@
     </script>
 
 
-    <!-- loading Jquery is required for following scripts to run-->
-    {% load static %}
-        <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
     
     <!--Script for the panel (Instructions to set Preferences) -->
     <script>    

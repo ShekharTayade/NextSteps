@@ -323,19 +323,37 @@
     var selectedInstts = [];
     
     $(document).ready(function() {
-        progTable = $('#avlProgTbl').DataTable( {
-        retrieve: true,
-        fixedHeader: true,
-        select: {
-            style: 'multi'
-        },
-        paging: false
-        } );
 
+        //Get the preferred institutes
+        var instt_arr = [];
+            
+        var cntList= $("#countryList option:selected").text().trim();
+        var discList= $("#disciplineList option:selected").text().trim();
+        var lvlList= "Undergraduation";
+        //$("#levelList option:selected").text().trim();
+     
+
+        progTable = $('#avlProgTbl').DataTable( {
+            retrieve: true,
+            fixedHeader: true,
+            "columns": [{
+                "title": "",
+                "data": "Program_id"
+            }],         
+            select: {
+                style: 'multi'
+            },
+            paging: false,
+            
+        } );
 
         insttTable = $('#avlInsttTbl').DataTable( {
         retrieve: true,
         fixedHeader: true,
+        "columns": [{
+            "title": "",
+            "data": "Institute__instt_name"
+        }],         
         select: {
             style: 'multi'
         },
@@ -349,14 +367,14 @@
         function getSelectedProgs(){
             rows = progTable.rows( { selected: true } ).data();        
             for (var i=0; i < rows.length ;i++){
-                selectedProgs.push(rows[i][0]);
+                selectedProgs.push(rows[i].Program_id);
             }
         }
  
        function getSelectedInstts(){
             rows = insttTable.rows( { selected: true } ).data();        
             for (var i=0; i < rows.length ;i++){
-                selectedInstts.push(rows[i][0]);
+                selectedInstts.push(rows[i].Institute__instt_name);
             }
         }
   
@@ -548,6 +566,7 @@
         function removeProg(txt) {
 
             if (txt != '' ){
+
                 //Check if the program already exists in the avlProgTbl
                 var cells = document.querySelectorAll("#avlProgTbl td");
                 var found = false;
@@ -558,7 +577,12 @@
                     }
                 }
                 if (found == false) {
-                    progTable.row.add([txt]).draw( false );
+                    jsonObj = [];
+                    item = [];
+                    item ["Program_id"] = txt;
+                    jsonObj.push(item);                
+    
+                    progTable.rows.add(jsonObj).draw();
                 }
             }
         }
@@ -567,6 +591,7 @@
         function removeInstt(txt) {
 
             if (txt != '' ){
+            
                 //Check if the institute already exists in the avlInsttTbl
                 var cells = document.querySelectorAll("#avlInsttTbl td");
                 var found = false;
@@ -577,7 +602,12 @@
                     }
                 }
                 if (found == false) {
-                    insttTable.row.add([txt]).draw( false );
+                    jsonObj = [];
+                    item = [];
+                    item ["Institute__instt_name"] = txt;
+                    jsonObj.push(item);                
+                                
+                    insttTable.rows.add(jsonObj).draw();
                 }
             }
         }
@@ -603,19 +633,28 @@
             var discList= $("#disciplineList option:selected").text().trim();
             var lvlList= $("#levelList option:selected").text().trim();
      
+            //$.ajax({
+            //    url: '{% url "get_insttsForProgs" %}',
+            //    data: {'cntList': cntList, 'discList' : discList, 'lvlList' : lvlList, 'progList[]' : prog_arr},
+            //    dataType: 'json',
+            //    success: function (data) {
+            //        $.each(data, function(index, element) {
+            //            insttTable.row.add([data[index].Institute__instt_name]).draw(false);
+            //        });
+            //    insttTable.draw(); 
+
+            //    }
+            //});
+
             $.ajax({
                 url: '{% url "get_insttsForProgs" %}',
                 data: {'cntList': cntList, 'discList' : discList, 'lvlList' : lvlList, 'progList[]' : prog_arr},
                 dataType: 'json',
                 success: function (data) {
-                    $.each(data, function(index, element) {
-                        insttTable.row.add([data[index].Institute__instt_name]).draw(false);
-                    });
-                insttTable.draw(); 
-
+                    insttTable.rows.add(data).draw();
                 }
             });
-
+            
         }          
 
 //        function bindDblclick() {
@@ -644,19 +683,27 @@
             var discList= $("#disciplineList option:selected").text().trim();
             var lvlList= $("#levelList option:selected").text().trim();
      
+            //$.ajax({
+            //    url: '{% url "get_progsForInstts" %}',
+            //    data: {'cntList': cntList, 'discList' : discList, 'lvlList' : lvlList, 'insttList[]' : instt_arr },
+            //    dataType: 'json',
+            //    success: function (data) {
+            //        $.each(data, function(index, element) {
+            //            progTable.row.add([data[index].Program_id]).draw(false);
+            //        })
+            //    progTable.draw(); 
+                
+            //    }
+            //});
+
             $.ajax({
                 url: '{% url "get_progsForInstts" %}',
                 data: {'cntList': cntList, 'discList' : discList, 'lvlList' : lvlList, 'insttList[]' : instt_arr },
                 dataType: 'json',
                 success: function (data) {
-                    $.each(data, function(index, element) {
-                        progTable.row.add([data[index].Program_id]).draw(false);
-                    })
-                progTable.draw(); 
-                
+                    progTable.rows.add(data).draw();
                 }
             });
-
         }          
             
 

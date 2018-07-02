@@ -93,6 +93,7 @@ urlpatterns = [
     url(r'^ifThenAnalysisResults/$', views.ifThenAnalysisResults, name='if_then_analysis_results'),
     url(r'^ajax/getInsttProgramByType/$', views.getInsttProgramByType, name='get_instt_progs_by_type'),
     url(r'^ajax/getUserInsttProgramByType/$', views.getUserInsttProgramByType, name='get_user_instt_progs_by_type'),
+    url(r'^todolist/$', views.toDoList, name='to_do_list'),
 
     url(r'^ajax/getInsttsForPrograms/$', views.getInsttsForProgs, name='get_insttsForProgs'),
     url(r'^ajax/getProgsForInstts/$', views.getProgsForInstts, name='get_progsForInstts'),

@@ -3181,7 +3181,7 @@ body,html{
 }
 
 .prod-features-text{
-    font-size:9px;
+    font-size:12px;
 }
 
 
@@ -3328,4 +3328,30 @@ body,html{
   display: -webkit-flex;
   display: -ms-flexbox;
   display:         flex;
+}
+
+
+
+n_note p {
+  padding: 0 1em oem 1em;
+  font-style: italic;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-weight: normal;
+  line-height: 1.55;
+}
+
+thead input {
+  width: 100%;
+}
+
+
+.to-do-frame {
+    border-radius: 8px;
+    border: 0px solid #ff5821;
+    background: Gainsboro;;
+    padding: 20px 5px; 
+}
+
+.to-do-frame thead{
+    background: #ff5821;
 }

@@ -31,7 +31,7 @@ usernm = ''
 
 def consRepFirstPage(canvas, doc):
 
-    Title = "Consolidated Information on Preferred Institutes"
+    Title = "Information on Preferred Institutes"
     canvas.saveState()
     canvas.setFont("Helvetica", 16)
     canvas.line(0, PAGE_HEIGHT-128, PAGE_WIDTH, PAGE_HEIGHT-128)

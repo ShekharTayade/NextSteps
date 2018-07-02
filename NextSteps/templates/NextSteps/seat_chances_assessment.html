@@ -29,7 +29,7 @@
     <div class="showcase block block-border-bottom-Gainsboro">
         <div class="container">
 
-            <h3 class="block-title">Assess Seat Changes - If, Then Analysis</h3>
+            <h3 class="block-title">Assess Seat Chances - If, Then Analysis</h3>
 
             <div class="block">
 
@@ -175,7 +175,7 @@
                                                 </thead>
                                                 <tbody>
                                                     {% for i in insttList %}
-                                                        <tr ondblclick = "$(this).addClass('selected'); moveToPrefProgs($(this).closest('tr').find('td:eq(0)').text());">
+                                                        <tr ondblclick = "$(this).addClass('selected'); moveToPrefInstts($(this).closest('tr').find('td:eq(0)').text());">
                                                             <td class="instt-row"> {{ i.Institute__instt_name }} </td>
                                                         </tr>
                                                     {% endfor %}
@@ -186,7 +186,7 @@
                                 </div>
                                 
                                 <div id = "chevron" class = "col-sm-1">
-                                    <span style = "vertical-align:middle; " onclick = "moveToPrefProgs('')"> <i class = "fa fa-chevron-circle-right fa-2x"></i></span>
+                                    <span style = "vertical-align:middle; " onclick = "moveToPrefInstts('')"> <i class = "fa fa-chevron-circle-right fa-2x"></i></span>
                                 </div>
                                 </div>
                             </div>
@@ -312,7 +312,7 @@
                     <div class = "row">
                         <div class = "col-sm-12">
                         <div class = "center-block">
-                            <button id = "submitbutton" name = "submitbutton" class='btn btn-more' type='submit' formmethod='post' value='submit' form = 'getAnalysis'> <i class="fa fa-plus"></i> Analyze</button>
+                            <button id = "submitbutton" name = "submitbutton" class='btn btn-more' type='submit' formmethod='post' value='submit' form = 'getAnalysis'> <i class="fa fa-caret-right"></i> Analyze</button>
                         </div>
                         </div>
                     </div>
@@ -346,14 +346,23 @@
     $(document).ready(function() {
         progTable = $('#progTbl').DataTable( {
         retrieve: true,
+        "columns": [{
+            "title": "",
+            "data": "Program_id"
+        }],         
         select: {
             style: 'multi'
         },
         paging: false
         } );
 
+
         insttTable = $('#insttTbl').DataTable( {
         retrieve: true,
+        "columns": [{
+            "title": "",
+            "data": "Institute__instt_name"
+        }],                 
         select: {
             style: 'multi'
         },
@@ -363,6 +372,10 @@
 
         progUserTable = $('#progUserTbl').DataTable( {
         retrieve: true,
+        "columns": [{
+            "title": "",
+            "data": "Program_id"
+        }],         
         select: {
             style: 'multi'
         },
@@ -371,6 +384,10 @@
 
         insttUserTable = $('#insttUserTbl').DataTable( {
         retrieve: true,
+        "columns": [{
+            "title": "",
+            "data": "Institute__instt_name"
+        }],                 
         select: {
             style: 'multi'
         },
@@ -441,28 +458,28 @@
         function getSelectedProgs(){
             rows = progTable.rows( { selected: true } ).data();        
             for (var i=0; i < rows.length ;i++){
-                selectedProgs.push(rows[i][0]);
+                selectedProgs.push(rows[i].Program_id);
             }
         }
  
        function getSelectedInstts(){
             rows = insttTable.rows( { selected: true } ).data();        
             for (var i=0; i < rows.length ;i++){
-                selectedInstts.push(rows[i][0]);
+                selectedInstts.push(rows[i].Institute__instt_name);
             }
         }
   
         function getSelectedUserProgs(){
             rows = progUserTable.rows( { selected: true } ).data();        
             for (var i=0; i < rows.length ;i++){
-                selectedUserProgs.push(rows[i][0]);
+                selectedUserProgs.push(rows[i].Program_id);
             }
         }
  
        function getSelectedUserInstts(){
             rows = insttUserTable.rows( { selected: true } ).data();        
             for (var i=0; i < rows.length ;i++){
-                selectedUserInstts.push(rows[i][0]);
+                selectedUserInstts.push(rows[i].Institute__instt_name);
             }
         }
   
@@ -680,23 +697,32 @@
             // Update the Institute list and pref institutes
             
             // Remove all rows from the table
-            insttTable.rows().remove().draw();
+            //insttTable.rows().remove().draw();
             //insttUserTable.rows().remove().draw();
             
             var cntList= 'India';
             var discList= 'Engineering';
             var lvlList= 'Undergraduation';
      
+            //$.ajax({
+            //   url: '{% url "get_insttsForProgs" %}',
+            //    data: {'cntList': cntList, 'discList' : discList, 'lvlList' : lvlList, 'progList[]' : prog_arr},
+            //    dataType: 'json',
+            //    success: function (data) {
+            //        $.each(data, function(index, element) {
+            //            insttTable.row.add([data[index].Institute__instt_name]).draw(false);
+            //        });
+            //    insttTable.draw(); 
+
+            //   }
+            //});
+
             $.ajax({
                 url: '{% url "get_insttsForProgs" %}',
                 data: {'cntList': cntList, 'discList' : discList, 'lvlList' : lvlList, 'progList[]' : prog_arr},
                 dataType: 'json',
                 success: function (data) {
-                    $.each(data, function(index, element) {
-                        insttTable.row.add([data[index].Institute__instt_name]).draw(false);
-                    });
-                insttTable.draw(); 
-
+                    insttTable.rows.add(data).draw();
                 }
             });
 
@@ -705,6 +731,7 @@
 
         // On change in selected Programs, update the Institute table and preferred institutes
         function instituteChange(){
+
             //Get the preferred institutes
             var instt_arr = [];
             $("#prefInstts span").each(function(index, elem){
@@ -717,20 +744,29 @@
             // Remove all rows from the table
             progTable.rows().remove().draw();
             
-            var cntList= $("#countryList option:selected").text().trim();
-            var discList= $("#disciplineList option:selected").text().trim();
-            var lvlList= $("#levelList option:selected").text().trim();
+            var cntList= 'India';
+            var discList= 'Engineering';
+            var lvlList= 'Undergraduation';
      
+            //$.ajax({
+            //    url: '{% url "get_progsForInstts" %}',
+            //    data: {'cntList': cntList, 'discList' : discList, 'lvlList' : lvlList, 'insttList[]' : instt_arr },
+            //    dataType: 'json',
+            //    success: function (data) {
+            //        $.each(data, function(index, element) {
+            //            progTable.row.add([data[index].Program_id]).draw(false);
+            //        })
+            //    progTable.draw(); 
+                
+            //    }
+            //});
+
             $.ajax({
                 url: '{% url "get_progsForInstts" %}',
                 data: {'cntList': cntList, 'discList' : discList, 'lvlList' : lvlList, 'insttList[]' : instt_arr },
                 dataType: 'json',
                 success: function (data) {
-                    $.each(data, function(index, element) {
-                        progTable.row.add([data[index].Program_id]).draw(false);
-                    })
-                progTable.draw(); 
-                
+                    progTable.rows.add(data).draw();
                 }
             });
 
@@ -755,7 +791,12 @@
                     }
                 }
                 if (found == false) {
-                    progTable.row.add([txt]).draw( false );
+                    jsonObj = [];
+                    item = [];
+                    item ["Program_id"] = txt;
+                    jsonObj.push(item);                
+    
+                    progTable.rows.add(jsonObj).draw();
                 }
             }
         }
@@ -773,7 +814,13 @@
                     }
                 }
                 if (found == false) {
-                    progUserTable.row.add([txt]).draw( false );
+                    jsonObj = [];
+                    item = [];
+                    item ["Program_id"] = txt;
+                    jsonObj.push(item);                
+    
+                    progUserTable.rows.add(jsonObj).draw();
+                    //progUserTable.row.add([txt]).draw( false );
                 }
             }
         }
@@ -793,7 +840,13 @@
                     }
                 }
                 if (found == false) {
-                    insttTable.row.add([txt]).draw( false );
+                    jsonObj = [];
+                    item = [];
+                    item ["Institute__instt_name"] = txt;
+                    jsonObj.push(item);                
+    
+                    insttTable.rows.add(jsonObj).draw();
+                    //insttTable.row.add([txt]).draw( false );
                 }
             }
         }
@@ -811,7 +864,13 @@
                     }
                 }
                 if (found == false) {
-                    insttUserTable.row.add([txt]).draw( false );
+                    jsonObj = [];
+                    item = [];
+                    item ["Institute__instt_name"] = txt;
+                    jsonObj.push(item);                
+    
+                    insttUserTable.rows.add(jsonObj).draw();
+                    //insttUserTable.row.add([txt]).draw( false );
                 }
             }
         }

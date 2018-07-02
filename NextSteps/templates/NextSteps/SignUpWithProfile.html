@@ -17,25 +17,12 @@
  -->
 
 <!-- Extend the home page to keep the same styling for header and footer sections. -->
-{% extends 'NextSteps/NextSteps.html' %}
-
-
-{% block right_side_header %}
-{% endblock right_side_header %}
-
-{% block menu %}
-{% endblock menu %}
+{% extends 'NextSteps/NextSteps_base.html' %}
 
 
 
 <!-- Override slide-show block from parent -->
 {% block slide-show %}
-    <div id="highlighted-slider" class="container">
-
-		<!-- You content for the slide-show page here -->
-
-    </div>
-
 {% endblock slide-show %}
 
 <!-- Override features block -->
@@ -49,18 +36,19 @@
 
             <div class="row">
                 <div class="col-sm-6">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">
+                    <div class="panel panel-default">
+<!--                        <div class="panel-heading"> -->
+                        <div class="w3-container pref-head">
+                            <h5>
                             Sign Up
-                            </h3>
+                            </h5>
                         </div>
                         <div class="well">
-                        If you have a social media account, you can directly login using that account. 
-                        Please go to "Login" page if you want use your social media account instead 
-                        of creating new one with NextSteps.
+                            If you have a social media account, you can directly login using that account. 
+                            Please go to "Login" page if you want to use your social media account instead 
+                            of creating new one with NextSteps.
                         </div>
-                        <div class="panel-body">
+                        <div class="w3-container">
 
                                 {% include 'includes/form.html' %}
                         </div>
@@ -68,13 +56,14 @@
                 </div>
                 
                 <div class="col-sm-6">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">
-                            Profile
-                            </h3>
+                    <div class="panel panel-default">
+<!--                        <div class="panel-heading"> -->
+                        <div class="w3-container pref-head">
+                            <h5>
+                                Profile
+                            </h5>
                         </div>
-                        <div class="panel-body">
+                        <div class="w3-container">
                                 {% for field in userprofile_form %}
 
                                   <div class="form-group">

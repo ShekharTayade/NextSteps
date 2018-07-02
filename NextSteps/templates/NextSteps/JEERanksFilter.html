@@ -19,7 +19,6 @@
 <!-- Extend the home page to keep the same styling for header and footer sections. -->
 {% extends 'NextSteps/NextSteps_base.html' %}
 
-
 <!-- Override slide-show block from parent -->
 {% block slide-show %}
 {% endblock slide-show %}
@@ -36,7 +35,7 @@
  
                 <div class="row">
                     <div class="col-xs-6 col-sm-3 col-md-2">
-                        <div class="panel panel-info">
+                        <div class="panel">
                             <!-- Default panel contents -->
                             <div class="panel-heading">
                                 <h6 class="panel-title">Select Years</h6>
@@ -64,7 +63,7 @@
                     </div>
                     
                     <div class="col-xs-6 col-sm-3 col-md-2">
-                        <div class="panel panel-info">
+                        <div class="panel">
                             <!-- Default panel contents -->
                             <div class="panel-heading">
                                 <h6 class="panel-title">Instt Type</h6>
@@ -80,7 +79,7 @@
                                     </div>
                                 </li>
                                 <li class="list-group-item">
-                                    NIT
+                                    Non-IIT
                                     <div class="year-switch pull-right">
                                         <input id="SwitchOptionInfo5" name="SwitchNIT" type="checkbox"/>
                                         <label for="SwitchOptionInfo5" class="label-info"></label>
@@ -91,13 +90,30 @@
                     </div>
                 </div>
     
-                <button class='btn btn-more' type='submit' formmethod='post' value='submit' form = 'SubmitFilter'><i class="fa fa-plus"></i>Get Details</button>
+                <button class='btn btn-more' type='submit' formmethod='post' value='submit' form = 'SubmitFilter'><i class="fa fa-plus"></i>Get Ranks</button>
   
             </form>        
         
         </div>
     </div>
 
+    <script>
+        $(document).ready(function(){
+            $("#SubmitFilter").submit(function(){
+                
+                if ( !$('#SwitchOptionInfo2').is(":checked") && !$('#SwitchOptionInfo3').is(":checked") ){
+                    alert("Please select a year");
+                    return false;
+                }
+
+                if ( !$('#SwitchOptionInfo4').is(":checked") && !$('#SwitchOptionInfo5').is(":checked") ){
+                    alert("Please select Institute Type");
+                    return false;
+                }
+            });
+        });
+    </script>
+    
 {% endblock features %}
 
 {% block misson-statement %}

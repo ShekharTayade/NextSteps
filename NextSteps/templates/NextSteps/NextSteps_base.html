@@ -3,8 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>NextSteps - As you search for the best engineering college, save your time and effort with 'NextSteps'. It has features such as get details of engineering colleges in India, shortlist, track important dates, assess probability of a seat in 
-    IITs, NITs, all-in-one-place report, calendar for tracking he application process, know college opening/closing JEE ranks and much more. 
+    <title>NextSteps - Online assistant in your quest for best fit Institutes. 
     </title>
     <meta name="keywords" content="search engineering colleges, engineering colleges, engineering college admission, engineering college application, engineering collges in India, engineering institutes, JEE seat probability,IIT, JEE, NIT, " />
     
@@ -40,9 +39,9 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900" rel="stylesheet">
         
 <!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.css"> -->
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.0-rc.1/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.11.3.js"></script>
-  <script src="//code.jquery.com/ui/1.12.0-rc.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.0-rc.1/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.11.3.js"></script>
+    <script src="//code.jquery.com/ui/1.12.0-rc.1/jquery-ui.js"></script>
 
 
     <!-- Bootstrap CSS File -->
@@ -63,6 +62,7 @@
 
     <!-- Calendar stylsheet -->
     <link rel='stylesheet' href="{% static 'fullcalendar/css/fullcalendar.css' %}">
+    <link rel='stylesheet' media="print" href="{% static 'fullcalendar/fullcalendar.print.css' %}">
 
     <script src="{% static 'fullcalendar/moment.min.js' %}"></script> 
     <script src="{% static 'fullcalendar/fullcalendar.min.js' %}"></script>
@@ -74,7 +74,7 @@
 
 
     <!-- bootstrap- multiselect -->
-    <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap-multiselect.css' %}" type="text/css"/>    
+    <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap-multiselect.css' %}" type="text/css">    
 
     <!-- Bootstrap-table -->
     <link rel="stylesheet" href="{% static 'lib/bootstrap-table/bootstrap-table.css' %}">
@@ -83,7 +83,8 @@
     <link rel="stylesheet" href="{% static 'lib/bootstrap-table-expandable/css/bootstrap-table-expandable.css' %}">  
     
     <!-- JQuery DataTables -->
-    <link rel="stylesheet" type="text/css" href="{% static 'lib/DataTables/datatables.min.css' %}"/>    
+    <link rel="stylesheet" type="text/css" href="{% static 'lib/DataTables/datatables.min.css' %}">    
+    <link rel="stylesheet" type="text/css" href="{% static 'lib/DataTables/FixedHeader-3.1.3/css/fixedHeader.dataTables.min.css' %}">
 
     <!-- Required JavaScript Libraries -->
     <script src="{% static 'lib/bootstrap/js/bootstrap.min.js' %}"></script>

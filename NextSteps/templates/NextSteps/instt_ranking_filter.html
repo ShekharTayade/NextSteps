@@ -30,47 +30,50 @@
         <div class="container">
     
             <h3 class="block-title">Institute Survey Ranking</h3>
-            <small>* The survey ranking as published by the National Institutional Ranking Framework (NIRF) is used </small>
                 <div class="row">
-                
-                    <div class="col-xs-4 col-sm-3 col-md-2">
-                        <div class="panel panel-info">
-                            <!-- Default panel contents -->
+                    <!--
+                        <div class="panel">
                             <div class="panel-heading">
                                 <h6 class="panel-title">Select Years</h6>
                             </div>
                         
-                            <!-- List group -->
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <span id="SwitchOptionInfo1_text">2015</span>
-                                    <div class="year-switch pull-right">
-                                        <input id="SwitchOptionInfo1" name="Switch2015" type="checkbox" onchange="setRankFilter()"/>
-                                        <label for="SwitchOptionInfo1" class="label-info"></label>
+                            <ul class="list-group ">
+                                <div class = "row">
+                                    <div class = "col-xs-4">
+                                        <li class="list-group-item">
+                                            <span id="SwitchOptionInfo1_text">2016</span>
+                                            <div class="year-switch">
+                                                <input id="SwitchOptionInfo1" name="Switch2015" type="checkbox" onchange="setRankFilter()"/>
+                                                <label for="SwitchOptionInfo1" class="label-info"></label>
+                                            </div>
+                                        </li>
                                     </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <span id="SwitchOptionInfo2_text">2016</span>
-                                    <div class="year-switch pull-right">
-                                        <input id="SwitchOptionInfo2" name="Switch2016" type="checkbox" onchange="setRankFilter()"/>
-                                        <label for="SwitchOptionInfo2" class="label-info"></label>
+                                    <div class = "col-xs-4">
+                                        <li class="list-group-item">
+                                            <span id="SwitchOptionInfo2_text">2017</span>
+                                            <div class="year-switch">
+                                                <input id="SwitchOptionInfo2" name="Switch2016" type="checkbox" onchange="setRankFilter()"/>
+                                                <label for="SwitchOptionInfo2" class="label-info"></label>
+                                            </div>
+                                        </li>
                                     </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <span id="SwitchOptionInfo3_text">2017</span>
-                                    <div class="year-switch pull-right">
-                                        <input id="SwitchOptionInfo3" name="Switch2017" type="checkbox" onchange="setRankFilter()"/>
-                                        <label for="SwitchOptionInfo3" class="label-info"></label>
+                                    <div class = "col-xs-4">
+                                        <li class="list-group-item">
+                                            <span id="SwitchOptionInfo3_text">2018</span>
+                                            <div class="year-switch">
+                                                <input id="SwitchOptionInfo3" name="Switch2017" type="checkbox" onchange="setRankFilter()"/>
+                                                <label for="SwitchOptionInfo3" class="label-info"></label>
+                                            </div>
+                                        </li>
                                     </div>
-                                </li>
+                                </div>
                             </ul>
                         </div>            
-                    </div>
-                    
+                    -->
+                    <!--
                     <div class="col-xs-8 col-sm-9 col-md-10">
                 
                         <div class="panel panel-info">
-                            <!-- Default panel contents -->
                             <div class="panel-heading">
                                 <h6 class="panel-title">Select Institutes Ranking -</h6>
                             </div>
@@ -94,16 +97,19 @@
                             <p style="padding-left:30px" id="msg" class="text-primary"></p>
                         </div>
                     </div>
+                    -->
                 </div>
+                <small>* The survey ranking as published by the National Institutional Ranking Framework (NIRF) is used </small>
                 <div class="row">   
                     <div  class="col-xs-12 col-sm-12 col-md-12">    
-                        <table id="tableOne" class="table table-responsive no-border custom_table dataTable no-footer dtr-inline">
+                        <!-- <table id="tableOne" class="table table-responsive no-border custom_table dataTable no-footer dtr-inline"> -->
+                        <table id="tableOne" class="display table table-striped table-bordered">
                             <thead>
                                 <tr>
-                                    <th style="width:5%">Year</th>
-                                    <th style="width:45%">Institute</th>
-                                    <th style="width:20%">Discipline</th>
-                                    <th style="width:15%">Survey Rank</th>
+                                    <th style="width:15%">Year</th>
+                                    <th style="width:40%">Institute</th>
+                                    <th style="width:25%">Discipline</th>
+                                    <th style="width:20%">Survey Rank</th>
                                 </tr>
                             </thead>
                             <tbody>            
@@ -139,16 +145,16 @@
             var chkbx2=document.getElementById('SwitchOptionInfo2');
             var chkbx3=document.getElementById('SwitchOptionInfo3');
             
-            var from = Number(document.getElementById('rangePrimary').innerHTML);
-            var to = Number(document.getElementById('rangeInfo').innerHTML);
+            //var from = Number(document.getElementById('rangePrimary').innerHTML);
+            //var to = Number(document.getElementById('rangeInfo').innerHTML);
             
-            if (from > to ) {
-                alert("From can't be greater than To. Please adjust the Ranking From and To");
-                document.getElementById('msg').innerHTML = "From can't be greater than To. Please adjust the Ranking From and To";
-                return;
-            } else {
-                document.getElementById('msg').innerHTML = "";
-            }
+            //if (from > to ) {
+            //    alert("From can't be greater than To. Please adjust the Ranking From and To");
+            //    document.getElementById('msg').innerHTML = "From can't be greater than To. Please adjust the Ranking From and To";
+            //    return;
+            //} else {
+            //    document.getElementById('msg').innerHTML = "";
+            //}
 
             var yearchk = "";
             if (chkbx1.checked) {
@@ -175,9 +181,11 @@
             
             for (i = 0; i < tr.length; i++) {
                 td = tr[i].getElementsByTagName("td")[0];
-                td1 = tr[i].getElementsByTagName("td")[3];
-                if ((td) || (td1))  {
-                    if ((td.innerHTML.search(yearchk) > -1) && ((Number(td1.innerHTML) >= from) && (Number(td1.innerHTML) <= to))){
+                //td1 = tr[i].getElementsByTagName("td")[3];
+                //if ((td) || (td1))  {
+                if (td) {
+                    //if ((td.innerHTML.search(yearchk) > -1) && ((Number(td1.innerHTML) >= from) && (Number(td1.innerHTML) <= to))){
+                    if (td.innerHTML.search(yearchk) > -1){
                         tr[i].style.display = "";
                     } else {
                        tr[i].style.display = "none";
@@ -187,6 +195,37 @@
     
                             
         }   
+    </script>
+
+    <script>    
+        $(document).ready(function() {
+            // Setup - add a text input to each footer cell
+            $('#tableOne thead th').each( function (i) {
+                var title = $('#tableOne thead th').eq( $(this).index() ).text();
+                $(this).html( '<input type="text" placeholder="Search '+title+'" data-index="'+i+'" />' );
+            } );
+          
+            // DataTable
+            table = $('#tableOne').DataTable( {
+                fixedHeader: true,
+                paging: true,
+                dom: '<"top"f>Brt<"bottom"ilp><"clear">',
+                buttons: [
+                   'copy', 'excel', 'pdf', 'print'
+                ],
+                columnDefs: [
+                    { orderable: false, targets: '_all' }
+                ]                
+            } );
+         
+            // Filter event handler
+            $( table.table().container() ).on( 'keyup', 'thead input', function () {
+                table
+                    .column( $(this).data('index') )
+                    .search( this.value )
+                    .draw();
+            } );
+        } );
     </script>
 
     

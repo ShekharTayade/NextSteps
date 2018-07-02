@@ -680,7 +680,7 @@ def ifThenAnalysisResults(request):
     chooseProgsInstts = request.POST.get('chooseProgsInstts', 'BLANK')
     rankFrom= request.POST.get('rankFrom', 'BLANK')
     rankTo = request.POST.get('rankTo', 'BLANK')
-    mainAdvRadio = request.POST.get('mainAdvRadio', 'BLANK')
+    rankType = request.POST.get('mainAdvRadio', 'BLANK')
     homestate = request.POST.get('homestate', 'BLANK')
     #rankFromADVVal = request.POST.get('from1', 'BLANK')
     #rankToADVVal = request.POST.get('to1', 'BLANK')
@@ -701,24 +701,9 @@ def ifThenAnalysisResults(request):
     
     stuCat = StudentCategory.objects.filter(category = category)
     
-    import pdb
-    pdb.set_trace()
-    
-    if use_prefRadio == "ON":
-        useUserPrefs = True
-    #    progs = progUserVals
-    #    instts = insttUserVals
-        #progs = Program.objects.filter(description__in=progUserVals)
-        #instts = Institute.objects.filter(instt_name__in=insttUserVals)
-        
-    #if optradio == 'OFF':
-    #    useUserPrefs = False
-    #    progs = progVals
-    #    instts = insttVals
-
     # Get user preferences. JEE is India specific and The Institute JEE Ranking table doesn't have Country,
     # hence not using the Country preference.
-    if useUserPrefs :
+    if use_prefRadio == "ON" :
         disciplineUserList = DisciplineUserPref.objects.filter(User__in=userid).values('Discipline_id')
         disciplineList = Discipline.objects.filter(discipline_code__in= disciplineUserList)
         
@@ -730,21 +715,7 @@ def ifThenAnalysisResults(request):
         
         insttUserList = InsttUserPref.objects.filter(User__in=userid).values('Institute_id')
         insttList = Institute.objects.filter(instt_code__in=insttUserList)
-        
-    rankFrom = 0
-    rankTo = 0
-    rankType = ''
 
-    if button.upper() == "SUBMIT":
-        rankFrom = rankFromMAINVal
-        rankTo = rankToMAINVal
-        rankType = 'MAIN'
-
-    if button1.upper() == "SUBMIT":
-        rankFrom = rankFromADVVal
-        rankTo = rankToADVVal
-        rankType = 'ADV'
-    
     results = []
     
     # Start with all the programs and institutes and go with only the ranks
@@ -752,49 +723,36 @@ def ifThenAnalysisResults(request):
         results = InstituteJEERanks.objects.filter( 
             Q( closing_rank__gte = rankFrom ) | Q( opening_rank__gte = rankFrom )).exclude(
             Institute__InstituteType_id = 'IIT').values('Discipline_id', 'Level_id',
-            'Program_id', 'Institute__instt_name', 'Institute_id', 'Institute__state', 'opening_rank', 
+            'Program_id', 'Institute__instt_name', 'Institute_id', 'Institute__state', 'year', 'opening_rank', 
             'closing_rank', 'quota').order_by('Program_id', 'closing_rank')
     
     if rankType == 'ADV':
         results = InstituteJEERanks.objects.filter( 
             (Q( closing_rank__gte = rankFrom ) | Q( opening_rank__gte = rankFrom )), Institute__InstituteType_id = 'IIT').values(
             'Discipline_id', 'Level_id', 'Program_id', 'Institute_id', 
-            'Institute__instt_name', 'Institute__state', 'opening_rank', 
+            'Institute__instt_name', 'Institute__state', 'year', 'opening_rank', 
             'closing_rank', 'quota').order_by('Program_id', 'closing_rank')
 
-    if len(progs) > 0 :
-        results = results.filter(Program__description__in=progs ).order_by('Program_id', 'closing_rank')
+    if len(progVals) > 0 :
+        results = results.filter(Program__description__in=progVals ).order_by('Program_id', 'closing_rank')
 
-    if len(instts) > 0 :
-        results = results.filter(Institute__instt_name__in=instts).order_by('Program_id', 'closing_rank')
+    if len(insttVals) > 0 :
+        results = results.filter(Institute__instt_name__in=insttVals ).order_by('Program_id', 'closing_rank')
 
     if stuCat.exists():
         results = results.filter(StudentCategory_id__in=stuCat).order_by('Program_id', 'closing_rank')
     
     err = False
 
-    # if User preferences are being used, then filter the results for those.    
-    if useUserPrefs:
-        if disciplineList != ['']:
-            results = results.filter(Discipline_id__in=disciplineList).order_by('Program_id', 'closing_rank')
-        if levelList != ['']:
-            results = results.filter(Level_id__in=levelList).order_by('Program_id', 'closing_rank')
-
-        if progs != ['']:
-            results = results.filter(Program_id__in=progList).order_by('Program_id', 'closing_rank')
-        if instts != ['']:
-            results = results.filter(Institute_id__in=insttList).order_by('Program_id', 'closing_rank')
-                
-
     if results == [] :
         err = True
-        results = InstituteJEERanks.objects.filter(Institute__instt_name__in=instts).order_by('Program_id', 'closing_rank')
+        results = InstituteJEERanks.objects.filter(Institute__instt_name__in=insttVals).order_by('Program_id', 'closing_rank')
 
 
     #limiting results to 20 rows
     #results = results.filter()[:50]
 
-    # let's apply the log for "Homestate" in case of MAIN
+    # let's apply the logic for "Homestate" in case of MAIN
     resultSet = []
     if rankType == 'MAIN':
         for r in results:
@@ -805,6 +763,7 @@ def ifThenAnalysisResults(request):
             this = {}
             this.update({'Program_id' : r['Program_id']})
             this.update({'Institute__instt_name' : r['Institute__instt_name']})
+            this.update({'year': r['year']})
             this.update({'opening_rank': r['opening_rank']})
             this.update({'closing_rank': r['closing_rank']})
             this.update({'quota': r['quota']})
@@ -816,6 +775,7 @@ def ifThenAnalysisResults(request):
             this = {}
             this.update({'Program_id' : r['Program_id']})
             this.update({'Institute__instt_name' : r['Institute__instt_name']})
+            this.update({'year': r['year']})
             this.update({'opening_rank': r['opening_rank']})
             this.update({'closing_rank': r['closing_rank']})
             this.update({'quota': r['quota']})
@@ -825,12 +785,11 @@ def ifThenAnalysisResults(request):
              
     return render(request, 'NextSteps/ifThenAnalysisResults.html', 
             {'resultSet':resultSet, 'err':err,'rankFrom':rankFrom, 
-             'rankTo':rankTo, 'progs':progs, 'instts':instts,
+             'rankTo':rankTo, 'progs':progVals, 'instts':insttVals,
              'rankType':rankType, 'resultCnt':resultCnt, 'homestate':homestate})     
     
  
 def getUserInsttProgramByType(request):
-
     
     insttType = request.GET.get('insttType', 'Blank')
     insttOrProg= request.GET.get('insttOrProg', 'Blank')
@@ -1022,7 +981,14 @@ def JEE_prog_instt_rank_filter(request):
     insttUserList = InsttUserPref.objects.filter(User__in=userid).values(
         'Institute__instt_name',  'Institute__InstituteType').distinct().order_by('Institute__instt_name')
     
+    '''
     return render(request, 'NextSteps/JEE_prog_instt_rank_filter.html', 
+            {'programUserList':programUserList, 'insttUserList':insttUserList,
+            'countryUserList':countryUserList, 'disciplineUserList':disciplineUserList,
+            'levelUserList':levelUserList, 'progList':progList, 
+            'insttProgList':insttProgList, 'stateList':stateList  })    
+    '''
+    return render(request, 'NextSteps/pref_jee_ranking.html', 
             {'programUserList':programUserList, 'insttUserList':insttUserList,
             'countryUserList':countryUserList, 'disciplineUserList':disciplineUserList,
             'levelUserList':levelUserList, 'progList':progList, 
@@ -1179,7 +1145,8 @@ def userAppDetailsView(request):
 def userAppDetailsConfirm(request):
     
     return render(request, 'NextSteps/userAppConfirm.html')
-        
-        
-        
-        
+
+def toDoList(request):
+    
+    return render(request, 'NextSteps/to_do_list.html')
+

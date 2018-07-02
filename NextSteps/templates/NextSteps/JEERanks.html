@@ -31,73 +31,45 @@
     
             <h3 class="block-title">JEE Opening and Closing Ranks</h3>
 
-
-            <div class="near_by_hotel_wrapper">
-                <div class="near_by_hotel_container">
-                
-                    <div class="col-sm-6">
-                        Institute Name<input type="text" id="myInput" style="background-image: url('{% static 'img/searchicon.png' %} ');" onkeyup="myFunction()" placeholder="Search in Institute names..">   
-                    </div>
-                    <div class="col-sm-6">
-                        Program Name<input type="text" id="myInput1" style="background-image: url('{% static 'img/searchicon.png' %} ');" onkeyup="myFunction()" placeholder="Search in Program names..">   
-                    </div>
-                    
-                    {% if insttcount > 0 %}
-                        <span style="text-align:left;">
-                            <small>Number of Records found: {{insttcount}}</small> 
-                        </span>                
-                    {% endif %}    
-
-                    <table id="tableOne" class="table table-responsive no-border custom_table dataTable no-footer dtr-inline">
-                        <thead>
-                            <tr>
-                                <th style="width:5%">Year</th>
-                                <th style="width:40%">Name</th>
-                                <th style="width:30%">Program</th>
-                                <th style="width:10%">Quota</th>
-                                <th style="width:15%">Opening-Closing Rank</th>
+            <!--
+            <div class="col-sm-6">
+                Institute Name<input type="text" id="myInput" style="background-image: url('{% static 'img/searchicon.png' %} ');" onkeyup="myFunction()" placeholder="Search in Institute names..">   
+            </div>
+            <div class="col-sm-6">
+                Program Name<input type="text" id="myInput1" style="background-image: url('{% static 'img/searchicon.png' %} ');" onkeyup="myFunction()" placeholder="Search in Program names..">   
+            </div>
+            
+            {% if insttcount > 0 %}
+                <span style="text-align:left;">
+                    <small>Number of Records found: {{insttcount}}</small> 
+                </span>                
+            {% endif %}    
+            -->
+            <!-- <table id="tableOne" class="table table-responsive no-border custom_table dataTable no-footer dtr-inline">-->
+            <table id="tableOne" class="display table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th style="width:13%">Year</th>
+                        <th style="width:25%">Instt Name</th>
+                        <th style="width:22%">Program</th>
+                        <th style="width:15%">Quota</th>
+                        <th style="width:25%">Opening-Closing Rank</th>
+                    </tr>
+                </thead>
+                <tbody>            
+                        {% for i in insttList %}      
+                            <tr>       
+                                <td class="align-middle" > {{ i.year}}</td>
+                                <td class="align-middle" > {{ i.Institute__instt_name }},&nbsp;{{i.Institute__city}}</td>
+                                <td class="align-middle" > {{ i.Program_id }}</td>
+                                <td class="align-middle" > {{i.quota }}</td>
+                                <td class="align-middle" > {{i.opening_rank }}&nbsp; - &nbsp;{{i.closing_rank }}</td>
                             </tr>
-                        </thead>
-                        <tbody>            
-                                {% for i in insttList %}      
-                                    <tr>       
-                                        <td class="align-middle" > {{ i.year}}</td>
-                                        <td class="align-middle" > {{ i.Institute__instt_name }}-{{i.Institute__city}}</td>
-                                        <td class="align-middle" > {{ i.Program_id }}</td>
-                                        <td class="align-middle" > {{i.quota }}</td>
-                                        <td class="align-middle" > {{i.opening_rank }}&nbsp; - &nbsp;{{i.closing_rank }}</td>
-                                    </tr>
-                                {% empty %}
-                                    <p >- No Institutes found, please <a href="{% url 'JEE_ranks_filter' %}">revise</a> your filter -</p>
-                                {% endfor %}
-                        </tbody>
-                    </table>                   
-                </div>
-
-                {% if insttList.has_other_pages %}
-                  <ul class="pagination">
-                    {% if insttList.has_previous %}
-                      <li><a href="?page={{ insttList.previous_page_number }}">&laquo;</a></li>
-                    {% else %}
-                        <li class="disabled"><span>&laquo;</span></li>
-                    {% endif %}
-                    {% for i in insttList.paginator.page_range %}
-                      {% if insttList.number == i %}
-                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-                      {% else %}
-                        <li><a href="?page={{ i }}">{{ i }}</a></li>
-                        {% endif %}
-                    {% endfor %}
-                    {% if insttList.has_next %}
-                      <li><a href="?page={{ insttList.next_page_number }}">&raquo;</a></li>
-                    {% else %}
-                      <li class="disabled"><span>&raquo;</span></li>
-                    {% endif %}
-                  </ul>
-                {% endif %}                    
-
-            </div>    
-        
+                        {% empty %}
+                            <p >- No Institutes found, please <a href="{% url 'JEE_ranks_filter' %}">revise</a> your filter -</p>
+                        {% endfor %}
+                </tbody>
+            </table>                   
         </div>
     </div>
 
@@ -129,6 +101,38 @@
 
 </script>
 
+    <script>    
+        $(document).ready(function() {
+            // Setup - add a text input to each footer cell
+            $('#tableOne thead th').each( function (i) {
+                var title = $('#tableOne thead th').eq( $(this).index() ).text();
+                $(this).html( '<input type="text" placeholder="Search '+title+'" data-index="'+i+'" />' );
+            } );
+          
+            // DataTable
+            table = $('#tableOne').DataTable( {
+                fixedHeader: true,
+                paging: true,
+                dom: '<"top"f>Brt<"bottom"ilp><"clear">',
+                buttons: [
+                   'copy', 'excel', 'pdf', 'print'
+                ],
+                columnDefs: [
+                    { orderable: false, targets: '_all' }
+                ]                
+            } );
+         
+            table.columns.adjust().draw();
+            
+            // Filter event handler
+            $( table.table().container() ).on( 'keyup', 'thead input', function () {
+                table
+                    .column( $(this).data('index') )
+                    .search( this.value )
+                    .draw();
+            } );
+        } );
+    </script>
 
 {% endblock features %}
 

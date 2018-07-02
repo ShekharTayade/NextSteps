@@ -1,0 +1,179 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps_base.html' %}
+
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+{% endblock slide-show %}
+
+<!-- Override features block -->
+{% block features %}
+    <div class="showcase block block-border-bottom-Gainsboro">
+        <div class="container">
+
+            <h3 class="block-title">To-Do List</h3>
+
+            <div class="block">
+
+                <form action="{% url 'if_then_analysis_results' %}" method='post' id='getAnalysis'>
+                    {% csrf_token %}
+                        <div class = "to-do-frame">
+                            <div class = "row">
+                                <div class= "col-xs-12">
+                                    <span class = "text-primary pull-left" data-toggle="tooltip" title="Add an item" data-placement="bottom">
+                                        <i class="fa fa-plus-square fa-2x"></i>&nbsp;&nbsp;&nbsp;
+                                    </span>
+                                    <!-- <button id="addEvent" class="btn-info" onclick="$( '#dialog' ).dialog('open')">Add Your Own</button> -->
+                                    <span class = "text-primary pull-left" data-toggle="tooltip" title="Remove selected item" data-placement="bottom">
+                                        <i class="fa fa-minus-square fa-2x"></i>&nbsp;&nbsp;&nbsp;
+                                    </span>
+                                    <span class = "text-primary pull-right" data-toggle="tooltip" title="Synch with the Calendar Events" data-placement="bottom">
+                                        <i class="fa fa-refresh fa-2x"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <table id="todoTbl" class="display table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style="width:30%; text-align:center">Institute:</th>
+                                        <th style="width:35%; text-align:center">To Do:</th>
+                                        <th style="width:15%; text-align:center">Start Date:</th>
+                                        <th style="width:15%; text-align:center">End Date:</th>
+                                        <th style="width:5%; text-align:center"><i class="fa fa-check"></i></th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="5"><small>NextSteps:To-Do List_____________________________________________</small></td>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    <tr>
+                                        <td> Indian Institute of Tehcnology Bombay</td>
+                                        <td> JEE (MAIN) Application</td>
+                                        <td> 15-11-2017</td>
+                                        <td> 01-01-2018</td>
+                                        <td> <span style= "text-align:center; display:inline-block"><input type="checkbox"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td> Indian Institute of Tehcnology Bombay</td>
+                                        <td> JEE (MAIN) Application</td>
+                                        <td> 15-11-2017</td>
+                                        <td> 01-01-2018</td>
+                                        <td> <input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td> Indian Institute of Tehcnology Bombay</td>
+                                        <td> JEE (MAIN) Application</td>
+                                        <td> 15-11-2017</td>
+                                        <td> 01-01-2018</td>
+                                        <td> <input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td> Indian Institute of Tehcnology Bombay</td>
+                                        <td> JEE (MAIN) Application</td>
+                                        <td> 15-11-2017</td>
+                                        <td> 01-01-2018</td>
+                                        <td> <input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td> Indian Institute of Tehcnology Bombay</td>
+                                        <td> JEE (MAIN) Application</td>
+                                        <td> 15-11-2017</td>
+                                        <td> 01-01-2018</td>
+                                        <td> <input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td> Indian Institute of Tehcnology Bombay</td>
+                                        <td> JEE (MAIN) Application</td>
+                                        <td> 15-11-2017</td>
+                                        <td> 01-01-2018</td>
+                                        <td> <input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td> Indian Institute of Tehcnology Bombay</td>
+                                        <td> JEE (MAIN) Application</td>
+                                        <td> 15-11-2017</td>
+                                        <td> 01-01-2018</td>
+                                        <td> <input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td> Indian Institute of Tehcnology Bombay</td>
+                                        <td> JEE (MAIN) Application</td>
+                                        <td> 15-11-2017</td>
+                                        <td> 01-01-2018</td>
+                                        <td> <input type="checkbox"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    $(document).ready(function() {
+        todoTable = $('#todoTbl').DataTable( {
+        ordering:  false,
+        paging:    false,
+        info:      false,
+        select: {
+            style: 'multi'
+        },
+        dom: '<"top"f>Brt<"bottom"ilp><"clear">',
+        buttons: [
+           'copy', 
+            {
+                extend: 'excel',
+                messageTop: 'To-Do List',
+                title : "NextSteps"
+            },
+            
+            {
+                extend: 'pdf',
+                messageTop: 'To-Do List',
+                title : "NextSteps"
+            },
+            {
+                extend: 'print',
+                messageTop: 'To-Do List',
+                title : "NextSteps"            }
+        ]
+        
+        } );
+
+    } );    
+    </script>
+
+{% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->
+

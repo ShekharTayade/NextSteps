@@ -8,158 +8,57 @@
 
     <div class="showcase block block-border-bottom-grey">
     
-            <div class = "welcomeuser">
-            
-                <div class="welcomeuser-blank">
+        <div class = "welcomeuser">
+        
+            <!-- <div class="welcomeuser-blank">
+                <br />&emsp;&emsp;&emsp;&emsp;
+                <br />&nbsp;
+            </div> -->
+            <div class = "row">
+                <div class = "col-sm-8">
+                    {% block welcomeuser-cell %}
+                        <div class="welcomeuser-cell">
+                            <span style = "font-size:16px;"> <strong>Hi {{user.username}}!</strong></span>
+                            <br />
+                            Welcome to "NextSteps".
+                            We can help you in your quest for best institutes. Please use the features on the right to get important information on institutes across India.
+                        </div>
+                    {% endblock welcomeuser-cell %}
+                </div>                
+                <!-- <div class = "welcomeuser-menu" >
                     <br />&emsp;&emsp;&emsp;&emsp;
                     <br />&nbsp;
-                </div>
-                {% block welcomeuser-cell %}
-                    <div class="welcomeuser-cell">
-                        <span style = "font-size:16px;"> <strong>Hi {{user.username}}!</strong></span>
-                        <br />
-                        Welcome to "NextSteps".<br />
-                        We can help you in your quest for best institutes. You can use the features on the right to get the important information on institutes across India.
+                </div> -->
+                <div class = "col-sm-4">
+                    <div class = "" style = "color:#000000; display: table-cell;">
+                        <li style = "margin-left:30px;">
+                            <strong><a href="{% url 'instt_list' %}" style = "color:white !important; font-size:14px; "><u>Search Institutes</u></a></strong>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                            <!-- <small>&emsp;&emsp;Search institutes using various parameters</small> -->
+                        </li>     
+                        <li style = "margin-left:30px;">
+                            <strong><a href="{% url 'program_filter' %}" style = "color:white !important; font-size:14px; "><u>Search Programs</u></a></strong>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                            <!-- <small>&emsp;&emsp;Take look at various programs to choose from</small> -->
+                        </li>
+                        <li style = "margin-left:30px;">
+                            <strong><a href="{% url 'search_entrance_exams' %}" style = "color:white !important; font-size:14px; "><u>Entrance Exams</u></a></strong>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                            <!-- <small>&emsp;&emsp;Take look at various entrance exams to may want to prepare for</small> -->
+                        </li>   
+                        <li style = "margin-left:30px;">
+                            <strong><a href="{% url 'instt_ranking_filter' %}" style = "color:white !important; font-size:14px; "><u>Survey Ranking</u></a></strong>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                            <!-- <small>&emsp;&emsp;Survey ranking and information on various institutes</small> -->
+                        </li>        
+                        <li style = "margin-left:30px;">
+                            <strong><a href="{% url 'JEE_ranks_filter' %}" style = "color:white !important; font-size:14px; "><u>JEE Ranks</u></a></strong>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                            <!-- <small>&emsp;&emsp;Check out the opening, closing JEE ranks for various programs and institutes</small> -->
+                        </li>        
                     </div>
-                {% endblock welcomeuser-cell %}
-                
-                <div class = "welcomeuser-menu" >
-                    <br />&emsp;&emsp;&emsp;&emsp;
-                    <br />&nbsp;
-                </div>
-                <div class = "" style = "color:#000000; display: table-cell;">
-                    <li style = "margin-left:30px;">
-                        <strong><a href="{% url 'instt_list' %}" style = "color:white !important; font-size:14px; "><u>Search Institutes</u></a></strong>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                        <!-- <small>&emsp;&emsp;Search institutes using various parameters</small> -->
-                    </li>     
-                    <li style = "margin-left:30px;">
-                        <strong><a href="#" style = "color:white !important; font-size:14px; "><u>Programs</u></a></strong>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                        <!-- <small>&emsp;&emsp;Take look at various programs to choose from</small> -->
-                    </li>
-                    <li style = "margin-left:30px;">
-                        <strong><a href="{% url 'search_entrance_exams' %}" style = "color:white !important; font-size:14px; "><u>Entrance Exams</u></a></strong>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                        <!-- <small>&emsp;&emsp;Take look at various entrance exams to may want to prepare for</small> -->
-                    </li>   
-                    <li style = "margin-left:30px;">
-                        <strong><a href="{% url 'instt_ranking_filter' %}" style = "color:white !important; font-size:14px; "><u>Survey Ranking</u></a></strong>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                        <!-- <small>&emsp;&emsp;Survey ranking and information on various institutes</small> -->
-                    </li>        
-                    <li style = "margin-left:30px;">
-                        <strong><a href="{% url 'JEE_ranks_filter' %}" style = "color:white !important; font-size:14px; "><u>JEE Ranks</u></a></strong>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-                        <!-- <small>&emsp;&emsp;Check out the opening, closing JEE ranks for various programs and institutes</small> -->
-                    </li>        
-                    
                 </div>
             </div>
 
+        </div>
     </div>
 
 {% endblock slide-show %}
-
-                <!--
-                <form id ="filterForm" action = "{% url 'instt_details' %}" method='post' >
-                {% csrf_token %}
-
-                    <div style="display:none;" class="row">
-                    
-                        <div class = "col-sm-3">
-                            <div class="form-group">
-                                <label for="countryList">Country</label>
-                                <select class="form-control" id="countryList" size ="10" multiple="multiple" name="countryList">
-                                    {% for i in countryList %}
-                                        <option> {{i.country_code}} </option>
-                                    {% endfor %}    
-                                </select>           
-                            </div>                      
-                        </div>
-                        <div class = "col-sm-3">
-                            <div class="form-group">
-                                <label for="countryList">Discipline</label>
-                                <select class="form-control" id="disciplineList" size ="10" multiple="multiple" name="disciplineList">
-                                    {% for i in disciplineList %}
-                                        <option> {{i.discipline_code}} </option>
-                                    {% endfor %}    
-                                </select>           
-                            </div>                      
-                        </div>
-                        <div class = "col-sm-3">
-                            <div class="form-group">
-                                <label for="countryList">Level</label>
-                                <select class="form-control" id="levelList" size ="10" multiple="multiple" name="levelList">
-                                    {% for i in levelList %}
-                                        <option> {{i.level_code}} </option>
-                                    {% endfor %}    
-                                </select>           
-                            </div>                      
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                    
-                        <div class = "col-sm-3">
-                            <div class="form-group">
-                                <label for="stateList">State</label>
-                                <select class="form-control" id="stateList" size ="10" multiple="multiple" name="stateList">
-                                    {% for il in instt_StateList %}
-                                        <option> {{il.state}} </option>
-                                    {% endfor %}    
-                                </select>           
-                            </div>                      
-                        </div>
-    
-                        <div class = "col-sm-3">
-                            <div class="form-group">
-                                <label for="cityList">City</label>
-                                <select class="form-control" id="cityList" size ="10" multiple="multiple" name="cityList">
-                                    {% for il in instt_CityList %}
-                                        <option> {{il.city}} </option>
-                                    {% endfor %}    
-                                </select>           
-                            </div>                      
-                        </div>
-    
-                        <div class = "col-sm-3">
-                            <div class="form-group">
-                                <label for="insttTypeList">Institute Type</label>
-                                <select class="form-control" id="insttTypeList" size ="10" multiple="multiple" name="insttTypeList">
-                                    {% for il in instt_typeList %}
-                                        <option> {{il.description}} </option>
-                                    {% endfor %}    
-                                </select>           
-                            </div>                      
-                        </div>
-    
-                        <div class = "col-sm-3">
-                            <div class="form-group">
-                                <label for="insttRankList">Institute Survey Ranking</label>
-                                <select class="form-control" id="insttRankList" size ="10" multiple="multiple" name="insttRankYrList">
-                                    {% for il in rank_range %}
-                                        <option> {{il.year}} </option>
-                                    {% endfor %}    
-                                </select>
-                            </div>
-                        </div>
-    
-                    </div>
-                    <div class="row">
-                        <div class = "col-sm-9">
-                            <div class="form-group">
-                                <label for="programList">Program</label>
-                                <select class="form-control" id="programList" multiple="multiple"  size ="10" name="programList">
-                                    {% for il in programList %}
-                                        <option> {{il.description}} </option>
-                                    {% endfor %}    
-                                </select>           
-                            </div>
-                        </div>
-    
-                    </div>
-                    
-    
-                    <div class = "empty-space-50px"></div>
-                    <button id = "submitbutton" name = "submitbutton" class='btn btn-more i-right' type='submit' formmethod='post' value='submit' form = 'filterForm'> <i class="fa fa-plus"></i> Get Results</button>
-                </form>                            
-                -->
 
 
     <script type="text/javascript">

@@ -558,14 +558,15 @@ def JEERanksFilter(request):
 @login_required
 def JEEOpeningClosingRanks(request):
 
+    '''
     if request.method == 'POST':    
         request.session['jee-rank-post'] = request.POST
     else:
         if 'jee-rank-post' in request.session:
             request.POST = request.session['jee-rank-post']
             request.method = 'POST'        
+    '''
 
-    
     switch2015 = request.POST.get('Switch2015', 'off')
     switch2016 = request.POST.get('Switch2016', 'off')
     switch2017 = request.POST.get('Switch2017', 'off')
@@ -573,25 +574,38 @@ def JEEOpeningClosingRanks(request):
     switchNIT = request.POST.get('SwitchNIT', 'off')
     
     years = []
-    insttType = []
     if switch2015 == 'on':
         years.append('2015')
     if switch2016 == 'on':
         years.append('2016')
     if switch2017 == 'on':
         years.append('2017')
+        
     if switchIIT == 'on':
-        insttType.append('IIT')
+        insttType= 'IIT'
     if switchNIT == 'on':
-        insttType.append('NIT')
+        insttType = 'NON-IIT'
+    if switchIIT == 'on' and switchNIT == 'on':
+        insttType = 'ALL'
+        
 
-    insttList = InstituteJEERanks.objects.filter(year__in=years, Institute__InstituteType__in=insttType).values(
-        'year', 'Institute__instt_name', 'Institute__city', 'Program_id', 'quota', 'opening_rank',
-        'closing_rank').order_by('year', 'Program_id', 'closing_rank' )
+    if insttType == "IIT":
+        insttList = InstituteJEERanks.objects.filter(year__in=years, Institute__InstituteType=insttType).values(
+            'year', 'Institute__instt_name', 'Institute__city', 'Program_id', 'quota', 'opening_rank',
+            'closing_rank').order_by('year', 'Program_id', 'closing_rank' )
+            
+    elif insttType == "NON-IIT":
+        insttList = InstituteJEERanks.objects.filter(year__in=years, Institute__jee_flag="Y").exclude(
+            Institute__InstituteType="IIT").values(
+            'year', 'Institute__instt_name', 'Institute__city', 'Program_id', 'quota', 'opening_rank',
+            'closing_rank').order_by('year', 'Program_id', 'closing_rank' )
+            
+    elif insttType == "ALL":
+        insttList = InstituteJEERanks.objects.filter(year__in=years).values(
+            'year', 'Institute__instt_name', 'Institute__city', 'Program_id', 'quota', 'opening_rank',
+            'closing_rank').order_by('year', 'Program_id', 'closing_rank' )
 
-    insttcount = len(insttList)
-
-
+    '''
     page = request.GET.get('page', 1)
     paginator = Paginator(insttList, 15)
     
@@ -601,11 +615,10 @@ def JEEOpeningClosingRanks(request):
         insttList = paginator.page(1)
     except EmptyPage:
         insttList = paginator.page(paginator.num_pages)
-    
+    '''
 
     
-    return render(request, 'NextSteps/JEERanks.html', {
-        "insttList" : insttList, 'insttcount':insttcount})
+    return render(request, 'NextSteps/JEERanks.html', {"insttList" : insttList})
 
 @login_required
 def insttCutOffFilter(request):
@@ -673,43 +686,77 @@ def programFilter(request):
     # Get all records to be displayed 
     countryList = Country.objects.all()
     disciplineList = Discipline.objects.all()
-#    programList = Program.objects.all().order_by('description')
+    programList = Program.objects.all().order_by('program_code')
     levelList = Level.objects.all()
     
  
-    return render(request, 'NextSteps/program_filter.html', {
+    #return render(request, 'NextSteps/program_filter.html', {
+    #    'countryList': countryList, 'disciplineList':disciplineList, 
+    #    'levelList':levelList, programList})
+
+    return render(request, 'NextSteps/program_search.html', {
         'countryList': countryList, 'disciplineList':disciplineList, 
-        'levelList':levelList, })
+        'levelList':levelList, 'programList':programList})
+
 
 @login_required
 def searchProgram (request):
-    
+  
+    '''
     if request.method == 'POST':    
         request.session['search-instts-post'] = request.POST
     else:
         if 'search-instts-post' in request.session:
             request.POST = request.session['search-instts-post']
             request.method = 'POST'        
+
+    '''
+    countryVals = request.POST.getlist('cntList', [])
+    disciplineVals = request.POST.getlist('discList', [])
+    levelVals = request.POST.getlist('lvlList', [])
+    programVals  = request.POST.getlist('progList', [])
+
+    # There might be white spaces in the array items. Let's remove those
+    cntList = []
+    for c in countryVals:
+        c = c.strip()
+        cntList.append(c)        
+
+    discList = []
+    for d in disciplineVals:
+        d = d.strip()
+        discList.append(d)        
+
+    lvlList = []
+    for l in levelVals:
+        l = l.strip()
+        lvlList.append(l)        
+
+    progList = []
+    for p in programVals:
+        p = p.strip()
+        progList.append(p)        
+
+
+    # Get country, discipline and level Codes
+    countryCodes = Country.objects.filter(country_name__in = cntList).values(
+            'country_code')
+    disciplineCodes = Discipline.objects.filter(description__in = discList).values(
+            'discipline_code')
+    levelCodes = Level.objects.filter(level_name__in = lvlList).values(
+            'level_code')
+    
+    if progList:
+        insttList = InstitutePrograms.objects.filter(Country__in=countryCodes, 
+                    Discipline__in=disciplineCodes, Level__in=levelCodes,
+                    Program_id__in=progList ).values(
+                        'Institute__instt_name').distinct().order_by('Institute__instt_name')
+    else:
+        insttList = InstitutePrograms.objects.filter(Country__in = countryCodes, 
+                    Discipline__in=disciplineCodes, Level__in=levelCodes).values(
+                        'Institute__instt_name').distinct().order_by('Institute__instt_name')
         
-    countryVals = request.POST.get('CountryValues', '').split(";")
-    disciplineVals = request.POST.get('DisciplineValues', '').split(";")
-    levelVals = request.POST.get('LevelValues', '').split(";")
-    programVals = request.POST.get('ProgramValues', '').split(";")
 
-
-    # Set flags to know if user selected country, discipline and level
-    if countryVals == ['']:
-        countryFlag = False
-    else:
-        countryFlag = True    
-    if disciplineVals == ['']:
-        disciplineFlag = False
-    else:
-        disciplineFlag = True    
-    if levelVals == ['']:
-        levelFlag = False
-    else:
-        levelFlag = True    
 
     # Get the list of institutes based on the user selected programs
     insttList = InstitutePrograms.objects.filter(Program_id__in=programVals).values(
@@ -720,21 +767,20 @@ def searchProgram (request):
         'Institute__website', 'Institute__InstituteType', 'Institute__instt_code',
         'Institute__InstituteType__description').distinct()
     
-    # Case 1
-    if countryFlag :
-        countryIds = Country.objects.filter(country_name__in=countryVals)
-        insttList = insttList.filter(Country_id__in=countryIds)
-    if disciplineFlag:
-        disciplineIds = Discipline.objects.filter(description__in=disciplineVals)
-        insttList = insttList.filter(Discipline_id__in=disciplineIds) 
-    if levelFlag:
-        levelIds = Level.objects.filter(level_name__in=levelVals)
-        insttList = insttList.filter(Level_id__in=levelIds)
+    # Set other filters
+    if countryCodes :
+        insttList = insttList.filter(Country_id__in=countryCodes)
+    if disciplineCodes:
+        insttList = insttList.filter(Discipline_id__in=disciplineCodes) 
+    if levelCodes:
+        insttList = insttList.filter(Level_id__in=levelCodes)
 
     # Order the Queryset
     insttList = insttList.order_by('Institute__state', 'Institute__city', 'Institute__instt_name')
+    
+    
     insttcount = len(insttList)
-      
+    '''  
     insttIds = insttList.values('Institute__instt_code')
       
     page = request.GET.get('page', 1)
@@ -746,6 +792,7 @@ def searchProgram (request):
         insttList = paginator.page(1)
     except EmptyPage:
         insttList = paginator.page(paginator.num_pages)
+    '''
     
     return render(request, 'NextSteps/program_search_results.html', {
         'insttList':insttList,'programVals':programVals, 'insttcount':insttcount})

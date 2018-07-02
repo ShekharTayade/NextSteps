@@ -35,75 +35,58 @@
     
             <h3 class="block-title">Entrance Exams</h3>
 
-            <div class="near_by_hotel_wrapper">
-                <div class="near_by_hotel_container">
-                
-                    <div class="col-sm-6">
-                        Exam Level<input type="text" id="myInput" style="background-image: url('{% static 'img/searchicon.png' %} ');" onkeyup="myFunction()" placeholder="Enter exam level..">   
-                    </div>
-                    <div class="col-sm-6">
-                        State<input type="text" id="myInput1" style="background-image: url('{% static 'img/searchicon.png' %} ');" onkeyup="myFunction()" placeholder="Enter the State..">   
-                    </div>
-                    <small>Exam level can be State level, National level, University or College level</small>
-                    
-                   <table id="tableOne" class="table table-responsive no-border custom_table dataTable no-footer dtr-inline">
-                        <thead>
-                            <tr>
-                                <th style="width:20%">Entrance Exam</th>
-                                <th style="width:40%">Description</th>
-                                <th style="width:15%">Exam Level</th>
-                                <th style="width:20%">State Applies to</th>
-                            </tr>
-                        </thead>
-                        <tbody>            
-                            {% for i in examList %}      
-                                <tr>       
-                                    <td class="align-middle text-primary" > {{ i.entrance_exam_code}}</td>
-                                    <td class="align-middle" > {{ i.description}}</td>
-                                    <td class="align-middle" > {{ i.exam_level }}</td>
-                                    <td class="align-middle" > {{i.state }}</td>
-                                </tr>
-                            {% empty %}
-                                <p>No Entrance Exams found.</p>
-                            {% endfor %}
-                        </tbody>
-                    </table>                   
+            <!--
+            <div class = "row">
+                <div class="col-sm-6">
+                    Exam Level<input type="text" id="myInput" style="background-image: url('{% static 'img/searchicon.png' %} ');" onkeyup="myFunction()" placeholder="Enter exam level..">   
                 </div>
+                <div class="col-sm-6">
+                    State<input type="text" id="myInput1" style="background-image: url('{% static 'img/searchicon.png' %} ');" onkeyup="myFunction()" placeholder="Enter the State..">   
+                </div>
+            </div>
+            -->
+            <n_note>
+                <p>Entrance exams, for admissions to various B.E./B.Tech courses, conduted by various states, universities and colleges in India.</p>
+            </n_note>
                 
-            </div>    
-        
+            <table id="tableOne" class="display table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th style="width:20%">Entrance Exam</th>
+                        <th style="width:40%">Description</th>
+                        <th style="width:15%">Exam Level</th>
+                        <th style="width:20%">State Applies to</th>
+                    </tr>
+                </thead>
+                <tbody>            
+                    {% for i in examList %}      
+                        <tr>       
+                            <td class="align-middle text-primary" > {{ i.entrance_exam_code}}</td>
+                            <td class="align-middle" > {{ i.description}}</td>
+                            <td class="align-middle" > {{ i.exam_level }}</td>
+                            <td class="align-middle" > {{i.state }}</td>
+                        </tr>
+                    {% empty %}
+                        <p>No Entrance Exams found.</p>
+                    {% endfor %}
+                </tbody>
+            </table>
+    
         </div>
     </div>
 
 
 <script>
-    function myFunction() {
-      // Declare variables 
-      var input, input1, filter, filter1, table, tr, td, i;
-      input = document.getElementById("myInput");
-      input1 = document.getElementById("myInput1");
-      filter = input.value.toUpperCase();
-      filter1 = input1.value.toUpperCase();
-      table = document.getElementById("tableOne");
-      tr = table.getElementsByTagName("tr");
-    
-      // Loop through all table rows, and hide those who don't match the search query
-      for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[2];
-        td1 = tr[i].getElementsByTagName("td")[3];
-        if ((td) || (td1)) {
-          if ((td.innerHTML.toUpperCase().indexOf(filter) > -1) && (td1.innerHTML.toUpperCase().indexOf(filter1) > -1)){
-            tr[i].style.display = "";
-          } else {
-            tr[i].style.display = "none";
-          }
-        } 
-      }
-    }
-
+    entTable = $('#tableOne').DataTable( {
+        fixedHeader: true,
+        select: false,
+        paging: true,
+        dom: '<"top"f>Brt<"bottom"ilp><"clear">',
+        buttons: [
+           'copy', 'excel', 'pdf', 'print'
+        ]
+        } );
 </script>
-
-
 {% endblock features %}
 
 {% block misson-statement %}

@@ -30,15 +30,17 @@
         <div class="container">
 
             <h3 class="block-title">
-                Seat Probablity Analysis Results
+                Seat Assessment Analysis Results
             </h3>
             <div class = "row">
-                <div class="w3-container w3-text-deep-orange">
+                <!-- <div class="w3-container w3-text-deep-orange"> -->
+                <div class="w3-container pref-head" style = "margin:5px 15px">
                     <h5>Your selections were</h5>
                 </div>
             </div>    
             
-            <table id="tableOne" class="table table-responsive no-border custom_table dataTable no-footer dtr-inline">
+<!--            <table id="tableOne" class="table table-responsive no-border custom_table dataTable no-footer dtr-inline">-->
+            <table id="tableone" class="display table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th style="width:30%">Rank Range</th>
@@ -57,14 +59,14 @@
                         </td>
                         <td>
                             {% for p in progs %} 
-                                <li>{{ p }}</li>
+                                <i class="fa fa-caret-right"></i>&nbsp;{{ p }}<br />
                             {% empty %}
                                 None
                             {% endfor %}
                         </td>
                         <td>
                             {% for i in instts %} 
-                                <li>{{ i }}</li>
+                                <i class="fa fa-caret-right"></i>&nbsp;{{ i }}<br />
                             {% empty %}
                                 None
                             {% endfor %}
@@ -73,48 +75,22 @@
                 </tbody>
             </table>            
 
+            <br />
             <div class = "row">
-                <div class="w3-container w3-text-deep-orange">
+                <!-- <div class="w3-container w3-text-deep-orange"> -->
+                <div class="w3-container pref-head"  style = "margin:5px 15px">
                     <h5>Based on above selections following table displays the seat probabilitites for you</h5>
                 </div>
+                <br />
             </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <p class="text-muted">Use these filters to narrow the results</p>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-xs-6">
-                            Program Name<input type="text" id="myInput" style="background-image: url('{% static 'img/searchicon.png' %} ');" onkeyup="myFunction()" placeholder="Enter text to search in Programs..">   
-                        </div>
-                        <div class="col-xs-6">
-                            Institute<input type="text" id="myInput1" style="background-image: url('{% static 'img/searchicon.png' %} ');" onkeyup="myFunction()" placeholder="Enter text to search in Institutes...">   
-                        </div>
-                    </div>  
-                </div>
-            </div>
-
-
-    
-                <div class="col-xs-8 col-sm-12 col-md-12">            
-                    {% if resultCnt == 0 %}
-                        <span style="text-align:left;">
-                            <span ><small>No match found!!! Please make your selections again!</small></span>
-                        </span>                
-                    {% else %}      
-                        <span style="text-align:left;">
-                            <span ><small>Number of Programs found: {{resultCnt}}</small></span> 
-                        </span>                
-                    {% endif %}
-                </div>
-
-
-            <table id="tabletwo" class="table table-responsive no-border custom_table dataTable no-footer dtr-inline">
+<!--            <table id="tabletwo" class="table table-responsive no-border custom_table dataTable no-footer dtr-inline"> -->
+            <table id="tabletwo" class="display table table-striped table-bordered">
                 <thead>
                     <tr>
-                        <th style="width:40%">Program</th>
+                        <th style="width:35%">Program</th>
                         <th style="width:35%">Institute</th>
+                        <th style="width:5%">Year</th>
                         <th style="width:10%">Opening Rank</th>
                         <th style="width:10%">Closing Rank</th>
                         <th style="width:5%">Quota</th>
@@ -130,13 +106,16 @@
                                 {{ r.Institute__instt_name }}
                             </td>
                             <td>
+                                {{ r.year }}
+                            </td>
+                            <td>
                                 {{ r.opening_rank}}
                             </td>
                             <td>
                                 {{ r.closing_rank }}
                             </td>
                              <td>
-                                Quota:&nbsp;{{ r.quota }}&nbsp;
+                                {{ r.quota }}
                             </td>
                    </tr>
                         {% endfor %}
@@ -144,8 +123,8 @@
             </table>
             {% if resultCnt > 0 %}
                 <div class="w3-container w3-text-deep-orange">
-                    <small><p class="text-primary">*Disclaimer: Please note that this is purely based on pervious year opening and closing ranks
-                    of the Institutes and by no means may exactly depict your chances. The closing ranks can vary significantly year on year. 
+                    <small><p class="text-primary">*Disclaimer: Please note that this is purely based on pervious years opening and closing ranks
+                    of the Institutes and by no means exactly depicts your chances. The closing ranks can vary significantly year on year. 
                     However, it would sure assist you as you assess your chances.</p></small>
                 </div>
             {% endif %}
@@ -153,33 +132,49 @@
         </div>
      </div>
 
-    <!-- Based on the use input in Programs and Institute input boxes, filter the rows in table -->
-     <script>
-        function myFunction() {
-          // Declare variables 
-          var input, input1, filter, filter1, table, tr, td, i;
-          input = document.getElementById("myInput");
-          input1 = document.getElementById("myInput1");
-          filter = input.value.toUpperCase();
-          filter1 = input1.value.toUpperCase();
-          table = document.getElementById("tabletwo");
-          tr = table.getElementsByTagName("tr");
-        
-          // Loop through all table rows, and hide those who don't match the search query
-          for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            td1 = tr[i].getElementsByTagName("td")[1];
-            if ((td) || (td1)) {
-              if ((td.innerHTML.toUpperCase().indexOf(filter) > -1) && (td1.innerHTML.toUpperCase().indexOf(filter1) > -1)){
-                tr[i].style.display = "";
-              } else {
-                tr[i].style.display = "none";
-              }
-            } 
-          }
-        }
-    
+
+
+    <script>
+    $(document).ready(function() {
+      
+        table2 = $('#tabletwo').DataTable( {
+        retrieve: true,
+        paging: true,
+        //dom: 'lBfrtip',
+        dom: '<"top"f>Brt<"bottom"ilp><"clear">',
+        buttons: [
+           'copy', 
+            {
+                extend: 'excel',
+                messageTop: 'Seat Chances Assessment',
+                title : "NextSteps"
+            },
+            
+            {
+                extend: 'pdf',
+                messageTop: 'Seat Chances Assessment',
+                title : "NextSteps"
+            },
+            {
+                extend: 'print',
+                messageTop: 'Seat Chances Assessment',
+                title : "NextSteps"            }
+        ]
+        } );
+
+        table1 = $('#tableone').DataTable( {
+        retrieve: true,
+        searching: false,
+        ordering: false,
+        info:     false,
+        select: {
+            style: 'multi'
+        },
+        paging: false,
+        } );
+    } );    
     </script>
+
 
 
 {% endblock features %}

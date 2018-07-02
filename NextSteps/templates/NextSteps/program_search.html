@@ -1,0 +1,168 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps_base.html' %}
+
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+    <div id="highlighted-slider" class="container">
+
+        <!-- You content for the slide-show page here -->
+
+    </div>
+
+{% endblock slide-show %}
+
+<!-- Override features block -->
+{% block features %}
+    <div class="showcase block block-border-bottom-grey">
+        <div class="container">
+
+            <h3 class="block-title">Programs</h3>
+
+            <div class="block">
+                <div class="row" style="margin-left:0px">
+                    
+                    <n_note>
+                        <p>Start typing the prgram name in the Search box to search prorgams. <br />
+                        Click to select/unselect the programs. Then click on "Find Institutes" button to see the Institutes that offer those program(s).
+                        </p>
+                    </n_note> 
+    
+                    <form action = "{% url 'program_search_results' %}" method='post' id='getInstts'>
+        
+                        {% csrf_token %}
+        
+                        <div class="col-xs-8" style="padding-left:0px">
+
+                            <div style = "background-color:#ffffff; box-shadow: 10px 10px 5px gainsboro;">
+                                <table id="progTbl" class="display table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Program Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for il in programList %}
+                                        <tr>
+                                            <td class="prog-row"> {{ il.program_code }} </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class = "col-xs-4" style="padding-left:5px">
+ 
+                            <!-- creating an invisible form items to submit the search filters to the view "SearchInstts-->
+                             <!-- Used to be able to submit the selected programs along with the other values in the form. -->
+                            <div class = "nv_div">
+                                <input style ="display:none" class="form-control" type="text" id="CountrySelections_nv" name='cntList'>
+                                <input style ="display:none" class="form-control" type="text" id="DisciplineSelections_nv" name='discList'>
+                                <input style ="display:none" class="form-control" type="text" id="LevelSelections_nv" name='lvlList'>
+                                <select  style ="display:none" id = "selPrograms_nv" multiple='multiple' name="progList" size='10'>
+                                </select>
+                            </div>
+
+                            <button name = "submitbutton" class="btn btn-more large i-right" type='submit' formmethod='post' value='submit' form = 'getInstts'>Find Institutes<i class="fa fa-caret-right"></i></button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+    // Instantiate Program and Institute tables    
+
+    var progTable;
+    
+    $(document).ready(function() {
+
+        //Get the preferred institutes
+        var instt_arr = [];
+            
+        progTable = $('#progTbl').DataTable( {
+            retrieve: true,
+            fixedHeader: true,
+            select: {
+                style: 'multi'
+            },
+            paging: true,
+            
+        } );
+    } );    
+    </script>
+        
+   <!-- To populate the non-visible selected programs and institutes before form is submitted-->
+    <script>
+        $(document).ready(function(){
+            $("#getInstts").submit(function(){
+            
+                // Lets first remove all options from the select box
+                // There may be residue in case user navigated here with prev page button
+                $("#selPrograms_nv option").remove();
+                
+                selectedProgs = [];
+                rows = progTable.rows( { selected: true } ).data();        
+                for (var i=0; i < rows.length ;i++){
+                    selectedProgs.push(rows[i][0]);
+                }
+
+                for (i = 0; i < selectedProgs.length; i++) {
+                    $('#selPrograms_nv')
+                        .append($("<option></option>")
+                        .attr("value", selectedProgs[i])
+                        .text( selectedProgs[i] )
+                    );            
+                    $("#selPrograms_nv").val(selectedProgs[i]);
+                }
+                //Select all options so all get submitted in the form
+                $('#selPrograms_nv option').prop('selected', true);
+
+                // Warn user in case user is not using the preferences
+                if (selectedProgs.length == 0) {
+                    alert("You have not selected any Programs. Please select program(s) that you wish to find Institutes for.");
+                    return false;
+                }
+
+
+            });
+        });
+    </script>
+        
+{% endblock features %}
+
+{% block misson-statement %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock misson-statement %}
+
+{% block jointhem-blog %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock jointhem-blog %}
+
+<!-- Footer-section remains as it is, no override -->
+
