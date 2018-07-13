@@ -19,46 +19,59 @@
 <!-- Extend the home page to keep the same styling for header and footer sections. -->
 {% extends 'NextSteps/NextSteps_base_vj.html' %}
 
-
+{% load static %}
 <!-- Override slide-show block from parent -->
 {% block slide-show %}
 {% endblock slide-show %}
 
-<!-- Override block from parent -->
+<!-- Override first block from parent -->
 {% block instt-prog-menu %}
 {% endblock instt-prog-menu %}
 
-
-
-
 <!-- Override features block -->
 {% block features %}
-    <!--<div class="showcase block block-border-bottom-grey"> -->
-    <div id="highlighted-slider" class="container" style="padding-top: 10%;">
+    <div class="showcase block block-border-bottom-grey">
         <div class="container">
+    
+            <h3 class="block-title">Search Institutes Across India</h3>
 
-
-        <h3 class="block-title">Your College Application Details Saved!!</h3>
-        <div class="alert alert-info">
-            <h6>
-            Your details are saved successfully. We will not use or process this information.
-            You can refer to these details while applying and filling up the college application forms. <br />
-            You can modify the details at any time.
-            </h6> 
+            <n_note>
+                <p>{Markeing Page} This features lets you xxxxxxxxxxxxxxxxxxxxxxxx</p>
+            </n_note>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
         </div>
-        <br />        
-        <a href = "{% url 'user_app_details' %}" class="text-primary"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i>&nbsp;Go back to your details</a>
-        <br />
-        <br />
-        <a href = "{% url 'index' %}" class="text-primary"><i class="fa fa-home" aria-hidden="true"></i>&nbsp;Go to Home Page</a>
-
-        </div>
-     </div>
-
+    </div>
+                
 {% endblock features %}
 
-
 {% block registration %}
+<!-- Nothing here, just override the block from parent -->
 {% endblock registration %}
+
 <!-- Footer-section remains as it is, no override -->
+
+
+
+
+
+
+
 

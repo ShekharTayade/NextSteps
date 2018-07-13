@@ -17,22 +17,25 @@
  -->
 
 <!-- Extend the home page to keep the same styling for header and footer sections. -->
-{% extends 'NextSteps/NextSteps.html' %}
+{% extends 'NextSteps/NextSteps_base_vj.html' %}
 {% load static %}
 {% load widget_tweaks %}
 
 
 <!-- Override slide-show block from parent -->
 {% block slide-show %}
-    <div id="highlighted-slider" class="container">
-    </div>
-
 {% endblock slide-show %}
+
+<>!-- Override block from parent -->
+{% block instt-prog-menu %}
+{% endblock instt-prog-menu %}
+
 
 <!-- Override features block -->
 {% block features %}
-    <div class="showcase block block-border-bottom-grey">
-        <div class="container">
+     <!--<div class="showcase block block-border-bottom-grey"> -->
+    <div id="highlighted-slider" class="container" style="padding-top: 10%;">
+       <div class="container">
 
             <h3 class="block-title">Save Your College Application Details</h3>
             <div class="panel panel-info">
@@ -1360,13 +1363,10 @@
 
 {% endblock features %}
 
-{% block misson-statement %}
-<!-- Nothing here, just override the block from parent -->
-{% endblock misson-statement %}
 
-{% block jointhem-blog %}
-<!-- Nothing here, just override the block from parent -->
-{% endblock jointhem-blog %}
-
+{% block registration %}
+{% endblock registration %}
 <!-- Footer-section remains as it is, no override -->
+
+
 

@@ -62,6 +62,15 @@ urlpatterns = [
     url(r'^compareInstitutess/$', views.compare_instts, name = 'compare_instts'),
 
 
+    url(r'^featureSearchInstt/$', views.feature_instt_search, name = 'feature_instt_search'),
+    url(r'^featureSearchInstt/$', views.feature_important_info, name = 'feature_important_info'),
+    url(r'^featureSearchInstt/$', views.feature_important_info, name = 'feature_calendar'),
+    url(r'^featureSearchInstt/$', views.feature_important_info, name = 'feature_ifThenAnalysis'),
+    url(r'^featureSearchInstt/$', views.feature_important_info, name = 'feature_user_app_details'),
+    url(r'^featureSearchInstt/$', views.feature_important_info, name = 'feature_study_planner'),
+    url(r'^featureSearchInstt/$', views.feature_important_info, name = 'feature_compare_instts'),
+
+
     url(r'^SearchFilter/$', views.SearchFilter, name = 'search_filter'),
     url(r'^SearchInstts/', views.SearchInstts, name = 'Search_Instts'),
     url(r'^SearchInsttTypeFilter/$', views.instituteTypeSearchFilter, name = 'instt_type_filter'),

@@ -916,6 +916,3 @@ def searchEntranceExams(request):
         'levelList':levelList, 'examList':examList})
     
 
-    
-    
-       

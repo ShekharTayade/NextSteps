@@ -44,7 +44,6 @@ def index(request):
     regPending = False
     activeSubs = False
 
-
     # Check if it's a registered user
     if isUserRegistered(request):
         regPending = False
@@ -55,11 +54,8 @@ def index(request):
             activeSubs = False
     else:
         regPending  = True
-
-    # Clear the earlier messages that may be in the storage
-#    storage = messages.get_messages(request)
-#    for _ in storage:
-#        pass
+        activeSubs = False
+ 
         
     if regPending == True:
         REG_MENU = "SHOW_REG_MENU"
@@ -78,19 +74,22 @@ def index(request):
     # Redirect based on the user category - anonymous, signed-up or subscribed
         
     if request.user.is_anonymous:
-        url = 'NextSteps/NextSteps_base.html'
+        url = 'NextSteps/NextSteps_base_vj.html'
     else:
         if activeSubs:
-            url = 'NextSteps/subscribed_user_home.html'
+            url = 'NextSteps/NextSteps_base_vj.html'
+            #url = 'NextSteps/subscribed_user_home.html'
         else:
-            url = 'NextSteps/signedup_user_home.html'
+            url = 'NextSteps/NextSteps_base_vj.html'
+            #url = 'NextSteps/signedup_user_home.html'
             
     
     if au == False: 
         #response = render(request, 'NextSteps/NextSteps_base.html', {'REG_MENU':REG_MENU,
         #            'SUBS_MENU':SUBS_MENU})
         response = render(request, url, {'REG_MENU':REG_MENU,
-                    'SUBS_MENU':SUBS_MENU})
+                    'SUBS_MENU':SUBS_MENU, 'regPending': regPending, 
+                    'activeSubs' : activeSubs})
     else:
         
         showReg = request.COOKIES.get('SHOW_REG', '')
@@ -103,13 +102,15 @@ def index(request):
                     #response = render(request, 'NextSteps/NextSteps_base.html', {'REG_MENU':REG_MENU,
                     #                'SUBS_MENU':SUBS_MENU})
                     response = render(request, url, {'REG_MENU':REG_MENU,
-                                    'SUBS_MENU':SUBS_MENU})
+                    'SUBS_MENU':SUBS_MENU, 'regPending' : regPending, 
+                    'activeSubs' : activeSubs})
                 else:
                     #return redirect('loggedInHome')
                     #response = render(request, 'NextSteps/NextSteps_base.html', {'REG_MENU':REG_MENU,
                     #    'SUBS_MENU':SUBS_MENU})
                     response = render(request, url, {'REG_MENU':REG_MENU,
-                        'SUBS_MENU':SUBS_MENU})
+                        'SUBS_MENU':SUBS_MENU, 'regPending': regPending,
+                    'activeSubs' : activeSubs})
                 
         else:
             if au == False:   
@@ -117,14 +118,19 @@ def index(request):
                 #response = render(request, 'NextSteps/NextSteps_base.html', {'REG_MENU':REG_MENU,
                 #        'SUBS_MENU':SUBS_MENU})
                 response = render(request, url, {'REG_MENU':REG_MENU,
-                        'SUBS_MENU':SUBS_MENU})
+                        'SUBS_MENU':SUBS_MENU, 'regPending' : regPending, 
+                    'activeSubs' : activeSubs})
             else:
                     #return redirect('loggedInHome')
                     #response = render(request, 'NextSteps/NextSteps.html', {'REG_MENU':REG_MENU,
                     #    'SUBS_MENU':SUBS_MENU})
                     response = render(request, url, {'REG_MENU':REG_MENU,
-                        'SUBS_MENU':SUBS_MENU})
-                
+                        'SUBS_MENU':SUBS_MENU, 'regPending' : regPending, 
+                    'activeSubs' : activeSubs})
+    
+        print ("REGPENDING" + str(regPending))
+        print ("ActiveSubs" + str(activeSubs))
+    
     return response
 
 
@@ -528,4 +534,15 @@ def referNextSteps_confirm(request):
     return render(request, 'NextSteps/referNextSteps_confirm.html')
 
  
+def feature_instt_search(request):
+
+    return render(request, 'NextSteps/feature_instt_search.html')
+        
     
+def feature_important_info(request):
+
+    return render(request, 'NextSteps/feature_instt_search.html')
+        
+    
+       
+           

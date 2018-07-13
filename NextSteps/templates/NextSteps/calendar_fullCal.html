@@ -17,7 +17,7 @@
  -->
 
 <!-- Extend the home page to keep the same styling for header and footer sections. -->
-{% extends 'NextSteps/NextSteps_base.html' %}
+{% extends 'NextSteps/NextSteps_base_vj.html' %}
 {% load static %}
 
    
@@ -26,15 +26,20 @@
 {% block slide-show %}
 {% endblock slide-show %}
 
+<!-- Override block from parent -->
+{% block instt-prog-menu %}
+{% endblock instt-prog-menu %}
+
+
 <!-- Override features block -->
 {% block features %}
-    <div class="showcase block block-border-bottom-grey">
+    <!--<div class="showcase block block-border-bottom-grey"> -->
+    <div id="highlighted-slider" class="container" style="padding-top: 10%;">
         <div class="container">
 
             <h3 class="block-title">
                 Calendar of Important Dates
             </h3>
-<!--                    <div class="w3-panel w3-light-grey w3-card"> -->
                         <div class="row">
                             <div id="lbuttons" class="col-sm-3" >
                                         <!--Event Operations:<br /> -->
@@ -492,13 +497,6 @@
 
 {% endblock features %}
 
-{% block misson-statement %}
-<!-- Nothing here, just override the block from parent -->
-{% endblock misson-statement %}
-
-{% block jointhem-blog %}
-<!-- Nothing here, just override the block from parent -->
-{% endblock jointhem-blog %}
-
+{% block registration %}
+{% endblock registration %}
 <!-- Footer-section remains as it is, no override -->
-
