@@ -128,8 +128,6 @@ def index(request):
                         'SUBS_MENU':SUBS_MENU, 'regPending' : regPending, 
                     'activeSubs' : activeSubs})
     
-        print ("REGPENDING" + str(regPending))
-        print ("ActiveSubs" + str(activeSubs))
     
     return response
 

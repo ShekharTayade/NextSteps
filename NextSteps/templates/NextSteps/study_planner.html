@@ -1,0 +1,1252 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps_base_vj.html' %}
+
+{% load static %}
+{% load widget_tweaks %}
+{% load trim %}
+
+{% block head %}
+<head>
+    <meta charset="utf-8">
+    <title>NextSteps - Search for the best engineering college, save your time and effort, Manage admission process. Features
+        such as details of engineering colleges in India, shortlist, track important dates, assess probability of a seat
+        in IITs, NITs, customized report, calendar for tracking the application process, know college opening/closing
+        JEE ranks, cut offs, Study Panner and much more.
+    </title>
+    <meta name="keywords" content="search engineering colleges, engineering colleges, engineering college admission, engineering college application, engineering collges in India, engineering institutes, JEE seat probability, Study Planner, IIT, JEE, NIT, "/> 
+    {% load static %}
+    <link rel="icon" href="{% static 'img/target.ico' %}" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Facebook Opengraph integration: https://developers.facebook.com/docs/sharing/opengraph -->
+    <meta property="og:title" content="">
+    <meta property="og:image" content="">
+    <meta property="og:url" content="">
+    <meta property="og:site_name" content="">
+    <meta property="og:description" content="">
+
+    <!-- Twitter Cards integration: https://dev.twitter.com/cards/  -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="">
+    <meta name="twitter:title" content="">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image" content="">
+
+    <!-- Fav and touch icons -->
+    <link rel="shortcut icon" href="{% static 'img/target.png' %}">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'img/icons/114x114.png' %}">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'img/icons/72x72.png' %}">
+    <link rel="apple-touch-icon-precomposed" href="{% static 'img/icons/default.png' %}">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900" rel="stylesheet">
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.0-rc.1/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.11.3.js"></script>
+    <script src="//code.jquery.com/ui/1.12.0-rc.1/jquery-ui.js"></script>
+
+    <!-- Bootstrap CSS File -->
+    <link href="{% static 'lib/bootstrap/css/bootstrap.min.css' %} " rel="stylesheet">
+    <link href="https://cdn.rawgit.com/tonystar/float-label-css/v1.0.2/dist/float-label.min.css" rel="stylesheet">
+    <link href="{% static 'js/css/bootstrap-datepicker.css' %} " rel="stylesheet">
+
+
+    <!-- Libraries CSS Files -->
+    <link href="{% static 'lib/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/owlcarousel/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/owlcarousel/owl.theme.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/owlcarousel/owl.transitions.min.css' %}" rel="stylesheet">
+
+
+    <link href='https://fonts.googleapis.com/css?family=Economica' rel='stylesheet' type='text/css'>
+
+    <!-- Main Stylesheet File -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <!-- Calendar stylsheet -->
+    <link rel='stylesheet' href="{% static 'fullcalendar/css/fullcalendar.css' %}">
+
+    <script src="{% static 'fullcalendar/moment.min.js' %}"></script>
+    <script src="{% static 'fullcalendar/fullcalendar.min.js' %}"></script>
+
+
+    <!-- Required libraries for "SelectBoxIt"
+    <link type="text/css" rel="stylesheet" href="http://gregfranko.com/jquery.selectBoxIt.js/css/jquery.selectBoxIt.css" />
+    <script src="{% static 'lib/SelectBoxIt/jquery.selectBoxIt.js' %}"></script> -->
+
+
+    <!-- bootstrap- multiselect -->
+    <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap-multiselect.css' %}" type="text/css" />
+
+    <!-- Bootstrap-table -->
+    <link rel="stylesheet" href="{% static 'lib/bootstrap-table/bootstrap-table.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/bootstrap-table/extensions/editable/bootstrap-editable.css' %}">
+
+    <!-- Bootstrap-table-expandable -->
+    <link rel="stylesheet" href="{% static 'lib/bootstrap-table-expandable/css/bootstrap-table-expandable.css' %}">
+
+    <!-- JQuery DataTables -->
+    <link rel="stylesheet" type="text/css" href="{% static 'lib/DataTables/datatables.min.css' %}" />
+
+    <!-- Required JavaScript Libraries -->
+    <script src="{% static 'lib/popper.js/dist/umd/popper.js' %}"></script>
+    <script src="{% static 'lib/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'lib/stellar/stellar.min.js' %}"></script>
+    <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
+    <script src="{% static 'lib/counterup/counterup.min.js' %}"></script>
+
+    <!-- Required JavaScript Library for editable table -->
+    <script src="{% static 'bootstable/bootstable.js' %}"></script>
+    <script src="{% static 'lib/easyJqueryTable/js/table.js' %}"></script>
+    <!-- Conflicts    <script src="{% static 'js/bootstrap-datepicker.js' %}"></script> -->
+
+
+    <!-- Vijay jquery news ticker -->
+    <script src="{% static 'lib/news-ticker/jquery.bootstrap.newsbox.min.js' %}"></script>
+
+    <!-- Vijay lodash -->
+    <script src="{% static 'lib/lodash/lodash.min.js' %}"></script>
+
+    <!-- Template Specific Custom Javascript File -->
+    <script src="{% static 'js/custom.js' %}"></script>
+    
+
+    <!--Custom scripts demo background & colour switcher - OPTIONAL -->
+    <script src="{% static 'js/color-switcher.js' %}"></script>
+    <script src="{% static 'js/bootstrap-multiselect.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/DataTables/datatables.min.js' %}"></script>
+
+    <!-- Bootstrap-table scripts -->
+    <script src="{% static 'lib/bootstrap-table/bootstrap-table.min.js' %}"></script>
+    <script src="{% static 'lib/bootstrap-table-expandable/js/bootstrap-table-expandable.js' %}"></script>
+    <script src="{% static 'lib/bootstrap-table/extensions/editable/bootstrap-table-editable.js' %}"></script>
+    <!--<script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>-->
+    <script src="{% static 'lib/bootstrap-table/extensions/editable/bootstrap-editable.js' %}"></script>    
+
+    <!--Your custom colour override - predefined colours are: colour-blue.css, colour-green.css, colour-lavander.css, orange is default-->
+    <!--  <link href="#" id="colour-scheme" rel="stylesheet"> -->
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+    
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', {'packages':['timeline']});
+      
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+    
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function drawChart() {
+            var container = document.getElementById('chart_div');
+            var chart = new google.visualization.Timeline(container);    
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            data.addColumn({type: 'string', id :'Subject'});
+            //data.addColumn({type:'number', id:'Hours'});
+            data.addColumn({type:'date', id:'Start'});
+            data.addColumn({type:'date', id:'End'});
+            
+            var rows = [];
+            {% for i in userDaySch %}
+
+                var stime = convertAmpm( "{{ i.start_time }}" );
+                
+                var sdate = new Date("2017-01-26 " + stime);
+
+                var etime = convertAmpm( "{{ i.end_time }}" );
+                
+                var edate = new Date("2017-01-26 " + etime);
+
+                
+                var row = [ "{{i.subject}}", sdate, edate ];
+                rows.push(row);
+            {% endfor %}
+    
+            data.addRows(rows);
+
+            var options = {
+              timeline: { showRowLabels: false },
+            };
+            chart.draw(data, options);
+        }
+    </script>
+
+</head>
+{% endblock head %}
+
+<!--Load the AJAX API for Google Charts-->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+{% endblock slide-show %}
+
+<!-- Override block from parent -->
+{% block instt-prog-menu %}
+{% endblock instt-prog-menu %}
+
+<!-- Override features block -->
+{% block features %}
+    <div class="block" style="padding-top: 5%;">
+        <div class="container">
+            
+        <h3 class="block-title">Study Planner</h3>
+                    
+        <div class="nav-tabs-custom">
+<!--            <div class="col-md-3"> -->
+                <a href="#" class="nav-tabs-dropdown btn btn-block btn-primary">Menu</a>
+                <ul id='nav-tabs-wrapper' class="nav nav-tabs nav-font-size nav-pills" role="tablist">
+                    <li class="active"><a class="nav-link" data-toggle="tab" href="#dashboard"><i class ="fa fa-dashboard fa-2x"></i>&nbsp;Dashboard</a></li>
+                    <li><a class="nav-link" data-toggle="tab" href="#studySchedule"><i class="fa fa-calendar fa-2x"></i>&nbsp;Study Schedule</a></li>
+                    <li><a class="nav-link" data-toggle="tab" href="#goals"><i class = "fa fa-bullseye fa-2x"></i>&nbsp;Subject Goals</a></li>
+                    <li><a class="nav-link" data-toggle="tab" href="#scheduler"><i class="fa fa-calendar fa-2x"></i>&nbsp;Scheduler</a></li>
+                    <li><a class="nav-link" data-toggle="tab" href="#optimize"><i class="fa fa-clock-o fa-2x"></i>&nbsp;Optimize Study Time</a></li>
+                    <li><a class="nav-link pull-right" data-toggle="tab" href="#progress"><i class="fa fa-tasks fa-2x"></i>&nbsp;Log Study hours</a></li>
+                </ul>
+<!--            </div> -->
+                        
+<!--            <div class="col-md-9"> -->
+                <div class="tab-content">
+
+
+                    <!-- Dashboard -->
+                    <div class="tab-pane fade in active showme right-pane" id="dashboard">
+                        <h4>Dashboard / Insights</h4>
+                        <p>Mauris imperdiet dignissim ante, in efficitur mauris elementum sed. Cras vulputate malesuada magna.</p>
+                        <div class = "right-pane-content">
+                            <br />This area shows tables, charts, numbers, text etc.
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                        </div>
+                    </div>
+
+
+                    <!-- Study Schdule -->
+                    <div class="tab-pane fade in right-pane" id="studySchedule">
+                        <h4>Study Schedule</h4>
+                        <p>Specify your overall study schedule</p>
+                        <div class = "right-pane-content">
+                        
+                            <form method='post' id='save' novalidate>
+                            {% csrf_token %}
+        
+                                <div id = "radioDays" class = "row">
+                                    <div class = "col-sm-12">
+                                        <div class = "pull-left">
+                                            How many days per week do you plan to study?
+                                        </div>
+                                        <div id="scheduleRadio" class="pull-right"  style = "border-bottom:2px solid Gainsboro;">
+                                            <label class="radio-inline">
+                                                <input type="radio" id=  "radio7" onchange = "updatehrs()" name="days" value="7">7
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" id = "radio6" onchange = "updatehrs()" name="days"  value="6">6
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" id = "radio5" onchange = "updatehrs()" name="days"  value="5">5
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" id = "radio4" checked="checked" onchange = "updatehrs()" name="days"  value="4">4
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" id = "radio3" onchange = "updatehrs()" name="days"  value="3">3
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" id = "radio2" onchange = "updatehrs()" name="days"  value="2">2
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" id = "radio1" onchange = "updatehrs()" name="days"  value="1">1
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <br />
+                
+                                <div id = "radioHours" class = "row">
+                                    <div class = "col-sm-12">
+                                        <div class="pull-left">
+                                            How may hours per day do you plan study?
+                                        </div>
+                                        <div class = "pull-right" style = "border-bottom:2px solid Gainsboro;">
+                                            <input id="hours" style = "border-top:none; border-left:none; border-right:none; background-color:#ffffff; border-bottom: 2 px solid Gainsboro;" type = "number" onchange = "updatehrs()" required pattern="[0-9]{1,6}" name="hours" class="qty-input form-control" max = "24" min="1" maxlength="2" value="8"/>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <br />
+                
+                                <div class = "row">
+                                    <div class = "col-sm-12">
+                                        <div id = "dates" class = "form-inline">
+                                            <span class="pull-left">
+                                                When do you plan to start and end your studies?
+                                            </span>
+                                            <span class = "pull-right">
+                                                <div class = "form-group">
+                                                <table id = "studySch" class = "table table-borderless">
+                                                    <thead>
+                                                        <tr>
+                                                        <th>Start Date</th>
+                                                        <th>End Date</th>
+                                                        </tr>
+                                                    </thead>   
+                                                    <tbody>
+                                                        <tr>
+                                                            <td id="id_start_date" 
+                                                                name="startDate" 
+                                                                data-type="date">
+                                                            </td>
+
+                                                            <td id="id_end_date" 
+                                                                name="endDate" 
+                                                                data-type="date">
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                
+                                <a href="#" class="btn btn-more text-center" onclick = "validateStudySch()">
+                                    <i class = "fa fa-caret-right"></i>Save
+                                </a>
+                                <br />
+                                
+                            </form>
+                            
+                            <br />
+                            <div style = "border-top:3px solid Gainsboro" class = "row">
+                                <br />
+                                <div class = "col-sm-12">
+                                    <span id = "totalhrs"> </span>
+                                </div>
+                            </div>                            
+                        </div>`
+                    </div>
+
+
+                    <!-- Subject goals -->
+                    <div class="tab-pane fade in right-pane" id="goals">
+                        <h4>Subject Goals</h4>
+                        <p>Create/Update your Overall and Subjects Goals</p>
+                        <div class = "right-pane-content">
+                            <div class = "row">
+                                <div class = "col-sm-4">
+                                    <div class = "pref-head">Select Subjects 
+                                    </div> 
+                                    <div style = "height:200px; overflow-x:hidden !important;  background-color:#ffffff;">
+                                        <table id="allSubTbl" class="display table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for i in allSubjectList %}
+                                                <tr ondblclick = "$(this).addClass('selected');">
+                                                    <td class="prog-row"> {{ i.subject }} </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <br />
+                                    <p>&nbsp;</p> 
+                                    <a href="#" class="btn btn-more" onclick="addSubject('')">
+                                        <i class = "fa fa-plus"></i>Add Subject
+                                    </a>
+                                </div>
+
+                                
+                                
+                                <div class = "col-sm-1" style="text-align:center; display: inline-block; padding:0px">
+                                    <span style = "vertical-align:middle; " onclick = "addSubjectTo()"> <i class = "fa fa-chevron-circle-right fa-3x"></i></span>
+                                </div>
+                                
+                                <div class = "col-sm-7">
+                                    <div class = "pref-head">Subjects Schedule
+                                    </div> 
+                                    <div style = "height:200px; overflow-x:auto !important; width=100%; background-color:#ffffff;">
+
+                                        <form method='post' id='saveSub' novalidate>
+                                            {% csrf_token %}
+                                            <table id="subject" class="table table-bordered" style="width=100%"
+                                                data-toggle="table" 
+                                                data-search="false"
+                                                data-click-to-select = "true" 
+                                                showToggle = "true">
+                                                    <thead>
+                                                        <tr>
+                                                            <!-- <th data-field="state" data-checkbox="true"></th> -->
+                                                            <th data-sortable="true" data-editable="false" data-field="subject" >Subject</th>
+                                                            <th data-field="percent_weight" data-validate="max100(value)">% Alloc</th>
+                                                            <th data-field="start_date">Start Date</th>
+                                                            <th data-field="end_date" >End Date</th>
+                                                        </tr>
+                                                    </thead>       
+                                                    <tbody>
+                                                        {%for i in userSubjectList %}
+                                                       <tr>
+                                                            <!-- <td><input class = "rowcheck" name="btSelectItem" type="checkbox" ></td> -->
+                                                            <td>{{i.subject}}</td>
+                                                            <td class="percent" onchange = "updatePercentageSum()">{{i.percentage_weight | trim}}</td>
+                                                            <td data-type="date" class="datepick" >{{i.start_date | date:"d M Y" }}</td>
+                                                            <td data-type="date" class="datepick" >{{i.end_date | date:"d M Y" }}</td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                            </table>
+                                        </form>                                            
+                                    </div>
+
+                                    <p>
+                                    <span class="pull-left" style = "vertical-align:middle;"> <button  id = "removeSub" class = "btn btn-more"> <i class = "fa fa-trash fa-lg"></i><small>Remove Selected Subject</small></button></span>
+                                    <span class="pull-right">Total % Allocated: <span id= "percentsum" class = "text-primary"></span></span>
+                                    </p>
+                                    <br />
+                                    <br />
+                                    
+                                    <a href="#" class="btn btn-more text-center" onclick = "validateUserSubjectSchedule()">
+                                        <i class = "fa fa-caret-right"></i>Save
+                                    </a>
+                                      
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Schduler -->
+                    <div class="tab-pane fade in right-pane" id="scheduler">
+                        <h4>Scheduler</h4>
+                        <p>Plan Your Typical Study Day Here <small>(You can make changes on daily basis directly in the Calendar)</small></p>
+                        <div class = "right-pane-content">
+                            <p><small id="noEvents"></small></p>
+                            <div class="w3-panel w3-light-grey w3-card">
+                            
+                                <div class = "row">
+                                    <div class = "col-sm-5">
+                                        <form method='post' id='saveScheduler' novalidate>
+                                            <div style = "height:250px; overflow-x:auto !important; width=100%; background-color:#ffffff;">
+        
+                                                {% csrf_token %}
+                                                <table id="subSch" class="table table-bordered" style="width=100%"
+                                                    data-toggle="table" 
+                                                    data-search="false"
+                                                    data-click-to-select = "true" 
+                                                    showToggle = "true">
+                                                    
+                                                    <thead>
+                                                        <tr>
+                                                            <!-- <th data-field="state" data-checkbox="true"></th> -->
+                                                            <th data-sortable="true" data-editable="false" data-field="subject" >Subject</th>
+                                                            <!-- <th data-field="percent_weight" data-validate="max100(value)">Planned Hrs/Day</th> -->
+                                                            <th data-sortable="true" data-field="start_date">Start Time </th>
+                                                            <th data-field="end_date" >End Time</th>
+                                                        </tr>
+                                                    </thead>       
+                                                    <tbody>
+                                                        {%for i in userDaySch %}
+                                                       <tr>
+                                                            <!-- <td><input class = "rowcheck" name="btSelectItem" type="checkbox" ></td> -->
+                                                            <td>{{i.subject}}</td>
+                                                            <!-- <td>{{i.planned_hours}}</td> -->
+                                                            <td>{{i.start_time | date:"g a" }}</td>
+                                                            <td>{{i.end_time | date:"g a"}}</td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                                <div class = "checkbox" style = "margin:10px">
+                                                    Select the Days of the Week:
+                                                    <br />
+                                                    
+                                                    <label class="checkbox-inline">
+                                                        <input id = "mon" type = "checkbox">Mon
+                                                    </label>
+                                                    <label class="checkbox-inline">
+                                                        <input id = "tue" type = "checkbox" class="checkbox-inline">Tue
+                                                    </label>
+                                                    <label class="checkbox-inline">
+                                                        <input id = "wed" type = "checkbox" class="checkbox-inline">Wed
+                                                    </label>
+                                                    <label class="checkbox-inline">
+                                                        <input id = "thu" type = "checkbox" class="checkbox-inline">Thu
+                                                    </label>
+                                                    <label class="checkbox-inline">
+                                                        <input id = "fri" type = "checkbox" class="checkbox-inline">Fri
+                                                    </label>
+                                                    <label class="checkbox-inline">
+                                                        <input id = "sat" type = "checkbox" class="checkbox-inline">Sat
+                                                    </label>
+                                                    <label class="checkbox-inline">
+                                                        <input id = "sun" type = "checkbox" class="checkbox-inline">Sun
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class = "col-sm-7">
+                                        <div style = "height:250px; overflow-x:auto !important; width=100%; background-color:#ffffff;">
+                                            <div class = "studyDay">
+                                                <strong>Your Study Day</strong>
+                                            </div>
+                                            <br />
+                                            <!--Div that will hold the pie chart-->
+                                            <div id="chart_div"></div>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <br />                            
+                                <br />
+                                <div class = "text-center">
+                                    <button class = "btn btn-more text-center" onclick = "">
+                                            <i class = "fa fa-calendar"></i>Calendar
+                                    </button>
+                                </div>
+                                <br />                            
+                                <!-- <div id='calendar'>
+                                    
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Progress -->
+                    <div class="tab-pane fade in right-pane" id="progress">
+                        <h4>Update Progress</h4>
+                        <p>Mauris imperdiet dignissim ante, in efficitur mauris elementum sed. Cras vulputate malesuada magna.</p>
+                        <div class = "right-pane-content">
+                            <br />This area shows tables, charts, numbers, text etc.
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                        </div>
+                    </div>
+                    
+
+                    <!-- Optimize -->
+                    <div class="tab-pane fade in right-pane" id="optimize">
+                        <h4>Optimize Study Time</h4>
+                        <p>Mauris imperdiet dignissim ante, in efficitur mauris elementum sed. Cras vulputate malesuada magna.</p>
+                        <div class = "right-pane-content">
+                            <br />This area shows tables, charts, numbers, text etc.
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                        </div>
+                    </div>
+                    
+                </div>
+        </div>
+    </div>   
+</div>
+
+
+
+<script>
+    $("a.nav-link").on('click',function(){
+        $(".tab-pane").hide();
+        $($(this).attr("href")).show();
+
+        $(".tab-pane").removeClass("active");
+        $($(this).attr("href")).addClass("active");
+        $($(this).attr("href")).addClass("showme");
+
+    });
+</script>
+
+<script>
+    $('.nav-tabs-dropdown').each(function(i, elm) {
+        
+        $(elm).text($(elm).next('ul').find('li.active a').text());
+        
+    });
+      
+    $('.nav-tabs-dropdown').on('click', function(e) {
+    
+        e.preventDefault();
+        
+        $(e.target).toggleClass('open').next('ul').slideToggle();
+        
+    });
+    
+    $('#nav-tabs-wrapper a[data-toggle="tab"]').on('click', function(e) {
+    
+        e.preventDefault();
+        
+        $(e.target).closest('ul').hide().prev('a').removeClass('open').text($(this).text());
+          
+    });
+</script>
+
+
+<script>
+
+    $(document).ready(function() {
+
+    var today = new Date().toISOString().slice(0, 10);
+
+    $('#calendar').fullCalendar({
+    
+
+        themeSystem:'bootstrap3', 
+        selectable : true,
+        editable:true,
+        defaultDate: today,
+        
+        eventLimit : true, 
+
+        views: {
+             month: {
+               eventLimit: 3
+             }
+         },
+        
+        eventClick: function(calEvent, jsEvent, view) {
+    
+            if (calEvent.color == 'red'){
+                calEvent.color = '';
+            } else {
+                calEvent.color = 'red';
+            }
+            $('#calendar').fullCalendar( 'rerenderEvents' );
+        },        
+    
+    
+        dayClick: function() {
+            //alert('a day has been clicked!');
+        },        
+        
+        
+        eventMouseover: function( calEvent, jsEvent, view ) { 
+            
+            //$("#tip").html(calEvent.instt_name);
+
+            var tooltip = '<div class="tooltiptopicevent" style="width:auto;height:auto;color:#FFFFFF;background:#ff5821;position:absolute;z-index:10001;padding:10px 10px 10px 10px ;  line-height: 200%;">'
+            var txt = '';
+            
+            if (typeof calEvent.instt_name != 'undefined' && calEvent.instt_name != null){
+                txt = txt +  "<strong>" + calEvent.instt_name + "</strong><br />";
+            }
+
+            if (calEvent.title) {
+                txt = txt + '<small>' + calEvent.title+ '</small>'; 
+            }                    
+            if (calEvent.remarks) {
+                txt = txt + '<br /> <small>' + calEvent.remarks + '</small>'; 
+            }
+            
+            tooltip = tooltip + txt;
+
+            $("body").append(tooltip);
+            $(this).mouseover(function (e) {
+                $(this).css('z-index', 10000);
+                $('.tooltiptopicevent').fadeIn('500');
+                $('.tooltiptopicevent').fadeTo('10', 1.9);
+            }).mousemove(function (e) {
+                $('.tooltiptopicevent').css('top', e.pageY + 10);
+                $('.tooltiptopicevent').css('left', e.pageX + 20);
+            });
+
+
+        },
+
+        eventMouseout: function (data, event, view) {
+            $(this).css('z-index', 8);
+
+            $('.tooltiptopicevent').remove();
+
+        },            
+        
+        header: {
+            left: 'today',
+            center: 'prevYear, prev, title, next, nextYear',
+            right: 'month,agendaWeek,agendaDay'
+        },
+     
+        });
+
+        getSchedule();           
+    
+    });
+
+</script>    
+
+<script>
+    $(window).load(function()
+    {
+        getEvents();
+    });
+</script>
+
+<script>
+    function getEvents(){
+        var events = $('#calendar').fullCalendar('clientEvents');
+        if (events.length == 0 ){
+            // $("#noEvents").html("No tasks found. Please create using this Scheduler and/or you can create your own tasks directly in the Calendar."); 
+        }
+    }            
+</script>
+
+<script>
+    function getSchedule(){
+    
+    }
+</script>
+
+
+<script>
+    // Get the values from userStudyScheudle
+    var dayPerWeek = 0;
+    var hoursPerDay = 0;
+    var lsdate = new Date();
+    var lstart_date = "";
+    var ledate = new Date();
+    var lend_date = "";
+      
+</script>
+
+
+<script>
+    $(document).ready(function() {
+    
+        allSubTable = $('#allSubTbl').DataTable( {
+            retrieve: true,
+            fixedHeader: false,
+            "columns": [{
+                "title": "",
+                "data": "subject"
+            }],         
+            select: {
+                style: 'multi'
+            },
+            paging: false,
+            filter:false,
+            info:false,
+            ordering:false,
+            fnDrawCallback: function() {
+                $("#allSubTbl thead").remove();
+              }            
+        } );
+
+        $('#id_start_date').editable({
+            format: 'dd M yyyy',    
+            viewformat: 'dd M yyyy',
+            container: "#studySchedule",
+            datepicker: {
+                    weekStart: 1
+               }
+            });
+    
+        $("#studySch").bind("DOMSubtreeModified", function() { updatehrs(); });
+            
+        $('#id_end_date').editable({
+            format: 'dd M yyyy',    
+            viewformat: 'dd M yyyy',
+            container: "#studySchedule",
+            datepicker: {
+                    weekStart: 1
+            }
+        });
+                
+       // There would bbe only one row in the useSch
+        {% for i in userSch %}
+            daysPerWeek = {{i.study_days_per_week}};
+            if (daysPerWeek  > 0) {
+                var ele = "#radio" + daysPerWeek;
+                $(ele).prop("checked", true);
+            }
+            
+            hoursPerDay = {{i.study_hours_per_day}};
+            if (hoursPerDay  > 0) {
+                $("#hours").val(hoursPerDay);
+            }
+    
+            lsdate = new Date("{{i.start_date.isoformat | escapejs }}");
+            lstart_date = $.datepicker.formatDate('dd M yy', lsdate);
+    
+            $("#id_start_date").html(lstart_date);
+            
+            ledate = new Date("{{i.end_date.isoformat | escapejs }}");
+            lend_date = $.datepicker.formatDate('dd M yy', ledate);
+            
+            $("#id_end_date").html(lend_date);
+            
+        {% endfor %}    
+                
+    });
+
+
+</script>
+
+<script>
+    function ajaxRequest(params) {
+    
+        // data you may need
+        console.log(params.data);
+    
+        $.ajax({
+            type: "GET",
+            url: "{% url 'getUserSubjectSchedule' %}",
+            data: "",
+            // You are expected to receive the generated JSON (json_encode($data))
+            dataType: "json",
+            success: function (data) {
+                params.success({
+                    // By default, Bootstrap table wants a "rows" property with the data
+                    "rows": data,
+                    // You must provide the total item ; here let's say it is for array length
+                    "total": data.length
+                })
+            },
+            error: function (er) {
+                params.error(er);
+            }
+        });
+    }
+
+</script>
+       
+    
+<script>
+ 
+    // Update hours at the bottom of "Study schedule" tab
+    function updatehrs() {
+        
+        // No. of days per week
+        var daysperweek = $("input[name='days']:checked").val();
+        var hrs = $( "#hours" ).val()
+
+        //var end = $('#id_end_date').datepicker('getDate');
+        var end = $('#id_end_date').html();
+        var endDt = moment(end).toDate();
+        
+        if (typeof endDt.getMonth === 'function') {
+            endDt.setHours(12,0,0,0);
+        }
+        
+        //var start = $('#id_start_date').datepicker('getDate');
+        var start = $('#id_start_date').html();
+        var startDt = moment(start).toDate();
+
+        if (typeof startDt.getMonth === 'function') {
+            startDt.setHours(12,0,0,0);
+        }
+
+        var no_of_days = Math.round((endDt - startDt) / 8.64e7) + 1;
+        
+        var weekDiff = Math.floor((endDt - startDt + 1) / (1000 * 60 * 60 * 24) / 7);
+
+        //Calculate the study days per week 
+        var days = no_of_days - ( weekDiff * (7 - daysperweek) );
+        
+
+        var totalhrs = days * hrs;
+    
+        var txt = '';
+    
+        if (totalhrs > 0 ) {
+            txt = "You would be studying for a about <span class='text-primary'>" + totalhrs.toString() + " hours</span>. Please use the 'Subject Goals' and 'Scheduler' tabs to plan for these hours on various subjects you would be studying."
+            $('#totalhrs').html(txt);
+        } else {
+            $('#totalhrs').html(txt);
+        }
+    } 
+</script>
+
+
+<script>
+    // Validate the sum of percetage
+    function updatePercentageSum(){
+    
+        var totalpercent  = 0;
+        var table = $("#subject tbody");
+        table.find('tr').each(function (i, el) {
+            var $tds = $(this).find('td');
+            percent = $tds.eq(1).text();
+            if (percent > 0) {
+                totalpercent = totalpercent + parseFloat(percent);
+            }
+        });    
+    
+        if (isNaN(totalpercent)) {
+            $("#percentsum").html("&nbsp;--");
+        } else { 
+            $("#percentsum").html(totalpercent.toString());
+        }
+    }
+    
+
+    // VALIDATE THE OVERALL STUDY SCHEDULE
+    function validateStudySch() {
+    
+        // Status - PASS: all validations pass, FAIL: one or more validations failed
+        status = 'PASS';
+    
+        // Validate hrs per day
+        hrsPerDay = $("#hours").val();
+        
+        if( (isNaN(hrsPerDay))  || (hrsPerDay < 1) ) {
+            alert ("You have entered an invalid value for hours per day. It should be a number greater than 0.")
+            status = false;
+        }
+        
+        if (hrsPerDay > 24) {
+            var msg = "You seems to be on a high!! :-). Please reduce the number of hours per day to less than 24 hrs.";
+            alert(msg);
+            status = false;
+        } else {
+            if (hrsPerDay > 12) {
+                ans - confirm("You have assigned very high hours per day. Are you sure you would be spending " + hrsPerDay.toString() + " hrs studying per day?")
+                if (ans) {
+                    status = true;
+                } else {
+                    status = false;
+                }
+            }
+        }
+        
+        //Validate start date
+        var start = $('#id_start_date').html();
+        var startDt = moment(start).toDate();
+        var tday = new Date();
+
+        var no_of_days = Math.round((tday - startDt) / 8.64e7) + 1;
+        
+        if (no_of_days > 60) {
+            ans = confirm("Your schedule starts more than 2 months earlier from today. Are you sure want to proceed?")
+            if (ans) {
+                status = true;
+            } else {
+                status = false;
+            }
+        }
+        
+        //Validate end date
+        var end = $('#id_end_date').html();
+        var endDt = moment(end).toDate();
+        var tday = new Date();
+
+        var no_of_days = Math.round( (endDt - tday) / 8.64e7) + 1;
+        
+        if (no_of_days > 729) {
+            ans = confirm("Your schedule end more than 2 years later from today. Are you sure want to proceed?")
+            if (ans) {
+                status = true;
+            } else {
+                status = false;
+            }
+        }
+    
+    }    
+
+
+    // VALIDATE THE USER SUBJECT SCHEDULE
+    function validateUserSubjectSchedule() {
+    
+        // Status - PASS: all validations pass, FAIL: one or more validations failed
+        status = true;
+
+        var table = $("#subject tbody");
+
+    
+        table.find('tr').each(function (i, el) {
+            var $tds = $(this).find('td');
+            var subject = $tds.eq(0).text();
+            var percent = $tds.eq(1).text();
+            var startDate = $tds.eq(2).text();
+            var endDt = $tds.eq(3).text();
+
+            // Percent status
+            var percentCloseTo100 = false;
+            var percentover100 = false;
+
+            //Validate percentage
+            if (percent > 100) {
+                alert("More than 100% is allocated to " + subject + ". Please change the percentage");
+                status = false;
+            }
+
+            if (percent > 80) {
+                ans = confirm("You have assigned very high percentage to " + subject + ". Are you sure want to proceed?")
+                if (ans) {
+                    status = true;
+                } else {
+                    status = false;
+                }
+            }
+        });    
+
+        // Update total percentage before validating it
+        updatePercentageSum(); 
+
+        percent = $("#percentsum").html();
+        if (parseFloat(percent) != 100) {
+            ans = alert("Subjectwise percent allocation is not equal to 100. This would impact on how you schedule studies in Scheduler. But you can always update it before using the Scheudler. Are you sure you want to proceed and save?");
+            if (ans) {
+                status = true;
+            } else {
+                status = false;
+            }
+        }
+    }
+
+
+    function addSubjectTo() {
+    
+        var selecteSubs = allSubTable.rows({ selected: true } ).data();
+        for (var i=0; i < selecteSubs.length ;i++){
+            // For each selected subject, call addSubject fn to add it to "subject" table.
+            addSubject( (selecteSubs[i].subject) );
+        }
+    }
+        
+        
+
+    function addSubject(subParam){
+    
+        var sub = "";
+        
+        if (subParam.length == 0) {
+            // Get the subject from user
+            var sub = prompt("Please enter the subject you want to add", "");    
+
+            // This is subejct is being created newly by user, so add it into "allSubTbl" too
+            var table = document.getElementById("allSubTbl");
+            
+            // Create an empty <tr> element and add it to the 1st position of the table:
+            var row = table.insertRow(-1);
+            
+            // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+            var cell1 = row.insertCell(0);
+            
+            // Add some text to the new cells:
+            cell1.innerHTML = sub;
+        } else {
+            // The subject is being added to "subject" table by user from the "allSubTbl"
+            // So let's use the input parameter as the subject
+            sub = subParam;
+        }
+                
+        if (sub.length > 0) {
+            
+            //Check if this subject is already present
+            var found = false;
+            var subs = [] ;        
+            subs = $("#subject").bootstrapTable('getData');
+            for (var i = 0; i < subs.length; i++) {
+                var currSub = subs[i].subject;
+                currSub = currSub.replace(/\r?\n|\r/g, '').trim();
+                if (currSub === sub) {
+                    found = true;
+                }
+            }
+            // Add the subject only if it is not already present 
+            if ( found == false ) {
+                var rowId = $("#subject >tbody >tr").length;
+                rowId = rowId + 1;
+                $("#subject").bootstrapTable('insertRow', {
+                index: rowId,
+                row: {
+                    subject: sub,
+                    percent_weight: '',
+                    start_date: lstart_date,
+                    end_date: lend_date,
+                    }
+                });
+                                            
+                //$('#subject tbody tr td').addClass("datepick");
+                
+                $('#subject td:nth-child(2)').addClass('percent');
+                $('#subject td:nth-child(3)').addClass('datepick');
+                $('#subject td:nth-child(4)').addClass('datepick');
+                
+
+                // Make the percent editable with 'number' as data type    
+                $('.percent').editable({
+                    dataType: 'number',
+                    container: "#goals",
+                });
+                
+                // Make the datepick editable 
+                $('.datepick').editable({
+                    format: 'dd mmm yyyy',    
+                    viewformat: 'dd mmm yyyy',
+                    container: "#goals",
+                    datepicker: {
+                            weekStart: 1
+                       }
+                    });
+                
+            }
+        }
+    }    
+
+</script>
+
+<script>
+
+     $(document).ready(function() {
+     // Set editable columns the percetnage_weight and start & end dates
+
+        $(function(){
+            $('.datepick').editable({
+                format: 'dd M yyyy',    
+                viewformat: 'dd M yyyy',
+                container: "#goals",
+                datepicker: {
+                        weekStart: 1
+                   }
+                });
+                
+            $('.percent').editable({
+                dataType: 'number',
+                container: "#goals",
+                validate: function(value) {
+                    if(value > 100 ) {
+                        return 'Percentage allocated should not be greater than 100.';
+                    }
+                }
+            });
+        });
+    });    
+    
+    function max100(value) {
+        if (value >=100 || value <= 0 ) {
+            return "Percentage can be more than 100.";
+        }
+    }
+
+    // To update the toal percentage initially
+    updatePercentageSum();
+
+    $("#removeSub").click(function () {
+        
+        var rows = $('.info');;
+      
+        
+        var subj = [];
+        var sub = rows[0].cells[0].innerHTML;
+        
+        sub.replace(/\r?\n|\r/g, '').trim()        
+        subj.push(sub);
+
+        //$(rows).remove();
+        
+        
+        $("#subject").bootstrapTable('remove', {field: 'subject', values: subj});
+        subj.length = 0;
+        
+        //Update percentage sum
+        updatePercentageSum();
+    });
+    
+    $('#subject').on('click', 'tbody tr', function(event) {
+        $(this).addClass('info').siblings().removeClass('info');
+    });
+    
+</script>
+
+
+
+<script>
+    $(document).ready( function() {
+
+            // Set chart options
+            //var options = {'width':300,
+            //               'height':200,
+            //               'is3D':true,};
+        
+            // Instantiate and draw our chart, passing in some options.
+            //var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            //chart.draw(data, options);    
+    });
+    
+    
+    function convertAmpm(time){
+        if (time === "noon") time = "12:00 p. m.";
+        
+        if (time.indexOf(":") == -1){
+            ind = time.indexOf("a.");
+            if ( ind == -1 ){
+                ind = time.indexOf("p.");
+                if (ind > -1) {
+                    s = time.substring(0, ind );
+                    time = s.trim() + ":00 p. m.";
+                }
+            } else {
+                s = time.substring(0, ind );
+                time = s.trim() + ":00 a. m.";
+            }
+            
+        }
+                
+        var hours = Number(time.match(/^(\d+)/)[1]);
+        var minutes = Number(time.match(/:(\d+)/)[1]);
+        var AMPM = time.match(/\s(.*)$/)[1];
+        if(AMPM == "p. m." && hours<12) hours = hours+12;
+        if(AMPM == "a. m." && hours==12) hours = hours-12;
+        var sHours = hours.toString();
+        var sMinutes = minutes.toString();
+        if(hours<10) sHours = "0" + sHours;
+        if(minutes<10) sMinutes = "0" + sMinutes;
+        return (sHours + ":" + sMinutes);    
+    }
+    
+</script>
+{% endblock features %}
+
+
+{% block registration %}
+{% endblock registration %}
+<!-- Footer-section remains as it is, no override -->

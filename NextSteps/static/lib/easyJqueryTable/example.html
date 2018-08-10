@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="css/table.css" />
+    <script type="text/javascript" src="js/table.js"></script>
+
+    <style rel="stylesheet" type="text/css">
+
+        body {
+            background-color: #323232;
+            font-family: 'Open Sans', sans-serif;
+            font-stretch: normal;
+            font-style: normal;
+            font-variant: normal;
+            font-weight: normal;
+        }
+
+        button {
+            height: 30px;
+            width: 100px;
+            margin: 10px 0; 
+            cursor: pointer;
+        }
+
+    </style>
+
+    <script type="text/javascript">
+
+        // Instantiate the table object and define its 
+        var t = new Table({
+            // id of table to attach to
+            id: "example",
+            // Table header fields, data types and classes
+            fields: {
+                "Date": {
+                    "class": "edit",
+                    "type": "date"
+                }, 
+                "Meter Read": {
+                    "class": "edit",
+                    "type": "int"
+                },
+                "Used kWh": {
+                    "type": "calc",
+                    "formula": [
+                        { "subtract": [{ "c":-1 }, { "c":-1, "r":-1 }] }
+                    ]
+                },
+                "Cost": {
+                    "class": "edit",
+                    "type": "money"
+                }, 
+                "Avg kWh / Day": {
+                    "type": "calc",
+                    "formula": [
+                        { "datediff": [{ "c":-4 }, { "c":-4, "r":-1 }] },
+                        { "divide": [{ "c":-2 }, { }] }
+                    ]
+                },
+                "Avg Cost / Day": {
+                    "class": "money",
+                    "type": "calc",
+                    "formula": [
+                        { "datediff": [{ "c":-5 }, { "c":-5, "r":-1 }] },
+                        { "divide": [{ "c":-2 }, { }] }
+                    ]
+                }
+            },
+            // Table data
+            data: [
+                ['2014-12-04', '45653', '', '205.26', '', ''],
+                ['2015-02-04', '47017', '', '236.81', '', '']
+                
+            ],
+            // Position table rows
+            direction: "desc",
+            // Enable debug output to console
+            debug: true
+        });
+
+        $(document).ready(function() {
+
+            // Render the table
+            t.render();
+
+            // Add row
+            $("button#addrow").on("click", function() {
+                t.addRow();
+            });
+
+            // Serialize
+            $("button#serialize").on("click", function() {
+                var data = t.serialize();
+                alert(JSON.stringify(data));
+            });
+        });
+
+    </script>
+<title>jQuery table.js Plugin Example</title>
+</head>
+<body><div id="jquery-script-menu">
+<div class="jquery-script-center">
+<ul>
+<li><a href="http://www.jqueryscript.net/table/Easy-jQuery-Table-Manipulation-Plugin-table-js.html">Download This Plugin</a></li>
+<li><a href="http://www.jqueryscript.net/">Back To jQueryScript.Net</a></li>
+</ul>
+<div class="jquery-script-ads"><script type="text/javascript"><!--
+google_ad_client = "ca-pub-2783044520727903";
+/* jQuery_demo */
+google_ad_slot = "2780937993";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script></div>
+<div class="jquery-script-clear"></div>
+</div>
+</div>
+<h1 style="color:#fff; margin:150px auto 30px auto;">jQuery table.js Plugin Example</h1>
+    <button id="addrow">Add Row</button>
+    <button id="serialize">Serialize</button>
+    <table id="example"></table>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36251023-1']);
+  _gaq.push(['_setDomainName', 'jqueryscript.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</body>
+</html>

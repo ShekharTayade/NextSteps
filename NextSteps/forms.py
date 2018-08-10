@@ -1,14 +1,16 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from NextSteps.models import ContactForm, UserAppDetails, UserProfile, ReferNextSteps
-from NextSteps.validators import validate_NextSteps_email, validate_contact_name, validate_image_size
+from NextSteps.models import ContactForm, UserAppDetails, UserProfile
+from NextSteps.models import ReferNextSteps, UserSubjectSchedule
+from NextSteps.validators import validate_NextSteps_email, validate_contact_name
+from NextSteps.validators import validate_image_size
 
 from django.core.validators import validate_slug, MinLengthValidator
 
 from django.contrib.admin.widgets import AdminDateWidget
 from django.forms.fields import DateField
-
+from django.utils.translation import gettext_lazy as _
 
 from string import Template
 from django.utils.safestring import mark_safe
@@ -176,5 +178,12 @@ class ReferNextStepsForm(forms.ModelForm):
         fields = ['name', 'email_id', 'phone_number', 'message']
         
 
-
+class UserSubjectScheduleForm(forms.ModelForm):
+    percentage_weight = forms.FileField(label="Alloc")
+    class Meta:
+        model = UserSubjectSchedule
+        labels = {"percentage_weight": _("Alloc")}  
+        fields = ('subject', 'percentage_weight', 'start_date', 'end_date')
+        
+        
         

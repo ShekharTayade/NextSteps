@@ -61,6 +61,9 @@ urlpatterns = [
     url(r'^insttdetails/$', views.instt_all_details, name = 'instt_all_details'),
     url(r'^compareInstitutess/$', views.compare_instts, name = 'compare_instts'),
 
+    url(r'^ajax/Get_Instt_States_Cities/$', views.insttStatesCities, name='get_instt_states_cities'),    
+
+
 
     url(r'^featureSearchInstt/$', views.feature_instt_search, name = 'feature_instt_search'),
     url(r'^featureSearchInstt/$', views.feature_important_info, name = 'feature_important_info'),
@@ -80,16 +83,19 @@ urlpatterns = [
 
 
     url(r'^JEERanksFilter/$', views.JEERanksFilter, name='JEE_ranks_filter'),
-    url(r'^JEERanks/$', views.JEEOpeningClosingRanks, name='JEE_ranks'),
+    #url(r'^JEERanks/$', views.JEEOpeningClosingRanks, name='JEE_ranks'),
+    url(r'^JEE_Ranks/$', views.JEERanks, name='JEE_ranks'),
+    
     url(r'^insttCutOffsFilter/$', views.insttCutOffFilter, name='instt_cut_off_filter'),
-    url(r'^insttCutOff/$', views.insttCutOff, name='instt_cut_off'),
-    url(r'^InsttRankingFilter/$', views.insttRankingFilter, name='instt_ranking_filter'),
+    url(r'^InstituteCutOff/$', views.insttCutOff, name='instt_cut_off'),
+    url(r'^InstituteRankings/$', views.insttRankingFilter, name='instt_ranking_filter'),
     url(r'^ProgramFilter/$', views.programFilter, name='program_filter'),
     url(r'^ProgramResults/$', views.searchProgram, name='program_search_results'),
     url(r'^SeatQuotaFilter/$', views.seatQuotaFilter, name='seat_quota_filter'),
     url(r'^SeatQuotaResults/$', views.searchSeatQuota, name='seat_quota_search_results'),
     url(r'^EntranceExams/$', views.searchEntranceExams, name='search_entrance_exams'),
 
+    url(r'^ajax/GetJeeRankYears/$', views.getJeeRankYears, name='jee_rank_years'),    
     
     url(r'^ajax/GetCities/$', views.getCitiesforStates, name='Get_Cities'),    
     
@@ -103,6 +109,9 @@ urlpatterns = [
     url(r'^ajax/getInsttProgramByType/$', views.getInsttProgramByType, name='get_instt_progs_by_type'),
     url(r'^ajax/getUserInsttProgramByType/$', views.getUserInsttProgramByType, name='get_user_instt_progs_by_type'),
     url(r'^todolist/$', views.toDoList, name='to_do_list'),
+    url(r'^studyPlanner/$', views.studyPlanner, name='study_planner'),
+    url(r'^getUserSubjectSchedule/$', views.getUserSubjectSchedule, name='getUserSubjectSchedule'),
+
 
     url(r'^ajax/getInsttsForPrograms/$', views.getInsttsForProgs, name='get_insttsForProgs'),
     url(r'^ajax/getProgsForInstts/$', views.getProgsForInstts, name='get_progsForInstts'),

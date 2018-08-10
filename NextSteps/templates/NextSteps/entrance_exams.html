@@ -17,34 +17,25 @@
  -->
 
 <!-- Extend the home page to keep the same styling for header and footer sections. -->
-{% extends 'NextSteps/NextSteps_base.html' %}
+{% extends 'NextSteps/NextSteps_base_vj.html' %}
 
 {% load static %}
 <!-- Override slide-show block from parent -->
 {% block slide-show %}
 {% endblock slide-show %}
 
-<!-- Override news-ad block from parent -->
-{% block news-ad %}
-{% endblock news-ad %}
+<!-- Override block from parent -->
+{% block instt-prog-menu %}
+{% endblock instt-prog-menu %}
 
 <!-- Override features block -->
 {% block features %}
-    <div class="showcase block block-border-bottom-grey">
-        <div class="container">
     
-            <h3 class="block-title">Entrance Exams</h3>
+    <div class="block" style="padding-top: 5%; padding-bottom: 5%; ">
+        <div class="container">
 
-            <!--
-            <div class = "row">
-                <div class="col-sm-6">
-                    Exam Level<input type="text" id="myInput" style="background-image: url('{% static 'img/searchicon.png' %} ');" onkeyup="myFunction()" placeholder="Enter exam level..">   
-                </div>
-                <div class="col-sm-6">
-                    State<input type="text" id="myInput1" style="background-image: url('{% static 'img/searchicon.png' %} ');" onkeyup="myFunction()" placeholder="Enter the State..">   
-                </div>
-            </div>
-            -->
+            <h3 class="block-title" style = "margin-bottom:15px;">Entrance Exams</h3>
+            
             <n_note>
                 <p>Entrance exams, for admissions to various B.E./B.Tech courses, conduted by various states, universities and colleges in India.</p>
             </n_note>
@@ -71,10 +62,9 @@
                     {% endfor %}
                 </tbody>
             </table>
-    
         </div>
     </div>
-
+    
 
 <script>
     entTable = $('#tableOne').DataTable( {
@@ -89,18 +79,11 @@
 </script>
 {% endblock features %}
 
-{% block misson-statement %}
-<!-- Nothing here, just override the block from parent -->
-{% endblock misson-statement %}
 
-{% block jointhem-blog %}
-<!-- Nothing here, just override the block from parent -->
-{% endblock jointhem-blog %}
 
+{% block registration %}
+{% endblock registration %}
 <!-- Footer-section remains as it is, no override -->
-
-
-
 
 
 

@@ -7,6 +7,8 @@ from django.db.models.fields import DecimalField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from NextSteps.validators import validate_max7days, validate_max100, validate_max24hrs
+
 # Model name - Country
 # This model will store all the countries that NextSteps will serve (ex. 
 # India, USA, UK, Australia etc.)
@@ -38,6 +40,7 @@ class Program(models.Model):
     program_code = models.CharField(max_length=1000, primary_key = True)
     description = models.CharField(max_length=1000, blank = True, default='')
     degree = models.CharField(max_length=300, blank = True, default='')
+    program_group = models.CharField(max_length=300, blank = True, default='')
     
     def __str__(self):
         return models.Model.__str__(self)
@@ -588,4 +591,51 @@ class ReferNextSteps(models.Model):
 
     def __str__(self):
         return str(self.User)   
+
+class Subjects(models.Model):
+    Country = models.ForeignKey(Country, on_delete = models.PROTECT,blank = True,null=True)
+    Discipline = models.ForeignKey(Discipline, on_delete=models.PROTECT,blank = True,null=True)
+    Level = models.ForeignKey(Level, on_delete=models.PROTECT,blank = True,null=True)
+    subject = models.CharField(max_length=2000, blank=False, null=False)
+    
+
+class UserStudySchedule(models.Model):
+    User =  models.ForeignKey(User, on_delete=models.CASCADE)
+    study_days_per_week = models.PositiveIntegerField(blank=True, null=True,
+            validators=[validate_max7days])
+    study_hours_per_day = models.DecimalField(max_digits=4, decimal_places=2, 
+        blank=True, null=True, validators=[validate_max24hrs])
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+    
+
+class UserSubjectSchedule(models.Model):
+    User =  models.ForeignKey(User, on_delete=models.CASCADE)
+    subject = models.CharField(max_length=2000, blank=False, null=False)
+    percentage_weight = models.DecimalField(max_digits=3, decimal_places=0, 
+            blank=True, null=True, validators=[validate_max100],
+            verbose_name="Allocation(%)")
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+
+
+class UserDaySchedule(models.Model):
+    User = models.ForeignKey(User, on_delete=models.CASCADE)
+    subject = models.CharField(max_length=2000, blank=False, null=False)
+    start_time = models.TimeField(blank=True, null=True)
+    end_time = models.TimeField(blank=True, null=True)
+    planned_hours = models.DecimalField(max_digits=4, decimal_places=2, 
+            blank=True, null=True, validators=[validate_max24hrs])
+    
+    
+class StudyHours(models.Model):
+    User = models.ForeignKey(User, on_delete=models.CASCADE)
+    subject = models.CharField(max_length=2000, blank=False, null=False)
+    date = models.DateField(blank=True, null=True)
+    start_time = models.DateTimeField(blank=True, null=True)
+    end_time = models.DateTimeField(blank=True, null=True)
+    planned_hours = models.DecimalField(max_digits=4, decimal_places=2, 
+            blank=True, null=True, validators=[validate_max24hrs])
+    actual_hours = models.DecimalField(max_digits=4, decimal_places=2, 
+            blank=True, null=True, validators=[validate_max24hrs])
     

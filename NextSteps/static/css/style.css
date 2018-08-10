@@ -1529,10 +1529,11 @@ h4 {
   font-weight: 100;
 }
 a {
-  color: #ff5821;
+  /*color: #ff5821; */
+  color : #000000;
 }
 a:hover {
-  color: #ff5821;
+  /* color: #ff5821; */
 }
 #background-wrapper {
   background-color: #000000;
@@ -1639,7 +1640,8 @@ a.btn-hh-trigger.target-open:after {
   margin-top: -20px;
 }
 #footer {
-  min-height: 400px;
+  min-height: 10px;
+  /*min-height: 400px;*/
   color: #999;
 }
 #footer h1,
@@ -3546,7 +3548,7 @@ body,html{
     nav.sidebar.navbar.sidebar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand {
       margin-left: 0px;
     }
-
+}
 
 /********* Setting the width of dropdown equal to the button ****************/
 .dropdown-menu {
@@ -3797,3 +3799,324 @@ thead input {
 .to-do-frame thead{
     background: #ff5821;
 }
+
+
+
+
+/* Vijay - Sign In / Up Begin - 17-Jul-2018 */
+.sign-panel {
+    border-radius: 0 !important;
+  }
+  .sign-panel-info>.sign-panel-heading {
+    background-color: white !important;
+    border-color: white !important;
+  }
+  .sign-panel-title {
+    font-size: 25px;
+    font-weight: 400;
+    color: black;
+  }
+  
+  .sign-well {
+    background-color: white;
+    border-color: white !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    padding-bottom: 0;
+  }
+  
+  @media all and (max-width: 768px) {
+    .sign-panel {
+      border-radius: 0 !important;
+    }
+    .sign-panel-info>.sign-panel-heading {
+      background-color: white !important;
+      border-color: white !important;
+    }
+    .sign-panel-title {
+      font-size: 18px;
+      font-weight: 400;
+      color: black;
+    } 
+    .sign-field-width {
+      width: auto !important;
+    }
+    .group {
+      margin-bottom: 0 !important;
+    }
+    .sign-panel-title {
+      font-size: 14px;
+    }
+  
+    .or-padding {
+      padding: 0 !important;
+    }
+  
+    .ccontainer {
+      padding-top: 15% !important;
+      width:auto !important
+    }
+  }
+  
+  /* Materail Design - Alternate */
+  
+  .group        { 
+    position:relative; 
+    margin-bottom:45px; 
+  }
+  input         {
+    font-size:14px;
+    padding:10px 10px 10px 5px;
+    display:block;
+    /* width:auto; */
+    border:none;
+    border-bottom:1px solid #757575;
+  }
+  input:focus { 
+    outline:none; 
+  }
+  
+  .sign-label          {
+    color:#999; 
+    font-size:18px;
+    font-weight:normal;
+    position:absolute;
+    pointer-events:none;
+    left:5px;
+    top:10px;
+    transition:0.2s ease all; 
+  }
+  
+  /* input:focus ~ .sign-label,
+  input:not(:placeholder-shown) ~ .sign-label,
+   {
+    top:-20px;
+    font-size:14px;
+    color:#5264AE;
+  } */
+  
+  /* active state */
+  input:focus ~ .sign-label, input:valid ~ .sign-label     {
+    top:-20px;
+    font-size:14px;
+    color: #2c3e50;
+  }
+  .bar  { 
+    position:relative; 
+    display:block; 
+    /* width:auto;  */
+  }
+  .bar:before, .bar:after   {
+    content:'';
+    height:2px; 
+    width:0;
+    bottom:1px; 
+    position:absolute;
+    background:#2c3e50; 
+    transition:0.2s ease all; 
+  }
+  .bar:before {
+    left:50%;
+  }
+  .bar:after {
+    right:50%; 
+  }
+  
+  /* active state */
+  input:focus ~ .bar:before, input:focus ~ .bar:after {
+    width:50%;
+  }
+  /* HIGHLIGHTER ================================== */
+  .highlight {
+    position:absolute;
+    height:60%; 
+    width:100px; 
+    top:25%; 
+    left:0;
+    pointer-events:none;
+    opacity:0.5;
+  }
+  
+  /* active state */
+  input:focus ~ .highlight {
+    -webkit-animation:inputHighlighter 0.3s ease;
+    -moz-animation:inputHighlighter 0.3s ease;
+    animation:inputHighlighter 0.3s ease;
+  }
+  
+  /* styling no-required tags */
+  input:not([required]) ~ .sign-label::after {  
+    content: ' (optional)'
+  }
+  
+  /* ANIMATIONS ================ */
+  @-webkit-keyframes inputHighlighter {
+      from { background:#2c3e50; }
+    to  { width:0; background:transparent; }
+  }
+  @-moz-keyframes inputHighlighter {
+      from { background:#2c3e50; }
+    to  { width:0; background:transparent; }
+  }
+  @keyframes inputHighlighter {
+    from  { background:#2c3e50; }
+    to    { width:0; background:transparent; }
+  }
+  
+  .auth-provider-button {
+    background-color: white;
+    border: none;
+  }
+  
+  .auth-provider-imgtxt {
+    display: flex;
+    background-color: white;
+    border: none;
+    color:darkgray;
+    align-items: center;
+  }
+  
+  .auth-provider-padding {
+    padding-left: 60px;
+  }
+  
+  .sign-in-button {
+    border-radius: 0;
+  }
+  
+  .sign-in-button:hover {
+    box-shadow: 7px 12px 13px rgba(0, 0, 0, 0.1);
+  }
+  
+  .hover-on:hover {
+    box-shadow: 7px 12px 13px rgba(0, 0, 0, 0.1);
+  }
+  
+  .fw-500 {
+    font-weight: 500;
+  }
+  .a-decoration {
+    text-decoration: none !important;
+  }
+  
+  .sign-field-width {
+    width: 300px;
+  }
+  
+  .cform-group {
+    margin-bottom: 2px !important;
+  }
+  .crow {
+    margin: 0px !important;
+  }
+  
+  .cpanel {
+    margin-bottom: 18px !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+  
+  .cpanel-default {
+    border-color: white !important;
+  }
+  .ccontainer {
+    padding-top: 4.3%;
+  }
+  
+  .form-control {
+    border-radius: 0 !important;
+  }
+  
+  
+  
+  .hgt-34px {
+    height: 34px;
+  }
+  .ch6 {
+    font-size: 10px
+  }
+  /* Vijay - Sign In /  Up End*/
+
+
+
+/************** STUDY PLANNER *********/
+
+.right-pane {
+    border-radius: 8px;
+    border: 0px solid #ff5821;
+    background: Gainsboro;;
+    padding: 20px 5px; 
+}
+
+.right-pane-content {
+    background: #ffffff;
+    margin: 5px;
+    padding:15px;
+}
+
+.nav-tabs-dropdown {
+  display: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  color: #00a7d0 !important;
+}
+
+.nav-tabs-dropdown:before {
+  content: "\e114";
+  font-family: 'Glyphicons Halflings';
+  position: absolute;
+  right: 30px;
+}
+
+@media screen and (min-width: 769px) {
+  #nav-tabs-wrapper {
+    display: block!important;
+  }
+}
+@media screen and (max-width: 768px) {
+    .nav-tabs-dropdown {
+        display: block;
+    }
+    #nav-tabs-wrapper {
+        display: none;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        text-align: center;
+    }
+}
+
+#subject td {
+    width : "15%";
+}
+
+
+/* Scheduler style on right */
+
+.sch-scale {
+  width: 100%;
+  background-color: #ddd;
+}
+
+.subHrs {
+  text-align: right;
+  padding-right: 20px;
+  line-height: 20px;
+  color: white;
+}
+
+.sub1 {width: 60%; background-color: #2196F3;}
+.sub2 {width: 85%; background-color: #f44336;}
+
+.studyDay{
+
+    color: #3399ff;
+    margin-top : 5 px;
+    margin-bottom : 15 px;
+    margin-left : 5 px;
+    margin-right : 5 px;
+    text-align:center;
+}
+
+/********************* Study Planner End *****************/

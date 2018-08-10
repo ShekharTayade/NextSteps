@@ -20,6 +20,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import QueryDict
 
+from .common_views import *
+
 @login_required
 def SearchFilter(request):
 
@@ -184,13 +186,16 @@ def InsttList(request):
         insttList = paginator.page(paginator.num_pages)
     '''
     
+    # Whether the user is subscribed
+    isSubscribed = isSubsActive(request)
+    
 #    return render(request, 'NextSteps/instts_search_results.html',{})
     return render(request, 'NextSteps/institute_list.html', {    
         'insttList':insttList,'insttRanking':insttRanking, 'insttCount':insttCount,
         'stateVals':stateVals, 'cityVals':cityVals, 'insttTypeVals':insttTypeVals, 
         'insttRankYrVals':insttRankYrVals, 'programVals':programVals,
         'countryList':countryVals, 'disciplineList': disciplineVals, 
-        'levelList':levelVals})
+        'levelList':levelVals, 'isSubscribed' : isSubscribed })
     
     
     
@@ -555,6 +560,15 @@ def JEERanksFilter(request):
     
     return render(request, 'NextSteps/JEERanksFilter.html',{})
 
+
+@login_required
+def getJeeRankYears(request):
+
+    years = InstituteJEERanks.objects.values('year').distinct()
+    
+    return JsonResponse(list(years), safe=False)    
+    
+
 @login_required
 def JEEOpeningClosingRanks(request):
 
@@ -620,6 +634,37 @@ def JEEOpeningClosingRanks(request):
     
     return render(request, 'NextSteps/JEERanks.html', {"insttList" : insttList})
 
+
+@login_required
+def JEERanks(request):
+    year = request.POST.getlist('year', [])
+    rankType = request.POST.getlist('rankType', [])
+    
+    # Get Insititues
+    insttList = InstituteJEERanks.objects.filter(Institute__jee_flag="Y").values(
+            'year', 'Institute__instt_name', 'Institute__city', 'Program_id', 'quota', 'opening_rank',
+            'closing_rank').order_by('year', 'Program_id', 'closing_rank' )
+
+    if year != []:
+        insttList = insttList.filter(year__in = year)
+
+
+    if rankType != []:
+        # If both JEE ADV and MAIN are selected then we don't need to apply any filter
+        if len(rankType) <= 1:
+
+            for i in rankType:
+                if i == "JEE-ADV":
+                    insttList = insttList.filter(Institute__InstituteType = "IIT")
+                
+                if i == "JEE-MAIN":
+                    insttList = insttList.exclude(Institute__InstituteType="IIT")
+            
+            
+    return render(request, 'NextSteps/JEERanks.html', {"insttList" : insttList})
+    
+
+
 @login_required
 def insttCutOffFilter(request):
     return render(request, 'NextSteps/insttCutOffFilter.html',{})
@@ -671,10 +716,18 @@ def insttCutOff(request):
 
 @login_required
 def insttRankingFilter(request):
+    countryVals = request.POST.getlist('cntList', [])
+    disciplineVals = request.POST.getlist('discList', [])
+    levelVals = request.POST.getlist('lvlList', [])
+    surveyInsttNm = request.POST.get('insttName','')
+    
     
     insttList = InstituteSurveyRanking.objects.filter().values(
         'year', 'Institute__instt_name', 'Institute__city', 'Discipline_id',
         'rank').order_by('year', 'rank')
+    
+    if surveyInsttNm != '':
+        insttList = insttList.filter(Institute__instt_name__contains = surveyInsttNm)
 
     return render(request, 'NextSteps/instt_ranking_filter.html',{
         'insttList':insttList})
@@ -701,20 +754,12 @@ def programFilter(request):
 
 @login_required
 def searchProgram (request):
-  
-    '''
-    if request.method == 'POST':    
-        request.session['search-instts-post'] = request.POST
-    else:
-        if 'search-instts-post' in request.session:
-            request.POST = request.session['search-instts-post']
-            request.method = 'POST'        
-
-    '''
     countryVals = request.POST.getlist('cntList', [])
     disciplineVals = request.POST.getlist('discList', [])
     levelVals = request.POST.getlist('lvlList', [])
     programVals  = request.POST.getlist('progList', [])
+    insttNameVals  = request.POST.get('insttName', '')
+
 
     # There might be white spaces in the array items. Let's remove those
     cntList = []
@@ -755,8 +800,6 @@ def searchProgram (request):
         insttList = InstitutePrograms.objects.filter(Country__in = countryCodes, 
                     Discipline__in=disciplineCodes, Level__in=levelCodes).values(
                         'Institute__instt_name').distinct().order_by('Institute__instt_name')
-        
-
 
     # Get the list of institutes based on the user selected programs
     insttList = InstitutePrograms.objects.filter(Program_id__in=programVals).values(
@@ -774,6 +817,10 @@ def searchProgram (request):
         insttList = insttList.filter(Discipline_id__in=disciplineCodes) 
     if levelCodes:
         insttList = insttList.filter(Level_id__in=levelCodes)
+
+    if insttNameVals != '':    
+        insttList = insttList.filter(Institute__instt_name__contains = insttNameVals)
+
 
     # Order the Queryset
     insttList = insttList.order_by('Institute__state', 'Institute__city', 'Institute__instt_name')
@@ -904,15 +951,43 @@ def searchEntranceExams(request):
     countryList = Country.objects.all()
     disciplineList = Discipline.objects.all()
     levelList = Level.objects.all()
+
+    countryVals = request.POST.getlist('cntList', [])
+    disciplineVals = request.POST.getlist('discList', [])
+    levelVals = request.POST.getlist('lvlList', [])
+    exam_levelVals = request.POST.getlist('exam_levels', [])
+    examVals = request.POST.get('exam_name', '')
+
     
     # Hardcoding the filters on country, discipline and Level.  This needs to be
     # removed later on and the front end filter needs to be implemented for user.
     examList = EntranceExam.objects.filter(Country_id = 'India', 
         Discipline_id = 'ENGG', Level_id = 'Undergrad').order_by('entrance_exam_code')
 
+    if examVals != '':
+        examList = examList.filter(description__contains = examVals)
+
+    if exam_levelVals != []:
+        examList = examList.filter(exam_level__in = exam_levelVals)
 
     return render(request, 'NextSteps/entrance_exams.html', {
         'countryList':countryList,'disciplineList':disciplineList, 
         'levelList':levelList, 'examList':examList})
+    
+
+# Returns all the states and cities for ENGG Discipline
+def insttStatesCities(request):
+
+    # Get all institute IDs with ENGG discipline
+    insttIds = InstitutePrograms.objects.filter(Discipline_id = "ENGG", 
+                Level_id = "Undergrad", Country_id = "India").values(
+                'Institute_id').distinct()
+    
+    # Get States and Cities Objects
+    stateCityList = list(Institute.objects.filter(instt_code__in = insttIds).values(
+        'state', 'city').distinct().order_by('state'))
+    
+    return JsonResponse(stateCityList, safe=False)
+    
     
 

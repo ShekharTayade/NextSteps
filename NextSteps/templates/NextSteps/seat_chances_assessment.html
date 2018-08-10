@@ -33,7 +33,7 @@
 <!-- Override features block -->
 {% block features %}
     <!--<div class="showcase block block-border-bottom-grey"> -->
-    <div id="highlighted-slider" class="container" style="padding-top: 10%;">
+    <div class="block" style="padding-top: 5%; padding-bottom: 5%; ">
         <div class="container">
 
             <h3 class="block-title">Assess Seat Chances - If, Then Analysis</h3>
@@ -524,7 +524,7 @@
                         }
                     }    
                     if (found == false ) {
-                        $("#prefProgs").append('<span style = "line-height:2.5; white-space:pre;" class = "global-filter">' + prognm + '<i class="fa fa-close btn-inverse" onclick="removeProg($(this).closest(\'span\').text()); $(this).closest(\'span\').remove()"></i></span>&emsp;');    
+                        $("#prefProgs").append('<span style = "line-height:2.5; white-space:pre;" class = "global-filter">' + prognm + '<i class="fa fa-close btn-inverse" onclick="$(this).closest(\'span\').remove(); removeProg($(this).closest(\'span\').text())"></i></span>&emsp;');    
                     }
                 }
 
@@ -540,7 +540,7 @@
                         }
                     }    
                     if (found == false ) {
-                        $("#prefUserProgs").append('<span style = "line-height:2.5; white-space:pre;" class = "global-filter">' + prognm + '<i class="fa fa-close btn-inverse" onclick="removeProgUser($(this).closest(\'span\').text()); $(this).closest(\'span\').remove()"></i></span>&emsp;');    
+                        $("#prefUserProgs").append('<span style = "line-height:2.5; white-space:pre;" class = "global-filter">' + prognm + '<i class="fa fa-close btn-inverse" onclick="$(this).closest(\'span\').remove(); removeProgUser($(this).closest(\'span\').text())"></i></span>&emsp;');    
                     }
                 }
 
@@ -549,7 +549,7 @@
                 var found = false;
                 for (var i = 0; i< prog_arr.length; i++ ) {
                     
-                    // Get the selected programsin the global array "selectedProgs"
+                    // Get the selected programs in the global array "selectedProgs"
                     prefPrognm = prog_arr[i].trim().replace(/&amp;/g, '&');
                     if ( prog.toLowerCase().trim() === prefPrognm.toLowerCase().trim() ) {
                         found = true;
@@ -557,7 +557,7 @@
 
                 }
                 if (found == false ) {
-                    $("#prefProgs").append('<span style = "line-height:2.5; white-space:pre;" class = "global-filter">' + prog + '<i class="fa fa-close btn-inverse" onclick="removeProg($(this).closest(\'span\').text()); $(this).closest(\'span\').remove()"></i><\/span>&emsp;');
+                    $("#prefProgs").append('<span style = "line-height:2.5; white-space:pre;" class = "global-filter">' + prog + '<i class="fa fa-close btn-inverse" onclick=" $(this).closest(\'span\').remove(); removeProg($(this).closest(\'span\').text())"></i><\/span>&emsp;');
                 }
 
 
@@ -572,7 +572,7 @@
 
                 }
                 if (found == false ) {
-                    $("#prefUserProgs").append('<span style = "line-height:2.5; white-space:pre;" class = "global-filter">' + prog + '<i class="fa fa-close btn-inverse" onclick="removeProgUser($(this).closest(\'span\').text()); $(this).closest(\'span\').remove()"></i><\/span>&emsp;');
+                    $("#prefUserProgs").append('<span style = "line-height:2.5; white-space:pre;" class = "global-filter">' + prog + '<i class="fa fa-close btn-inverse" onclick=" $(this).closest(\'span\').remove(); removeProgUser($(this).closest(\'span\').text())"></i><\/span>&emsp;');
                 }
 
             }
@@ -621,7 +621,7 @@
                         }
                     }    
                     if (found == false ) {
-                        $("#prefInstts").append('<span style = "line-height:2.5; white-space:pre;" class = "global-filter">' + insttnm + '<i class="fa fa-close btn-inverse" onclick="removeInstt($(this).closest(\'span\').text()); $(this).closest(\'span\').remove()"></i></span>&emsp;');    
+                        $("#prefInstts").append('<span style = "line-height:2.5; white-space:pre;" class = "global-filter">' + insttnm + '<i class="fa fa-close btn-inverse" onclick="$(this).closest(\'span\').remove(); removeInstt($(this).closest(\'span\').text())"></i></span>&emsp;');    
                     }
                 }
                 
@@ -637,7 +637,7 @@
                         }
                     }    
                     if (found == false ) {
-                        $("#prefUserInstts").append('<span style = "line-height:2.5; white-space:pre;" class = "global-filter">' + insttnm + '<i class="fa fa-close btn-inverse" onclick="removeInsttUser($(this).closest(\'span\').text()); $(this).closest(\'span\').remove()"></i></span>&emsp;');    
+                        $("#prefUserInstts").append('<span style = "line-height:2.5; white-space:pre;" class = "global-filter">' + insttnm + '<i class="fa fa-close btn-inverse" onclick="$(this).closest(\'span\').remove(); removeInsttUser($(this).closest(\'span\').text())"></i></span>&emsp;');    
                     }
                 }
                 
@@ -653,7 +653,7 @@
 
                 if (found == false ) {
     
-                    $("#prefInstts").append('<span style = "line-height:2.5; white-space:pre;" class = "global-filter">' + instt + '<i class="fa fa-close btn-inverse" onclick="removeInstt($(this).closest(\'span\').text()); $(this).closest(\'span\').remove()"></i></span>&emsp;');    
+                    $("#prefInstts").append('<span style = "line-height:2.5; white-space:pre;" class = "global-filter">' + instt + '<i class="fa fa-close btn-inverse" onclick="$(this).closest(\'span\').remove(); removeInstt($(this).closest(\'span\').text())"></i></span>&emsp;');    
                 }
                 
                 
@@ -667,7 +667,7 @@
 
                 if (found == false ) {
     
-                    $("#prefUserInstts").append('<span style = "line-height:2.5; white-space:pre;" class = "global-filter">' + instt + '<i class="fa fa-close btn-inverse" onclick="removeInsttUser($(this).closest(\'span\').text()); $(this).closest(\'span\').remove()"></i></span>&emsp;');    
+                    $("#prefUserInstts").append('<span style = "line-height:2.5; white-space:pre;" class = "global-filter">' + instt + '<i class="fa fa-close btn-inverse" onclick="$(this).closest(\'span\').remove(); removeInsttUser($(this).closest(\'span\').text())"></i></span>&emsp;');    
                 }
                 
             }
@@ -704,7 +704,7 @@
             // Update the Institute list and pref institutes
             
             // Remove all rows from the table
-            //insttTable.rows().remove().draw();
+            insttTable.rows().remove().draw();
             //insttUserTable.rows().remove().draw();
             
             var cntList= 'India';
@@ -805,6 +805,8 @@
     
                     progTable.rows.add(jsonObj).draw();
                 }
+                
+                programChange();
             }
         }
 
@@ -855,6 +857,9 @@
                     insttTable.rows.add(jsonObj).draw();
                     //insttTable.row.add([txt]).draw( false );
                 }
+
+                instituteChange();
+
             }
         }
 

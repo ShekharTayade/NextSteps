@@ -20,9 +20,15 @@ from NextSteps.models import ProgramUserPref, InsttUserPref, InstituteProgramSea
 from NextSteps.models import InstituteEntranceExam, InstituteProgramImpDates
 from NextSteps.models import StudentCategory, StudentCategoryUserPref, InstituteAdmRoutes
 from NextSteps.models import UserAppDetails, UserProfile
+from NextSteps.models import Subjects, UserSubjectSchedule, UserStudySchedule
+from NextSteps.models import StudyHours, UserDaySchedule
 
 from .common_views import *
 from .pdf_views import *
+
+from NextSteps.forms import UserSubjectScheduleForm
+
+from django.forms import modelformset_factory
 
 #from idlelib.colorizer import prog
 #from reportlab.pdfgen import canvas
@@ -72,6 +78,7 @@ def getInsttsForProgs(request):
     levelVals = request.GET.getlist('lvlList', [])
     programVals  = request.GET.getlist('progList[]', [])
 
+
     # There might be white spaces in the array items. Let's remove those
     cntList = []
     for c in countryVals:
@@ -104,12 +111,14 @@ def getInsttsForProgs(request):
     
     if progList:
         insttList = InstitutePrograms.objects.filter(Country__in=countryCodes, 
-                    Discipline__in=disciplineCodes, Level__in=levelCodes,
-                    Program_id__in=progList ).values(
-                        'Institute__instt_name').distinct().order_by('Institute__instt_name')
+                    Discipline__in=disciplineCodes, Level__in=levelCodes, 
+                    Institute__jee_flag = "Y", Program_id__in=progList ).values(
+                        'Institute__instt_name').distinct().order_by(
+                        'Institute__instt_name')
     else:
         insttList = InstitutePrograms.objects.filter(Country__in = countryCodes, 
-                    Discipline__in=disciplineCodes, Level__in=levelCodes).values(
+                    Discipline__in=disciplineCodes, Level__in=levelCodes,
+                    Institute__jee_flag = "Y").values(
                         'Institute__instt_name').distinct().order_by('Institute__instt_name')
         
     return JsonResponse(list(insttList), safe=False)    
@@ -386,16 +395,15 @@ def getPrograms(request):
     # Get all records first
     progList = InstitutePrograms.objects.values('Program__description').distinct().order_by('Program__description')
 
-
-    if countryVals != 'Blank' :
+    if countryVals != ['Blank']:
         cnt = Country.objects.filter(country_name__in=countryVals)
         progList = progList.filter(Country__in=cnt).values('Program__description').distinct().order_by('Program__description')
                 
-    if disciplineVals != 'Blank' :
+    if disciplineVals != ['Blank'] :
         disc = Discipline.objects.filter(description__in=disciplineVals)
         progList = progList.filter(Discipline__in=disc).values('Program__description').distinct().order_by('Program__description')
 
-    if levelVals != 'Blank' :
+    if levelVals != ['Blank'] :
         level = Level.objects.filter(level_name__in=levelVals)
         progList = progList.filter(Level__in=level).values('Program__description').distinct().order_by('Program__description')
 
@@ -626,22 +634,34 @@ def ifThenAnalysis(request):
     levelList = levelUserList.values('Level_id')
     
     # Get the overall programs and institutes    
+    #progList = InstitutePrograms.objects.values('Program__description').filter(
+    #    Q(Institute__InstituteType_id = "IIT")| Q(Institute__InstituteType_id = "NIT") 
+    #    ).values('Program__description')
+
     progList = InstitutePrograms.objects.values('Program__description').filter(
-        Q(Institute__InstituteType_id = "IIT")| Q(Institute__InstituteType_id = "NIT") 
-        ).values('Program__description')
+        Institute__jee_flag = "Y").values('Program__description')
+
         
     progList = progList.distinct().order_by('Program__description') 
 
         
+    #insttList = InstitutePrograms.objects.values('Institute__instt_name', 'Institute__InstituteType').filter(
+    #    Q( Institute__InstituteType_id = "IIT") | Q(Institute__InstituteType_id = "NIT")
+    #    ).values('Institute__instt_name')
+
     insttList = InstitutePrograms.objects.values('Institute__instt_name', 'Institute__InstituteType').filter(
-        Q( Institute__InstituteType_id = "IIT") | Q(Institute__InstituteType_id = "NIT")
-        ).values('Institute__instt_name')
+        Institute__jee_flag = "Y") 
     
     insttList = insttList.distinct().order_by('Institute__instt_name')
     
+    #stateList = InstitutePrograms.objects.values('Institute__state').filter(
+    #    Q( Institute__InstituteType_id = "IIT") | Q(Institute__InstituteType_id = "NIT")
+    #    ).values('Institute__state').distinct().order_by('Institute__state')
+
     stateList = InstitutePrograms.objects.values('Institute__state').filter(
-        Q( Institute__InstituteType_id = "IIT") | Q(Institute__InstituteType_id = "NIT")
-        ).values('Institute__state').distinct().order_by('Institute__state')
+        Institute__jee_flag = "Y").values('Institute__state').distinct().order_by(
+            'Institute__state')
+
 
     if countryList.exists() :
         progList = progList.filter(Country__in=countryList).values('Program__description').distinct().order_by('Program__description')
@@ -662,7 +682,9 @@ def ifThenAnalysis(request):
     # Get the current USER program and institute preferences
     programUserList = ProgramUserPref.objects.filter(User__in=userid).values(
         'Program__description').distinct().order_by('Program__description')
-    insttUserList = InsttUserPref.objects.filter(User__in=userid).values(
+    
+    insttUserList = InsttUserPref.objects.filter(User__in=userid).filter(
+        Institute__jee_flag = "Y").values(
         'Institute__instt_name',  'Institute__InstituteType').distinct().order_by('Institute__instt_name')
     
     return render(request, 'NextSteps/seat_chances_assessment.html', 
@@ -720,15 +742,21 @@ def ifThenAnalysisResults(request):
     
     # Start with all the programs and institutes and go with only the ranks
     if rankType == 'MAIN':
-        results = InstituteJEERanks.objects.filter( 
-            Q( closing_rank__gte = rankFrom ) | Q( opening_rank__gte = rankFrom )).exclude(
+        #results = InstituteJEERanks.objects.filter( 
+        #    Q( closing_rank__gte = rankFrom ) | Q( opening_rank__gte = rankFrom )).exclude(
+        #    Institute__InstituteType_id = 'IIT').values('Discipline_id', 'Level_id',
+        #    'Program_id', 'Institute__instt_name', 'Institute_id', 'Institute__state', 'year', 'opening_rank', 
+        #    'closing_rank', 'quota').order_by('Program_id', 'closing_rank')
+
+        results = InstituteJEERanks.objects.filter(Institute__jee_flag = "Y").exclude(
             Institute__InstituteType_id = 'IIT').values('Discipline_id', 'Level_id',
             'Program_id', 'Institute__instt_name', 'Institute_id', 'Institute__state', 'year', 'opening_rank', 
             'closing_rank', 'quota').order_by('Program_id', 'closing_rank')
+
     
     if rankType == 'ADV':
         results = InstituteJEERanks.objects.filter( 
-            (Q( closing_rank__gte = rankFrom ) | Q( opening_rank__gte = rankFrom )), Institute__InstituteType_id = 'IIT').values(
+            Institute__jee_flag = "Y", Institute__InstituteType_id = 'IIT').values(
             'Discipline_id', 'Level_id', 'Program_id', 'Institute_id', 
             'Institute__instt_name', 'Institute__state', 'year', 'opening_rank', 
             'closing_rank', 'quota').order_by('Program_id', 'closing_rank')
@@ -810,7 +838,7 @@ def getUserInsttProgramByType(request):
     if insttType == 'IIT':
         
         # Get the overall Programs and then apply filters
-        progList = InsttUserPref.objects.filter(
+        progList = InsttUserPref.objects.filter(Institute__jee_flag = "Y",
             Institute__InstituteType_id = "IIT").values('Program__description')
 
         if countryList.exists() :
@@ -845,9 +873,8 @@ def getUserInsttProgramByType(request):
         
     else:
         # Get the overall Programs and then apply filters
-        progList = InsttUserPref.objects.exclude(
-                Institute__InstituteType_id = "IIT").filter(
-                Institute__jee_flag = 'Y').values('Program__description')
+        progList = InsttUserPref.objects.filter(Institute__jee_flag = "Y").exclude(
+                Institute__InstituteType_id = "IIT").values('Program__description')
 
         if countryList != [''] :
             progList = progList.filter(Country__in=countryList).values('Program__description')
@@ -895,19 +922,21 @@ def getInsttProgramByType(request):
     if insttType == 'IIT':
         
         # Get the overall Programs and then apply filters
-        progList = InstitutePrograms.objects.filter(
-            Institute__InstituteType_id = "IIT").values('Program__description').distinct().order_by('Program__description') 
+        progList = InstitutePrograms.objects.filter(Institute__jee_flag = "Y", 
+            Institute__InstituteType_id = "IIT").values(
+                'Program__description').distinct().order_by('Program__description') 
 
 
         # Get the overall Institutes and then apply filters
-        insttList = Institute.objects.filter(
+        insttList = Institute.objects.filter(Institute__jee_flag = "Y", 
             InstituteType_id = "IIT").values('instt_name').distinct().order_by('instt_name')
         
     else:
         # Get the overall Programs and then apply filters
         progList = InstitutePrograms.objects.exclude(
             Institute__InstituteType_id = "IIT").filter(
-                Institute__jee_flag = 'Y').values('Program__description').distinct().order_by('Program__description') 
+                Institute__jee_flag = 'Y').values(
+                    'Program__description').distinct().order_by('Program__description') 
     
         # Get the overall Institutes and then apply filters
         #insttList = InstitutePrograms.objects.exclude(
@@ -949,29 +978,40 @@ def JEE_prog_instt_rank_filter(request):
     progList = progList.distinct().order_by('Program__description') 
 
         
+    #insttProgList = InstitutePrograms.objects.values('Institute__instt_name', 'Institute__InstituteType').filter(
+    #    Q( Institute__InstituteType_id = "IIT") | Q(Institute__InstituteType_id = "NIT")
+    #    ).values('Institute__instt_name')
+    
     insttProgList = InstitutePrograms.objects.values('Institute__instt_name', 'Institute__InstituteType').filter(
-        Q( Institute__InstituteType_id = "IIT") | Q(Institute__InstituteType_id = "NIT")
-        ).values('Institute__instt_name')
+        Institute__jee_flag = "Y").values('Institute__instt_name')
+    
     
     insttProgList = insttProgList.distinct().order_by('Institute__instt_name')
     
     stateList = InstitutePrograms.objects.values('Institute__state').filter(
-        Q( Institute__InstituteType_id = "IIT") | Q(Institute__InstituteType_id = "NIT")
-        ).values('Institute__state').distinct().order_by('Institute__state')
+        Institute__jee_flag = "Y").values('Institute__state').distinct().order_by('Institute__state')
 
     if countryList.exists() :
-        progList = progList.filter(Country__in=countryList).values('Program__description').distinct().order_by('Program__description')
+        progList = progList.filter(Country__in=countryList).values(
+            'Program__description').distinct().order_by('Program__description')
+        
         insttProgList = insttProgList.filter(Country__in=countryList).values('Institute__instt_name',  
                             'Institute__InstituteType').distinct().order_by('Institute__instt_name')
                 
     if disciplineList.exists() :
-        progList = progList.filter(Discipline__in=disciplineList).values('Program__description').distinct().order_by('Program__description')
-        insttProgList = insttProgList.filter(Discipline__in=disciplineList).values('Institute__instt_name',  
-                            'Institute__InstituteType').distinct().order_by('Institute__instt_name')
+        progList = progList.filter(Discipline__in=disciplineList).values(
+            'Program__description').distinct().order_by('Program__description')
+        
+        insttProgList = insttProgList.filter(Discipline__in=disciplineList).values(
+            'Institute__instt_name',  
+            'Institute__InstituteType').distinct().order_by('Institute__instt_name')
 
     if levelList.exists() :
-        progList = progList.filter(Level__in=levelList).values('Program__description').distinct().order_by('Program__description')
-        insttProgList = insttProgList.filter(Level__in=levelList).values('Institute__instt_name',  
+        progList = progList.filter(Level__in=levelList).values(
+            'Program__description').distinct().order_by('Program__description')
+            
+        insttProgList = insttProgList.filter(Level__in=levelList).values(
+            'Institute__instt_name',  
                             'Institute__InstituteType').distinct().order_by('Institute__instt_name')
 
 
@@ -979,7 +1019,8 @@ def JEE_prog_instt_rank_filter(request):
     programUserList = ProgramUserPref.objects.filter(User__in=userid).values(
         'Program__description').distinct().order_by('Program__description')
     insttUserList = InsttUserPref.objects.filter(User__in=userid).values(
-        'Institute__instt_name',  'Institute__InstituteType').distinct().order_by('Institute__instt_name')
+        'Institute__instt_name',  'Institute__InstituteType').distinct().order_by(
+            'Institute__instt_name')
     
     '''
     return render(request, 'NextSteps/JEE_prog_instt_rank_filter.html', 
@@ -1048,13 +1089,13 @@ def JEE_prog_instt_rank_results(request):
     
     # Start with all the programs and institutes and go with only the ranks
     if rankType == 'MAIN':
-        results = InstituteJEERanks.objects.exclude(
+        results = InstituteJEERanks.objects.filter(Institute__jee_flag = "Y").exclude(
             Institute__InstituteType_id = 'IIT').values('Discipline_id', 'Level_id',
             'Program_id', 'year', 'Institute__instt_name', 'Institute_id', 'Institute__state', 'opening_rank', 
             'closing_rank', 'quota','StudentCategory_id').order_by('Program_id', 'StudentCategory_id', 'year', 'Institute_id', 'closing_rank')
     
     if rankType == 'ADV':
-        results = InstituteJEERanks.objects.filter( 
+        results = InstituteJEERanks.objects.filter(Institute__jee_flag = "Y", 
             Institute__InstituteType_id = 'IIT').values(
             'Discipline_id', 'Level_id', 'Program_id', 'year', 'Institute_id', 
             'Institute__instt_name', 'Institute__state', 'opening_rank', 
@@ -1090,8 +1131,6 @@ def JEE_prog_instt_rank_results(request):
     return render(request, 'NextSteps/JEE_prog_instt_rank_results.html', 
             {'results':results, 'err':err, 'progs':progs, 'instts':instts,
              'rankType':rankType, 'resultCnt':resultCnt})     
-        
-        
         
         
         
@@ -1149,4 +1188,82 @@ def userAppDetailsConfirm(request):
 def toDoList(request):
     
     return render(request, 'NextSteps/to_do_list.html')
+
+@login_required
+def studyPlanner(request):
+
+    userid = User.objects.filter(username = request.user).values('id')
+
+
+    ##### Get All Subject List
+    cnt = request.POST.get('country', 'BLANK')
+    disc = request.POST.get('discipline', 'BLANK')
+    level = request.POST.get('level', 'BLANK')
+
+    allSubjectList = Subjects.objects.all()
+    
+    if cnt != 'BLANK':
+          allSubjectList  = allSubjectList .filter(Country__in = cnt)
+        
+    if disc != 'BLANK':
+          allSubjectList  = allSubjectList .filter(Discipline__in = disc)
+
+    if level != 'BLANK':
+          allSubjectList  = allSubjectList .filter(Level__in = level)
+
+    ## Let's the UserStudySchedule
+    userSch = UserStudySchedule.objects.filter(User_id__in = userid)
+
+
+    ### Get user Subjects
+    userSubjectList = UserSubjectSchedule.objects.filter(User_id__in = userid)
+    
+    userDaySch = UserDaySchedule.objects.filter(User_id__in = userid)
+    
+    ### Form for Subject Schedule
+    if request.method == 'POST':
+        form = UserSubjectScheduleForm(request.POST)
+        if form.is_valid():
+            subj = form.save(commit=False)
+            subj.User = request.user
+            subj.save()            
+            ####return redirect('referNextSteps_confirm')  
+    else:
+        ##form = UserSubjectScheduleForm()    
+        try:
+            requserid = User.objects.get(username = request.user)
+            #userObj = UserSubjectSchedule.objects.filter(User = userid)
+            #form = UserSubjectScheduleForm(initial = userObj)
+            UserSubFormSet = modelformset_factory(UserSubjectSchedule, fields=('subject',
+                    'percentage_weight','start_date', 'end_date') ) 
+            form = UserSubFormSet(queryset=UserSubjectSchedule.objects.filter(User=requserid ))
+            
+
+        except UserSubjectSchedule.DoesNotExist:
+            form = UserSubjectScheduleForm()
+    
+            
+
+    return render(request, 'NextSteps/study_planner.html', {'allSubjectList':
+            allSubjectList, 'userSubjectList':userSubjectList, 'form':form,
+            'userSch': userSch, 'userDaySch' : userDaySch})
+
+
+@login_required
+def getUserSubjectSchedule(request):
+    
+    import pdb 
+    pdb.set_trace()
+    
+    print("In the USer Subject Fetch")
+    
+    userid = User.objects.filter(username = request.user).values('id')
+
+    ### Get user Subjects
+    userSubjectList = UserSubjectSchedule.objects.filter(User_id__in = userid).values(
+        'subject', 'percentage_weight', 'start_date', 'end_date')
+    
+    print(list(userSubjectList))
+
+    return JsonResponse(list(userSubjectList), safe=False)    
 

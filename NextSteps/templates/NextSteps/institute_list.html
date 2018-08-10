@@ -12,7 +12,7 @@
 
 <!-- Override features block -->
 {% block features %}
-<div class="showcase block block-border-bottom-grey">
+<div class="block" style="padding-top: 5%;">
     <div class="container">
     
         <h3 class="block-title">Institutes</h3>
@@ -82,9 +82,11 @@
                     &nbsp;&nbsp;
                     <select hidden id = "selectedInsttCodes" name="selectedInsttCodes" multiple size=4>
                     </select>
-                    <button class = 'btn btn-more' form = 'compareform' type= "submit" data-toggle="tooltip" title="Compare Institutes" data-placement="bottom"> 
-                        <i class="fa fa-tachometer"></i> Compare
-                    </button>
+                    {% if isSubscribed %}
+                        <button class = 'btn btn-more' form = 'compareform' type= "submit" data-toggle="tooltip" title="Compare Institutes" data-placement="bottom"> 
+                            <i class="fa fa-tachometer"></i> Compare
+                        </button>
+                    {% endif %}
                 </form>
             </span>
                 
@@ -199,10 +201,12 @@
                                 {% if iRank.Institute_id == il.instt_code %}
                                     <strong>Rank: &nbsp;</strong><span class="label label-primary">{{ iRank.rank }}</span>
                                 {% endif %}
-                            {% endfor %}    
-                            <br />
-                            <br />
-                            <input type="checkbox" id = "compare" class = "compare" name="compare" onclick="checkAll(this, '{{il.instt_code}}')"> Compare
+                            {% endfor %} 
+                            {% if isSubscribed %}
+                                <br />
+                                <br />
+                                <input type="checkbox" id = "compare" class = "compare" name="compare" onclick="checkAll(this, '{{il.instt_code}}')"> Compare
+                            {% endif %}
                             <p style="visibility:hidden" class="insttcd" name="instt_code">{{il.instt_code}}</p>
                        </td>
                         <td id = "rank" name="rank">{{iRank.rank}}</td>

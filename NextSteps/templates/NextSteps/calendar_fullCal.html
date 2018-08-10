@@ -34,7 +34,7 @@
 <!-- Override features block -->
 {% block features %}
     <!--<div class="showcase block block-border-bottom-grey"> -->
-    <div id="highlighted-slider" class="container" style="padding-top: 10%;">
+    <div class="block" style="padding-top: 5%;">
         <div class="container">
 
             <h3 class="block-title">
@@ -45,16 +45,16 @@
                                         <!--Event Operations:<br /> -->
 
                                         <span class = "text-primary cal" id="addEvent" onclick="$( '#dialog' ).dialog('open')" data-toggle="tooltip" title="Add Your Own Event" data-placement="bottom">
-                                                <i class="fa fa-plus-square fa-2x"></i></span>&nbsp;&nbsp;&nbsp;
+                                                <i class="fa fa-plus-square fa-3x"></i></span>&nbsp;&nbsp;&nbsp;
                                         <!-- <button id="addEvent" class="btn-info" onclick="$( '#dialog' ).dialog('open')">Add Your Own</button> -->
                                         <span class = "text-primary cal" onclick = "removeSelectedEvents()" data-toggle="tooltip" title="Remove Selected Event" data-placement="bottom">
-                                                <i class="fa fa-minus-square fa-2x"></i></span>&nbsp;&nbsp;&nbsp;
+                                                <i class="fa fa-minus-square fa-3x"></i></span>&nbsp;&nbsp;&nbsp;
                                         <!-- <button class="btn-primary" onclick = "removeSelectedEvents()">Remove Selected</button> -->
                                         <span class = "text-primary cal" onclick="removeAllEvents()" data-toggle="tooltip" title="Remove All Events" data-placement="bottom">
-                                                <i class="fa fa-trash fa-2x"></i></span>&nbsp;&nbsp;&nbsp;
+                                                <i class="fa fa-trash fa-3x"></i></span>&nbsp;&nbsp;&nbsp;
                                         <!-- <button class="btn-primary" onclick="removeAllEvents()">Remove All</button> -->
                                         <span class = "text-primary cal" onclick="resetCalendar()" data-toggle="tooltip" title="Reset Calendar" data-placement="bottom">
-                                                <i class="fa fa-refresh fa-2x"></i></span>&nbsp;&nbsp;&nbsp;
+                                                <i class="fa fa-refresh fa-3x"></i></span>&nbsp;&nbsp;&nbsp;
                                         <!-- <button class="btn-primary" onclick="resetCalendar()">Reset</button> -->
                                 <!--    </div>
                                 </div> -->
@@ -62,15 +62,16 @@
                             <div id="cbuttons" class="col-sm-3" >
                                 <!--Save Calendar:<br />-->
                                 <span class = "text-primary cal" onclick="saveEvents()" data-toggle="tooltip" title="Save Calendar" data-placement="bottom">
-                                        <i class="fa fa-save fa-2x"></i></span>
+                                        <i class="fa fa-save fa-3x"></i></span>
                                 <!-- <button class="btn-info" onclick="saveEvents()">Save</button> -->
                             </div>
                             <div id="empty" class="col-sm-4" >
                             </div>
                             <div id="rbuttons" class="col-sm-2" >
                                 <!--<span class = "pull-right">Print:</span><br/>-->
-                                <span class="text-primary"  data-toggle="tooltip" title="Print Calendar" data-placement="bottom">
-                                        <i class="fa fa-print fa-2x printBtn hidden-print" onclick="window.print()" ></i></span>
+                                <a href = "{% url 'to_do_list' %}" class="text-primary"  data-toggle="tooltip" title="Creat To-Do List" data-placement="bottom">
+                                    <i class="fa fa-tasks fa-3x" ></i>
+                                </a>
                                 <a href="{% url 'user_guide' %} " class = "userguide pull-right" data-toggle="tooltip" title="Calendar Guide" data-placement="bottom"><i class="fa fa-question-circle fa-2x"></i></a>
                                 <!-- <button class="printBtn pull-right">Print</button> -->
                             </div>
