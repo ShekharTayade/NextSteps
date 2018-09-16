@@ -41,9 +41,25 @@
                     </div>
 
                     <section class="search-container">
+                        <div class="sub-container" id="compare-list">
+                            <h4 data-toggle="collapse" data-target="#compareInst">
+                                <span>Institutes To Compare</span>
+                            </h4>
+                                                        
+                            <div class="collapse in sub-container-w" id="#compareInst">
+                                <ul class="list vns-scroll" id="compare-inst-ul">
+                                </ul>
+                                <div>
+                                    <span id="compare-clear" class="inst-filter-clear-text" onclick="clearFilter('compare')">< Clear</span>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="sub-container ">
-                            <h4 data-toggle="collapse" data-target="#State">State</h4>
-                        
+                            <h4 data-toggle="collapse" data-target="#State">
+                                <span>State</span>
+                            </h4>
+                                                        
                             <div class="collapse in sub-container-w" id="State">
                                 <div>
                                     <i class="fa fa-search" aria-hidden="true" style="position: absolute;color: #d4d4d4;margin-top: 10px;margin-left: 15px;"></i>
@@ -52,17 +68,21 @@
                                 </div>
                                 <ul class="list vns-scroll" id="stateUl">
                                     {% if geostates %} 
-                                        <form method="post" action="{% url 'instt_list' %}">
-                                            {% csrf_token %}
+                                        <!-- <form method="post" action="{% url 'instt_list' %}">
+                                            {% csrf_token %} -->
                                                 {% for s in geostates %}
                                                     <li class="checkbox" id="stateLi">
                                                         <input type="checkbox" id="{{s.state|trim|to_underscore}}" value="{{s.state}}" onclick="checkBoxAction(this,'{{s.state}}','state')">
                                                         <label class="search-value" id="stateLabel">{{s.state}}</label>
                                                     </li>
                                                 {% endfor %} 
-                                        </form>
+                                        <!-- </form> -->
                                     {% endif %}
                                 </ul>
+
+                                <div>
+                                    <span id="state-clear" class="inst-filter-clear-text" onclick="clearFilter('state')">< Clear</span>
+                                </div>
                             </div>
                         </div>
                         <div class="sub-container ">
@@ -84,22 +104,28 @@
                                         {% endfor %} 
                                     {% endif %}
                                 </ul>
+                                <div>
+                                    <span id="city-clear" class="inst-filter-clear-text" onclick="clearFilter('city')">< Clear</span>
+                                </div>                                
                             </div>
                         </div>
                         <div class="sub-container ">
-                            <h4 data-toggle="collapse" data-target="#instType">Institue Type</h4>
+                            <h4 data-toggle="collapse" data-target="#instType">Institute Type</h4>
                         
                             <div class="collapse in sub-container-w" id="instType">
                                 <ul class="list" id="ns-scroll">
                                     {% if instTypes %} 
                                         {% for i in instTypes %}
                                             <li class="checkbox">
-                                                <input type="checkbox" id="type" value="{{i.description}}" onclick="checkBoxAction(this,'{{i.description}}','type')">
+                                                <input type="checkbox" id="{{i.description|trim|to_underscore}}" value="{{i.description}}" onclick="checkBoxAction(this,'{{i.description}}','type')">
                                                 <label class="search-value">{{i.description}}</label>
                                             </li>
                                         {% endfor %} 
                                     {% endif %}
                                 </ul>
+                                <div>
+                                    <span id="type-clear" class="inst-filter-clear-text" onclick="clearFilter('type')">< Clear</span>
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -145,6 +171,7 @@
     var types = []
     var table;
     var processed = false;
+    var institutes = []
 
     if (sessionStorage.cities) {
         myCriteria = {
@@ -154,13 +181,7 @@
         }
 
         var stateCities = (("{{statecity | safe}}"))
-        
-        console.log(stateCities);
-        
         stateCities = stateCities.replace(/'/g, '"')
-        
-        
-        
         stateCities = JSON.parse(stateCities)
 
         cities = sessionStorage.cities.split(",");
@@ -226,7 +247,6 @@
                     } else if (sessionStorage.freeText) {
                         d.search.value = sessionStorage.freeText
                     }
-                    console.log(myCriteria);
                     d.criteria = JSON.stringify(myCriteria);
                 },
                 "dataSrc": function (json) {
@@ -263,7 +283,7 @@
                                         '<form id=' + data.instt_code + ' action={% url "instt_all_details" %}' +' method="post">' +
                                             '<input type="hidden" name="csrfmiddlewaretoken" value=' + getCookie("csrftoken") +'>' +
                                             '<div>' +                                                
-                                                '<a href="javascript:;" onclick="document.getElementById('+data.instt_code + ').submit();"> <p> ' + data.instt_name + '</p></a>'+                                                
+                                                '<a href="javascript:;" onclick="document.getElementById('+data.instt_code + ').submit();"> <p> ' + data.instt_name + '</p></a>'+
                                             '</div>' +
                                             '<select hidden name="instt_code">' +
                                                 '<option value=' + data.instt_code + ' selected>' + data.instt_code + '</option>' +
@@ -311,16 +331,18 @@
                                     '</div>' +
                                     '<div class="col-md-2">' +
                                         '{% if user.is_authenticated %}' +
-                                            '<div class="checkbox" >' +
-                                                '<label>' +
-                                                    '<input type="checkbox" style="margin-left:-20px !important;margin-top: 5px !important" id="compare'+data.instt_code+'" name="compare" onclick="checkAll(this, ' +  data.instt_code + ')">' +
-                                                    ' Compare ' +
-                                                '</label>' +
-                                                '<p style="visibility:hidden"  name="instt_code">' + data.instt_code + '</p>' +
-                                            '</div>' +
-                                            '<div style="margin-top: -10px">' +
-                                                '<button type="submit" class="btn btn-primary" style="border-radius: 0 !important;">Add to Wish List</button>' +
-                                            '</div>'+
+
+                                                '<div class="checkbox" >' +
+                                                    '<label>' +
+                                                        '<input type="checkbox"' + 'value="' +data.instt_name + '" style="margin-left:-20px !important;margin-top: 5px !important" id="compare'+data.instt_code+'" name="compare" onclick="checkAll(this, ' +  data.instt_code + ')">' +
+                                                        ' Compare ' +
+                                                    '</label>' +
+                                                    '<p style="visibility:hidden"  name="instt_code">' + data.instt_code + '</p>' +
+                                                '</div>' +
+                                                '<div style="margin-top: -10px">' +
+                                                    '<button type="submit" class="btn btn-primary" style="border-radius: 0 !important;">Add to Wish List</button>' +
+                                                '</div>'+
+
                                             '<div>' +
                                                 '<form id=' + data.instt_code + ' action="{% url "instt_all_details" %}" method="post">'+
                                                     '<div>' +
@@ -345,23 +367,21 @@
         switch(what){
             case 'state':
                 processCheckBox(ele, states, content);
+                processFilter('state')
                 break;
             case 'city':
                 processCheckBox(ele, cities, content);
                 processSessionStorage(cities);
+                processFilter('city')
                 break;
             case 'type':
                 processCheckBox(ele, types, content);
+                processFilter('type')
                 break;
         }
 
-        myCriteria = {
-            'stateList' : states,
-            'cityList' : cities,
-            'insttTypeList'  : types
-        }
-        table = $("#insttTbl").DataTable();
-        table.draw();
+        //Refresh Table
+        reloadData()
     }
 
     function getCookie(c_name)
@@ -393,49 +413,177 @@
         }
     }
 
+    function processFilter(what) {
+        switch(what) {
+            case 'state':
+                if (states.length > 0) {
+                    $("#state-clear").show()
+                } else {
+                    $("#state-clear").hide()
+                }
+                break;
+            case 'city':
+                if (cities.length > 0) {
+                    $("#city-clear").show()
+                } else {
+                    $("#city-clear").hide()
+                }
+                break;
+            case 'type':
+                if (types.length > 0) {
+                    $("#type-clear").show()
+                } else {
+                    $("#type-clear").hide()
+                }
+                break;
+        }
+    }
+
+    function clearFilter(what) {
+        switch(what) {
+            case 'state':
+                unCheckSelected(states);
+                states = [];
+                $("#state-clear").hide()
+                break;
+            case 'city':
+                unCheckSelected(cities);
+                cities = [];
+                sessionStorage.cities = [];
+                $("#city-clear").hide()
+                break;
+            case 'type':
+                unCheckSelected(types);
+                types = [];
+                $("#type-clear").hide();
+                break;
+            case 'compare': 
+                clearCompareInstitutes();
+                break;
+        } 
+
+        //Vijay: Refresh Table Data
+        reloadData()
+    }
+
+    function clearCompareInstitutes() {
+        institutesToClear = JSON.parse(sessionStorage.institutesToCompare);
+        institutesToClear.forEach(content => {
+            $("#compare"+content).prop("checked", false);
+            $("#selectedInsttCodes option[value='" + content + "']").remove();
+            $("#compare-inst-li"+content).remove();            
+        });        
+        insttcode = [];
+        institutes = []
+        sessionStorage.institutesToCompare = insttcode;
+        sessionStorage.institutes = institutes;
+        $("#compare-list").hide()
+        $("#sticky").css("display", "none");
+    }
+
+    function reloadData() {
+        //Vijay: Refresh Table Data
+        myCriteria = {
+            'stateList' : states,
+            'cityList' : cities,
+            'insttTypeList'  : types
+        }
+        table = $("#insttTbl").DataTable();
+        table.draw();        
+    }
+
+    function unCheckSelected(arrayIncoming) {
+        arrayIncoming.forEach(content => {
+            $("#"+content.replace(/\s+/g,"_")).prop("checked", false);
+        });
+    }
+
     function processSessionStorage(content) {
         sessionStorage.cities = cities
     }
 
     function processSessionStore() {
+        // Target
         if (sessionStorage.institutesToCompare) {
             institutesToCompared = JSON.parse(sessionStorage.institutesToCompare);
 
-            if ((sessionStorage.institutesToCompare) && !(insttcode)) {
-                insttcode = JSON.parse(sessionStorage.institutesToCompare)                
+            if ((sessionStorage.institutesToCompare) && (insttcode.length == 0)) {
+                insttcode = JSON.parse(sessionStorage.institutesToCompare)
+                institutes = JSON.parse(sessionStorage.institutes)
             }
 
             for (let index = 0; index < institutesToCompared.length; index++) {
                 $("#compare"+institutesToCompared[index]).prop("checked", true);
             }
 
-            if (!processed) {
-                for (let index = 0; index < institutesToCompared.length; index++) {
-                    $("#compare"+institutesToCompared[index]).prop("checked", true);
-                    $("#selectedInsttCodes").append("<option selected value='" + institutesToCompared[index] + "'>" + institutesToCompared[index] + "</option>");
-                }
-                processed = true
+            
+            if (JSON.parse(sessionStorage.institutesToCompare).length > 0 ) {
+                $("#compare-list").show()
+                $("#compare-clear").show()
+            } else {
+                $("#compare-list").hide()
+                $("#compare-clear").hide()
             }
-
             if (JSON.parse(sessionStorage.institutesToCompare).length > 1 ) {
                 $("#sticky").css("display", "block");
             } else {
                 $("#sticky").css("display", "none");
             }
+        
+
+            if (!processed) {
+                if ($('select#selectedInsttCodes option').length == 0) {
+                    for (let index = 0; index < institutesToCompared.length; index++) {
+                        $("#compare"+institutesToCompared[index]).prop("checked", true);
+                        $("#selectedInsttCodes").append("<option selected value='" + institutesToCompared[index] + "'>" + institutesToCompared[index] + "</option>");
+
+                        instFound = _.findIndex(institutes, function(o) { return o.inst_code == institutesToCompared[index]; });
+                        $("#compare-inst-ul").append(
+                                        '<li class="compare-inst-li" id="compare-inst-li'+ institutes[instFound].inst_code +'">'+
+                                            '<label class="compare-inst-name" id="compareId' + institutes[instFound].inst_code + '" onclick="compareRemove('+ institutes[instFound].inst_code +')">' + '<i class="fa fa-fw fa-trash-o" style="color:#ff5821;"> </i>' + institutes[instFound].inst_name + '</label>' +
+                                        '</li>')
+                    }
+                    processed = true
+                }
+            }
+
+            if (JSON.parse(sessionStorage.institutesToCompare).length > 0 ) {
+                $("#compare-list").show()
+
+            } else {
+                $("#compare-list").hide()
+            }
+
+            if (JSON.parse(sessionStorage.institutesToCompare).length > 1 ) {
+                $("#sticky").css("display", "inline");
+            } else {
+                $("#sticky").css("display", "none");
+            }
         }
 
+        if (sessionStorage.cities) {
+            $("#city-clear").show()
+        } else {
+            $("#city-clear").hide()
+        }
+
+        if (sessionStorage.institutesToCompare) {
+            $("#compare-clear").show()
+        } else {
+            $("#compare-clear").hide()
+        }
     }
 
     // Vijay : Function to filter search values
     function filterValues(inputE, ulE, liE, labelE) {
         
         var input, filter, ul, li, a, i;
-        input = document.getElementById(inputE);
-        filter = input.value.toUpperCase();
-        ul = document.getElementById(ulE);
-        li = ul.getElementsByTagName("li");
-        for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("label")[0];
+        input   = document.getElementById(inputE);
+        filter  = input.value.toUpperCase();
+        ul      = document.getElementById(ulE);
+        li      = ul.getElementsByTagName("li");
+        for (i  = 0; i < li.length; i++) {
+            a   = li[i].getElementsByTagName("label")[0];
             if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
                 li[i].style.display = "";
             } else {
@@ -461,17 +609,35 @@
                 }
                 insttcode.push(instt_code);
                 $("#selectedInsttCodes").append("<option selected value='" + instt_code + "'>" + instt_code + "</option>");
+
+                $("#compare-inst-ul").append(
+                                        '<li class="compare-inst-li" id="compare-inst-li'+ instt_code +'">'+
+                                            '<label class="compare-inst-name" id="compareId' + instt_code + '" onclick="compareRemove('+ instt_code +')">' + '<i class="fa fa-fw fa-trash-o" style="color:#ff5821;"> </i>' + ele.value + '</label>' +
+                                        '</li>'
+                                    )
+                institutes.push( { 'inst_code' : instt_code,'inst_name':ele.value })
             }
         } else {
             if (index > -1) {
                 insttcode.splice(index, 1);
+                instFound = _.findIndex(institutes, function(o) { return o.inst_code == instt_code; });
+                institutes.splice(instFound, 1);
                 $("#selectedInsttCodes option[value='" + instt_code + "']").remove();
+                $("#compare-inst-li"+instt_code).remove();
             }
         }
 
-        sessionStorage.institutesToCompare =JSON.stringify(insttcode);
+        sessionStorage.institutesToCompare = JSON.stringify(insttcode);
+        sessionStorage.institutes = JSON.stringify(institutes);
 
         if (sessionStorage.institutesToCompare) {
+            if (JSON.parse(sessionStorage.institutesToCompare).length > 0 ) {
+                $("#compare-list").show()
+                $("#compare-clear").show()
+            } else {
+                $("#compare-list").hide()
+                $("#compare-clear").hide()
+            }
             if (JSON.parse(sessionStorage.institutesToCompare).length > 1 ) {
                 $("#sticky").css("display", "block");
             } else {
@@ -480,6 +646,22 @@
         }
 
         $('#selectedInsttCodes').prop('selected', true);
+    }
+
+    function compareRemove(instCode) {
+        var index = insttcode.indexOf(instCode);
+        if (index != -1 ) {
+            insttcode.splice(index, 1);
+            $("#compare"+instCode).prop("checked", false);
+            $("#selectedInsttCodes option[value='" + instCode + "']").remove();
+            $("#compare-inst-li"+instCode).remove();
+            sessionStorage.institutesToCompare = JSON.stringify(insttcode);
+            if (JSON.parse(sessionStorage.institutesToCompare).length > 0 ) {
+                $("#compare-list").show()
+            } else {
+                $("#compare-list").hide()
+            }            
+        } 
     }
 
     function getSelectedInsttCodes() {
