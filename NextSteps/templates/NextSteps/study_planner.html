@@ -110,6 +110,9 @@
     <!-- JQuery DataTables -->
     <link rel="stylesheet" type="text/css" href="{% static 'lib/DataTables/datatables.min.css' %}" />
 
+    <!-- Boot Strap ClockPicker-->
+    <link rel="stylesheet" type="text/css" href="{% static 'lib/bootstrap-clockpicker/bootstrap-clockpicker.min.css' %}" />
+
     <!-- Required JavaScript Libraries -->
     <script src="{% static 'lib/popper.js/dist/umd/popper.js' %}"></script>
     <script src="{% static 'lib/bootstrap/js/bootstrap.min.js' %}"></script>
@@ -123,6 +126,8 @@
     <script src="{% static 'lib/easyJqueryTable/js/table.js' %}"></script>
     <!-- Conflicts    <script src="{% static 'js/bootstrap-datepicker.js' %}"></script> -->
 
+   <!-- Required JavaScript Library for clockpicker-->
+    <script src="{% static 'lib/bootstrap-clockpicker/bootstrap-clockpicker.min.js' %}"></script>
 
     <!-- Vijay jquery news ticker -->
     <script src="{% static 'lib/news-ticker/jquery.bootstrap.newsbox.min.js' %}"></script>
@@ -155,13 +160,16 @@
         // Load the Visualization API and the corechart package.
         google.charts.load('current', {'packages':['timeline']});
       
-        // Set a callback to run when the Google Visualization API is loaded.
-        google.charts.setOnLoadCallback(drawChart);
+        
+        ///////////////////////////////////////////////////////////////
+        //This is for drawing the timeline chart on the "Scheduler" tab
+        ///////////////////////////////////////////////////////////////
+        google.charts.setOnLoadCallback(drawTimeChart);
     
         // Callback that creates and populates a data table,
         // instantiates the pie chart, passes in the data and
         // draws it.
-        function drawChart() {
+        function drawTimeChart() {
             var container = document.getElementById('chart_div');
             var chart = new google.visualization.Timeline(container);    
             // Create the data table.
@@ -191,6 +199,8 @@
 
             var options = {
               timeline: { showRowLabels: false },
+              width: 500,
+              height:350,
             };
             chart.draw(data, options);
         }
@@ -202,6 +212,9 @@
 <!--Load the AJAX API for Google Charts-->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+{% load django_bootstrap_breadcrumbs %}
+
+{% load addDays_toDate %}
 
 <!-- Override slide-show block from parent -->
 {% block slide-show %}
@@ -215,384 +228,727 @@
 {% block features %}
     <div class="block" style="padding-top: 5%;">
         <div class="container">
-            
-        <h3 class="block-title">Study Planner</h3>
-                    
-        <div class="nav-tabs-custom">
-<!--            <div class="col-md-3"> -->
-                <a href="#" class="nav-tabs-dropdown btn btn-block btn-primary">Menu</a>
-                <ul id='nav-tabs-wrapper' class="nav nav-tabs nav-font-size nav-pills" role="tablist">
-                    <li class="active"><a class="nav-link" data-toggle="tab" href="#dashboard"><i class ="fa fa-dashboard fa-2x"></i>&nbsp;Dashboard</a></li>
-                    <li><a class="nav-link" data-toggle="tab" href="#studySchedule"><i class="fa fa-calendar fa-2x"></i>&nbsp;Study Schedule</a></li>
-                    <li><a class="nav-link" data-toggle="tab" href="#goals"><i class = "fa fa-bullseye fa-2x"></i>&nbsp;Subject Goals</a></li>
-                    <li><a class="nav-link" data-toggle="tab" href="#scheduler"><i class="fa fa-calendar fa-2x"></i>&nbsp;Scheduler</a></li>
-                    <li><a class="nav-link" data-toggle="tab" href="#optimize"><i class="fa fa-clock-o fa-2x"></i>&nbsp;Optimize Study Time</a></li>
-                    <li><a class="nav-link pull-right" data-toggle="tab" href="#progress"><i class="fa fa-tasks fa-2x"></i>&nbsp;Log Study hours</a></li>
-                </ul>
-<!--            </div> -->
-                        
-<!--            <div class="col-md-9"> -->
-                <div class="tab-content">
-
-
-                    <!-- Dashboard -->
-                    <div class="tab-pane fade in active showme right-pane" id="dashboard">
-                        <h4>Dashboard / Insights</h4>
-                        <p>Mauris imperdiet dignissim ante, in efficitur mauris elementum sed. Cras vulputate malesuada magna.</p>
-                        <div class = "right-pane-content">
-                            <br />This area shows tables, charts, numbers, text etc.
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                        </div>
-                    </div>
-
-
-                    <!-- Study Schdule -->
-                    <div class="tab-pane fade in right-pane" id="studySchedule">
-                        <h4>Study Schedule</h4>
-                        <p>Specify your overall study schedule</p>
-                        <div class = "right-pane-content">
-                        
-                            <form method='post' id='save' novalidate>
-                            {% csrf_token %}
         
-                                <div id = "radioDays" class = "row">
-                                    <div class = "col-sm-12">
-                                        <div class = "pull-left">
-                                            How many days per week do you plan to study?
-                                        </div>
-                                        <div id="scheduleRadio" class="pull-right"  style = "border-bottom:2px solid Gainsboro;">
-                                            <label class="radio-inline">
-                                                <input type="radio" id=  "radio7" onchange = "updatehrs()" name="days" value="7">7
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" id = "radio6" onchange = "updatehrs()" name="days"  value="6">6
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" id = "radio5" onchange = "updatehrs()" name="days"  value="5">5
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" id = "radio4" checked="checked" onchange = "updatehrs()" name="days"  value="4">4
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" id = "radio3" onchange = "updatehrs()" name="days"  value="3">3
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" id = "radio2" onchange = "updatehrs()" name="days"  value="2">2
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" id = "radio1" onchange = "updatehrs()" name="days"  value="1">1
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-    
-                                <br />
-                
-                                <div id = "radioHours" class = "row">
-                                    <div class = "col-sm-12">
-                                        <div class="pull-left">
-                                            How may hours per day do you plan study?
-                                        </div>
-                                        <div class = "pull-right" style = "border-bottom:2px solid Gainsboro;">
-                                            <input id="hours" style = "border-top:none; border-left:none; border-right:none; background-color:#ffffff; border-bottom: 2 px solid Gainsboro;" type = "number" onchange = "updatehrs()" required pattern="[0-9]{1,6}" name="hours" class="qty-input form-control" max = "24" min="1" maxlength="2" value="8"/>
-                                        </div>
-                                    </div>
-                                </div>
-    
-                                <br />
-                
-                                <div class = "row">
-                                    <div class = "col-sm-12">
-                                        <div id = "dates" class = "form-inline">
-                                            <span class="pull-left">
-                                                When do you plan to start and end your studies?
-                                            </span>
-                                            <span class = "pull-right">
-                                                <div class = "form-group">
-                                                <table id = "studySch" class = "table table-borderless">
-                                                    <thead>
-                                                        <tr>
-                                                        <th>Start Date</th>
-                                                        <th>End Date</th>
-                                                        </tr>
-                                                    </thead>   
-                                                    <tbody>
-                                                        <tr>
-                                                            <td id="id_start_date" 
-                                                                name="startDate" 
-                                                                data-type="date">
-                                                            </td>
-
-                                                            <td id="id_end_date" 
-                                                                name="endDate" 
-                                                                data-type="date">
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                </div>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br />
-                                
-                                <a href="#" class="btn btn-more text-center" onclick = "validateStudySch()">
-                                    <i class = "fa fa-caret-right"></i>Save
-                                </a>
-                                <br />
-                                
-                            </form>
+            <div class = "row">
+            <div id = "breadcrumb">
+                {% block breadcrumbs %}
+                    {% breadcrumb "Home" "index" %}
+                    {% breadcrumb "Study Planner" "study_planner" %}
+                    {% render_breadcrumbs  "django_bootstrap_breadcrumbs/bootstrap3.html" %}
+                {% endblock %}        
+            </div>
+            </div>
+            
+             <div class ="row">
+                <h3 class="block-title pull-left" style = "margin-bottom:15px;">Study Planner</h3>
+                <small class = "pull-right">This page is best viewed on large screens, such as laptops, tablets.</small>
+            </div>
+            
+            <div class = "row">           
+            <div class="nav-tabs-custom">
+                    <a href="#" class="nav-tabs-dropdown btn btn-block btn-primary">Menu</a>
+                    <ul id='nav-tabs-wrapper' class="nav nav-tabs nav-font-size nav-pills" role="tablist">
+                        <li class="active"><a class="nav-link" data-toggle="tab" href="#dashboard"><i class ="fa fa-dashboard nfa-2x"></i>&nbsp;Dashboard</a></li>
+                        <li><a class="nav-link" data-toggle="tab" id = "studySc" href="#studySchedule"><i class="fa fa-calendar nfa-2x"></i>&nbsp;Study Schedule</a></li>
+                        <li><a class="nav-link" data-toggle="tab" id = "subGoals" href="#goals"><i class = "fa fa-bullseye nfa-2x"></i>&nbsp;Subject Sch</a></li>
+                        <li><a class="nav-link" data-toggle="tab" id = "sch" href="#scheduler"><i class="fa fa-calendar nfa-2x"></i>&nbsp;Day Sch</a></li>
+                        <li><a class="nav-link" data-toggle="tab" id = "schCal" href="#schCalendar"><i class="fa fa-clock-o nfa-2x"></i>&nbsp;Sch Calendar</a></li>
+                        <li><a class="nav-link pull-right" data-toggle="tab" id = "logHours" href="#progress"><i class="fa fa-tasks nfa-2x"></i>&nbsp;Log Study hours</a></li>
+                    </ul>
                             
-                            <br />
-                            <div style = "border-top:3px solid Gainsboro" class = "row">
-                                <br />
-                                <div class = "col-sm-12">
-                                    <span id = "totalhrs"> </span>
-                                </div>
-                            </div>                            
-                        </div>`
-                    </div>
-
-
-                    <!-- Subject goals -->
-                    <div class="tab-pane fade in right-pane" id="goals">
-                        <h4>Subject Goals</h4>
-                        <p>Create/Update your Overall and Subjects Goals</p>
-                        <div class = "right-pane-content">
-                            <div class = "row">
-                                <div class = "col-sm-4">
-                                    <div class = "pref-head">Select Subjects 
-                                    </div> 
-                                    <div style = "height:200px; overflow-x:hidden !important;  background-color:#ffffff;">
-                                        <table id="allSubTbl" class="display table table-striped table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for i in allSubjectList %}
-                                                <tr ondblclick = "$(this).addClass('selected');">
-                                                    <td class="prog-row"> {{ i.subject }} </td>
-                                                </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
+    <!--            <div class="col-md-9"> -->
+                    <div class="tab-content">
+    
+    
+                        <!-- Dashboard -->
+                        <div class="tab-pane fade in active showme right-pane" id="dashboard">
+                            <h4>Dashboard / Insights</h4>
+                            <p>Shows your study progress and insights.</p>
+                            <div class = "right-pane-content">
+                                <div id = "charts">
+                                    <div class = "row">
+                                        <div class = "col-sm-6">
+                                            <blockquote><p>
+                                            <span id="overall_text" class = "">
+                                            </span>
+                                            </p></blockquote>
+                                            
+                                            <div id="barchart_values" style="width: 400px; height: 250px;">
+                                            </div>
+                                            <!-- <button type="button" id = "more_hrs" class='btn btn-more pull-right'> <i class="fa fa-caret-right"></i> More Details</button> -->
+                                        </div>
+                                        <div class = "col-sm-6">
+                                            <blockquote><p>
+                                            <span id = "perc_variation" class = "">
+                                            </span>
+                                            </p></blockquote>
+                                            <div id="piechart" style="width: 400px; height: 250px;">
+                                            </div>
+                                            <!-- <button type="button" id = "more_subj" class='btn btn-more pull-right'> <i class="fa fa-caret-right"></i> More Details</button> -->
+                                        </div>
                                     </div>
+    
                                     <br />
-                                    <p>&nbsp;</p> 
-                                    <a href="#" class="btn btn-more" onclick="addSubject('')">
-                                        <i class = "fa fa-plus"></i>Add Subject
-                                    </a>
+                                    
+                                    <div class = "row">
+                                        <div class = "col-sm-6">
+                                            <blockquote><p>
+                                            <span id="monthly_hrs" class = "">
+                                            </span>
+                                            </p></blockquote>
+                                            
+                                            <div id="columnchart_values" style="width: 400px; height: 250px;">
+                                            </div>
+                                            <!-- <button type="button" id = "mnth_hrs" class='btn btn-more pull-right'> <i class="fa fa-caret-right"></i> More Details</button> -->
+                                        </div>
+                                        <div class = "col-sm-6">
+                                            <blockquote><p>
+                                            <span id = "monthly_subj" class = "">
+                                            </span>
+                                            </p></blockquote>
+                                            <div id="subjStackedchart" style="width: 400px; height: 250px;">
+                                            </div>
+                                            <!-- <button type="button" id = "month_subj" class='btn btn-more pull-right'> <i class="fa fa-caret-right"></i> More Details</button> -->
+                                        </div>
+                                    </div>
+    
                                 </div>
-
                                 
-                                
-                                <div class = "col-sm-1" style="text-align:center; display: inline-block; padding:0px">
-                                    <span style = "vertical-align:middle; " onclick = "addSubjectTo()"> <i class = "fa fa-chevron-circle-right fa-3x"></i></span>
-                                </div>
-                                
-                                <div class = "col-sm-7">
-                                    <div class = "pref-head">Subjects Schedule
-                                    </div> 
-                                    <div style = "height:200px; overflow-x:auto !important; width=100%; background-color:#ffffff;">
-
-                                        <form method='post' id='saveSub' novalidate>
-                                            {% csrf_token %}
-                                            <table id="subject" class="table table-bordered" style="width=100%"
+                            </div>
+                        </div>
+    
+    
+                        <!-- Study Schdule -->
+                        <div class="tab-pane fade in right-pane" id="studySchedule">
+                            <h4>Study Schedule</h4>
+                            <p>Create Your Overall Study Schedule.<br />
+                                <small>This will propogate while creating the subject-wise schedule ("Subject Sch" tab),  
+                                Day schdule ("Day Sch" tab) and then to final Scheduler ("Sch Calendar" tab).</small>
+                            </p>
+                            <div class = "right-pane-content">
+                            
+                                <!-- Display the current schedule, if available -->
+                                {% for u in latest_userSch %}
+                                    <div class = "row well">
+                                        <p><strong>Your current Study Schdule is:</strong></p>
+                                        <table class = "table table-borderless"
                                                 data-toggle="table" 
                                                 data-search="false"
                                                 data-click-to-select = "true" 
                                                 showToggle = "true">
-                                                    <thead>
-                                                        <tr>
-                                                            <!-- <th data-field="state" data-checkbox="true"></th> -->
-                                                            <th data-sortable="true" data-editable="false" data-field="subject" >Subject</th>
-                                                            <th data-field="percent_weight" data-validate="max100(value)">% Alloc</th>
-                                                            <th data-field="start_date">Start Date</th>
-                                                            <th data-field="end_date" >End Date</th>
-                                                        </tr>
-                                                    </thead>       
-                                                    <tbody>
-                                                        {%for i in userSubjectList %}
-                                                       <tr>
-                                                            <!-- <td><input class = "rowcheck" name="btSelectItem" type="checkbox" ></td> -->
-                                                            <td>{{i.subject}}</td>
-                                                            <td class="percent" onchange = "updatePercentageSum()">{{i.percentage_weight | trim}}</td>
-                                                            <td data-type="date" class="datepick" >{{i.start_date | date:"d M Y" }}</td>
-                                                            <td data-type="date" class="datepick" >{{i.end_date | date:"d M Y" }}</td>
-                                                        </tr>
+                                            <thead>
+                                                <tr>
+                                                    <th>Days/Week</th>
+                                                    <th>Hour/Day</th>
+                                                    <th>Start Date</th>
+                                                    <th>End Date</th>
+                                                    <th style ="color:Grey;">Sch Created Date</th>
+                                                </tr>
+                                            </thead>   
+                                            <tbody>
+                                                <tr>
+                                                    <td>{{u.study_days_per_week }}</td>
+                                                    <td>{{u.study_hours_per_day }}</td>
+                                                    <td>{{u.start_date | date:"d M Y"}}</td>
+                                                    <td>{{u.end_date  | date:"d M Y"}}</td>
+                                                    <td  style ="color:Grey;">{{u.date_updated  | date:"d M Y"}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <small><a type="button" class="text-primary pull-right" data-toggle="modal" data-target="#studySch_history">View Your All Schedules Here</a></small>
+                                    </div> 
+                                {% endfor %}    
+                            
+                                <p><strong>Create New Study Schdule:</strong></p>
+                                <form method='post' id='save' novalidate>
+                                {% csrf_token %}
+            
+                                    <div id = "radioDays" class = "row">
+                                        <div class = "col-sm-12">
+                                            <div class = "pull-left">
+                                                How many days per week do you plan to study?
+                                            </div>
+                                            <div id="scheduleRadio" class="pull-right"  style = "border-bottom:2px solid Gainsboro;">
+                                                <label class="radio-inline">
+                                                    <input type="radio" id=  "radio7" onchange = "updatehrs()" name="days" value="7">7
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" id = "radio6" onchange = "updatehrs()" name="days"  value="6">6
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" id = "radio5" onchange = "updatehrs()" name="days"  value="5">5
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" id = "radio4" checked="checked" onchange = "updatehrs()" name="days"  value="4">4
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" id = "radio3" onchange = "updatehrs()" name="days"  value="3">3
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" id = "radio2" onchange = "updatehrs()" name="days"  value="2">2
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" id = "radio1" onchange = "updatehrs()" name="days"  value="1">1
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                    <br />
+                    
+                                    <div id = "radioHours" class = "row">
+                                        <div class = "col-sm-12">
+                                            <div class="pull-left">
+                                                How may hours per day do you plan study?
+                                            </div>
+                                            <div class = "pull-right" style = "border-bottom:2px solid Gainsboro;">
+                                                <input id="hours" style = "border-top:none; border-left:none; border-right:none; background-color:#ffffff; border-bottom: 2 px solid Gainsboro;" type = "number" onchange = "updatehrs()" required pattern="[0-9]{1,6}" name="hours" class="qty-input form-control" max = "24" min="1" maxlength="2" value="8"/>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                    <br />
+                    
+                                    <div class = "row">
+                                        <div class = "col-sm-12">
+                                            <div id = "dates" class = "form-inline">
+                                                <span class="pull-left">
+                                                    When do you plan to start and end your studies?
+                                                </span>
+                                                <span class = "pull-right">
+                                                    <div class = "form-group">
+                                                    {% if actualHrsMaxDate.date__max == None %}
+                                                        <!-- THERE IWLL BE ONLY ONE ROW IN latest_userSch -->
+                                                        {% for i in latest_userSch %}
+                                                            <input id = "i_start_date" class = "form-control" type = "date" min='{{i.start_date| plus_days:1 |date:"Y-m-d"}}' max='' value = '{% now "Y-m-d" %}'  onchange = "updatehrs()" > 
+                                                            <input id = "i_end_date" class = "form-control" type = "date" min='{{i.start_date| plus_days:1 |date:"Y-m-d"}}' max='' value = '{{ 90|addToToday|date:"Y-m-d" }}'  onchange = "updatehrs()" > 
                                                         {% endfor %}
-                                                    </tbody>
-                                            </table>
-                                        </form>                                            
+                                                        
+                                                    {% else %}
+                                                        <span class = "pull-right">
+                                                        <input id = "i_start_date" class = "form-control" type = "date" min='{{actualHrsMaxDate.date__max| plus_days:1 |date:"Y-m-d"}}' max='' value = '{{actualHrsMaxDate.date__max| plus_days:1 | date:"Y-m-d"}}'  onchange = "updatehrs()" > 
+                                                        <input id = "i_end_date" class = "form-control" type = "date" min='{{actualHrsMaxDate.date__max| plus_days:1 |date:"Y-m-d"}}' max='' value = '{{actualHrsMaxDate.date__max| plus_days:90 |date:"Y-m-d"}}'  onchange = "updatehrs()" > 
+                                                        </span>
+                                                        <br />
+                                                        <span class = "pull-right">
+                                                        <p><small>You have logged actual study hours up to {{actualHrsMaxDate.date__max|date:"Y-m-d"}}.</small></p>
+                                                        </span>
+                                                    {% endif %}
+                                                    
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <p>
-                                    <span class="pull-left" style = "vertical-align:middle;"> <button  id = "removeSub" class = "btn btn-more"> <i class = "fa fa-trash fa-lg"></i><small>Remove Selected Subject</small></button></span>
-                                    <span class="pull-right">Total % Allocated: <span id= "percentsum" class = "text-primary"></span></span>
-                                    </p>
-                                    <br />
+                                    <!-- Modal window to show the earlier Study Scheudles -->
+<!--                                    <div class="modal fade" id="studySchModal" tabindex="-1" role="dialog" data-backdrop ="true" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                    <div id = "studySch_history" class="modal-dialog modal-sm"> -->
+                                    <div id = "studySch_history" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content" >
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">X</button>
+                                                <p class="modal-title"><strong>All Revisions of Study Schedule:</strong></p>
+                                            </div>
+                                            <div class="modal-body">
+                                                <table id = "paststudySch" class = "table table-borderless"
+                                                        data-toggle="table" 
+                                                        data-search="false"
+                                                        data-click-to-select = "true" 
+                                                        showToggle = "true">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Days/Week</th>
+                                                            <th>Hour/Day</th>
+                                                            <th>Start Date</th>
+                                                            <th>End Date</th>
+                                                            <th style ="color:Grey;">Sch Created Date</th>
+                                                        </tr>
+                                                    </thead>   
+                                                    <tbody>
+                                                        {% for u in userSch %}
+                                                            <tr>
+                                                                <td>{{u.study_days_per_week }}</td>
+                                                                <td>{{u.study_hours_per_day }}</td>
+                                                                <td>{{u.start_date }}</td>
+                                                                <td>{{u.end_date }}</td>
+                                                                <td style ="color:Grey;">{{u.date_updated }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
                                     <br />
                                     
-                                    <a href="#" class="btn btn-more text-center" onclick = "validateUserSubjectSchedule()">
+                                    <a href="#" class="btn btn-more text-center" onclick = "validateAndSaveStudySch();">
                                         <i class = "fa fa-caret-right"></i>Save
                                     </a>
-                                      
+                                    <br />
+                                    
+                                </form>
+                                
+                                <br />
+                                <div style = "border-top:3px solid Gainsboro" class = "row">
+                                    <br />
+                                    <div class = "col-sm-12">
+                                        <span id = "totalhrs"> </span>
+                                    </div>
                                 </div>
-                            </div>
+                            </div>`
                         </div>
-                    </div>
-
-
-                    <!-- Schduler -->
-                    <div class="tab-pane fade in right-pane" id="scheduler">
-                        <h4>Scheduler</h4>
-                        <p>Plan Your Typical Study Day Here <small>(You can make changes on daily basis directly in the Calendar)</small></p>
-                        <div class = "right-pane-content">
-                            <p><small id="noEvents"></small></p>
-                            <div class="w3-panel w3-light-grey w3-card">
-                            
+    
+    
+                        <!-- Subject Schedule -->
+                        <div class="tab-pane fade in right-pane" id="goals">
+                            <h4>Subject Schedule</h4>
+                            <p>Create/Update your Subjects-wise Schedule. <br />
+                                <small>This will propogate while creating the 
+                                Day schedule ("Day Sch" tab) and then finally to Scheduler ("Sch Calendar" tab).</small>
+                            </p>
+                            <div class = "right-pane-content">
                                 <div class = "row">
-                                    <div class = "col-sm-5">
-                                        <form method='post' id='saveScheduler' novalidate>
-                                            <div style = "height:250px; overflow-x:auto !important; width=100%; background-color:#ffffff;">
-        
+                                    <div class = "col-sm-4">
+                                        <div class = "pref-head">Select Subjects 
+                                        </div> 
+                                        <div style = "height:200px; overflow-x:hidden !important;  background-color:#ffffff;">
+                                            <table id="allSubTbl" class="display table table-striped table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for i in allSubjectList %}
+                                                    <tr ondblclick = "$(this).addClass('selected');">
+                                                        <td class="prog-row"> {{ i.subject }} </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <br />
+                                        <p>&nbsp;</p> 
+                                        <a href="#" class="btn btn-more" onclick="addSubject('')">
+                                            <i class = "fa fa-plus"></i>Add New Subject
+                                        </a>
+                                    </div>
+    
+                                    
+                                    
+                                    <div class = "col-sm-1" style="text-align:center; display: inline-block; padding:0px">
+                                        <span style = "vertical-align:middle; " onclick = "addSubjectTo()"> <i class = "fa fa-chevron-circle-right fa-3x"></i></span>
+                                    </div>
+                                    
+                                    <div class = "col-sm-7">
+                                        <div class = "pref-head">Subjects Schedule
+                                        </div> 
+                                        <div style = "height:200px; overflow-x:auto !important; width=100%; background-color:#ffffff;">
+    
+                                            <form method='post' id='saveSub' novalidate>
                                                 {% csrf_token %}
-                                                <table id="subSch" class="table table-bordered" style="width=100%"
+                                                <table id="subject" class="table table-bordered" style="width=100%"
                                                     data-toggle="table" 
                                                     data-search="false"
                                                     data-click-to-select = "true" 
                                                     showToggle = "true">
-                                                    
-                                                    <thead>
-                                                        <tr>
-                                                            <!-- <th data-field="state" data-checkbox="true"></th> -->
-                                                            <th data-sortable="true" data-editable="false" data-field="subject" >Subject</th>
-                                                            <!-- <th data-field="percent_weight" data-validate="max100(value)">Planned Hrs/Day</th> -->
-                                                            <th data-sortable="true" data-field="start_date">Start Time </th>
-                                                            <th data-field="end_date" >End Time</th>
-                                                        </tr>
-                                                    </thead>       
-                                                    <tbody>
-                                                        {%for i in userDaySch %}
-                                                       <tr>
-                                                            <!-- <td><input class = "rowcheck" name="btSelectItem" type="checkbox" ></td> -->
-                                                            <td>{{i.subject}}</td>
-                                                            <!-- <td>{{i.planned_hours}}</td> -->
-                                                            <td>{{i.start_time | date:"g a" }}</td>
-                                                            <td>{{i.end_time | date:"g a"}}</td>
-                                                        </tr>
-                                                        {% endfor %}
-                                                    </tbody>
+                                                        <thead>
+                                                            <tr>
+                                                                <!-- <th data-field="state" data-checkbox="true"></th> -->
+                                                                <th data-sortable="true" data-editable="false" data-field="subject" >Subject</th>
+                                                                <th data-field="percent_weight" data-validate="max100(value)">% Alloc</th>
+                                                                <th data-field="start_date">Start Date</th>
+                                                                <th data-field="end_date" >End Date</th>
+                                                            </tr>
+                                                        </thead>       
+                                                        <tbody>
+                                                            {%for i in userSubjectList %}
+                                                           <tr>
+                                                                <!-- <td><input class = "rowcheck" name="btSelectItem" type="checkbox" ></td> -->
+                                                                <td>{{i.subject}}</td>
+                                                                <td class="percent" onchange = "updatePercentageSum()">{{i.percentage_weight | trim}}</td>
+                                                                <td data-type="date" class="datepick" >{{i.start_date | date:"d M Y" }}</td>
+                                                                <td data-type="date" class="datepick" >{{i.end_date | date:"d M Y" }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
                                                 </table>
-                                                <div class = "checkbox" style = "margin:10px">
-                                                    Select the Days of the Week:
-                                                    <br />
-                                                    
-                                                    <label class="checkbox-inline">
-                                                        <input id = "mon" type = "checkbox">Mon
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                        <input id = "tue" type = "checkbox" class="checkbox-inline">Tue
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                        <input id = "wed" type = "checkbox" class="checkbox-inline">Wed
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                        <input id = "thu" type = "checkbox" class="checkbox-inline">Thu
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                        <input id = "fri" type = "checkbox" class="checkbox-inline">Fri
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                        <input id = "sat" type = "checkbox" class="checkbox-inline">Sat
-                                                    </label>
-                                                    <label class="checkbox-inline">
-                                                        <input id = "sun" type = "checkbox" class="checkbox-inline">Sun
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class = "col-sm-7">
-                                        <div style = "height:250px; overflow-x:auto !important; width=100%; background-color:#ffffff;">
-                                            <div class = "studyDay">
-                                                <strong>Your Study Day</strong>
-                                            </div>
-                                            <br />
-                                            <!--Div that will hold the pie chart-->
-                                            <div id="chart_div"></div>
+                                            </form>                                            
                                         </div>
+    
+                                        <p>
+                                        <span class="pull-left" style = "vertical-align:middle;"> <button  id = "removeSub" class = "btn btn-more"> <i class = "fa fa-trash fa-lg"></i><small>Remove Selected Subject</small></button></span>
+                                        <span class="text-center" style = "vertical-align:middle;"> <button  id = "calcTotal" onclick = "updatePercentageSum()" class = "btn btn-more"> <i class = "fa fa-calculator fa-lg"></i><small>Calculate Total%</small></button></span>
+                                        <span class="pull-right">Total % Allocated: <span id= "percentsum" class = "text-primary"></span></span>
+                                        </p>
+                                        <br />
+                                        <br />
+                                        
+                                        <a href="#" class="btn btn-more text-center" onclick = "validateAndSaveSubjSch()">
+                                            <i class = "fa fa-caret-right"></i>Save
+                                        </a>
+                                          
                                     </div>
                                 </div>
-        
-                                <br />                            
-                                <br />
-                                <div class = "text-center">
-                                    <button class = "btn btn-more text-center" onclick = "">
-                                            <i class = "fa fa-calendar"></i>Calendar
-                                    </button>
-                                </div>
-                                <br />                            
-                                <!-- <div id='calendar'>
-                                    
-                                </div> -->
                             </div>
                         </div>
-                    </div>
-
-
-                    <!-- Progress -->
-                    <div class="tab-pane fade in right-pane" id="progress">
-                        <h4>Update Progress</h4>
-                        <p>Mauris imperdiet dignissim ante, in efficitur mauris elementum sed. Cras vulputate malesuada magna.</p>
-                        <div class = "right-pane-content">
-                            <br />This area shows tables, charts, numbers, text etc.
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
+    
+    
+                        <!-- Day Schduler -->
+                        <div class="tab-pane fade in right-pane" id="scheduler">
+                            <h4>Day Scheduler</h4>
+                            <p>Plan Your Typical Study Day Here. This will apply from the next day you logged you actual study hours. <small>(You can make changes on daily basis directly in the Schedule Calendar)</small></p>
+                            <div class = "right-pane-content">
+                                <p><small id="noEvents"></small></p>
+                                <div class="w3-panel w3-light-grey w3-card">
+                                
+                                    <div class = "row">
+                                        <div class = "col-sm-5">
+                                            <div style = "width=100%; background-color:#ffffff;">
+                                                <div class = "studyDay">
+                                                    <strong>Update Your Typical Study Day Here</strong>
+                                                    <br /><small>Please use 24 hr format to enter the time</small>
+                                                </div>
+                                                <br />
+                                            </div>
+                                            <form method='post' id='daySchForm' novalidate>
+                                                <div style = "background-color:#ffffff;">
+            
+                                                    {% csrf_token %}
+                                                    <table id="daySch" class="table table-bordered"
+                                                        data-toggle="table" 
+                                                        data-search="false"
+                                                        data-click-to-select = "true" 
+                                                        showToggle = "true">
+                                                        
+                                                        <thead>
+                                                            <tr>
+                                                                <!-- <th data-field="state" data-checkbox="true"></th> -->
+                                                                <th data-editable="false" data-field="subject" >Subject</th>
+                                                                <th data-sortable="true" data-field="start_date">Start Time </th>
+                                                                <th data-field="end_date" >End Time</th>
+                                                                <th data-field="planned_hours">Hrs(Plan)</th>
+                                                            </tr>
+                                                        </thead>       
+                                                        <tbody>
+                                                            {%for i in userDaySch %}
+                                                                <tr>
+                                                                    <td>{{i.subject}}</td>
+                                                                    <td>
+                                                                        <input type="text" 
+                                                                        class="clockpicker form-control" 
+                                                                        pattern = "([0-1]{1}[0-9]{1}|20|21|22|23):[0-5]{1}[0-9]{1}"  
+                                                                        required="required" 
+                                                                        value="{{i.start_time | date:'H:i' }}"
+                                                                        onchange = "validateTime(this); updateEndTime(this);">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" 
+                                                                        class="clockpicker form-control" 
+                                                                        pattern = "([0-1]{1}[0-9]{1}|20|21|22|23):[0-5]{1}[0-9]{1}"  
+                                                                        required="required" 
+                                                                        value="{{i.end_time | date:'H:i' }}"
+                                                                        onchange = "validateTime(this); updateHrs(this);">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="number" 
+                                                                        class="form-control" 
+                                                                        required="required" 
+                                                                        onchange = "updateEndTime(this);"
+                                                                        value="{{i.planned_hours}}">
+                                                                    </td>
+                                                                </tr>
+                                                            {% empty %}
+                                                                {% for s in userSubjectList %}
+                                                                    <tr>
+                                                                        <td>{{s.subject}}</td>
+                                                                        <td>
+                                                                            <input id= "{{i.s.subject}}_start" type="text" 
+                                                                            class="clockpicker form-control" 
+                                                                            pattern = "([0-1]{1}[0-9]{1}|20|21|22|23):[0-5]{1}[0-9]{1}"  
+                                                                            required="required" 
+                                                                            value=""
+                                                                            onchange = "validateTime(this);updateEndTime(this);">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input id= "{{i.s.subject}}_end" type="text" 
+                                                                            class="clockpicker form-control" 
+                                                                            pattern = "([0-1]{1}[0-9]{1}|20|21|22|23):[0-5]{1}[0-9]{1}"  
+                                                                            required="required" 
+                                                                            value=""
+                                                                            onchange = "validateTime(this); updateHrs(this);">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input id= "{{i.s.subject}}_hrs"
+                                                                            class="form-control" 
+                                                                            type = "number"  
+                                                                            required="required" 
+                                                                            onchange = "updateEndTime(this);"
+                                                                            value="{{i.planned_hours}}">
+                                                                        </td>
+                                                                    </tr>
+                                                                {% endfor %}
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                    <div class = "checkbox" style = "margin:10px">
+                                                        Select the Days of the Week:
+                                                        <br />
+                                                        <label class="checkbox-inline">
+                                                            <input id = "mon" type = "checkbox" class="checkbox-inline" onchange="validateStudyDays()">Mon
+                                                        </label>
+                                                        <label class="checkbox-inline">
+                                                            <input id = "tue" type = "checkbox" class="checkbox-inline" onchange="validateStudyDays()">Tue
+                                                        </label>
+                                                        <label class="checkbox-inline">
+                                                            <input id = "wed" type = "checkbox" class="checkbox-inline" onchange="validateStudyDays()">Wed
+                                                        </label>
+                                                        <label class="checkbox-inline">
+                                                            <input id = "thu" type = "checkbox" class="checkbox-inline" onchange="validateStudyDays()">Thu
+                                                        </label>
+                                                        <label class="checkbox-inline">
+                                                            <input id = "fri" type = "checkbox" class="checkbox-inline" onchange="validateStudyDays()">Fri
+                                                        </label>
+                                                        <br />
+                                                        <label class="checkbox-inline">
+                                                            <input id = "sat" type = "checkbox" class="checkbox-inline" onchange="validateStudyDays()">Sat
+                                                        </label>
+                                                        <label class="checkbox-inline">
+                                                            <input id = "sun" type = "checkbox" class="checkbox-inline" onchange="validateStudyDays()">Sun
+                                                        </label>
+                                                    </div>
+                                                    <div class = "text-center">
+                                                        <button class="btn btn-more" type = "submit" onclick = "validateAndSaveDaySch()">
+                                                            <i class = "fa fa-caret-right"></i>Save
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class = "col-sm-7">
+                                            <div style = "height:360px; overflow-x:auto !important; width=100%; background-color:Gainboro;">
+                                                <div class = "studyDay">
+                                                    <strong>Your Typical Study Day</strong>
+                                                    <br /><small>If you make a change to the timing, please refersh this page.</small>
+                                                </div>
+                                                <br />
+                                                <!--Div that will hold the timeline chart-->
+                                                <div style = "margin-left:10px; margin-right:10px; height:360px; width:100%" id="chart_div"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />                            
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    
-
-                    <!-- Optimize -->
-                    <div class="tab-pane fade in right-pane" id="optimize">
-                        <h4>Optimize Study Time</h4>
-                        <p>Mauris imperdiet dignissim ante, in efficitur mauris elementum sed. Cras vulputate malesuada magna.</p>
-                        <div class = "right-pane-content">
-                            <br />This area shows tables, charts, numbers, text etc.
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
+    
+    
+                        <!-- Log Study Hours -->
+                        <div class="tab-pane fade in right-pane" id="progress">
+                            <h4>Log Study Hours</h4>
+                            <p>Log your actual study hours vs. planned.</p>
+                            <div class = "right-pane-content">
+                                <div class = "row" style = "margin-left:25px !important">
+                                        <div class = "col-sm-4">
+                                            <form class="form-inline">
+                                                <div class="form-group">
+                                                    <label for="selectDisp">Display By:</label>
+                                                    <select class="form-control" id="selectDisp" onchange="displayFilter();">
+                                                        <option value="Month">Month</option>
+                                                        <option  value="Date">Date Range</option>
+                                                    </select>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class = "col-sm-6">
+                                            <div style ="display:none" id = "datefilter" class="form-group">
+                                                <form class="form-inline">
+                                                    <div class="form-group"> 
+                                                        <label for="datefrom">From:</label>
+                                                        <input id = "datefrom" class = "form-control" type = "date" min='{{dateMin.date__min|date:"Y-m-d"}}' max='{{dateMax.date__max|date:"Y-m-d"}}' value = '{{dateMin.date__min|date:"Y-m-d"}}'> 
+                                                    </div> 
+                                                    <div class="form-group">
+                                                        <label for="dateto">To:</label>
+                                                        <input id = "dateto" class = "form-control" type = "date"  min='{{dateMin.date__min|date:"Y-m-d"}}' max='{{dateMax.date__max|date:"Y-m-d"}}' value = '{{dateMax.date__max|date:"Y-m-d"}}'>
+                                                    </div>
+                                                    <button id = "submitDatesFilter" class='btn btn-more'> <i class="fa fa-caret-right"></i> Go</button>
+                                                </form>
+                                            </div>
+                                            <div style = "display:none" id = "monthfilter" >
+                                                <form class="form-inline">
+                                                    <div class="form-group"> 
+                                                        <label for="selMonth">Select Month:</label>
+                                                        <select class = "form-control" id = "selMonth">
+                                                            {% for i in months %}
+                                                                <option>{{i.month}}-{{i.year}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                        <button type = "button" onclick = "getResultByMonthYear()" id = "submitMonthsFilter" class='btn btn-more'> <i class="fa fa-caret-right"></i> Go</button>
+                                                    </div>
+                                                    
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class = "col-sm-2" style="padding : 7px">
+                                            <form class="form-inline">
+                                                <div class="form-group"> 
+                                                    <button onclick = "" id = "loghrs" name = "actualSave" class='btn btn-more pull-left'> <i class="fa fa-save"></i>Save</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                </div>
+                                <br />
+                                <div id = "results" >            
+                                    <table id="schUpd" class="display table table-striped table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td><span> <strong>{{ i.date }} </strong></span> <span class = "text-primary pull-right"><strong></strong></span>
+                                                    <br />
+                                                    <span>-</span>
+                                                    <br />
+                                                    <span>Plan&nbsp;-&nbsp;&nbsp;hrs</span> <span class="pull-right">Actual Hrs&nbsp;-&nbsp;<input class="form-control actualhrs" type = "number" value = "">&nbsp;</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                
+                                </div>                        
+                            </div>
                         </div>
+                        
+    
+                        <!-- Optimize -->
+                        <div class="tab-pane fade in right-pane" id="schCalendar">
+                            <h4>Your Schedule Calendar</h4>
+                            <p>This calendar is generated based on the information from the Scheduler. You can update it on day-to-day basis to plan your studies better.</p>
+                            <div class = "right-pane-content">
+                                <div class="row">
+                                    <div id="lbuttons" class="col-sm-3" >
+                                        <span class = "pop" data-toggle="popover" data-placement="top" data-content="Add new customized schedule" data-trigger = "manual">    
+                                            <span class = "text-primary cal" id="addEvent" data-toggle="modal" data-target="#evedialog" title="Add Study Schedule" data-placement="bottom" >
+                                                    <i class="fa fa-plus-square fa-2x"></i></span></span>&nbsp;&nbsp;&nbsp;
+                                        <!-- <button id="addEvent" class="btn-info" onclick="$( '#dialog' ).dialog('open')">Add Your Own</button> -->
+                                        
+                                        <span class = "text-primary cal" id="editEvent" onclick="editEvent();" data-toggle="tooltip" title="Edit Study Schedule" data-placement="bottom">
+                                                    <i class="fa fa-pencil-square fa-2x"></i></span>&nbsp;&nbsp;&nbsp;
+                                        <!-- <button id="addEvent" class="btn-info" onclick="$( '#dialog' ).dialog('open')">Add Your Own</button> -->
+                                        <span class = "text-primary cal" onclick = "removeSelectedEvents()" data-toggle="tooltip" title="Remove Selected Study Schedule" data-placement="bottom">
+                                                <i class="fa fa-minus-square fa-2x"></i></span>&nbsp;&nbsp;&nbsp;
+                                        <!-- <button class="btn-primary" onclick="removeAllEvents()">Remove All</button> -->
+                                        <span class = "text-primary cal" onclick="resetSch()" data-toggle="tooltip" title="Reset Calendar" data-placement="bottom">
+                                                <i class="fa fa-refresh fa-2x"></i></span>&nbsp;&nbsp;&nbsp;
+                                    </div>
+                                    <div id="cbuttons" class="col-sm-3" >
+                                        <!--Save Calendar:<br />-->
+                                        <button class = "btn btn-more pop" onclick = "saveStudyHours()" data-toggle="popover" data-placement="top" data-content="Save after you make changes" data-trigger = "manual">
+                                                <i class = "fa fa-save"></i>Save
+                                        </button>
+                                        <!-- <button class="btn-info" onclick="saveEvents()">Save</button> -->
+                                    </div>
+                                    <div id="empty" class="col-sm-4" >
+                                    </div>
+                                    <div id="rbuttons" class="col-sm-2" >
+                                        <!--<span class = "pull-right">Print:</span><br/>-->
+                                        <form action="{% url 'print_study_schedule' %}" method='post' id='print'>
+                                            {% csrf_token %}
+                                            <a href = "javascript:;" onclick="updateMonthNV(); $('#print').submit();" class="text-primary cal"  data-toggle="tooltip" title="Print Your Study Schedule" data-placement="bottom">
+                                                <i class="fa fa-print fa-2x" ></i>
+                                            </a>
+                                            <input hidden id = "print_nv_month" name="month">
+                                            <input hidden id = "print_nv_year" name="year">
+                                            <a href="{% url 'user_guide' %} " class = "text-primary cal pull-right" data-toggle="tooltip" title="Schedule Calendar Guide" data-placement="bottom"><i class="fa fa-question-circle fa-2x"></i></a>
+                                        </form>
+                                    </div>
+                                </div>
+                                
+                                <br />
+                                <div id = "calendar">
+                                </div>
+                                
+                                <!-- Modal -->
+                                <div class="modal fade" id="evedialog" tabindex="-1" role="dialog" aria-labelledby="evedialogTitle" aria-hidden="true">
+                                  <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="evedialogTitle">Create Study Schedule</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                      <div class="modal-body">
+                                                <form id = "addForm">
+                                        
+                                                <div class = "row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label for="sub">Subject:</label>
+                                                            <select  class="form-control" id="evesubject" required>
+                                                                {% for i in allSubjectList %}
+                                                                    <option>{{i.subject}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                
+                                                        <div class="form-group">
+                                                            <label for="date">Start Date:</label>
+                                                            <input type="date" class="form-control" id="evestart_date" required />
+                                                        </div>
+                                                
+                                                        <div class="form-group">
+                                                            <label for="date">End Date:</label>
+                                                            <input type="date" class="form-control" id="eveend_date" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                    
+                                                        <div class="form-group">
+                                                            <label for="start_time">Start Time:</label>
+                                                            <input type="time" class="form-control" pattern="[0-9]{2}:[0-9]{2}" id="evestart_time" required placeholder="HH:MM" />
+                                                        </div>
+                                                
+                                                
+                                                        <div class="form-group">
+                                                            <label for="end_time">End Time:</label>
+                                                            <input type="time" class="form-control" pattern="[0-9]{2}:[0-9]{2}" id="eveend_time" required />
+                                                        </div>
+                        
+                                                        <div class="form-group">
+                                                            <label for="planned_hours">Planned Hours:</label>
+                                                            <input type="number" class="form-control" id="eveplanned_hours" required />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </form>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button id="modal-close" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" id = "createE">Create</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                
+                                
+                                
+                                
+                            </div>
+                        </div>
+                        
                     </div>
-                    
-                </div>
+            </div>
+            </div>
         </div>
     </div>   
 </div>
 
 
-
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
+<!--                      Tab Navigaton related Scripts                      -->
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
 <script>
     $("a.nav-link").on('click',function(){
         $(".tab-pane").hide();
@@ -629,96 +985,323 @@
     });
 </script>
 
+<script>
+    $(document).ready(function() {
+        
+        $("a.nav-link").on('click',function(){
+            var target = $(this).attr("href");
+            if ((target == '#schCalendar')) {
+                $(".pop").popover("show");
+                setTimeout(function () { $(".pop").popover('hide'); }, 4000);
+            }
+        });  
 
+        //Get active tab sent the Py view and show it
+        // Calendar may not be rendered....so
+        $("#{{active_tab}}").trigger("click");
+        $('#nav-tabs-wrapper a[href="#{{active_tab}}"]').tab('show');
+        
+    
+    });
+</script>    
+    
+
+
+
+
+
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
+<!--                 "Schedule Calendar" tab related Scripts                 -->
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
+<script>
+
+    function print_calendar() {
+        window.print();  
+    }
+
+</script>
+
+<script>
+    $('#createE').on('click', function(e){
+        // We dont want to submit the form. Just fire the creatEve to have the required event created
+        e.preventDefault();
+        evesubj = $("#evesubject").val();
+        if ( evesubj === '' ) {
+            alert("Subject is required!");
+            return;
+        }
+
+        startDt = $("#evestart_date").val();
+        if ( startDt === '' ) {
+            alert("Start Date is required!")
+            return;
+        }
+
+        startTm = $("#evestart_time").val();
+        if ( startTm === '' ) {
+            alert("Start Time is required!")
+            return;
+        }
+        endTm = $("#eveend_time").val();
+        if ( endTm === '' ) {
+            alert("End Time is required!")
+            return;
+        }
+        
+        createEve();
+    });
+</script>
+
+<script>
+    function createEve(){
+
+        var subject = $("#evesubject").val();
+        var start_date = $("#evestart_date").val();
+        var end_date = $("#eveend_date").val();
+        var start_time = document.getElementById("evestart_time").value;
+        var end_time = document.getElementById("eveend_time").value;
+        var planned_hours = $("#eveplanned_hours").val();
+        var id = Math.random();
+       
+        var eve={id : id, subject: subject, title: subject, start: start_date, end : end_date, start_time:start_time, end_time:end_time, planned_hours: planned_hours};
+        $("#modal-close").trigger("click");
+        $('#calendar').fullCalendar('renderEvent', eve, true);
+        
+    }
+
+
+    function editEvent() {
+        // Populate the values from the selected event
+
+        var events = $('#calendar').fullCalendar('clientEvents');       
+        var selEveFound = false;
+        
+        // Check if there are multiple event selected
+        var num = 0;
+        var evesubject = '';
+        var evestart_date = '';
+        var eveend_date = '';
+        var evestart_time = '';
+        var eveend_time = '';
+        var eveplanned_hours = '';
+        $.each(events, function( index, value ) {
+
+            if (value.color == 'red') {
+                selEveFound = true;
+                evesubject = value.subject;
+                evestart_date = value.start;
+                eveend_date = value.end;
+                evestart_time = value.start_time;
+                eveend_time = value.end_time;
+                eveplanned_hours = value.planned_hours;
+                num = num + 1;
+            }
+        });        
+        if (num > 1){
+            alert("Please select only one event to edit the study hours!");
+            return;
+        }
+        if (selEveFound == false){
+            alert("No study schedule event selected. Please select one event to edit!");
+            return;
+        }
+
+        // Open the dialog window
+        $( '#dialog' ).dialog('open');
+
+        // Update dialog window with selected event values        
+        $("#evesubject").val(evesubject );
+        $("#evestart_date").val(evestart_date);
+        $("#eveend_date").val(eveend_date);
+        $("#evestart_time").val(evestart_time);
+        $("#eveend_time").val(eveend_time);
+        $("#eveplanned_hours").val(eveplanned_hours);
+        
+    }
+    
+    function removeSelectedEvents(){
+        var events = $('#calendar').fullCalendar('clientEvents');       
+        var selEveFound = false;
+        var removed = false;
+        var eventID = '';
+        
+        $.each(events, function( index, value ) {
+
+            if (value.color == 'red') {
+                selEveFound = true;
+                eventID = value.id;
+                
+                if (value.actual_hours > 0){
+                    alert("You have already logged actual hours studied for " + value.subject + " . Please don't remove.");
+                } else {
+                    $('#calendar').fullCalendar('removeEvents', eventID );
+                    removed = true;
+                }
+            }
+        });        
+        if (selEveFound == false){
+            alert("Please select a Study hours to remove!");
+        } 
+        if (removed) {
+            alert("Selected Study Hours removed");
+        }
+
+    }    
+    
+    
+    
+    function saveStudyHours(){
+    
+        var events = $('#calendar').fullCalendar('clientEvents');
+    
+        var json = JSON.stringify($("#calendar").fullCalendar("clientEvents").map(function(e) {
+            return {
+                start: e.start,
+                end: e.end,
+                title: e.title,
+                subject: e.subject,
+                id: e.id,
+                start_time : e.start_time,
+                end_time : e.end_time,
+                planned_hours: e.planned_hours,
+            };
+        }));
+
+        $.ajax({url: '{% url "save_studyhours" %}', data: json, dataType: 'text', type: 'POST',
+            success: function (data) {
+                alert("Your Calendar is saved!"); },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText); }
+        });
+    }
+        
+
+    function resetSch(){
+      
+        ans = confirm("Are you Sure? Any changes made recently will be lost. Schedule will be re-fetched from the NextSteps Database. You can make changes after the re-fetch.");
+      
+        if (ans == false) {
+              return;
+        }
+        var sch = getSchedule();
+
+        alert("Calendar is updated with events from Database! Make changes as you need and save the Calendar to make it permanent.");
+        return;                     
+    }
+
+    // Update current month in the print_nv element, which will submitted with the form to print the Schedule
+    function updateMonthNV() {
+        month = ("0" + (new Date().getMonth() + 1)).slice(-2);  // Janudary is 0
+        year = new Date().getFullYear();
+        $("#print_nv_month").val(month);
+        $("#print_nv_year").val(year);
+    }
+        
+</script>
+    
 <script>
 
     $(document).ready(function() {
-
-    var today = new Date().toISOString().slice(0, 10);
-
-    $('#calendar').fullCalendar({
-    
-
-        themeSystem:'bootstrap3', 
-        selectable : true,
-        editable:true,
-        defaultDate: today,
-        
-        eventLimit : true, 
-
-        views: {
-             month: {
-               eventLimit: 3
-             }
-         },
-        
-        eventClick: function(calEvent, jsEvent, view) {
-    
-            if (calEvent.color == 'red'){
-                calEvent.color = '';
-            } else {
-                calEvent.color = 'red';
-            }
-            $('#calendar').fullCalendar( 'rerenderEvents' );
-        },        
-    
-    
-        dayClick: function() {
-            //alert('a day has been clicked!');
-        },        
-        
-        
-        eventMouseover: function( calEvent, jsEvent, view ) { 
-            
-            //$("#tip").html(calEvent.instt_name);
-
-            var tooltip = '<div class="tooltiptopicevent" style="width:auto;height:auto;color:#FFFFFF;background:#ff5821;position:absolute;z-index:10001;padding:10px 10px 10px 10px ;  line-height: 200%;">'
-            var txt = '';
-            
-            if (typeof calEvent.instt_name != 'undefined' && calEvent.instt_name != null){
-                txt = txt +  "<strong>" + calEvent.instt_name + "</strong><br />";
-            }
-
-            if (calEvent.title) {
-                txt = txt + '<small>' + calEvent.title+ '</small>'; 
-            }                    
-            if (calEvent.remarks) {
-                txt = txt + '<br /> <small>' + calEvent.remarks + '</small>'; 
-            }
-            
-            tooltip = tooltip + txt;
-
-            $("body").append(tooltip);
-            $(this).mouseover(function (e) {
-                $(this).css('z-index', 10000);
-                $('.tooltiptopicevent').fadeIn('500');
-                $('.tooltiptopicevent').fadeTo('10', 1.9);
-            }).mousemove(function (e) {
-                $('.tooltiptopicevent').css('top', e.pageY + 10);
-                $('.tooltiptopicevent').css('left', e.pageX + 20);
-            });
-
-
-        },
-
-        eventMouseout: function (data, event, view) {
-            $(this).css('z-index', 8);
-
-            $('.tooltiptopicevent').remove();
-
-        },            
-        
-        header: {
-            left: 'today',
-            center: 'prevYear, prev, title, next, nextYear',
-            right: 'month,agendaWeek,agendaDay'
-        },
-     
-        });
-
-        getSchedule();           
-    
+        initCalendar();
     });
+
+    function initCalendar() {
+       var today = new Date().toISOString().slice(0, 10);
+    
+        $('#calendar').fullCalendar({
+        
+    
+            themeSystem:'bootstrap3', 
+            selectable : true,
+            editable:true,
+            defaultDate: today,
+            
+            eventLimit : true, 
+    
+            views: {
+                 month: {
+                   eventLimit: 5
+                 }
+             },
+            
+            eventClick: function(calEvent, jsEvent, view) {
+        
+                if (calEvent.color == 'red'){
+                    calEvent.color = '';
+                } else {
+                    calEvent.color = 'red';
+                }
+                $('#calendar').fullCalendar( 'rerenderEvents' );
+            },        
+        
+        
+            dayClick: function() {
+                //alert('a day has been clicked!');
+            },        
+            
+            
+            eventMouseover: function( calEvent, jsEvent, view ) { 
+                
+    
+                var tooltip = '<div class="tooltiptopicevent" style="width:auto;height:auto;color:#FFFFFF;background:#ff5821;position:absolute;z-index:10001;padding:10px 10px 10px 10px ;  line-height: 200%;">'
+                var txt = '';
+                
+                if (typeof calEvent.subject != 'undefined' && calEvent.subject != null){
+                    txt = txt +  "<strong>" + calEvent.subject + "</strong><br />";
+                }
+    
+                if (calEvent.start_time) {
+                    txt = txt + '<small>Start: ' + calEvent.start_time + '</small>'; 
+                }                    
+                if (calEvent.end_time) {
+                    txt = txt + '<br /> <small>End: ' + calEvent.end_time + '</small>'; 
+                }
+                
+                if (calEvent.planned_hours) {
+                    txt = txt + '<br /> <small>Planned Hrs: ' + calEvent.planned_hours + '</small>'; 
+                }
+                if (calEvent.actual_hours) {
+                    if (calEvent.actual_hours >= calEvent.planned_hours) {
+                        txt = txt + '<br /> <small style = "color:black; background-color:green;">Actual Hrs: ' + calEvent.actual_hours + '</small>'; 
+                    } else {
+                        txt = txt + '<br /> <small style = "color:black; background-color:red;">Actual Hrs: ' + calEvent.actual_hours + '</small>'; 
+                    }                
+                }
+                tooltip = tooltip + txt;
+    
+                $("body").append(tooltip);
+                $(this).mouseover(function (e) {
+                    $(this).css('z-index', 10000);
+                    $('.tooltiptopicevent').fadeIn('500');
+                    $('.tooltiptopicevent').fadeTo('10', 1.9);
+                }).mousemove(function (e) {
+                    $('.tooltiptopicevent').css('top', e.pageY + 10);
+                    $('.tooltiptopicevent').css('left', e.pageX + 20);
+                });
+    
+    
+            },
+    
+            eventMouseout: function (data, event, view) {
+                $(this).css('z-index', 8);
+    
+                $('.tooltiptopicevent').remove();
+    
+            },            
+            
+            header: {
+                left: 'today',
+                center: 'prevYear, prev, title, next, nextYear',
+                right: 'month,agendaWeek,agendaDay'
+            },
+         
+        });
+    
+        getSchedule();           
+
+    }    
 
 </script>    
 
@@ -727,26 +1310,74 @@
     {
         getEvents();
     });
+    
+    // Calender is not rendered by default, so forcing it to render when the "Calendar" tab is clicked
+    $("#schCal").on("click", function() {
+        $('#calendar').fullCalendar('render');
+    });    
+    
 </script>
 
 <script>
     function getEvents(){
         var events = $('#calendar').fullCalendar('clientEvents');
         if (events.length == 0 ){
-            // $("#noEvents").html("No tasks found. Please create using this Scheduler and/or you can create your own tasks directly in the Calendar."); 
+            // $("#noEvents").html("No schedule found. Please create using this Scheduler and/or you can create your own schedule directly in the Calendar."); 
         }
     }            
 </script>
 
 <script>
     function getSchedule(){
+        var sch = {};
+        $.ajax({url: '{% url "getStudyHours" %}', data: {}, dataType: 'json',
+            success: function (data) {
+                sch = data;
+
+                $("#schUpd tbody tr").remove();
+                var tbl = document.getElementById("schUpd");
+                
+                //Update the shceudle calendar
+                $('#calendar').fullCalendar( 'removeEvents');
+                $.each(data, function(index, element) {
+                    var eve={title: data[index].subject, start: data[index].date };
+                    eve.id= data[index].id;
+                    eve.subject = data[index].subject;
+                    eve.date = data[index].date;
+                    eve.start_time = data[index].start_time.substring(0, 5);
+                    eve.end_time = data[index].end_time.substring(0, 5);
+                    eve.planned_hours= data[index].planned_hours;
+                    eve.actual_hours= data[index].actual_hours;
+                    $('#calendar').fullCalendar( 'renderEvent', eve, true);
+                    
+                    // Update the log study hours
+                    txt = '<span> <strong>' + data[index].date+ ' </strong></span> <span class=\"text-primary pull-right\"><strong>' + data[index].subject + '</strong></span><br/><span>' + data[index].start_time.substring(0, 5) + '&nbsp;-&nbsp;' + data[index].end_time.substring(0, 5) + ' </span><br/><span>Plan\&nbsp;-\&nbsp;' + data[index].planned_hours + '\&nbsp;hrs</span> <span class=\"pull-right\">Actual Hrs&nbsp;-&nbsp;<input class="form-control actualhrs" type = "number" value = "' + data[index].actual_hours + '"></span>'
+
+                    var row = tbl.insertRow(-1);
+                    var cell = row.insertCell(0);
+                    cell.innerHTML = txt;
     
+                });
+                
+    
+                //Disable print button if there are no rows fetched
+                if (data.length <= 0) {
+                    $("#loghrs").prop('disabled', true);
+                } else {
+                    $("#loghrs").prop('disabled', false);
+                }    
+
+                
+            }
+        });       
+
+        return sch;                     
     }
 </script>
 
 
 <script>
-    // Get the values from userStudyScheudle
+    // Variable to get the values from userStudyScheudle
     var dayPerWeek = 0;
     var hoursPerDay = 0;
     var lsdate = new Date();
@@ -757,6 +1388,12 @@
 </script>
 
 
+
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
+<!--                 "Subject goals" tab related Scripts                     -->
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
 <script>
     $(document).ready(function() {
     
@@ -788,7 +1425,6 @@
                }
             });
     
-        $("#studySch").bind("DOMSubtreeModified", function() { updatehrs(); });
             
         $('#id_end_date').editable({
             format: 'dd M yyyy',    
@@ -799,8 +1435,8 @@
             }
         });
                 
-       // There would bbe only one row in the useSch
-        {% for i in userSch %}
+       // There would be only one row in the latest_useSch
+        {% for i in latest_userSch %}
             daysPerWeek = {{i.study_days_per_week}};
             if (daysPerWeek  > 0) {
                 var ele = "#radio" + daysPerWeek;
@@ -816,11 +1452,13 @@
             lstart_date = $.datepicker.formatDate('dd M yy', lsdate);
     
             $("#id_start_date").html(lstart_date);
+            $('#id_start_date').datepicker('option', 'minDate', lsdate)
             
             ledate = new Date("{{i.end_date.isoformat | escapejs }}");
             lend_date = $.datepicker.formatDate('dd M yy', ledate);
             
             $("#id_end_date").html(lend_date);
+            $('#id_end_date').datepicker('option', 'minDate', lsdate)
             
         {% endfor %}    
                 
@@ -829,35 +1467,13 @@
 
 </script>
 
-<script>
-    function ajaxRequest(params) {
-    
-        // data you may need
-        console.log(params.data);
-    
-        $.ajax({
-            type: "GET",
-            url: "{% url 'getUserSubjectSchedule' %}",
-            data: "",
-            // You are expected to receive the generated JSON (json_encode($data))
-            dataType: "json",
-            success: function (data) {
-                params.success({
-                    // By default, Bootstrap table wants a "rows" property with the data
-                    "rows": data,
-                    // You must provide the total item ; here let's say it is for array length
-                    "total": data.length
-                })
-            },
-            error: function (er) {
-                params.error(er);
-            }
-        });
-    }
 
-</script>
-       
-    
+
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
+<!--                 "Studty Schedule" tab related Scripts                   -->
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
 <script>
  
     // Update hours at the bottom of "Study schedule" tab
@@ -868,7 +1484,7 @@
         var hrs = $( "#hours" ).val()
 
         //var end = $('#id_end_date').datepicker('getDate');
-        var end = $('#id_end_date').html();
+        var end = $('#i_end_date').val();
         var endDt = moment(end).toDate();
         
         if (typeof endDt.getMonth === 'function') {
@@ -876,7 +1492,7 @@
         }
         
         //var start = $('#id_start_date').datepicker('getDate');
-        var start = $('#id_start_date').html();
+        var start = $('#i_start_date').val();
         var startDt = moment(start).toDate();
 
         if (typeof startDt.getMonth === 'function') {
@@ -889,22 +1505,176 @@
 
         //Calculate the study days per week 
         var days = no_of_days - ( weekDiff * (7 - daysperweek) );
-        
 
         var totalhrs = days * hrs;
     
         var txt = '';
     
         if (totalhrs > 0 ) {
-            txt = "You would be studying for a about <span class='text-primary'>" + totalhrs.toString() + " hours</span>. Please use the 'Subject Goals' and 'Scheduler' tabs to plan for these hours on various subjects you would be studying."
+            txt = "You would put in about <span class='text-primary'>" + totalhrs.toString() + " hours of study during this period</span>. Please use the 'Subject Goals' and 'Scheduler' tabs to plan for these hours on various subjects you would be studying."
             $('#totalhrs').html(txt);
         } else {
             $('#totalhrs').html(txt);
         }
     } 
+    
+    // VALIDATE THE OVERALL STUDY SCHEDULE
+    function validateAndSaveStudySch() {
+    
+        // Status - PASS: all validations pass, FAIL: one or more validations failed
+        status = true;
+    
+        // Validate hrs per day
+        hrsPerDay = $("#hours").val();
+        
+        if( (isNaN(hrsPerDay))  || (hrsPerDay < 1) ) {
+            alert ("You have entered an invalid value for hours per day. It should be a number greater than 0.")
+            status = false;
+            return;
+        }
+        
+        if (hrsPerDay > 24) {
+            var msg = "You seems to be on a high!! :-). Please reduce the number of hours per day to less than 24 hrs.";
+            alert(msg);
+            status = false;
+            return;
+        } else {
+            if (hrsPerDay > 12) {
+                ans - confirm("You have assigned very high hours per day. Are you sure you would be spending " + hrsPerDay.toString() + " hrs studying per day?")
+                if (ans) {
+                    status = true;
+                } else {
+                    status = false;
+                    return;
+                }
+            }
+        }
+        
+        //Validate start date
+        var start = $('#i_start_date').val();
+        var startDt = moment(start).toDate();
+        var tday = new Date();
+
+        var no_of_days = Math.round((tday - startDt) / 8.64e7) + 1;
+        
+        if (no_of_days > 60) {
+            ans = confirm("Your schedule starts more than 2 months earlier from today. Are you sure want to proceed?")
+            if (ans) {
+                status = true;
+            } else {
+                status = false;
+                return;
+            }
+        }
+        
+        //Validate end date
+        var end = $('#i_end_date').val();
+        var endDt = moment(end).toDate();
+        var tday = new Date();
+
+        var no_of_days = Math.round( (endDt - tday) / 8.64e7) + 1;
+        
+        if (no_of_days > 729) {
+            ans = confirm("Your schedule ends more than 2 years later from today. Are you sure want to proceed?")
+            if (ans) {
+                status = true;
+            } else {
+                status = false;
+                return;
+            }
+        }
+        
+        
+        //Check if there is any change to the plan
+        var st = new Date();
+        var en = new Date()
+        {% for d in latest_userSch %}
+            st = moment("{{ d.start_date |date:"Y-m-d" }}").toDate();
+            en = moment("{{ d.end_date |date:"Y-m-d"}}").toDate();
+        {% endfor %}
+        
+        if ( (st != null) && (en != null) ) {
+            if ( (startDt.getTime() === st.getTime()) && (endDt.getTime() === en.getTime()) ) {
+                alert("There is no change to the dates compared to your latest schedule.");
+                status = false;
+                return;
+            }
+        }
+
+        // Confirm before the save.
+        if ( (st != null) && (en != null) ) {
+            if (confirm("This will be applicable after the date until when you have entered the actual study hours. Are you sure you want to create the new Study Schedule? ") ) {
+                status = true;
+            } else {
+                status = false;
+                return;
+            }
+        } else {
+            if (confirm("Are you sure you want to create the new Study Schedule? ") ) {
+            status = true;
+            } else {
+                status = false;
+                return;
+            }
+        }
+        
+
+        
+        ////////////////////////////////////////
+        //Saving the data 
+        ////////////////////////////////////////
+        var daysperweek = '';
+        var hrsperday = '';
+        var startDt = '';
+        var endDt = '';
+        
+
+        //Get data to save
+        var radiobuttons = document.getElementsByName("days");
+
+        for (var i = 0, length = radiobuttons.length; i < length; i++)
+        {
+            if (radiobuttons[i].checked)
+            {
+                // do whatever you want with the checked radio
+                daysperweek = radiobuttons[i].value;
+    
+                // Dont need to check the rest, when first checked one is found
+                break;
+            }
+        }        
+
+        hrsperday = $("#hours").val();
+        startDt = $('#i_start_date').val();
+        endDt = $('#i_end_date').val();
+        saved = false;
+
+        $.ajax({
+            url: '{% url "saveStudySchedule" %}',
+            data: {
+            'daysperweek': daysperweek, 'hrsperday':hrsperday, 'startDt':startDt, 'endDt':endDt
+            },
+            dataType: 'json',
+            success: function (data) {
+                alert("Your Study Schedule is saved successfully!");
+                saved = true;
+                window.location.reload(true);
+            },
+            error: function(xhr){
+                alert("An error occurred: " + xhr.status + " " + xhr.statusText); 
+                saved = false;
+            }
+        });
+       
+    }    
 </script>
 
 
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
+<!--                 "Subject Schedule" tab related Scripts                  -->
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
 <script>
     // Validate the sum of percetage
     function updatePercentageSum(){
@@ -926,73 +1696,13 @@
         }
     }
     
-
-    // VALIDATE THE OVERALL STUDY SCHEDULE
-    function validateStudySch() {
-    
-        // Status - PASS: all validations pass, FAIL: one or more validations failed
-        status = 'PASS';
-    
-        // Validate hrs per day
-        hrsPerDay = $("#hours").val();
-        
-        if( (isNaN(hrsPerDay))  || (hrsPerDay < 1) ) {
-            alert ("You have entered an invalid value for hours per day. It should be a number greater than 0.")
-            status = false;
-        }
-        
-        if (hrsPerDay > 24) {
-            var msg = "You seems to be on a high!! :-). Please reduce the number of hours per day to less than 24 hrs.";
-            alert(msg);
-            status = false;
-        } else {
-            if (hrsPerDay > 12) {
-                ans - confirm("You have assigned very high hours per day. Are you sure you would be spending " + hrsPerDay.toString() + " hrs studying per day?")
-                if (ans) {
-                    status = true;
-                } else {
-                    status = false;
-                }
-            }
-        }
-        
-        //Validate start date
-        var start = $('#id_start_date').html();
-        var startDt = moment(start).toDate();
-        var tday = new Date();
-
-        var no_of_days = Math.round((tday - startDt) / 8.64e7) + 1;
-        
-        if (no_of_days > 60) {
-            ans = confirm("Your schedule starts more than 2 months earlier from today. Are you sure want to proceed?")
-            if (ans) {
-                status = true;
-            } else {
-                status = false;
-            }
-        }
-        
-        //Validate end date
-        var end = $('#id_end_date').html();
-        var endDt = moment(end).toDate();
-        var tday = new Date();
-
-        var no_of_days = Math.round( (endDt - tday) / 8.64e7) + 1;
-        
-        if (no_of_days > 729) {
-            ans = confirm("Your schedule end more than 2 years later from today. Are you sure want to proceed?")
-            if (ans) {
-                status = true;
-            } else {
-                status = false;
-            }
-        }
-    
-    }    
+</script>
 
 
+
+<script>
     // VALIDATE THE USER SUBJECT SCHEDULE
-    function validateUserSubjectSchedule() {
+    function validateAndSaveSubjSch() {
     
         // Status - PASS: all validations pass, FAIL: one or more validations failed
         status = true;
@@ -1039,6 +1749,43 @@
                 status = false;
             }
         }
+        
+        
+        /////////////////////////////////////////////////////////////////
+        // Save the record
+        /////////////////////////////////////////////////////////////////
+        var rows = [];
+        var rec = [];
+
+        // Get all data to be saved
+        table.find('tr').each(function (i, el) {
+            var $tds = $(this).find('td');
+            var subject = $tds.eq(0).text();
+            var percent = $tds.eq(1).text();
+            var startDate = $tds.eq(2).text();
+            var endDt = $tds.eq(3).text();
+        
+            rec = [subject, percent, startDate, endDt];
+            rows.push(rec);
+        });
+        
+        $.ajax({
+            url: '{% url "saveSubjSch" %}',
+            data: {
+            'rows[]': rows
+            },
+            dataType: 'json',
+            success: function (data) {
+                alert(data);
+                saved = true;
+                window.location.reload(true);
+            },
+            error: function(xhr){
+                alert("An error occurred: " + xhr.status + " " + xhr.statusText); 
+                saved = false;
+            }
+        });       
+        
     }
 
 
@@ -1104,12 +1851,13 @@
                     end_date: lend_date,
                     }
                 });
-                                            
-                //$('#subject tbody tr td').addClass("datepick");
                 
+                // Set the class and data-type attribute so that datepicker works on the added subject row
                 $('#subject td:nth-child(2)').addClass('percent');
                 $('#subject td:nth-child(3)').addClass('datepick');
+                $('#subject td:nth-child(3)').attr("data-type","date");
                 $('#subject td:nth-child(4)').addClass('datepick');
+                $('#subject td:nth-child(4)').attr("data-type","date");
                 
 
                 // Make the percent editable with 'number' as data type    
@@ -1120,13 +1868,15 @@
                 
                 // Make the datepick editable 
                 $('.datepick').editable({
-                    format: 'dd mmm yyyy',    
-                    viewformat: 'dd mmm yyyy',
+                    format: 'dd M yyyy',    
+                    viewformat: 'dd M yyyy',
                     container: "#goals",
                     datepicker: {
-                            weekStart: 1
+                            weekStart: 1,
+                            startDate: lstart_date,
+                            endDate: lend_date
                        }
-                    });
+                });
                 
             }
         }
@@ -1138,14 +1888,15 @@
 
      $(document).ready(function() {
      // Set editable columns the percetnage_weight and start & end dates
-
         $(function(){
             $('.datepick').editable({
                 format: 'dd M yyyy',    
                 viewformat: 'dd M yyyy',
                 container: "#goals",
                 datepicker: {
-                        weekStart: 1
+                        weekStart: 1,
+                        startDate: lstart_date,
+                        endDate: lend_date
                    }
                 });
                 
@@ -1153,7 +1904,10 @@
                 dataType: 'number',
                 container: "#goals",
                 validate: function(value) {
-                    if(value > 100 ) {
+                    if(isNaN(value)) {
+                        return 'Please enter numerica value';
+                    }
+                    if(value.toString() > 100 ) {
                         return 'Percentage allocated should not be greater than 100.';
                     }
                 }
@@ -1200,18 +1954,6 @@
 
 
 <script>
-    $(document).ready( function() {
-
-            // Set chart options
-            //var options = {'width':300,
-            //               'height':200,
-            //               'is3D':true,};
-        
-            // Instantiate and draw our chart, passing in some options.
-            //var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-            //chart.draw(data, options);    
-    });
-    
     
     function convertAmpm(time){
         if (time === "noon") time = "12:00 p. m.";
@@ -1244,6 +1986,599 @@
     }
     
 </script>
+
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
+<!--                    "Day Sch" tab related Scripts                      -->
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
+<script>
+
+    $(document).ready(function() {
+
+        $('.clockpicker').clockpicker({
+            autoclose:"true",
+            placement:"bottom"            
+        });
+        
+    });    
+</script> 
+
+<script>
+    function validateTime( element ) {
+        row = element.parentNode.parentNode.rowIndex; 
+        column = element.parentNode.cellIndex;
+        if ( (column == 1) || (column == 2) ) {
+            startval = document.getElementById("daySch").rows[row].cells[1].children[0].value;
+            endval = document.getElementById("daySch").rows[row].cells[2].children[0].value;
+            var startDt = new Date("2018-01-01 " + startval);
+            var endDt = new Date("2018-01-01 " + endval);
+            if (startDt >= endDt ) {
+                alert("Start time should not be same as or greater than end time.");
+                return false;
+            }
+        }
+        return true;        
+    }   
+
+    function updateEndTime(element){
+        var row = element.parentNode.parentNode.rowIndex; 
+        var column = element.parentNode.cellIndex;
+        if ( (column == 1) || (column == 3) ) {
+            var startTmStr = document.getElementById("daySch").rows[row].cells[1].children[0].value;
+            var addTmStr = document.getElementById("daySch").rows[row].cells[3].children[0].value;
+
+            var addTm = addTmStr.split(".");
+            var endTm = moment.utc(startTmStr,'hh:mm').add(0,'hours').format('hh:mm');
+        
+            if (addTm.length > 0 ) {
+                if ( addTm[0] != "00" ) {
+                    endTm = moment.utc(startTmStr,'hh:mm').add(addTm[0],'hours').format('HH:mm');
+                    change = true;
+                }
+            }
+
+            if (addTm.length > 1 ) {
+                if ( addTm[1] != "00" ) {
+                    endTm = moment.utc(startTmStr,'hh:mm').add(addTm[1],'minutes').format('HH:mm');
+                    change = true;
+                }
+            }
+    
+            if (startTmStr !== endTm ) {
+                document.getElementById("daySch").rows[row].cells[2].children[0].value = endTm;
+            }
+        }
+    }   
+    
+
+    function updateHrs(element) {
+        var row = element.parentNode.parentNode.rowIndex; 
+        var column = element.parentNode.cellIndex;
+        if ( (column == 2) ) {
+            
+            //Get current Time values in Str
+            var startTmStr = document.getElementById("daySch").rows[row].cells[1].children[0].value;
+            var endTmStr = document.getElementById("daySch").rows[row].cells[2].children[0].value;
+            
+            // Diff to be set only if start and end time are present
+            if ( (startTmStr.split(":").length > 0) && (endTmStr.split(":").length > 0) ) {
+
+                // Find the time diff
+                var startHrs = new Date("2018-01-01 " + startTmStr);
+                var endHrs = new Date("2018-01-01 " + endTmStr);
+                var diff = endHrs - startHrs;
+                
+                // Set the diff on to planned_hours
+                document.getElementById("daySch").rows[row].cells[3].children[0].value = diff/60000/60;
+            }
+        }
+    }
+            
+    
+
+</script>
+<script>
+    function validateStudyDays(checkbeforesave) {
+        
+        var numb_checked = 0;
+        
+        // Loop through the checkboxes and count number of checked ones
+        if ( document.getElementById("mon").checked ) numb_checked = numb_checked + 1;
+        if ( document.getElementById("tue").checked ) numb_checked = numb_checked + 1;
+        if ( document.getElementById("wed").checked ) numb_checked = numb_checked + 1;
+        if ( document.getElementById("thu").checked ) numb_checked = numb_checked + 1;
+        if ( document.getElementById("fri").checked ) numb_checked = numb_checked + 1;
+        if ( document.getElementById("sat").checked ) numb_checked = numb_checked + 1;
+        if ( document.getElementById("sun").checked ) numb_checked = numb_checked + 1;
+        
+        var numb_days_planned = 0;
+        
+        // Get the number of days user has planned to study
+        {% for i in latest_userSch %}
+            numb_days_planned = {{i.study_days_per_week }};
+        {% endfor %}
+        
+        if (checkbeforesave) {
+            if (numb_checked != numb_days_planned) {
+                alert("You have planned to study " + numb_days_planned.toString() + " per week. Please select " + numb_days_planned.toString() + " days.");
+                return false;
+            }        
+        } else {
+            if ( (numb_checked > numb_days_planned) && (numb_days_planned != 0) ) {
+                alert("You have planned to study " + numb_days_planned.toString() + " per week. Please select only " + numb_days_planned.toString() + " days.");
+                return false;
+            }
+        }
+        return true;
+    }
+</script>
+
+
+<script>
+    $(document).ready(function()
+    {
+        $('#daySchForm').submit(function(event){
+        
+            $('#daySchForm :input:visible[required="required"]').each(function()
+            {
+                if(!this.validity.valid)
+                {
+                    alert("Please enter correct time in 24 hr (HH:MM) format (10 pm is 22:00, 10 am is 10:00, midnight is 00:00, ).");
+                    $(this).focus();
+                    return false;
+                }
+            })        
+        
+            event.preventDefault();
+        });
+    });
+
+
+    function validateAndSaveDaySch() {
+    
+        // Validate that end time cant be <= start time 
+        var timeFormat = /^([0-9]{2})\:([0-9]{2})$/;
+        var rowlen = document.getElementById("daySch").rows.length
+        for ( i=1; i < rowlen; i++ ){
+            var row = document.getElementById("daySch").rows[i];
+            startEle = document.getElementById("daySch").rows[i].cells[1].children[0]                
+            if (! validateTime(startEle) ){
+                return;
+            }
+        }
+        
+        //Validate the number of days user has planned to study
+        if (!validateStudyDays(true)) {
+            return;
+        }
+        
+        //Check the time overlap
+        for (i=1; i < rowlen; i++) {
+            var row = document.getElementById("daySch").rows[i];
+            startval = document.getElementById("daySch").rows[i].cells[1].children[0].value;           
+            endval = document.getElementById("daySch").rows[i].cells[2].children[0].value;             
+            
+            var startDt = new Date("2018-01-01 " + startval);
+            var endDt = new Date("2018-01-01 " + endval);
+            
+            // Compare this with rest of the rows 
+            for (j = 1; j < rowlen; j++) {
+            
+                // Skipping to compare with the same row
+                if (i == j ) {
+                    continue;
+                }
+                
+                var row = document.getElementById("daySch").rows[j];
+                startvalNext = document.getElementById("daySch").rows[j].cells[1].children[0].value;            
+                endvalNext = document.getElementById("daySch").rows[j].cells[2].children[0].value;
+                    var startDtNext = new Date("2018-01-01 " + startvalNext);
+                    var endDtNext = new Date("2018-01-01 " + endvalNext);
+                
+                if ((startDt >= startDtNext) && (startDt <= endDtNext) ) {
+                    alert("Date overlap found between " + document.getElementById("daySch").rows[i].cells[0].innerHTML + " and " + document.getElementById("daySch").rows[j].cells[0].innerHTML );
+                    return false;
+                }
+                if ((endDt >= startDtNext) && (endDt <= endDtNext) ) {
+                    alert("Date overlap found between " + document.getElementById("daySch").rows[i].cells[0].innerHTML + " and " + document.getElementById("daySch").rows[j].cells[0].innerHTML );
+                    return false;
+                }
+            }                        
+        }
+
+
+        /////////////////////////////////////////////////////////////////
+        // Save the record
+        /////////////////////////////////////////////////////////////////
+        var day_data = [];
+        var day_rec = [];
+        var table = $("#daySch tbody");
+
+        // Get all data to be saved
+        for (i=1; i < rowlen; i++) {
+            var row = document.getElementById("daySch").rows[i];
+            var subj = document.getElementById("daySch").rows[i].cells[0].innerHTML;
+            var starttime = document.getElementById("daySch").rows[i].cells[1].children[0].value;
+            var endtime = document.getElementById("daySch").rows[i].cells[2].children[0].value;             
+            var planned_hours = document.getElementById("daySch").rows[i].cells[3].children[0].value;             
+
+            day_rec = [subj, starttime, endtime, planned_hours];
+            day_data.push(day_rec);
+        }
+
+        
+        $.ajax({
+            url: '{% url "saveDaySch" %}',
+            data: {
+            'day_data[]': day_data
+            },
+            dataType: 'json',
+            success: function (data) {
+                msg = data;
+                alert(msg);
+                saved = true;
+                window.location.reload(true);
+            },
+            error: function(xhr){
+                alert("An error occurred: " + xhr.status + " " + xhr.statusText); 
+                saved = false;
+            }
+        });       
+        
+    }
+</script>
+
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
+<!--           "Print Study Schedule" tab related Scripts                    -->
+<!--                     (In "Schedule Calendar" )                           -->
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
+<script>
+
+    function displayFilter(){
+        val = document.getElementById('selectDisp').value;
+        if (val === 'Month'){
+            $("#monthfilter").show(100);
+            $("#datefilter").hide();
+        } else if (val === 'Date'){
+            $("#datefilter").show(100);
+            $("#monthfilter").hide();
+        }        
+    };
+    
+    $(document).ready( function() {
+    
+        // Force click the month filter option to current month
+        displayFilter();
+    });
+    
+    
+    function getResultByMonthYear() {
+        
+        // Get month in number
+        mthYear = document.getElementById('selMonth').value;
+        mth = getMonthFromString( mthYear.substring(0, 3) );
+        year = mthYear.substring(4);
+
+        // Making an ajax call to get the date 
+        $.ajax({
+            url: '{% url "getStudyHours" %}',
+            data: {
+            'month': mth, 'year':year
+            },
+            dataType: 'json',
+            success: function (data) {
+                // remove all rows first
+                $("#schUpd tbody tr").remove();
+                
+                var tbl = document.getElementById("schUpd");
+                
+                data.forEach(function(row, index){                
+                    txt = '<span> <strong>' + data[index].date+ ' </strong></span> <span class=\"text-primary pull-right\"><strong>' + data[index].subject + '</strong></span><br/><span>' + data[index].start_time.substring(0, 5) + '&nbsp;-&nbsp;' + data[index].end_time.substring(0, 5) + ' </span><br/><span>Plan\&nbsp;-\&nbsp;' + data[index].planned_hours + '\&nbsp;hrs</span> <span class=\"pull-right\">Actual Hrs&nbsp;-&nbsp;<input class="form-control actualhrs" type = "number" value = "' + data[index].actual_hours + '"></span>'
+                    
+                    var row = tbl.insertRow(-1);
+                    var cell = row.insertCell(0);
+                    cell.innerHTML = txt;
+                });
+
+                //Disable print button is there no rows fetched
+                if (data.length <= 0) {
+                    $("#loghrs").prop('disabled', true);
+                } else {
+                    $("#loghrs").prop('disabled', false);
+                }    
+
+            }
+        });    
+        
+    }
+
+    function getMonthFromString(mon){
+
+        var d = Date.parse(mon + "1, 2012");
+        if(!isNaN(d)){
+          return new Date(d).getMonth() + 1;
+        }
+        return -1;
+    }
+
+    
+</script>
+
+
+
+
+
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
+<!--                    "Dashboard" tab related Scripts                      -->
+<!-- *********************************************************************** -->
+<!-- *********************************************************************** -->
+
+<script type="text/javascript">
+    google.charts.load("current", {packages:["corechart"]});
+    
+    if ( ({{hrsPlannedOverall.planned_hours__sum}} === 0) && ({{hrsActualOverall.actual_hours__sum}} === 0 ) ){
+        $("#charts").html("<br /><br /><p style = 'background-color:Gainsboro; font-size:16px; text-align:center;'>Cannot generate the Dashboard! Please record your planned study hours and log the actual study hours.</p><br /><br />");
+    } else {
+        google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawColChart);
+    }
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ["Overall", "Hours", { role: "style" } ],
+            ["Planned", {{hrsPlannedOverall.planned_hours__sum}}, "#b87333"],
+            ["Actual", {{hrsActualOverall.actual_hours__sum}}, "green"],
+        ]);   
+
+        var view = new google.visualization.DataView(data);
+        view.setColumns([0, 1,
+                       { calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" },
+                       2]);
+
+        var options = {
+            title: "Overall Planned Vs Actual Hours of Study",
+            bar: {groupWidth: "95%"},
+            legend: { position: "none" },
+            is3D: true,
+            animation: {"startup": true}
+        };
+        var chart = new google.visualization.BarChart(document.getElementById("barchart_values"));
+        chart.draw(view, options);
+        
+        // Draw pie chart for subjectwise actual hours 
+        rows = [];
+        d = ["Subject", "Study Hrs"];
+        rows.push(d);
+        
+        // get data from all subjects
+        {% for i in hrsActualSubj %}
+            d = ["{{ i.subject }}", {{ i.actual_hours }}];
+            rows.push(d);
+        {% endfor %}
+        
+        var data = google.visualization.arrayToDataTable(rows);
+        
+        var options = {
+            title: 'Subject-wise Actual Study Hours',
+            is3D: true,
+            animation:{
+                duration: 1000,
+                easing: 'out',
+            },
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+        
+        if ({{hrsActualOverall.actual_hours__sum}} == 0) {
+            $("#piechart").html("<br /><br /><br /><p style = 'background-color:Gainsboro;'>No actual study hours logged yet.<p>");
+        }
+
+        // Display a message in case of vairation between planned and actual hours
+        var hrsdiffperc = ( {{hrsPlannedOverall.planned_hours__sum}} -  {{hrsActualOverall.actual_hours__sum}} ) * 100 / {{hrsPlannedOverall.planned_hours__sum}};
+        switch (true) {
+            case hrsdiffperc > 9:    
+                 $("#overall_text").html("You are falling short on your plan. Fasten up your seat belts\!");
+                break;
+            case hrsdiffperc < -9: 
+                $("#overall_text").html("Bravo, going great\! You are ahead of your plan. Keep it up.");
+                break;
+            default:
+                $("#overall_text").html("Good going \! You are going, or close to, as per the plan. Keep it up.");
+                break;
+        }        
+
+
+        // Check variations in subject-wise actual hrs and compare with subject wise day schedule
+        
+        // Get percentage of actual hours for each subject compared to overall hours
+        var txt = "Variation in planned Vs. actual percentage of hours in - ";
+        var variation = false;
+        {% for i in userSubjectList %}
+            {% for key, value in subjPercentage.items %}
+                if ( "{{ i.subject }}" === "{{ key }}" ) {
+                    var schPerc = ({{ i.percentage_weight }} - {{ value }})*100 / {{ i.percentage_weight }} ;
+                    if ( (schPerc > 19) || (schPerc < -19) ){
+                        $("#perc_variation").html(txt + " {{i.subject}},");
+                        txt = $("#perc_variation").html();
+                        variation = true;
+                    }
+                }
+            {% endfor %}
+        {% endfor %}            
+        if (variation == false) {
+            $("#perc_variation").html("Your subject-wise plan and actual hours percentages are more or less on track, Keep it up!");
+        }
+
+    }
+    
+    //************************************************************************** //
+    //*****************  Monthly actual hours - column chart ******************* //
+    //************************************************************************** //
+    
+    function drawColChart() {
+    
+        var dateObj = new Date();
+        
+        mth = (dateObj.getMonth() + 1).toString();
+        year = dateObj.getFullYear().toString();
+    
+        var monthStudyHours = [];
+        var monthSubjHours = [];
+        
+        var dayrows = [];
+        dayrows.push (["Element", "Density", { role: "style" } ]);
+
+        var subjrows = [];
+
+        // Making an ajax call to get the datewise actual hours 
+        $.ajax({
+            url: '{% url "getMonthStudyHours" %}',
+            data: {
+            'month': mth, 'year':year
+            },
+            dataType: 'json',
+            success: function (data) {
+                monthStudyHours = data;
+            },
+            error: function(xhr){
+                alert("An error occurred: " + xhr.status + " " + xhr.statusText); 
+            }
+        });
+
+        // Making an ajax call to get the date & subject wise actual hours 
+        $.ajax({
+            url: '{% url "getMonthSubjHours" %}',
+            data: {
+            'month': mth, 'year':year
+            },
+            dataType: 'json',
+            success: function (data) {
+                monthSubjHours = data;
+            },
+            error: function(xhr){
+                alert("An error occurred: " + xhr.status + " " + xhr.statusText); 
+            }
+        });
+
+        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];      
+        
+        // Introduce a time delay to wait for the above ajax calls to complete
+        var myVarA = setTimeout(drawChart, 1000);
+        var myVarB = setTimeout(drawStackedChart, 1000);
+        
+        var totalHrs = 0;
+        function drawChart() {
+            for (i=0; i < monthStudyHours.length; i++) {
+    
+                var d = new Date (monthStudyHours[i].date);
+                var dayStr = d.getDate() + "-" + months[ d.getMonth() ];
+                //var day = monthStudyHours[i].date;
+                //var dayStr = day.toString();
+                var hrs = monthStudyHours[i].actual_hours__sum;
+                var hrsNum = Number(hrs);
+                
+                totalHrs = totalHrs + hrsNum;
+                
+                var rec = [ dayStr, hrsNum, '#00a7d0' ];  
+                dayrows.push ( rec );
+            }
+            
+            var avgHrs = totalHrs / (monthStudyHours.length);
+            if (avgHrs > 0) {
+                $("#monthly_hrs").html("You have studies an average of " + avgHrs.toString() + " hours per day this month");
+            } else {
+                $("#monthly_hrs").html("You haven't logged your study hours this month. Please do so!");
+            }            
+            var data = google.visualization.arrayToDataTable( dayrows );
+    
+            var view = new google.visualization.DataView(data);
+            view.setColumns([0, 1,
+                           { calc: "stringify",
+                             sourceColumn: 1,
+                             type: "string",
+                             role: "annotation" },
+                           2]);
+    
+            var options = {
+                title: "Current Month Actual Study Hours",
+                bar: {groupWidth: "95%"},
+                legend: { position: "none" },
+            };
+            var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
+            chart.draw(view, options);
+        }
+        
+        function drawStackedChart() {
+
+            var dayrows = [];
+            var stackData = [];
+            
+            // Ajax call to get the dayrows for the stacked col chart
+            $.ajax({
+                url: '{% url "getDayRows" %}',
+                data: {
+                'month': mth, 'year':year
+                },
+                dataType: 'json',
+                success: function (data) {
+
+                    // Through Ajax call the actual hours come in the String format
+                    // So, We will convert the actual hours in the'data' from string
+                    // to numbers. This conversion is from 2nd row onwards....  
+                    for (d=0; d < data.length; d++) {
+                        day = data[d];
+                        var r = [];
+                        if ( d == 0 ) {
+                            r = day;
+                        } else {
+                            for (i=0; i < day.length; i++) {
+                                if ( (i == 0) || (i == day.length -1) ) {
+                                    r.push( day[i] );
+                                } else {
+                                    var val = day[i] || 0; 
+                                    r.push( parseFloat(val) );
+                                }
+                            }
+                        }
+                        // Final array for creating the chart
+                        stackData.push(r);
+                    }
+                    //var view = new google.visualization.DataView(stackData);
+                    var view = new google.visualization.arrayToDataTable(stackData);
+        
+                    var options = {
+                        title: "Current Month Subject-wise Actual Study Hours",
+                        bar: {groupWidth: "95%"},
+                        legend: { position: "right" },
+                        isStacked: true,
+                    };
+                    var chart = new google.visualization.ColumnChart(document.getElementById("subjStackedchart"));
+                    chart.draw(view, options);
+                    
+                    $("#monthly_subj").html("This chart shows, for each day of the current month,  the actual study hours spent on each subject.");
+                    
+                },
+                
+                error: function(xhr){
+                    alert("An error occurred: " + xhr.status + " " + xhr.statusText); 
+                }
+                
+            });        
+    
+        }        
+        
+    }
+  
+  </script>
+
 {% endblock features %}
 
 

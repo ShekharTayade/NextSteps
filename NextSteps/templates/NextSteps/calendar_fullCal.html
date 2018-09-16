@@ -20,8 +20,6 @@
 {% extends 'NextSteps/NextSteps_base_vj.html' %}
 {% load static %}
 
-   
-
 <!-- Override slide-show block from parent -->
 {% block slide-show %}
 {% endblock slide-show %}
@@ -30,100 +28,87 @@
 {% block instt-prog-menu %}
 {% endblock instt-prog-menu %}
 
-
 <!-- Override features block -->
 {% block features %}
-    <!--<div class="showcase block block-border-bottom-grey"> -->
     <div class="block" style="padding-top: 5%;">
         <div class="container">
-
             <h3 class="block-title">
                 Calendar of Important Dates
             </h3>
-                        <div class="row">
-                            <div id="lbuttons" class="col-sm-3" >
-                                        <!--Event Operations:<br /> -->
+            <div class="row">
+                <div id="lbuttons" class="col-sm-3" >
+                    <!--Event Operations:<br /> -->
+                    <span class = "text-primary cal" id="addEvent" onclick="$( '#dialog' ).dialog('open')" data-toggle="tooltip" title="Add Your Own Event" data-placement="bottom">
+                            <i class="fa fa-plus-square fa-2x"></i></span>&nbsp;&nbsp;&nbsp;
+                    <!-- <button id="addEvent" class="btn-info" onclick="$( '#dialog' ).dialog('open')">Add Your Own</button> -->
+                    <span class = "text-primary cal" onclick = "removeSelectedEvents()" data-toggle="tooltip" title="Remove Selected Event" data-placement="bottom">
+                            <i class="fa fa-minus-square fa-2x"></i></span>&nbsp;&nbsp;&nbsp;
+                    <!-- <button class="btn-primary" onclick = "removeSelectedEvents()">Remove Selected</button> -->
+                    <span class = "text-primary cal" onclick="removeAllEvents()" data-toggle="tooltip" title="Remove All Events" data-placement="bottom">
+                            <i class="fa fa-trash fa-2x"></i></span>&nbsp;&nbsp;&nbsp;
+                    <!-- <button class="btn-primary" onclick="removeAllEvents()">Remove All</button> -->
+                    <span class = "text-primary cal" onclick="resetCalendar()" data-toggle="tooltip" title="Reset Calendar" data-placement="bottom">
+                            <i class="fa fa-refresh fa-2x"></i></span>&nbsp;&nbsp;&nbsp;
+                </div>
+                <div id="cbuttons" class="col-sm-3" >
+                    <!--Save Calendar:<br />-->
+                    <span class = "text-primary cal" onclick="saveEvents()" data-toggle="tooltip" title="Save Calendar" data-placement="bottom">
+                            <i class="fa fa-save fa-2x"></i></span>
+                    <!-- <button class="btn-info" onclick="saveEvents()">Save</button> -->
+                </div>
+                <div id="empty" class="col-sm-4" >
+                </div>
+                <div id="rbuttons" class="col-sm-2" >
+<!--                    <span class="text-primary cal" data-toggle="tooltip" title="Print Calendar" data-placement="bottom">
+                            <i class="fa fa-print fa-2x"></i></span> -->
 
-                                        <span class = "text-primary cal" id="addEvent" onclick="$( '#dialog' ).dialog('open')" data-toggle="tooltip" title="Add Your Own Event" data-placement="bottom">
-                                                <i class="fa fa-plus-square fa-3x"></i></span>&nbsp;&nbsp;&nbsp;
-                                        <!-- <button id="addEvent" class="btn-info" onclick="$( '#dialog' ).dialog('open')">Add Your Own</button> -->
-                                        <span class = "text-primary cal" onclick = "removeSelectedEvents()" data-toggle="tooltip" title="Remove Selected Event" data-placement="bottom">
-                                                <i class="fa fa-minus-square fa-3x"></i></span>&nbsp;&nbsp;&nbsp;
-                                        <!-- <button class="btn-primary" onclick = "removeSelectedEvents()">Remove Selected</button> -->
-                                        <span class = "text-primary cal" onclick="removeAllEvents()" data-toggle="tooltip" title="Remove All Events" data-placement="bottom">
-                                                <i class="fa fa-trash fa-3x"></i></span>&nbsp;&nbsp;&nbsp;
-                                        <!-- <button class="btn-primary" onclick="removeAllEvents()">Remove All</button> -->
-                                        <span class = "text-primary cal" onclick="resetCalendar()" data-toggle="tooltip" title="Reset Calendar" data-placement="bottom">
-                                                <i class="fa fa-refresh fa-3x"></i></span>&nbsp;&nbsp;&nbsp;
-                                        <!-- <button class="btn-primary" onclick="resetCalendar()">Reset</button> -->
-                                <!--    </div>
-                                </div> -->
-                            </div>
-                            <div id="cbuttons" class="col-sm-3" >
-                                <!--Save Calendar:<br />-->
-                                <span class = "text-primary cal" onclick="saveEvents()" data-toggle="tooltip" title="Save Calendar" data-placement="bottom">
-                                        <i class="fa fa-save fa-3x"></i></span>
-                                <!-- <button class="btn-info" onclick="saveEvents()">Save</button> -->
-                            </div>
-                            <div id="empty" class="col-sm-4" >
-                            </div>
-                            <div id="rbuttons" class="col-sm-2" >
-                                <!--<span class = "pull-right">Print:</span><br/>-->
-                                <a href = "{% url 'to_do_list' %}" class="text-primary"  data-toggle="tooltip" title="Creat To-Do List" data-placement="bottom">
-                                    <i class="fa fa-tasks fa-3x" ></i>
-                                </a>
-                                <a href="{% url 'user_guide' %} " class = "userguide pull-right" data-toggle="tooltip" title="Calendar Guide" data-placement="bottom"><i class="fa fa-question-circle fa-2x"></i></a>
-                                <!-- <button class="printBtn pull-right">Print</button> -->
-                            </div>
-                        </div>
-                       <!-- <small>- To select/unselect an event, click on the event. The 'red' color indicates that it is selected.</small>
-                        <br /><small>- You can drag the border of an event to extend/reduce the dates. You can also click+hold an event and drop to move it to another date.</small>
-                        -->
-                    <!-- </div>  -->
- 
-        
+                    <a href="{% url 'to_do_list' %} " class = "text-primary cal" data-toggle="tooltip" title="Print Events" data-placement="bottom"><i class="fa fa-print fa-2x"></i></a>
+
+                            
+                    <a href="{% url 'user_guide' %} " class = "userguide pull-right" data-toggle="tooltip" title="Calendar Guide" data-placement="bottom"><i class="fa fa-question-circle fa-2x"></i></a>
+                    <!-- <button class="printBtn pull-right">Print</button> -->
+                </div>
+            </div>
             <div id = "noEvents" class="text-primary">
             </div>
 
             <div class="w3-panel w3-light-grey w3-card">
                 <div id='calendar'></div>
             </div>
-            <h6 class="text-primary">* Disclaimer: Clendar displays the important dates as availale from the respective institutes.
+            <h6 class="text-primary"><small>* Disclaimer: Clendar displays the important dates as availale from the respective institutes.
             This data may not be available for some institutes. <br />
             It may not be accurate as it is likely to change from time-to-time. Every effort is made to keep it current.<br />
-            You can change these dates as per your plan and add or remove the events and save the calendar.</h6>
+            You can change these dates as per your plan and add or remove the events and save the calendar.</small>
         </div>
         
-     </div>
+    </div>
 
     <div id="dialog" title="Create Event">
-    
-    
         <form>
 
-        <div class="form-group">
-            <label for="instt_name">Institute Name:</label>
-            <input type="text" class="form-control" id="instt_name">
-        </div>
-
-        <div class="form-group">
-            <label for="title">Event:</label>
-            <input type="text" class="form-control" id="title" required>
-        </div>
-
-
-        <div class="form-group">
-            <label for="start_Date">Start Date:</label>
-            <input type="date" class="form-control" id="start_date" required>
-        </div>
-
-
-        <div class="form-group">
-            <label for="end_date">End Date:</label>
-            <input type="date" class="form-control" id="end_date">
-        </div>
-        
-        <input type="submit" value = "Create" id = "createE">
+            <div class="form-group">
+                <label for="instt_name">Institute Name:</label>
+                <input type="text" class="form-control" id="instt_name">
+            </div>
+    
+            <div class="form-group">
+                <label for="title">Event:</label>
+                <input type="text" class="form-control" id="title" required>
+            </div>
+    
+    
+            <div class="form-group">
+                <label for="start_Date">Start Date:</label>
+                <input type="date" class="form-control" id="start_date" required>
+            </div>
+    
+    
+            <div class="form-group">
+                <label for="end_date">End Date:</label>
+                <input type="date" class="form-control" id="end_date">
+            </div>
+            
+            <input type="submit" value = "Create" id = "createE">
             
         </form>
     </div>
@@ -280,7 +265,7 @@
             getEvents();
         });
     </script>
-    
+
 
     <script>
     function removeSelectedEvents(){
@@ -380,7 +365,7 @@
                         eve.instt_name = data[index].Institute__instt_name;
                         eve.instt_id = data[index].Institute_id;
                         eve.title = data[index].event;
-                        eve.start = data[index].event_date;
+                        eve.start = data[index].start_date;
                         eve.end= data[index].end_date;
                         eve.remarks= data[index].remarks;
                         $('#calendar').fullCalendar( 'renderEvent', eve, true);
@@ -412,7 +397,7 @@
                         eve.instt_name = data[index].Institute__instt_name;
                         eve.instt_id = data[index].Institute_id;
                         eve.title = data[index].event;
-                        eve.start = data[index].event_date;
+                        eve.start = data[index].start_date;
                         eve.end= data[index].end_date;
                         eve.remarks= data[index].remarks;
                         
@@ -480,24 +465,9 @@
     
     </script>    
     
-    <script>
-    //$("#getD").click(function(){
-    //    $.getJSON("{% url 'get_user_instts' %}", function(result){
-    //        $.each(result, function(i, field){
-    //            var eve={title: 'New event', start: "2018-01-01"};
-    //            eve.id= result[i].id
-    //            eve.title = result[i].Institute__abbreviation + "-" + result[i].event;
-    //            eve.start = result[i].event_date;
-    //            eve.end= result[i].end_date;
-    //            $('#calendar').fullCalendar( 'renderEvent', eve, true);
-    //        });
-    //    });
-    //})    
-    
-    </script>
-
 {% endblock features %}
 
 {% block registration %}
 {% endblock registration %}
 <!-- Footer-section remains as it is, no override -->
+

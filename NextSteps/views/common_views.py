@@ -21,17 +21,12 @@ def getLoggedInUserObject(request):
 def isUserRegistered(request):
 
     ret = False
-    
-    
+
     try:
         # Get logged in user id
         userObj = User.objects.get(username = request.user)
-        # Check in the UserAccount model for registered user
-        regUser = UserAccount.objects.filter(User = userObj)
-        if regUser.exists():
-            ret=True
-        else:
-            ret=False
+
+        ret=True
     
     except User.DoesNotExist:    
         ret = False
@@ -40,12 +35,12 @@ def isUserRegistered(request):
     return ret
 
 def isSubsActive(request):
-    
+
     ret=False
     
     try:
         # Get logged in user id
-        userObj = get_object_or_404(User, username = request.user)
+        userObj = User.objects.get(username = request.user)
         
         useracct = UserAccount.objects.filter(User = userObj).order_by('subscription_end_date')
         for ua in useracct:

@@ -17,16 +17,20 @@
  -->
 
 <!-- Extend the home page to keep the same styling for header and footer sections. -->
-{% extends 'NextSteps/NextSteps_base.html' %}
+{% extends 'NextSteps/NextSteps_base_vj.html' %}
 {% load static %}
-
-<!-- Override slide-show block from parent -->
+!-- Override slide-show block from parent -->
 {% block slide-show %}
 {% endblock slide-show %}
 
+<!-- Override block from parent -->
+{% block instt-prog-menu %}
+{% endblock instt-prog-menu %}
+
+
 <!-- Override features block -->
 {% block features %}
-    <div class="showcase block block-border-bottom-grey">
+    <div class="block"  style="padding-top: 5%; padding-bottom: 5%;">
         <div class="container">
             <h3 class="block-title">Your Account Information</h3>
 
@@ -42,30 +46,30 @@
                             </div>
                                 {% if subs_active %}
                                     <div class="panel-body">
-                                        <p> Your Subscription is valid up to {{ subs_end_dt }}</p>
+                                        <p> Your subscription is valid up to {{ subs_end_dt | date:"d-M-Y" }}</p>
                                     </div>                        
                                     <div class="alert alert-danger">
                                         You may renew subscription before expiry date so you don't pay for registration again!
                                     </div>
                                 {% else %}
                                     <div class="panel-body">
-                                        <p class="text-primary"> Your Subscription expired on {{ subs_end_dt }}!!</p>
+                                        <p class="text-primary"> Your subscription expired on {{ subs_end_dt | date:"d-M-Y" }}!!</p>
                                     </div>                        
                                     <div class="alert alert-danger">
-                                        Please register and subscribe <a href="{% url 'payment' %}">here!</a>
+                                        Please subscribe <a href="{% url 'payment' %}">here!</a>
                                     </div>
                                 {% endif %}            
                         </div>
                     {% else %}
                         <div class="panel panel-info">
                             <div class="panel-heading">
-                                <h5 class="panel-title">Please Register!</h5>
+                                <h5 class="panel-title">Please Subscribe!</h5>
                             </div>
                             <div class="panel-body">
-                                <p> You have not registered to use the powerful features of NextSteps</p>
+                                <p> You have not subscribed to use the powerful features of NextSteps</p>
                             </div>                        
                             <div class="alert alert-danger">
-                               Please register and subscribe <a href="{% url 'payment' %}">here!</a>
+                               Please subscribe <a href="{% url 'payment' %}">here!</a>
                             </div>
                         </div>
                     {% endif %}                        
@@ -74,10 +78,11 @@
                             
                     <div class="near_by_hotel_wrapper">
                         <div class="near_by_hotel_container">
-                            <table id="tableOne" class="table no-border custom_table dataTable no-footer dtr-inline">
+                            <!-- <table id="tableOne" class="table no-border custom_table dataTable no-footer dtr-inline"> -->
+                            <table id="tableOne" class="display table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <th style="width:15%">Registration</th>
+                                        <th style="width:15%">Sign Up Date</th>
                                         <th style="width:30%">Subscription </th>
                                         <th style="width:30%">Fee Paid</th>
                                     </tr>
@@ -85,12 +90,12 @@
                                 <tbody>            
                                     <!-- iterating over List -->  
                                     {% for ua in useraccount %}
-                                        <tr>             
-                                            <td class="align-middle" > {{ ua.registration_date }}</td>
+                                        <tr>
+                                            <td class="align-middle" > {{ ua.registration_date | date:"d-M-Y"}}</td> 
                                             <td class="align-middle" > 
                                                 Effective <br /> 
-                                                From: {{ ua.subscription_start_date }} <br/> 
-                                                To: {{ ua.subscription_end_date }} 
+                                                From: {{ ua.subscription_start_date | date:"d-M-Y" }} <br/> 
+                                                To: {{ ua.subscription_end_date | date:"d-M-Y" }} 
                                             </td>
                                             <td class="align-middle" > 
                                                 Total - <i class="fa fa-inr" aria-hidden="true"></i>&nbsp; {{ ua.total_amount}} <small>(Including tax)</small><br /> 
@@ -111,13 +116,8 @@
 
 {% endblock features %}
 
-{% block misson-statement %}
-<!-- Nothing here, just override the block from parent -->
-{% endblock misson-statement %}
 
-{% block jointhem-blog %}
-<!-- Nothing here, just override the block from parent -->
-{% endblock jointhem-blog %}
-
+{% block registration %}
+{% endblock registration %}
 <!-- Footer-section remains as it is, no override -->
 

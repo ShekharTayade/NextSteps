@@ -607,6 +607,7 @@ class UserStudySchedule(models.Model):
         blank=True, null=True, validators=[validate_max24hrs])
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
+    date_updated = models.DateTimeField(blank=True, null=True)
     
 
 class UserSubjectSchedule(models.Model):
@@ -617,6 +618,7 @@ class UserSubjectSchedule(models.Model):
             verbose_name="Allocation(%)")
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
+    date_updated = models.DateTimeField(blank=True, null=True)
 
 
 class UserDaySchedule(models.Model):
@@ -626,16 +628,17 @@ class UserDaySchedule(models.Model):
     end_time = models.TimeField(blank=True, null=True)
     planned_hours = models.DecimalField(max_digits=4, decimal_places=2, 
             blank=True, null=True, validators=[validate_max24hrs])
+    date_updated = models.DateTimeField(blank=True, null=True)
     
     
 class StudyHours(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)
     subject = models.CharField(max_length=2000, blank=False, null=False)
     date = models.DateField(blank=True, null=True)
-    start_time = models.DateTimeField(blank=True, null=True)
-    end_time = models.DateTimeField(blank=True, null=True)
+    start_time = models.TimeField(blank=True, null=True)
+    end_time = models.TimeField(blank=True, null=True)
     planned_hours = models.DecimalField(max_digits=4, decimal_places=2, 
             blank=True, null=True, validators=[validate_max24hrs])
     actual_hours = models.DecimalField(max_digits=4, decimal_places=2, 
             blank=True, null=True, validators=[validate_max24hrs])
-    
+        

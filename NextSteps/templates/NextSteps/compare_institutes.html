@@ -15,47 +15,41 @@
 {% block features %}
 <!--<div class="showcase block block-border-bottom-grey"> -->
 <div class="container" style="padding-top: 5%;">
-    <div class="container">
+    <div class="container" style="background-color: white;">
     
         <h3 class="block-title">Institute Comparison</h3>
-        
-        <div class = "row">
 
-            <div class = "col-md-2">
-                
-            </div>
+        <hr>
+        <div class = "row">
+            <div class = "col-md-2 instt-compare-margin"></div>
 
             <!-- Render the four institutes name to be compared -->                
             {% for il in instt_details%}
-                <div class = "col-md-2 instt-compare">
+                <div class = "col-md-2 instt-compare instt-compare-margin">
                     {{il.instt_name}}
                 </div>
             {% endfor %}
         </div>
 
         <div class = "row">
-            <div class = "col-md-2">
-            
-            </div>
+            <div class = "col-md-2 instt-compare-margin"></div>
 
             <!-- Render the institute type to be compared -->                
             {% for il in instt_details %}
-                <div style = "font-size:8px text-align:center" class = "col-md-2">
+                <div style = "font-size:10px;text-align:center" class = "col-md-2 instt-compare-margin">
                     <u><a href = "#">Add to preferred list</a></u>
                 </div>
             {% endfor %}
         </div>
 
-
-
         <div class = "row">
-            <div class = "col-md-2 compare-category">
+            <div class = "col-md-2 compare-category-even instt-compare-margin">
                 Location
             </div>
 
             <!-- Render the institute type to be compared -->                
             {% for il in instt_details %}
-                <div class = "col-md-2 instt-compare-details">
+                <div class = "col-md-2 instt-compare-details-even instt-compare-margin" style="height: 33px;">
                     {{il.city}},&nbsp;{{il.state}}
                 </div>
             {% endfor %}
@@ -64,33 +58,37 @@
 
         
         <div class = "row">
-            <div class = "col-md-2 compare-category">
+            <div class = "col-md-2 compare-category-odd instt-compare-margin">
                 Type
             </div>
 
             <!-- Render the institute type to be compared -->                
             {% for il in instt_details %}
-                <div class = "col-md-2 instt-compare-details">
+                <div class = "col-md-2 instt-compare-details-odd instt-compare-margin" style="height: 33px;">
                     {{il.InstituteType__description}}
                 </div>
             {% endfor %}
         </div>
         
         <div class = "row">
-            <div class = "col-md-2 compare-category">
+            <div class = "col-md-2 compare-category-even instt-compare-margin">
                 Survey Rank
             </div>
+            {% for yr in instt_details %}
+                <div class = "col-md-2 compare-category-even instt-compare-margin"> <li style="list-style: none; height: 20px;"></li></div>
+            {% endfor %}
+            
         </div>
         <!-- Each survey year to be a separate row -->
         {% for yr in ranking_years %}
             <div class = "row">
-                <div class = "col-md-2 instt-compare-details-sub">
+                <div class = "col-md-2 instt-compare-details-sub instt-compare-margin" style="height: 33px;">
                     <p class = "pull-right">{{yr.year}}</p>
                 </div>
     
                 <!-- Render institute ranking -->                
                 {% for il in instt_details %}
-                <div class = "col-md-2 instt-compare-details-sub">
+                <div class = "col-md-2 instt-compare-details-sub instt-compare-margin" style="height: 33px;">
                     {% for r in survey_rankings %}
                         {% if r.Institute_id == il.instt_code and r.year == yr.year %}
                             <span class="label label-primary">{{r.rank}}</span>
@@ -103,12 +101,12 @@
 
 
         <div class = "row">
-            <div class = "col-md-2 compare-category">
+            <div class = "col-md-2 compare-category-even instt-compare-margin">
                 Entrance Exam
             </div>
 
             {% for il in instt_details %}
-                <div class = "col-md-2 instt-compare-details">
+                <div class = "col-md-2 instt-compare-details-even instt-compare-margin" style="height: 33px;">
                 {% for ee in entrance_exams %}
                     {% if il.instt_code == ee.Institute_id %}
                         {{ ee.EntranceExam_id }}&nbsp;
@@ -120,13 +118,13 @@
 
 
         <div class = "row">
-            <div class = "col-md-2 compare-category">
+            <div class = "col-md-2 compare-category-odd instt-compare-margin">
                 Programs
             </div>
         
             {% for il in instt_details %}
-                <div class = "col-md-2 instt-compare-details">
-                    <ul>
+                <div class = "col-md-2 instt-compare-details-odd instt-compare-margin">
+                    <ul style="text-align: left;padding-left: 10px;">
                     {% for p in progs %}
                         {% if il.instt_code == p.Institute_id %}
                             <li>{{ p.Program_id}}</li>

@@ -43,19 +43,6 @@
                 <form action="{% url 'if_then_analysis_results' %}" method='post' id='getAnalysis'>
                     {% csrf_token %}
                         <div class = "to-do-frame">
-                            <!-- <div class = "row">
-                                <div class= "col-xs-12">
-                                    <span class = "text-primary pull-left" data-toggle="tooltip" title="Add an item" data-placement="bottom">
-                                        <i class="fa fa-plus-square fa-3x"></i>&nbsp;&nbsp;&nbsp;
-                                    </span>
-                                    <span class = "text-primary pull-left" data-toggle="tooltip" title="Remove selected item" data-placement="bottom">
-                                        <i class="fa fa-minus-square fa-3x"></i>&nbsp;&nbsp;&nbsp;
-                                    </span>
-                                    <span class = "text-primary pull-right" data-toggle="tooltip" title="Synch with the Calendar Events" data-placement="bottom">
-                                        <i class="fa fa-refresh fa-3x"></i>
-                                    </span>
-                                </div>
-                            </div> -->
                             <table id="todoTbl" class="display table table-striped table-bordered">
                                 <thead>
                                     <tr>
@@ -72,7 +59,18 @@
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                    <tr>
+                                    {% for i in event_list %}
+                                        <tr>
+                                            <td>{{ i.Institute__instt_name }}</td>
+                                            <td>{{ i.event }} </td>
+                                            <td>{{ i.start_date | date:"d M Y" }}</td>
+                                            <td>{{ i.end_date | date:"d M Y" }}</td>
+                                            <td> <span style= "text-align:center; display:inline-block"><input type="checkbox"></span></td>
+                                        </tr>
+                                    {% endfor %}
+
+
+<!--                                    <tr>
                                         <td> Indian Institute of Tehcnology Bombay</td>
                                         <td> JEE (MAIN) Application</td>
                                         <td> 15-11-2017</td>
@@ -127,7 +125,7 @@
                                         <td> 15-11-2017</td>
                                         <td> 01-01-2018</td>
                                         <td> <input type="checkbox"></td>
-                                    </tr>
+                                    </tr> -->
                                 </tbody>
                             </table>
                         </div>

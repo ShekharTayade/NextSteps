@@ -39,7 +39,7 @@
             <n_note>
                 <p>Entrance exams, for admissions to various B.E./B.Tech courses, conduted by various states, universities and colleges in India.</p>
             </n_note>
-                
+            
             <table id="tableOne" class="display table table-striped table-bordered">
                 <thead>
                     <tr>
@@ -62,6 +62,7 @@
                     {% endfor %}
                 </tbody>
             </table>
+            
         </div>
     </div>
     
@@ -69,6 +70,7 @@
 <script>
     entTable = $('#tableOne').DataTable( {
         fixedHeader: true,
+        responsive: true,
         select: false,
         paging: true,
         dom: '<"top"f>Brt<"bottom"ilp><"clear">',

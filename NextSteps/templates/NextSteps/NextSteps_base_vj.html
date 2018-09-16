@@ -65,6 +65,7 @@
 
     <!-- Calendar stylsheet -->
     <link rel='stylesheet' href="{% static 'fullcalendar/css/fullcalendar.css' %}">
+    <link rel='stylesheet' href="{% static 'fullcalendar/css/fullcalendar.print.css' %}" media="print">
 
     <script src="{% static 'fullcalendar/moment.min.js' %}"></script>
     <script src="{% static 'fullcalendar/fullcalendar.min.js' %}"></script>
@@ -164,23 +165,23 @@
                             </div>
                         </div>
 
-                        <div id="navbar" class="navbar-collapse collapse col-md-6 pull-right">
+                        <div id="navbar" class="navbar-collapse collapse col-md-6 pull-right" >
                             {% block right_side_header %}
                             <!--user menu-->
                             <!-- <ul class="list-inline user-menu pull-right">
                             <li class="user-button"><a class="btn btn-primary btn-hh-trigger" role="button" data-toggle="collapse" data-target=".header-hidden">Open</a></li>
                             </ul>                     -->
                             <!-- <ul class="list-inline user-menu pull-right"> -->
-                            <ul class="nav navbar-nav cpull-right user-menu-text">
+                            <ul class="nav navbar-nav cpull-right">
                                 <li>
                                     <a class="menu-text" href="{% url 'index' %}">
-                                        <i class="fa fa-home fa-2x"></i>
+                                        <i class="fa fa-home nfa-2x"></i>
                                         <b>Home</b>
                                     </a>
                                 </li>
                                 <li>
                                     <a class="menu-text" href="#">
-                                        <i class="fa fa-info fa-2x"></i>
+                                        <i class="fa fa-info nfa-2x"></i>
                                         <b>Learn More</b>
                                     </a>
                                 </li>
@@ -191,7 +192,7 @@
 
                                     <li class="dropdown">
                                         <a href="#" class="menu-text dropdown-toggle" data-toggle="dropdown">
-                                            <i class="fa fa-user-circle-o fa-2x"></i>
+                                            <i class="fa fa-user-circle-o nfa-2x"></i>
                                             <b> <u>{{user.username}}</u></b>
                                         </a>
 
@@ -204,8 +205,9 @@
 
                                             {% if REG_MENU == "SHOW_REG_MENU" %}
                                                 <li class="divider"></li>
-                                                <li><a href="{% url 'payment' %}">Register and Subscribe</a></li>
-                                            {% endif %} {% if SUBS_MENU == "SHOW_SUBS_MENU" %}
+                                                <li><a href="{% url 'payment' %}">Subscribe</a></li>
+                                            {% endif %} 
+                                            {% if SUBS_MENU == "SHOW_SUBS_MENU" %}
                                                 <li class="divider"></li>
                                                 <li><a href="{% url 'renew_subscription' %}">Renew Subscription</a></li>
                                             {% endif %}
@@ -215,13 +217,13 @@
                                 {% else %}
                                     <li>
                                         <a class="menu-text" href="{% url 'signup' %}">
-                                            <i class="fa fa-edit fa-2x"></i>
+                                            <i class="fa fa-edit nfa-2x"></i>
                                             <b> Sign-Up</b>
                                         </a>
                                     </li>
                                     <li>
                                         <a class="menu-text" href="{% url 'login' %}">
-                                            <i class="fa fa-sign-in fa-2x"></i>
+                                            <i class="fa fa-sign-in nfa-2x"></i>
                                             <b> Sign-In</b>
                                         </a>
                                     </li>
@@ -261,16 +263,17 @@
                                         <li>Institutions</li>
                                         <li>Programs Offered</li>
                                         <li>Ranking</li>
-                                        <li>Admission Formalities</li>
                                         <li>Entrance Exams</li>
-                                        <li>Cut offs / JEE ranks</li>
+                                        <li>Cut Offs / JEE ranks</li>
+                                        <li>Admission Processes</li>
                                     </ul>
 
                                     <a href="#" class="btn btn-more" style="padding-right: 5%">
                                         <i class="fa fa-plus"></i> Learn More</a>
                                 </div>
                                 <div class="col-md-6 col-md-pull-6 hidden-xs">
-                                    <img src="{% static 'img/slides/informed.jpg' %}" alt="Slide 1" class="center-block img-responsive" style="width: 500px;height:300px">
+                                    <!-- <img src="{% static 'img/slides/informed.jpg' %}" alt="Slide 1" class="center-block img-responsive" style="width: 500px;height:300px"> -->
+                                    <img src="{% static 'img/slides/information.jpg' %}" alt="Slide 1" class="center-block img-responsive" style="width: 500px;height:300px">
                                 </div>
                             </div>
                         </div>
@@ -287,13 +290,12 @@
                                         We make things easier for you
                                     </h4>
                                     <ul>
-                                        <li>Short List for Customized Information</li>
-                                        <li>Compare Institutions</li>
-                                        <li>Assess Your Seat Chances</li>
-                                        <li>Calendar of events/To-Do</li>
-                                        <li>Study Planner</li>
+                                        <li>Study Planner - Dashboard and Insights</li>
+                                        <li>Plan, Track, Manage Study hours</li>
+                                        <li>Assess Your JEE Seat Chances</li>
+                                        <li>Calendar of Important Dates/To-Do</li>
+                                        <li>Record Institute Application Details</li>
                                     </ul>
-
                                     <br>
                                     <br>
                                     <br>
@@ -301,7 +303,7 @@
                                         <i class="fa fa-plus"></i> Learn More</a>
                                 </div>
                                 <div class="col-md-6 col-md-pull-6 hidden-xs">
-                                    <img src="{% static 'img/slides/insight.jpg' %}" alt="Slide 1" class="center-block img-responsive" style="width: 500px;height:300px">
+                                    <img src="{% static 'img/slides/bulb.jpg' %}" alt="Slide 1" class="center-block img-responsive" style="width: 500px;height:300px">
                                 </div>
                             </div>
                         </div>
@@ -311,16 +313,17 @@
                             <div class="row">
                                 <div class="col-md-6 col-md-push-6 item-caption">
                                     <h2 class="h1 text-weight-light">
-                                        Take
+                                        Make
                                         <span class="text-primary">Informed Decision</span>
                                     </h2>
                                     <h4>
                                         We care about you
                                     </h4>
                                     <ul>
-                                        <li>Get Customized Information on Your Interests</li>
-                                        <li>Get Nofitied of Important Dates</li>
-                                        <li>Seek Expert advice</li>
+                                        <li>Get Customized Information on Preferences</li>
+                                        <li>Calendar - Important Dates</li>
+                                        <li>Compare Institutes</li>
+                                        <li>Opening-Closing Ranks/Cut-Offs</li>
                                     </ul>
 
                                     <br>
@@ -330,7 +333,7 @@
                                         <i class="fa fa-plus"></i> Learn More</a>
                                 </div>
                                 <div class="col-md-6 col-md-pull-6 hidden-xs">
-                                    <img src="{% static 'img/slides/decision.jpg' %}" alt="Slide 1" class="center-block img-responsive" style="width: 500px;height:300px">
+                                    <img src="{% static 'img/slides/chess_move.jpg' %}" alt="Slide 1" class="center-block img-responsive" style="width: 500px;height:300px">
                                 </div>
                             </div>
                         </div>
@@ -348,8 +351,11 @@
     {% block instt-prog-menu %}
     <div class="showcase block block-border-bottom-grey">
         <br>
-        <div class="row row-margin bg-grey">
-            <div class="col-md-7">
+        <div class="row row-margin" style="background-color:#fff;">
+            <h2 class="page-header">
+                Search
+            </h2>
+            <div class="col-md-7 ">
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs nav-font-size" role="tablist">
                         <li class="active"><a class="nav-link" data-toggle="tab" href="#institutions">Institutes</a></li>
@@ -358,19 +364,29 @@
                             <li><a class="nav-link" data-toggle="tab" href="#programs">Programs</a></li>
                             <li><a class="nav-link" data-toggle="tab" href="#ranking">Survey Ranking</a></li>
                             <li><a class="nav-link" data-toggle="tab" href="#jee">JEE Ranks</a></li>
+                        {% else %}
+                            <li class="disabled"><a class="nav-link" data-toggle="tab" href="#exams">Exams</a></li>
+                            <li class="disabled"><a class="nav-link" data-toggle="tab" href="#programs">Programs</a></li>
+                            <li class="disabled"><a class="nav-link" data-toggle="tab" href="#ranking">Survey Ranking</a></li>
+                            <li class="disabled"><a class="nav-link" data-toggle="tab" href="#jee">JEE Ranks</a></li>
                         {% endif %}
                     </ul>
                 
                     <div class="tab-content">
+
+                        <form style = "display:none" action="{% url 'instt_list' %}" class = "form-inline" method='post' id='getInstitutes'>
+                            {% csrf_token %}
+                        </form> 
+
                         <div class="tab-pane fade in active showme" id="institutions">
                             <div class="input-group form-sm form-2 pl-0">
                                 <div>
-                                    <select id="state-city" name="character" multiple="multiple">
+                                    <select id="state-city" name="state-city" multiple="multiple">
                                     </select>
                                 </div>
-                                <input id="instt_nm" class="form-control my-0 py-1 red-border" type="text" placeholder="Enter college name. Leave blank if you want to display all." aria-label="Search">
+                                <input id="instt_nm" name = "institute_name" class="form-control my-0 py-1 red-border" type="text" placeholder="Enter college name. Leave blank if you want to display all." aria-label="Search">
                                 <div class="input-group-append">
-                                    <span class="input-group-text red lighten-3" id="basic-text1">
+                                    <span class="input-group-text red lighten-3" id="institute-search">
                                         <i id = "insttSearch" class="fa fa-search fa-white fa-icon-middle" aria-hidden="true"></i>
                                     </span>
                                 </div>
@@ -383,7 +399,7 @@
                         <div class="tab-pane fade in" id="exams">
                             <div class="input-group form-sm form-2 pl-0">
                                 <div>
-                                    <select class = "form-control" multiple="multiple" id="examLevels" name="exam_levels">
+                                    <select multiple="multiple" id="examLevels" name="exam_levels">
                                       <option value='National'>National</option>
                                       <option value='State'>State</option>
                                       <option value='University'>University</option>
@@ -407,13 +423,13 @@
                         <div class="tab-pane fade" id="programs" onfocus="getPrograms()">
                             <div class="input-group form-sm form-2 pl-0">
                                 <div>
-                                    <select class = "form-control" multiple="multiple" id="progList" name="progList">
+                                    <select multiple="multiple" id="progList" name="progList">
                                     </select>
                                 </div>
                                 <input id="insttName" name = "insttName" class="form-control my-0 py-1 red-border" type="text" placeholder="Enter college name. Leave blank if you want to display all." aria-label="Search">
                                 <div class="input-group-append">
                                     <span class="input-group-text red lighten-3" id="insttName-text">
-                                        <i id = "insttNameSearch" class="fa fa-search fa-white fa-icon-middle" aria-hidden="true"></i>
+                                        <i id="insttNameSearch" class="fa fa-search fa-white fa-icon-middle" aria-hidden="true"></i>
                                     </span>
                                 </div>
                             </div>
@@ -442,14 +458,14 @@
                         <div class="tab-pane fade" id="jee" onfocus="getJeeRankYears()">
                             <div class="input-group form-sm form-2 pl-0">
                                 <div>
-                                    <select class = "form-control" multiple="multiple" id="rankType" name="rankType">
+                                    <select multiple="multiple" id="rankType" name="rankType">
                                         <option value='JEE-MAIN'>JEE (MAIN)</option>
                                         <option value='JEE-ADV'>JEE (ADV)</option>
                                     </select>
                                 </div>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                 <div>
-                                    <select class = "form-control" multiple="multiple" id="year" name="year">
+                                    <select multiple="multiple" id="year" name="year">
                                     </select>
                                 </div>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -476,24 +492,43 @@
                 </script>
             </div>
             <div class="col-md-5">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-aqua"><i class="fa fa-university"></i></span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">Engg Institutes</span>
-                            <span class="info-box-number">3000+</span>
-                        </div>        
-                    </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">Programs</span>
-                            <span class="info-box-number">250+</span>
-                        </div>                    
-                    </div>
-                </div>
+                {% if user.is_authenticated %}
+                    {% if activeSubs %}
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-aqua"><i class="fa fa-university"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Engg Institutes</span>
+                                    <span class="info-box-number">3000+</span>
+                                </div>        
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-yellow"><i class="fa fa-users"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Programs</span>
+                                    <span class="info-box-number">250+</span>
+                                </div>                    
+                            </div>
+                        </div>
+                    {% else %}
+                        <blockquote>
+                        <p>
+                        <strong><a href="{% url 'payment' %}"  class="text-primary"> Subscribe</a> </strong> now and get access to the powerful 
+                        NextSteps features that give you access to useful tools, customizes to you, and saves your valuable time & effort. 
+                        Click on the features below to learn more.
+                        </p>
+                        </blockquote>
+                    {% endif %}
+                {% else %}
+                    <blockquote>
+                    <p>
+                    <strong> <a class="text-primary" href="{% url 'signup' %}"> <i class = "fa fa-edit nfa-2x"></i> Sign Up for Free </a></strong>to get more search options such as entrance exams, programs 
+                    offered by various insitutes, JEE opening/closing ranks, survey ranks etc.
+                    </p>
+                    </blockquote>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -527,7 +562,7 @@
                 <div class="box box-widget widget-user">
                     <div class="widget-user-header bg-black">
                         <h3 class="widget-user-username">Set Preferences</h3>
-                        <h5 class="widget-user-desc">Get focused information</h5>
+                        <h5 class="widget-user-desc">To get focused information</h5>
                     </div>
                     <div class="widget-user-image">
                         <img class="img-circle" src="{% static 'img/gear_spanner.png' %}" alt="Research">
@@ -555,7 +590,7 @@
 
                 <!-- If it's a singed up used -->                
                 {% if user.is_authenticated %}
-                    {% if SUBS_MENU == "NOSHOW_SUBS_MENU" %}
+                    {% if activeSubs %}
                         <!-- User has active subscription (Paid user)  -->
                         <a href="{% url 'preferred_Instt_cons_report' %}" style = "text-decoration: none !important;">
                     {% else %}
@@ -606,7 +641,7 @@
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <!-- If it's a singed up used -->                
                 {% if user.is_authenticated %}
-                    {% if SUBS_MENU == "NOSHOW_SUBS_MENU" %}
+                    {% if activeSubs %}
                         <!-- User has active subscription (Paid user)  -->
                         <a href="{% url 'calendar' %}" style = "text-decoration: none !important;">
                     {% else %}
@@ -653,24 +688,24 @@
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <!-- If it's a singed up used -->                
                 {% if user.is_authenticated %}
-                    {% if SUBS_MENU == "NOSHOW_SUBS_MENU" %}
+                    {% if activeSubs %}
                         <!-- User has active subscription (Paid user)  -->
                         <a href="{% url 'if_then_analysis' %}" style = "text-decoration: none !important;">
                     {% else %}
                         <!-- singed up user (unpaid user) -->
-                        <a href="{% url 'feature_ifThenAnalysis' %}" style = "text-decoration: none !important;">
+                        <a href="{% url 'feature_seat_chances' %}" style = "text-decoration: none !important;">
                     {% endif %}
                     
                 {% else %}
                     <!-- Anonymous user -->
-                    <a href="{% url 'feature_ifThenAnalysis' %}" style = "text-decoration: none !important;">
+                    <a href="{% url 'feature_seat_chances' %}" style = "text-decoration: none !important;">
                 {% endif %}
 
 
                 <div class="box box-widget widget-user">
                     <div class="widget-user-header bg-black">
                         <h3 class="widget-user-username">JEE Seat Chances</h3>
-                        <h5 class="widget-user-desc">if-then-analysis: chances based on expected ranks</h5>
+                        <h5 class="widget-user-desc">if-then-analysis:- chances based on expected ranks</h5>
                     </div>
                     <div class="widget-user-image">
                         <img class="img-circle" src="{% static 'img/chance.png' %}" alt="JEE Seat Chances">
@@ -703,53 +738,7 @@
                 {% if user.is_authenticated %}
                     {% if SUBS_MENU == "NOSHOW_SUBS_MENU" %}
                         <!-- User has active subscription (Paid user)  -->
-                        <a href="{% url 'user_app_details' %}" style = "text-decoration: none !important;">
-                    {% else %}
-                        <!-- singed up user (unpaid user) -->
-                        <a href="{% url 'feature_user_app_details' %}" style = "text-decoration: none !important;">
-                    {% endif %}
-                    
-                {% else %}
-                    <!-- Anonymous user -->
-                    <a href="{% url 'feature_user_app_details' %}" style = "text-decoration: none !important;">
-                {% endif %}
-
-
-                <div class="box box-widget widget-user">
-                    <div class="widget-user-header bg-black">
-                        <h3 class="widget-user-username">Application Details</h3>
-                        <h5 class="widget-user-desc">Never waste effort looking for information</h5>
-                    </div>
-                    <div class="widget-user-image">
-                        <img class="img-circle" src="{% static 'img/save.png' %}" alt="Application Details">
-                    </div>
-                    <div class="box-footer">
-                        <div class="row row-margin">
-                            <div class="row row-margin">
-                                <div class="col-sm-6 border-right">
-                                    <div class="description-block">
-                                        <h5 class="description-header">Personal</h5>
-                                        <span class="description-text"></span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 border-right">
-                                    <div class="description-block">
-                                        <h5 class="description-header">Educational</h5>
-                                        <span class="description-text"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <a/>
-            </div>
-            <div class="col-md-3 col-sm-6 col-xs-12">
-                <!-- If it's a singed up used -->                
-                {% if user.is_authenticated %}
-                    {% if SUBS_MENU == "NOSHOW_SUBS_MENU" %}
-                        <!-- User has active subscription (Paid user)  -->
-                        <a href="{% url 'study_planner' %}" style = "text-decoration: none !important;">
+                        <a href="{% url 'study_planner' active_tab='dashboard' %}" style = "text-decoration: none !important;">
                     {% else %}
                         <!-- singed up user (unpaid user) -->
                         <a href="{% url 'feature_study_planner' %}" style = "text-decoration: none !important;">
@@ -844,6 +833,52 @@
                         </div>
                     </div>
                 </div>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <!-- If it's a singed up used -->                
+                {% if user.is_authenticated %}
+                    {% if activeSubs %}
+                        <!-- User has active subscription (Paid user)  -->
+                        <a href="{% url 'user_app_details' %}" style = "text-decoration: none !important;">
+                    {% else %}
+                        <!-- singed up user (unpaid user) -->
+                        <a href="{% url 'feature_application_record' %}" style = "text-decoration: none !important;">
+                    {% endif %}
+                    
+                {% else %}
+                    <!-- Anonymous user -->
+                    <a href="{% url 'feature_application_record' %}" style = "text-decoration: none !important;">
+                {% endif %}
+
+
+                <div class="box box-widget widget-user">
+                    <div class="widget-user-header bg-black">
+                        <h3 class="widget-user-username">Application Details</h3>
+                        <h5 class="widget-user-desc">Never waste effort looking for information</h5>
+                    </div>
+                    <div class="widget-user-image">
+                        <img class="img-circle" src="{% static 'img/save.png' %}" alt="Application Details">
+                    </div>
+                    <div class="box-footer">
+                        <div class="row row-margin">
+                            <div class="row row-margin">
+                                <div class="col-sm-6 border-right">
+                                    <div class="description-block">
+                                        <h5 class="description-header">Personal</h5>
+                                        <span class="description-text"></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 border-right">
+                                    <div class="description-block">
+                                        <h5 class="description-header">Educational</h5>
+                                        <span class="description-text"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <a/>
             </div>
         </div>
@@ -880,7 +915,7 @@
 
     {% block registration %}
     <h2 class="page-header">
-        Registration & Subscription
+        Sign Up & Subscription
     </h2>
     <div class="row row-margin">
         <!-- <div class="col-md-1"></div> -->
@@ -890,17 +925,19 @@
                     <h2 class="box-header-text">Sign-Up</h2>
                 </div>
                 <div class="box-body">
-                    <li>1 User Account</li>
-                    <li>No cost</li>    
-                    <li>Search Institute Details</li>
-                    <li>To unlocak powerful features of NextSteps, Subscribe to enrich your Next Step experience</li>
+                    <li>1 User account</li>
+                    <li>No Fee</li>    
+                    <li>Acess to search institute details, entrance exams, programs, survey, JEE ranks etc.</li>
+                    <li>Subscribe to unlock the powerful features of NextSteps</li>
                 </div>
                 <div class="box-footer">
                     <form action="#" method="post">
                         <div class="input-group">
+                            {% if not user.is_authenticated %}
                             <span class="input-group-btn">
                                 <button type="submit" class="btn btn-primary btn-flat">Sign-Up</button>
                             </span>
+                            {% endif %}
                         </div>
                     </form>
                 </div>
@@ -912,17 +949,19 @@
                     <h2 class="box-header-text">Subscription</h2>
                 </div>
                 <div class="box-body">
-                    <li>Access to all engineering Institutes</li>
-                    <li>Unlock ever evolving NextSteps Features </li>
-                    <li>Unlimited Access for 2 Years</li>
-                    <li>One Time Fee! Assured you will never regret</li>
+                    <li>Access to all Institutes</li>
+                    <li>Unlock ever evolving NextSteps features </li>
+                    <li>Unlimited access for 2 Years</li>
+                    <li>One time fee! you will not regret</li>
                 </div>
                 <div class="box-footer">
                     <form action="#" method="post">
                         <div class="input-group">
+                            {% if not activeSubs %}
                             <span class="input-group-btn">
                                 <button type="submit" class="btn btn-primary btn-flat">Subscribe</button>
                             </span>
+                            {% endif %}
                         </div>
                     </form>
                 </div>
@@ -932,7 +971,7 @@
         <div class="col-md-2">
             <div class="panel panel-default">
                 <div class="box-header with-border">
-                    <h2 class="box-header-text"><span class="glyphicon glyphicon-bullhorn" style="color:#00a7d0;"></span> Just for you</h2>
+                    <h2 class="box-header-text"><span class="glyphicon glyphicon-bullhorn" style="color:#ff5821;"></span> Just for you</h2>
                 </div>
                 <div class="panel-body">
                     <div class="row">
@@ -941,14 +980,14 @@
                                 <li class="news-item">
                                     <table cellpadding="4">
                                         <tr>
-                                            <td>Introductory Offer - 50% off. Avail Now!!</td>
+                                            <td>Introductory Offer - 20% off. Use Coupan code "MY20OFF". Limited period offer. Avail Now!!</td>
                                         </tr>
                                     </table>
                                 </li>
                                 <li class="news-item">
                                     <table cellpadding="4">
                                         <tr>
-                                            <td>Preparation planner available to subrscribed users<a href="#">Read more...</a></td>
+                                            <td>Study Planner available to subrscribed users<a href="{% url 'study_planner' active_tab='dashboard' %}">click here...</a></td>
                                         </tr>
                                     </table>
                                 </li>
@@ -985,10 +1024,13 @@
 
             <ul class="footer-line-right">
                 <li><a href="{% url 'contact_us' %}" class="cmargin-15">Contact us</a></li>
-                <li><a href="" class="cmargin-15">Terms</a></li>
-                <li><a href="" class="cmargin-15">Privacy</a></li>
+                <li><button data-toggle="modal" class="cmargin-15 btn-link text-primary" data-target = "#terms">Terms</button></li>
+                <li><button data-toggle="modal" class="cmargin-15 btn-link text-primary" data-target = "#privacy">Privacy</button></li>
                 <li><a href="" class="cmargin-15"><i class="fa fa-copyright" aria-hidden="true"></i> NextSteps</a></li>
             </ul>
+            
+            {% include "NextSteps/NextSteps_terms_and_conditions.html" %}
+            {% include "NextSteps/NextSteps_privacy_policy.html" %}
             <!-- <div class="col-md-4">
                 <h5 class="">
                     Contact:
@@ -1038,10 +1080,10 @@
         </div>
     </div> -->
 
-    <!-- <div class="modal fade" id="promocode" tabindex="-1" role="dialog" data-backdrop ="true" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal fade" id="promocode" tabindex="-1" role="dialog" data-backdrop ="true" aria-labelledby="mySmallModalLabel" aria-hidden="true">
         <div id="promocontent" class="modal-dialog modal-sm">
-            <div class="modal-content" style="background-color:#ff5821">
-                <div class="modal-header">
+            <div class="modal-content">
+                <div class="modal-header" style = "background-color:#ff5821">
                     <button type="button" class="close" data-dismiss="modal">X</button>
                     <p class="modal-title"><strong>An Offer...</strong></p>
                 </div>
@@ -1050,24 +1092,22 @@
                         <div class="coupan-container text-center" style="background-color:#000000">
                             <img src="{% static 'img/NextStepsLogo2.png' %} " alt="NextSteps">
                         </div>
-                        Any picture to be displayed in the promo
-                        <img src="#" alt="..." style="width:100%;"> 
                         <div class="coupan-container" style="background-color:white">
-                            <h4><b>20% OFF ON THE REGISTRATION</b></h4>         
+                            <h4><b>20% OFF ON SUBSCRIPTION</b></h4>         
                             <p>
                                 Hi {{user.username}},
-                                Specially for you! Avail a discount of <strong>20%</strong> when you Register and Subscribe.
+                                Specially for you! Avail a discount of <strong>20%</strong> when you Subscribe.
                             </p>
                         </div>
                         <div class="coupan-container">
-                            <p>Use Promo Code: <span class="promo">MY20OFF</span></p>
-                            <p class="expire">Expires: Jun 30, 2018</p>
+                            <p>Use Promo Code: <span id= "pcode" class="promo">MY20OFF</span></p>
+                            <p class="expire">Expires: Nov 30, 2018</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
 
     <!-- Scripts required for popper dropdown menu being used on user link, after user is logged in -->
@@ -1114,24 +1154,16 @@
                 if (shoHelp == 'NO') {
                     $('#help').modal('hide');
                 }
+
+                {% if not activeSubs %}
+                    $('#promocode').modal('show');
+                {% endif %}
             }
 
-            {% if REG_MENU == "SHOW_REG_MENU" %}
-
-            $('#promocode').modal('show');
-
-            {% endif %}
 
         });
 
 
-        //function fileExists(url)
-        //{
-        //    var http = new XMLHttpRequest();
-        //    http.open('HEAD', url, false);
-        //    http.send();
-        //    return http.status!=404;
-        //}
     </script>
 
     <script>
@@ -1236,7 +1268,7 @@
         var selectedRankTypes = [];
 </script>
 
-<!-- Vijay State & Citry Dropdown -->
+<!-- Vijay State & City Dropdown -->
 <script>
 
     // Get states and cities
@@ -1245,7 +1277,7 @@
         url: '{% url "get_instt_states_cities" %}',
         async:false,
         data: {
-        'DISC': 'ENGG', 'COUNTRY':'India', 'LEVEL':'Undergrad'
+            'DISC': 'ENGG', 'COUNTRY':'India', 'LEVEL':'Undergrad'
         },
         dataType: 'json',
         success: function (data) {
@@ -1311,6 +1343,7 @@
                         selectedCity.splice(indexExists,1);
                     }
                 }
+                
             }
         });
 
@@ -1344,7 +1377,7 @@
                 }
             }
         });
-
+        
         $('#progList').multiselect({
             enableFiltering: true,
             maxHeight: 200,
@@ -1353,7 +1386,7 @@
             buttonClass: 'btn small btn-primary',
             templates: {
             button: '<button type="button" class="multiselect dropdown-toggle" data-toggle="dropdown"><span class="multiselect-selected-text"></span> &nbsp;<b class="fa fa-caret-down"></b></button>',
-            ul: '<ul class="multiselect-container dropdown-menu" style="min-width:225px;"></ul>',
+            ul: '<ul class="multiselect-container dropdown-menu" style="min-width:225px;min-height:200px !important;"></ul>',
             filter: '<li class="multiselect-item filter"><div class="input-group"><span class="input-group-addon"><i class="fa fa-search" style="margin-left:-6px;"></i></span><input class="form-control multiselect-search" type="text" style="width:70%;"></div></li>',
             filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default btn-white btn-grey multiselect-clear-filter" type="button"><i class="fa fa-times-circle red2"></i></button></span>',
             li: '<li><a tabindex="0"><label></label></a></li>',
@@ -1384,7 +1417,7 @@
             buttonClass: 'btn small btn-primary',
             templates: {
             button: '<button type="button" class="multiselect dropdown-toggle" data-toggle="dropdown"><span class="multiselect-selected-text"></span> &nbsp;<b class="fa fa-caret-down"></b></button>',
-            ul: '<ul class="multiselect-container dropdown-menu" style="min-width:225px;"></ul>',
+            ul: '<ul class="multiselect-container dropdown-menu" style="min-width:225px;min-height:200px !important"></ul>',
             filter: '<li class="multiselect-item filter"><div class="input-group"><span class="input-group-addon"><i class="fa fa-search" style="margin-left:-6px;"></i></span><input class="form-control multiselect-search" type="text" style="width:70%;"></div></li>',
             filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default btn-white btn-grey multiselect-clear-filter" type="button"><i class="fa fa-times-circle red2"></i></button></span>',
             li: '<li><a tabindex="0"><label></label></a></li>',
@@ -1500,10 +1533,19 @@
 
 <script>
     // On click of search button for "Institute" open the page for institute results
-    $("#basic-text1").click(function(){
+    $("#institute-search").click(function(){
+        // Get the SELECT box and append into the form
+        $('#getInstitutes').append( $('#state-city') );
+
+        //Get input text and append into the form
+        $('#instt_nm').clone().appendTo('#getInstitutes')
+
+        // Session Store
+        sessionStorage.setItem("cities",selectedCity)
+        sessionStorage.setItem("freeText",$('#instt_nm').val())
         
-        instt_n = $("#instt_nm").val();
-        window.open("{% url 'instt_list'%}? selCities={{selectedCity}}, instts = {{instt_n}} ", "_self");
+        //Now submit the form
+        $('#getInstitutes').submit();
 
     });
     
@@ -1583,5 +1625,4 @@
         $('[data-toggle="tooltip"]').tooltip(); 
     });
 </script>
-
 </html>

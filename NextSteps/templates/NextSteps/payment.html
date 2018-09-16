@@ -17,22 +17,20 @@
  -->
 
 <!-- Extend the home page to keep the same styling for header and footer sections. -->
-{% extends 'NextSteps/NextSteps.html' %}
+{% extends 'NextSteps/NextSteps_base_vj.html' %}
 {% load static %}
-
 <!-- Override slide-show block from parent -->
 {% block slide-show %}
-<!--    <div id="highlighted-slider" class="container">
-
-        <h3>Registration and Subscription Payment</h3>        
-        
-    </div>
--->
 {% endblock slide-show %}
+
+<!-- Override block from parent -->
+{% block instt-prog-menu %}
+{% endblock instt-prog-menu %}
+
 
 <!-- Override features block -->
 {% block features %}
-    <div class="showcase block block-border-bottom-grey"  onload="disableSubmit()">
+    <div class="block" style="padding-top: 5%; padding-bottom: 5%; " onload="disableSubmit()">
         <div class="container">
             <h3 class="block-title">
                 Register and Subscribe
@@ -70,10 +68,10 @@
                                     <h5 class="panel-title">Subscription</h5>
                                 </div>
                                 <div class="panel-body">
-                                    <p>Subscription fee towards 1 year access to full-feature NextSteps.</p>
-                                    <p><span class="glyphicon glyphicon-ok"></span>&nbsp; Full-feature NextSteps access for 1 year from the date of subscription</p> 
+                                    <p>Subscription fee towards 2 year access to full-feature NextSteps.</p>
+                                    <p><span class="glyphicon glyphicon-ok"></span>&nbsp; Full-feature NextSteps access for 2 year from the date of subscription</p> 
                                     <p><span class="glyphicon glyphicon-ok"></span>&nbsp; Access to existing and new features, information added to NextSteps during the subscription validity period</p> 
-                                    <p><span class="glyphicon glyphicon-ok"></span>&nbsp; Option to renew before completion of 1 year subscription</p> 
+                                    <p><span class="glyphicon glyphicon-ok"></span>&nbsp; Option to renew before completion of 2 year subscription</p> 
                                     <p><span class="glyphicon glyphicon-ok"></span>&nbsp; Option to renew expired subscription with additional fee</p> 
                                 </div>
                             </div>
@@ -93,7 +91,7 @@
                                 <div class="panel-body">
                                     <p> <small> Includes...</small> </p>
                                     <p id="reg">1.  Registration Fee <span id="regAmt"> <i class="fa fa-inr" aria-hidden="true">&nbsp;</i> 1000 </span><small>+ 18% gst</small></p>
-                                    <p id="subs">2.  1 Year Subscription Fee <i class="fa fa-inr" aria-hidden="true">&nbsp;</i> 250 <small>+ 18% gst</small></p>
+                                    <p id="subs">2.  2 Year Subscription Fee <i class="fa fa-inr" aria-hidden="true">&nbsp;</i> 250 <small>+ 18% gst</small></p>
                                 </div>
                             </div>
                         </div>
@@ -108,10 +106,10 @@
                                     <br />
                                     <br />
                                     <div class="input-group">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-primary" type="button" onclick="setTotalSum()">Apply!</button>
-                                        </span>
                                         <input id="promo" type="text" style="text-transform:uppercase" class="form-control" name="promocode" placeholder="Enter promo code...">
+                                        <!--<span class="input-group-btn"> -->
+                                            <button class="btn btn-primary" type="button" onclick="setTotalSum()">Apply!</button>
+                                        <!-- </span> -->
                                     </div>
                                     <p id="usermsg" class="text-primary"><p>  
                                 </div>
@@ -121,15 +119,17 @@
                         
                     </div>
                     
-                    <input type="checkbox" id="tnc" name="tnc" onchange="activateButton(this)">
-                        I have read and understood the <a href="#" class="text-primary">terms and conditions</a> before signing up.
+                    <input type="checkbox" id="TnC" name="TnC" onchange="activateButton(this)">
+                        I have read and understood the <a href="#" onclick="displayTnC();" class="text-primary">terms and conditions</a> before signing up.
                     <br />
+     
+                    {% include "NextSteps/NextSteps_terms_and_conditions.html" %}
      
                     <button id="paymnt" class="btn btn-primary" type='submit' formmethod='post' value='submit' form = 'paymntForm' onclick="checkTnC()">Proceed to Pay</button>
                     <span style="float:right"><a href= "{% url 'index' %}" class="btn btn-primary" onclick="setRegVal()">Register later & Goto Home Page</a></span>
                     <br />
-                    <p id="tnc_errXXX" class="text-primary"></p>
-                    <div id="tnc_err" style="display:none;" class="alert alert-danger">
+                    <p id="TnC_errXXX" class="text-primary"></p>
+                    <div id="TnC_err" style="display:none;" class="alert alert-danger">
                         <button type="button" class="close float:left" data-dismiss="">×</button>
                             To proceed to pay please read and accept terms and condition by checking the checkbox!
                     </div>
@@ -144,15 +144,17 @@
        </div>
     </div>
 
-    {% load static %}
-    <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
-    
+    <script> 
+        function displayTnC() {
+            $('#terms').modal('show');
+        }
+    </script>
     
     <script>
         function checkTnC() {
-            var chkbox = document.getElementById("tnc");
+            var chkbox = document.getElementById("TnC");
             var sts = chkbox.checked
-            var msg = document.getElementById("tnc_err");
+            var msg = document.getElementById("TnC_err");
             if (sts) {
                 msg.style.display = "none";
             } else {
@@ -179,7 +181,7 @@
 
     <script>
        $(document).ready(function () {
-            activateButton($("#tnc"));
+            activateButton($("#TnC"));
         });
     </script>
 
@@ -194,7 +196,7 @@
     
     <script>
         function getPromoDisc(pcode){
-            console.log("Input to GetPromoDisc " + pcode)
+
             $.ajax({
             url: '{% url "Get_Promo_Details" %}',
             data: {
@@ -204,7 +206,6 @@
             success: function (data) {
                 
                 $.each(data, function(index, element) {
-                    console.log("Loop Index - " + index)
                     percent= data[index].discount_percent;
                     err_msg =data[index].err_msg;
                     $("#percent_nv").val(percent)                    
@@ -240,7 +241,8 @@
                             $("#subsFee_nv").val("250");
                             $("#totalFee_nv").val("1425");
                             $("#promoCode_nv").val(pcode);
-                            $("#usermsg").html("Invalid Promo code entered. Please check the code and try again.");
+                            $("#usermsg").html(pcode + ": Invalid Promo code entered. Please check the code and try again.");
+                            document.getElementById("promo").value = '';
                             break;
                         case "02":
                             $("#regAmt").html('<i class="fa fa-inr" aria-hidden="true">&nbsp;</i>' + ' 1000');
@@ -251,18 +253,20 @@
                             $("#subsFee_nv").val("250");
                             $("#totalFee_nv").val("1425");
                             $("#promoCode_nv").val(pcode);
-                            $("#usermsg").html("Sorry, this promotion has expired.");
+                            $("#usermsg").html(pcode + ": Sorry, this promotion has expired.");
+                            document.getElementById("promo").value = '';
                             break;
                         case "03":
                             $("#regAmt").html('<i class="fa fa-inr" aria-hidden="true">&nbsp;</i>' + ' 1000');
                             $("#totalSum").html('<i class="fa fa-inr" aria-hidden="true">&nbsp;</i>' + ' 1425');
-                            alert("Sorry, this promotion has not been initiated yet.");
+                            alert(pcode + ": Sorry, this promotion has not been initiated yet.");
 
                             $("#regFee_nv").val("1000");
                             $("#subsFee_nv").val("250");
                             $("#totalFee_nv").val("1425");
                             $("#promoCode_nv").val(pcode);
-                            $("#usermsg").html("Sorry, this promotion has not been initiated yet.");
+                            $("#usermsg").html(pcode + ": Sorry, this promotion has not been initiated yet.");
+                            document.getElementById("promo").value = '';
                             break;
                     }
                 });
@@ -282,13 +286,9 @@
 
 {% endblock features %}
 
-{% block misson-statement %}
-<!-- Nothing here, just override the block from parent -->
-{% endblock misson-statement %}
 
-{% block jointhem-blog %}
-<!-- Nothing here, just override the block from parent -->
-{% endblock jointhem-blog %}
-
+{% block registration %}
+{% endblock registration %}
 <!-- Footer-section remains as it is, no override -->
+
 

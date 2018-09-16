@@ -2,60 +2,55 @@
 <html lang="en">
 
 {% load static %}
-
 <head>
-    <meta charset="utf-8">
-    <title>NextSteps...Your Buddy!</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
-    <link rel="icon" href="{% static 'img/target.ico' %}" />
-    <!-- Facebook Opengraph integration: https://developers.facebook.com/docs/sharing/opengraph -->
-    <meta property="og:title" content="">
-    <meta property="og:image" content="">
-    <meta property="og:url" content="">
-    <meta property="og:site_name" content="">
-    <meta property="og:description" content="">
+  <meta charset="utf-8">
+  <title>NextSteps...Your Buddy!</title>
+  <link rel="icon" href="{% static 'img/target.ico' %}" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="" name="keywords">
+  <meta content="" name="description">
 
-    <!-- Twitter Cards integration: https://dev.twitter.com/cards/  -->
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:site" content="">
-    <meta name="twitter:title" content="">
-    <meta name="twitter:description" content="">
-    <meta name="twitter:image" content="">
+  <!-- Facebook Opengraph integration: https://developers.facebook.com/docs/sharing/opengraph -->
+  <meta property="og:title" content="">
+  <meta property="og:image" content="">
+  <meta property="og:url" content="">
+  <meta property="og:site_name" content="">
+  <meta property="og:description" content="">
 
-    <meta name="google-signin-client_id" content="292426078075-v5p5r6dq0t6vnqvm679h4bbncukjubpu.apps.googleusercontent.com">
+  <!-- Twitter Cards integration: https://dev.twitter.com/cards/  -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:title" content="">
+  <meta name="twitter:description" content="">
+  <meta name="twitter:image" content="">
 
-    <!-- Fav and touch icons -->
-    <link rel="shortcut icon" href="{% static 'img/target.png' %}">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'img/icons/114x114.png' %}">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'img/icons/72x72.png' %}">
-    <link rel="apple-touch-icon-precomposed" href="{% static 'img/icons/default.png' %}">
+  <meta name="google-signin-client_id" content="292426078075-v5p5r6dq0t6vnqvm679h4bbncukjubpu.apps.googleusercontent.com">
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900" rel="stylesheet">
+  <!-- Fav and touch icons -->
+  <link rel="shortcut icon" href="{% static 'img/target.png' %}">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'img/icons/114x114.png' %}">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'img/icons/72x72.png' %}">
+  <link rel="apple-touch-icon-precomposed" href="{% static 'img/icons/default.png' %}">
 
-    <!-- Bootstrap CSS File -->
-    <link href="{% static 'lib/bootstrap/css/bootstrap.min.css' %} " rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900" rel="stylesheet">
 
-    <!-- JQuery -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.0-rc.1/themes/smoothness/jquery-ui.css">
-    <script src="//code.jquery.com/jquery-1.11.3.js"></script>
-    <script src="//code.jquery.com/ui/1.12.0-rc.1/jquery-ui.js"></script>
+  <!-- Bootstrap CSS File -->
+  <link href="{% static 'lib/bootstrap/css/bootstrap.min.css' %} " rel="stylesheet">
 
-    <!-- Libraries CSS Files -->
-    <link href="{% static 'lib/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
-    <link href="{% static 'lib/owlcarousel/owl.carousel.min.css' %}" rel="stylesheet">
-    <link href="{% static 'lib/owlcarousel/owl.theme.min.css' %}" rel="stylesheet">
-    <link href="{% static 'lib/owlcarousel/owl.transitions.min.css' %}" rel="stylesheet">
+  <!-- Libraries CSS Files -->
+  <link href="{% static 'lib/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+  <link href="{% static 'lib/owlcarousel/owl.carousel.min.css' %}" rel="stylesheet">
+  <link href="{% static 'lib/owlcarousel/owl.theme.min.css' %}" rel="stylesheet">
+  <link href="{% static 'lib/owlcarousel/owl.transitions.min.css' %}" rel="stylesheet">
+ 
+  <!-- Main Stylesheet File -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
 
-    <!-- Main Stylesheet File -->
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+  <!--Your custom colour override - predefined colours are: colour-blue.css, colour-green.css, colour-lavander.css, orange is default-->
+<!--  <link href="#" id="colour-scheme" rel="stylesheet"> -->
 
-    <!--Your custom colour override - predefined colours are: colour-blue.css, colour-green.css, colour-lavander.css, orange is default-->
-    <!--  <link href="#" id="colour-scheme" rel="stylesheet"> -->
-
-    <!-- =======================================================
+  <!-- =======================================================
     Theme Name: Flexor
     Theme URL: https://bootstrapmade.com/flexor-free-multipurpose-bootstrap-template/
     Author: BootstrapMade.com
@@ -69,193 +64,138 @@
 <body class="fullscreen-centered page-login">
 
 
-    <div id="fb-root"></div>
-    <script>
-        (
-            function (d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) return;
-                js = d.createElement(s); js.id = id;
-                js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.12&appId=422941031462052&autoLogAppEvents=1';
-                fjs.parentNode.insertBefore(js, fjs);
-            } (document, 'script', 'facebook-jssdk')
-        );
-    </script>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.12&appId=422941031462052&autoLogAppEvents=1';
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 
-    <!--Change the background class to alter background image, options are: benches, boots, buildings, city, metro -->
+
+
+  <!--Change the background class to alter background image, options are: benches, boots, buildings, city, metro -->
     <div id="background-wrapper" class="benches" data-stellar-background-ratio="0.8">
 
-        <!-- ======== @Region: #content ======== -->
+    <!-- ======== @Region: #content ======== -->
         <div id="content">
             <div class="header">
                 <div class="header-inner">
                     <!--navbar-branding/logo - hidden image tag & site name so things like Facebook to pick up, actual logo set via CSS for flexibility -->
                     <a class="navbar-brand center-block" href="{% url 'index' %}" title="Home">
                         <h1 class="hidden">
-                            <img src="{% static 'img/NextStepsLogo2.png' %}" alt="NextSteps Logo"> NextSteps
+                            <img src="{% static 'img/NextStepsLogo1.png' %}" alt="NextSteps Logo">
+                            NextSteps
                         </h1>
                     </a>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-8 col-sm-offset-2">
-                    <div class="panel panel-info sign-panel sign-panel-info">
-                        <div class="panel-heading sign-panel-heading">
-                            <div class="pull-left">
-                                <h3 class="panel-title sign-panel-title">
-                                    Sign in to your NextSteps account
-                                </h3>
-                            </div>
-                            <div class="pull-right" >
-                                <a href="{% url 'index' %}"><i class="fa fa-times" aria-hidden="true" style="padding: 0;color: lightgrey"></i></a>
-                            </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                            <div class="text-center"> <strong>Use Your NextSteps Account or Social Media Account</strong></div>
+                            </h3>
                         </div>
-                        <hr>
-                        <div class="panel-body or-padding">
+                        <div class="panel-body">
+ 
+                            {% load socialaccount %}
+                            {% providers_media_js %}
 
-                            {% load socialaccount %} {% providers_media_js %}
+                            <div><strong>NextSteps Account</strong></div>
+                            
+                            <div class = "well">
 
-                            <div class="well sign-well">
-                                <form accept-charset="UTF-8" role="form" method="POST"  formnovalidate id="sign-in-form">
-                                        {% csrf_token %}
-                                        <fieldset>
-                                            <div class="row">
-                                                <div class="col-sm-5">
-                                                    <div class="form-group has-float-label">
-                                                        <div class="input-group">
-                                                            <span style="padding-top: 12px; margin:2px;">
-                                                                <i class="fa fa-user-circle-o "></i>
-                                                            </span>
-                                                            <div class="group">
-                                                                <input class="sign-field-width" name="username" type="text" id="user-name" required placeholder=" ">
-                                                                <span class="highlight"></span>
-                                                                <span class="bar"></span>
-                                                                <label class="sign-label">User Name</label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-1">
-                                                    <p class="or-padding"    style="padding-top: 20px;">Or</p>
-                                                </div>
-                                                <div class="col-sm-5">
-                                                    <div class="form-group has-float-label">
-                                                        <div class="input-group input-group-lg">
-                                                            <span style="padding-top: 12px; margin:2px;">
-                                                                <i class="fa fa-envelope "></i>
-                                                            </span>
-                                                            <div class="group">
-                                                                <input class="sign-field-width" name="email" type="email" id="email-id" required placeholder=" ">
-                                                                <span class="highlight"></span>
-                                                                <span class="bar"></span>
-                                                                <label class="sign-label">Email</label>        
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                <form accept-charset="UTF-8" role="form" method="POST">
+                                    {% csrf_token %}
+                                    <fieldset>
+                                    <div class="text-muted"><small>Enter (Username or Email) and Password to login</small></div>
+                                    <div class="row">
+                                        <div style = "width:94%;">
+                                        <div class = "col-sm-6">
+                                            <div class="form-group has-float-label">
+                                                <div class="input-group input-group-lg">
+                                                    <span class="input-group-addon"><i class="fa fa-user-circle-o "></i></span>
+                                                    <input name = "username" type="text" class="form-control" placeholder="Username">
                                                 </div>
                                             </div>
-
-                                            <div class="row">
-                                                <div class="col-sm-12">
-                                                    <div class="form-group has-float-label ">
-                                                        <div class="input-group input-group-lg">
-                                                            <span style="padding-top: 12px; margin:2px;">
-                                                                <i class="fa fa-fw fa-lock"></i>
-                                                            </span>
-                                                            <div class="group">
-                                                                <input class="sign-field-width" name="password" type="password" id="pwd" required placeholder=" ">
-                                                                <span class="highlight"></span>
-                                                                <span class="bar"></span>
-                                                                <label class="sign-label">Password</label>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
+                                        </div>
+                                        
+                                        <div class = "col-sm-6">
+                                            <div class="form-group has-float-label">
+                                                <div class="input-group input-group-lg">
+                                                    <span class="input-group-addon"><i class="fa fa-envelope "></i></span>
+                                                    <input name = "email" type="text" class="form-control" placeholder="Email">
                                                 </div>
-
                                             </div>
-
-                                            <div class="checkbox">
-                                                <label>
-                                                    <input name="remember" type="checkbox" value="Remember Me" checked> Remember Me
-                                                </label>
-                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
     
-                                            <!-- To check if user is not authenticated and display an error message if not autheticated -->
-                                            <!-- The view returns a value "invalid" in invalid key if use if not authenticated. -->
-                                            {% if invalid == 'invalid' %}
-                                            <div class="alert alert-danger">
-                                                <button type="button" class="close" data-dismiss="alert"></button>
-                                                <h4>
-                                                    Error!
-                                                </h4> Your username and password didn't match! Please try again.
-                                            </div>
-                                            {% endif %}
+                                    <div class="form-group has-float-label ">
+                                        <div class="input-group input-group-lg">
+                                                <span class="input-group-addon"><i class="fa fa-fw fa-lock"></i></span>
+                                                <input name = "password" type="password" class="form-control" placeholder="Password">
+                                        </div>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input name="remember" type="checkbox" value="Remember Me" checked>
+                                            Remember Me
+                                        </label>
+                                    </div>
     
-                                            <input class="btn btn-lg btn-primary btn-block sign-in-button" type="submit" value="SIGN IN">
-                                            <br>
-                                            <div class="row">
-                                                <div class="pull-left fw-500">
-                                                    <p class="m-b-0">
-                                                        <span style="float:left">Not signed up?
-                                                            <a class="a-decoration" href="{% url 'signup' %}">Sign up here</a>
-                                                        </span>
-                                                    </p>
-                                                </div>
-                                                <div class="pull-right fw-500">
-                                                    <p class="m-b-0">
-                                                        <span>
-                                                            <a class="a-decoration" href="{% url 'password_reset' %}">Forgot Username or Password?</a>
-                                                        </span>
-                                                    </p>
-                                                </div>
+                                    <!-- To check if user is not authenticated and display an error message if not autheticated -->
+                                    <!-- The view returns a value "invalid" in invalid key if use if not authenticated. -->
+                                    {% if invalid == 'invalid' %}
+                                        <div class="alert alert-danger">
+                                          <button type="button" class="close" data-dismiss="alert"></button>
+                                          <h4>
+                                              Error!
+                                            </h4> Your username and password didn't match! Please try again.
+                                        </div>
+                                    {% endif %}
+                      
+                                    <input class="btn btn-lg btn-primary btn-block" type="submit" value="Login">
+                    
+                                    </fieldset>
+                                </form>
+    
+                                <p class="m-b-0 m-t">
+                                    <span style="float:left">Not signed up? <a href="{% url 'signup' %}">Sign up here</a></span>
+                                    <span style="float:right"><a href="{% url 'password_reset' %}">Forgot Username or Password?</a></span>
+                                </p>
+                            </div> 
 
-                                            </div>
-                                        </fieldset>
-                                    </form>
+                            <div>
+                                <strong>Login Using Your Social Media Account</strong>
                             </div>
-                            <hr>
-                            <div class="col-sm-12">
-                                <div>
-                                    or sign in with one of these 
-                                </div>
-                                <br>
-                                <div class="row">
+                            <div class = "well">
+                                <div class = "row">
                                     <div class="col-sm-4 auth-provider-padding">
-                                        <button class="auth-provider-button hover-on">
-                                            <a href="{% provider_login_url 'facebook'  %}" class="a-decoration">
-                                                <div class="auth-provider-imgtxt">
-                                                    <img src="{% static 'img/facebook_logo.svg' %}" alt="Facebook Login" style="height:38px;border:0;padding-right: 8px;">
-                                                    FACEBOOK
-                                                </div>
-                                            </a>
-                                        </button>
+                                        <a class="btn auth-provider-button hover-on" href="{% provider_login_url 'facebook' method='js_sdk' %}">
+                                          <img src="{% static 'img/facebook_logo.svg' %}" alt="Facebook Login" style="height:38px;border:0;">
+                                        </a>
                                     </div>
                                     <div class="col-sm-4 auth-provider-padding">
-                                        <button class="auth-provider-button hover-on">
-                                            <a href="{% provider_login_url 'google'  %}" class="a-decoration">
-                                                <div class="auth-provider-imgtxt">
-                                                    <img src="{% static 'img/google_logo.svg' %}" alt="Facebook Login" style="height:38px;border:0;padding-right: 8px;">
-                                                    GOOGLE
-                                                </div>
-                                            </a>
-                                        </button>
+                                        <a class="btn auth-provider-button hover-on" href="{% provider_login_url 'google' %}">
+                                          <img src="{% static 'img/google_logo.svg' %}" alt="Google Login" style="height:38px;border:0;">
+                                        </a>
                                     </div>
                                     <div class="col-sm-4 auth-provider-padding">
-                                        <button class="auth-provider-button hover-on">
-                                            <a href="{% provider_login_url 'google'  %}" class="a-decoration">
-                                                <div class="auth-provider-imgtxt">
-                                                    <img src="{% static 'img/Twitter_Logo.svg' %}" alt="Facebook Login" style="height:38px;border:0;padding-right: 8px;">
-                                                    TWITTER
-                                                </div>
-                                            </a>
-                                        </button>
+                                        <a class="btn auth-provider-button hover-on" href="{% provider_login_url 'twitter' %}">
+                                          <img src="{% static 'img/Twitter_Logo.svg' %}" alt="Twitter Login" style="height:38px;border:0;">
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>
@@ -268,56 +208,27 @@
     <script src="{% static 'lib/stellar/stellar.min.js' %}"></script>
     <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
     <script src="{% static 'lib/counterup/counterup.min.js' %}"></script>
-    <!-- <script src="{% static 'contactform/contactform.js' %}"></script> Vijay: Check with Shekhar, if this is required here-->
+    <script src="{% static 'contactform/contactform.js' %}"></script>
 
     <!-- Template Specisifc Custom Javascript File -->
     <script src="{% static 'js/custom.js' %}"></script>
-
+    
     <!--Custom scripts demo background & colour switcher - OPTIONAL -->
     <script src="{% static 'js/color-switcher.js' %}"></script>
-
+    
     <!--Contactform script -->
-    <!-- <script src="{% static 'contactform/contactform.js' %}"></script> Vijay: Check with Shekhar, if this is required here-->
+    <script src="{% static 'contactform/contactform.js' %}"></script>
+
+
+
+
+
 </body>
 
-<script>
-    $(document).ready(function() {
-
-        // document.getElementById("pwd").blur(function(){
-        //     console.log("form click")
-        // });
-        // document.getElementById("pwd").focus(function(){
-        //     console.log("pwd focus")
-        // });
-
-        // document.getElementById("pwd").focus();
-        // setTimeout(() => {
-        //     document.getElementById("user-name").focus();    
-        // }, 3000);
-        
-
-        
-        // $('input').blur(function() {
-        //     // check if the input has any value (if we've typed into it)
-            
-        //     if ($(this).val()){
-        //         $(this).addClass('used');
-        //     }
-        //     else
-        //     {
-        //         $(this).removeClass('used');
-        //     }
-        // });
-    });
-
-
-
-    jQuery(function ($) {
-    var $inputs = $('input[name=username],input[name=email]');
-    $inputs.on('input', function () {
-        // Set the required property of the other input to false if this input is not empty.
-        $inputs.not(this).prop('required', !$(this).val().length);
-    });
-});
-</script>
 </html>
+
+
+
+
+
+

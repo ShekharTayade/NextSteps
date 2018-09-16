@@ -64,9 +64,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.instagram',
-    'allauth.socialaccount.providers.linkedin',
-    'allauth.socialaccount.providers.linkedin_oauth2',
     'allauth.socialaccount.providers.twitter',
+	'django_bootstrap_breadcrumbs'
     
 ]
 

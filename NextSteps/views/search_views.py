@@ -22,6 +22,14 @@ from django.http import QueryDict
 
 from .common_views import *
 
+# Vijay inserted this below
+import json
+from django.db.models import Q
+import operator
+from functools import reduce
+
+
+
 @login_required
 def SearchFilter(request):
 
@@ -50,83 +58,8 @@ def SearchFilter(request):
             'instt_typeList' : instt_typeList, 'countryList':countryList,
             'disciplineList': disciplineList, 'levelList':levelList })
 
-@login_required
+
 def InsttList(request):
-
-    '''
-    if request.method == 'POST':
-        request.session['instts-details-post'] = request.POST
-        
-        request.session['country-list'] = request.POST.getlist('countryList', [])        
-        request.session['discipline-list'] = request.POST.getlist('disciplineList', [])        
-        request.session['level-list'] = request.POST.getlist('levelList', [])        
-        request.session['state-list'] = request.POST.getlist('stateList', [])        
-        request.session['city-list'] = request.POST.getlist('cityList', [])        
-        request.session['insttType-list'] = request.POST.getlist('insttTypeList', [])        
-        request.session['insttRankYr-list'] = request.POST.getlist('insttRankYrList', [])        
-        request.session['insttRankRange-list'] = request.POST.getlist('insttRankRange', [])        
-        request.session['program-list'] = request.POST.getlist('programList', [])        
-        
-        countryVals = request.POST.getlist('countryList', [])
-        disciplineVals = request.POST.getlist('disciplineList', [])
-        levelVals = request.POST.getlist('levelList', [])
-        stateVals = request.POST.getlist('stateList', [])
-        cityVals = request.POST.getlist('cityList', [])
-        insttTypeVals = request.POST.getlist('insttTypeList', [])
-        insttRankYrVals = request.POST.getlist('insttRankYrList', [])
-        insttRankRangeVals = request.POST.getlist('insttRankRange', [])
-        programVals  = request.POST.getlist('programList', [])
-    
-        
-    else:
-        if 'country-list' in request.session:
-            countryVals = request.session['country-list']
-        else:
-            countryVals = []
-        
-        if 'discipline-list' in request.session:
-            disciplineVals = request.session['discipline-list']
-        else:
-            disciplineVals = []
-
-        if 'level-list' in request.session:
-            levelVals = request.session['level-list']
-        else:
-            levelVals = []
-
-        if 'state-list' in request.session:
-            stateVals = request.session['state-list']
-        else:
-            stateVals = []
-
-        if 'city-list' in request.session:
-            cityVals = request.session['city-list']
-        else:
-            cityVals = []
-
-        if 'insttType-list' in request.session:
-            insttTypeVals = request.session['insttType-list']
-        else:
-            insttTypeVals = []
-
-        if 'insttRankYr-list' in request.session:
-            insttRankYrVals= request.session['insttRankYr-list']
-        else:
-            insttRankYrVals = []
-            
-        if 'insttRankRange' in request.session:
-            insttRankRangeVals = request.session['insttRankRange']
-        else:
-            insttRankRangeVals = []
-
-        if 'program-list' in request.session:
-            programVals = request.session['program-list']
-        else:
-            programVals = []
-
-
-        request.method = 'POST'        
-    '''    
 
     countryVals = request.POST.getlist('countryList', [])
     disciplineVals = request.POST.getlist('disciplineList', [])
@@ -137,13 +70,11 @@ def InsttList(request):
     insttRankYrVals = request.POST.getlist('insttRankYrList', [])
     insttRankRangeVals = request.POST.getlist('insttRankRange', [])
     programVals  = request.POST.getlist('programList', [])
-
  
     insttList = Institute.objects.values(
         'instt_code', 'instt_name', 'address_1', 'address_2', 'address_3', 
         'city', 'state', 'pin_code', 'Country', 'phone_number', 
         'email_id', 'website', 'InstituteType__description')
-
 
     # Order the Queryset
     insttList = insttList.order_by('state', 'city', 'instt_name')
@@ -159,12 +90,10 @@ def InsttList(request):
         progInstList = InstitutePrograms.objects.filter(Program_id__in = programVals).values('Institute_id')
         insttList = insttList.filter(instt_code__in = progInstList)
 
-      
     insttCount = len(insttList)
       
     # Get the Institute ids to get the respective rankings 
     insttIds = insttList.values('instt_code')
-
     
     #Get the latest year from Institute Ranking table
     rankyear = InstituteSurveyRanking.objects.all().aggregate(Max('year'))
@@ -174,29 +103,126 @@ def InsttList(request):
     # get Institute Rankings
     insttRanking = InstituteSurveyRanking.objects.filter(year=surveyyear).filter(Institute_id__in=insttIds).values()
 
-    '''
-    page = request.GET.get('page', 1)
-    paginator = Paginator(insttList, 15)
-    
-    try:
-        insttList = paginator.page(page)
-    except PageNotAnInteger:
-        insttList = paginator.page(1)
-    except EmptyPage:
-        insttList = paginator.page(paginator.num_pages)
-    '''
-    
-    # Whether the user is subscribed
-    isSubscribed = isSubsActive(request)
-    
-#    return render(request, 'NextSteps/instts_search_results.html',{})
+    # Vijay: Include Rank into institute list
+    for inst in insttList:
+        for rank in insttRanking:
+            if rank.get('Institute_id') == inst.get('instt_code'):
+                inst.update( {"rank" : rank.get('rank')})
+            else:
+                inst.update( {"rank" : ""})
+
+    # Vijay: Lookup values for States, Cities and Institute Types
+    geostates = list(Institute.objects.values("state").order_by("state").distinct())
+    geocities = list(Institute.objects.values("city").order_by("city").distinct())
+    instTypes = list(InstituteType.objects.values('description').order_by('description'))
+    statecity = list(Institute.objects.filter(instt_code__in = insttIds).values(
+        'state', 'city').distinct().order_by('state', 'city'))
+
     return render(request, 'NextSteps/institute_list.html', {    
         'insttList':insttList,'insttRanking':insttRanking, 'insttCount':insttCount,
         'stateVals':stateVals, 'cityVals':cityVals, 'insttTypeVals':insttTypeVals, 
         'insttRankYrVals':insttRankYrVals, 'programVals':programVals,
         'countryList':countryVals, 'disciplineList': disciplineVals, 
-        'levelList':levelVals, 'isSubscribed' : isSubscribed })
+        'levelList':levelVals,'geocities':geocities,'geostates':geostates,
+        'instTypes':instTypes, 'statecity':statecity})
     
+
+# Vijay : Method Begin
+def InstitueListUnRegistered(request):
+
+    print("I reached InstitueListUnRegistered")
+
+    draw = request.GET['draw']
+    start = int(request.GET['start'])
+    length = int(request.GET['length'])
+    order_column = int(request.GET['order[0][column]'])
+    # order_direction = '' if request.GET['order[0][dir]'] == 'desc' else '-'
+    column = [i.name for n, i in enumerate(Institute._meta.get_fields()) if n == order_column][0]
+    global_search = request.GET['search[value]']
+    print('global_search ', global_search)
+    criteria = request.GET.getlist('criteria')
+    print('criteria ', criteria)
+    stateVals = []
+    cityVals = []
+    insttTypeVals = []
+
+    if criteria:
+        criteriaJSON = json.loads(criteria[0])
+        stateVals = criteriaJSON['stateList']
+        cityVals = criteriaJSON['cityList']
+        insttTypeVals = criteriaJSON['insttTypeList']
+ 
+    insttList = Institute.objects.values(
+        'instt_code', 'instt_name', 'address_1', 'address_2', 'address_3', 
+        'city', 'state', 'pin_code', 'Country', 'phone_number', 
+        'email_id', 'website', 'InstituteType__description')
+
+    allInstitutes = insttList
+    
+    '''
+    #Apply filters
+    if global_search:
+        query_list = global_search.split()
+        insttList = insttList.filter(
+            reduce(operator.and_,
+                    (Q(instt_name__icontains=q) for q in query_list)) |
+            reduce(operator.and_,
+                    (Q(address_1__icontains=q) for q in query_list)) |
+            reduce(operator.and_,
+                    (Q(address_2__icontains=q) for q in query_list)) |
+            reduce(operator.and_,
+                    (Q(address_3__icontains=q) for q in query_list)) |                    
+            reduce(operator.and_,
+                    (Q(city__icontains=q) for q in query_list)) |
+            reduce(operator.and_,
+                    (Q(state__icontains=q) for q in query_list))
+        )
+    '''
+    if stateVals:
+        insttList = insttList.filter(state__in = stateVals)
+
+    if cityVals:
+        insttList = insttList.filter(city__in = cityVals)
+
+    if insttTypeVals:
+        insttList = insttList.filter(InstituteType__description__in = insttTypeVals)
+      
+    if global_search:
+        insttList = insttList.filter(instt_name__in = global_search)
+         
+      
+    # Get the Institute ids to get the respective rankings 
+    insttIds = insttList.values('instt_code')
+    
+    # Get the latest year from Institute Ranking table
+    rankyear = InstituteSurveyRanking.objects.all().aggregate(Max('year'))
+    surveyyear = rankyear['year__max']
+    
+    # Get Institute Rankings
+    insttRanking = InstituteSurveyRanking.objects.filter(year=surveyyear).filter(Institute_id__in=insttIds).values()
+
+    objects = []
+    for i in insttList.order_by('state','instt_name')[start:start + length]:
+        objects.append(i)
+
+    # Vijay: Include Rank into institute list
+    for inst in objects:
+        for rank in insttRanking:
+            if rank.get('Institute_id') == inst.get('instt_code'):
+                inst.update( {"rank" : rank.get('rank')})
+            else:
+                inst.update( {"rank" : ""})
+
+    filtered_count = insttList.count()
+    total_count = allInstitutes.count()
+
+    return JsonResponse({
+        "sEcho": draw,
+        "iTotalRecords": total_count,
+        "iTotalDisplayRecords": filtered_count,
+        "aaData": objects,
+    })
+
     
     
 @login_required
@@ -984,8 +1010,9 @@ def insttStatesCities(request):
                 'Institute_id').distinct()
     
     # Get States and Cities Objects
+    # Vijay : 01-09-2018 , order_by city is added
     stateCityList = list(Institute.objects.filter(instt_code__in = insttIds).values(
-        'state', 'city').distinct().order_by('state'))
+        'state', 'city').distinct().order_by('state', 'city'))
     
     return JsonResponse(stateCityList, safe=False)
     

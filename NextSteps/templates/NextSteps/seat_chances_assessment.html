@@ -36,9 +36,12 @@
     <div class="block" style="padding-top: 5%; padding-bottom: 5%; ">
         <div class="container">
 
-            <h3 class="block-title">Assess Seat Chances - If, Then Analysis</h3>
-
-            <div class="block">
+            <div class ="row">
+                <h3 class="block-title pull-left">Assess Seat Chances - If, Then Analysis</h3>
+                <small class = "pull-right">This page is best viewed on large screens, such as laptops, tablets.</small>
+            </div>
+    
+            <div class="row">
 
                 <form action="{% url 'if_then_analysis_results' %}" method='post' id='getAnalysis'>
                     {% csrf_token %}
@@ -98,9 +101,9 @@
                     <br />
                     <div class = "row">
                         <div class="col-sm-12">
-                            <div class = "clearfix">
-                                <div class = "pull-right">
-                                    <div id="homestateList" class = "form-inline">                
+                            <!-- <div class = "clearfix"> -->
+                                <!-- <div class = "pull-right"> -->
+                                    <div id="homestateList" class = "form-inline pull-right">                
                                         Select your Home State
                                         <select style= "border-top:none; border-left:none; border-right:none;" id="homestate" class = "form-control" name="homestate">
                                             {% for s in stateList %}
@@ -113,8 +116,8 @@
                                         and
                                         <input id="to1"  style = "border-top:none; border-left:none; border-right:none; background-color:#ffffff; border-bottom:2 px solid Gainsboro;" required pattern="[0-9]{1,6}"  name="rankTo" class="qty-input form-control" max = "100000" min="1" maxlength="6" value="2500"/>
                                     </div>
-                                </div>
-                            </div>
+                                <!--</div>-->
+                            <!--</div>-->
                         </div>
                     </div>
                     

@@ -1,0 +1,341 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps_base_vj.html' %}
+
+
+{% load django_bootstrap_breadcrumbs %}
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+{% endblock slide-show %}
+
+<!-- Override block from parent -->
+{% block instt-prog-menu %}
+{% endblock instt-prog-menu %}
+
+
+<!-- Override features block -->
+{% block features %}
+    <div class="block" style="padding-top: 5%; padding-bottom: 5%; ">
+        <div class="container">
+
+            <div id = "breadcrumb">
+                {% block breadcrumbs %}
+                    {% breadcrumb "Home" "index" %}
+                    {% breadcrumb "Study Planner" "study_planner" active_tab="dashboard" %}
+                    {% breadcrumb "Study Schedule Print" "print_study_schedule" %}
+                    {% render_breadcrumbs "django_bootstrap_breadcrumbs/bootstrap3.html" %}
+                {% endblock %}        
+            </div>
+    
+
+            <h3 class="block-title">Study Schedule Print</h3>
+
+            <div class="block">
+
+                <div class = "to-do-frame">
+                
+                    {% if dateMin %}
+                    
+                        <div class = "row" style = "margin-left:25px !important">
+                            
+                            <div class = "row">
+                                <div class = "col-sm-3">
+                                    <form class="form-inline">
+                                        <div class="form-group">
+                                            <label for="selectDisp">Display By:</label>
+                                            <select class="form-control" id="selectDisp" onchange="displayFilter();">
+                                                <option value="Month">Month</option>
+                                                <option  value="Date">Date Range</option>
+                                            </select>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class = "col-sm-7">
+                                    <div style ="display:none" id = "datefilter" class="form-group">
+                                        <form class="form-inline">
+                                            <div class="form-group"> 
+                                                <label for="datefrom">From:</label>
+                                                <input id = "datefrom" class = "form-control" type = "date" min='{{dateMin.date__min|date:"Y-m-d"}}' max='{{dateMax.date__max|date:"Y-m-d"}}' value = '{{dateMin.date__min|date:"Y-m-d"}}'> 
+                                            </div> 
+                                            <div class="form-group">
+                                                <label for="dateto">To:</label>
+                                                <input id = "dateto" class = "form-control" type = "date"  min='{{dateMin.date__min|date:"Y-m-d"}}' max='{{dateMax.date__max|date:"Y-m-d"}}' value = '{{dateMax.date__max|date:"Y-m-d"}}'>
+                                            </div>
+                                            <button type = "button" onclick = "getResultByDate()" id = "submitDatesFilter" class='btn btn-more'> <i class="fa fa-caret-right"></i> Go</button>
+                                        </form>
+                                    </div>
+                                    <div style = "display:none" id = "monthfilter" >
+                                        <form class="form-inline">
+                                            <div class="form-group"> 
+                                                <label for="selMonth">Select Month:</label>
+                                                <select class = "form-control" id = "selMonth">
+                                                    {% for i in months %}
+                                                        <option>{{i.month}}-{{i.year}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <button type = "button" onclick = "getResultByMonthYear()" id = "submitMonthsFilter" class='btn btn-more'> <i class="fa fa-caret-right"></i> Go</button>
+                                            </div>
+                                            
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class = "col-sm-2" style="padding : 7px">
+                                    <form class="form-inline">
+                                        <div class="form-group"> 
+                                            <button type = "button" onclick = "printData()" id = "print" name = "print" class='btn btn-more pull-left'> <i class="fa fa-print"></i> Print</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>                            
+                        </div>
+                        <br />
+                        <div id = "results" >    
+                        <!-- <div class="row" style = "margin:25px !important">
+                            {% for i in userStudyHours %} 
+                            <div class = "col-sm-4 print-study-box">
+                                <div class = "row">
+                                    <div class = "col-sm-5">                                    
+                                        <span> <strong>{{ i.date }} </strong></span>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <span class = "text-primary"><strong>{{ i.subject }}</strong></span>
+                                    </div>
+                                </div>
+                                <div class = "row">
+                                    <div class = "col-sm-12">
+                                        <span>{{ i.start_time }}&nbsp;-&nbsp;{{ i.end_time }}</span>
+                                    </div>
+                                </div>
+                                <div class = "row">
+                                    <div class = "col-sm-5">
+                                        <span>Plan&nbsp;-&nbsp;{{ i.planned_hours }}&nbsp;hrs</span>
+                                    </div>
+                                    <div class = "col-sm-7">
+                                        <span>Actual&nbsp;-&nbsp;{{ i.actual_hours }}&nbsp;hrs</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div> -->
+
+                        <table id="sch" class="display table table-striped table-bordered">
+                            <tbody>
+                                {% for i in userStudyHours %}
+                                <tr>
+                                    <td><span> <strong>{{ i.date }} </strong></span> <span class = "text-primary pull-right"><strong>{{ i.subject }}</strong></span>
+                                        <br />
+                                        <span>{{ i.start_time }}&nbsp;-&nbsp;{{ i.end_time }}</span>
+                                        <br />
+                                        <span>Plan&nbsp;-&nbsp;{{ i.planned_hours }}&nbsp;hrs</span> <span class="pull-right">Actual&nbsp;-&nbsp;{{ i.actual_hours }}&nbsp;hrs</span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        
+                        
+                        </div>                    
+                    {% else %}
+                        <div class = "row">
+                            <div class = "col-sm-12">
+                                <span>No study schedule found. Please create using Study Scheduler.</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div id = "test">
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+    
+<script>
+$(document).ready(function() {
+    
+    //schTable = $('#sch').DataTable( {
+    //    retrieve: true,
+    //    responsive: true,
+    //    paging: false,
+    //    //dom: 'lBfrtip',
+    //    ordering:  false,
+    //    info:      false,
+    //    searching: false,
+
+    //});
+    
+    // Set month filter to current month 
+    mthYr ="{{currMonth}}-{{currYear}}";
+    document.getElementById("selMonth").value = mthYr;    
+    
+    // Force click the month filter option to current month
+    displayFilter();
+    
+    //Disable print button is there no rows in userStudyHours
+    if ( {{userStudyHours.count}} <= 0) {
+        $("#print").prop('disabled', true);
+    } else {
+        $("#print").prop('disabled', false);
+    }    
+    
+} );    
+</script>
+
+<script>
+    //$('#selectDisp').on('change', function() {
+    function displayFilter(){
+        val = document.getElementById('selectDisp').value;
+        if (val === 'Month'){
+            $("#monthfilter").show(100);
+            $("#datefilter").hide();
+        } else if (val === 'Date'){
+            $("#datefilter").show(100);
+            $("#monthfilter").hide();
+        }        
+    };
+    
+    
+</script>
+
+<script>
+    function getResultByMonthYear() {
+        
+        // Get month in number
+        mthYear = document.getElementById('selMonth').value;
+        mth = getMonthFromString( mthYear.substring(0, 3) );
+        year = mthYear.substring(4);
+
+        // Making an ajax call to get the date 
+        $.ajax({
+            url: '{% url "getStudyHours" %}',
+            data: {
+            'month': mth, 'year':year
+            },
+            dataType: 'json',
+            success: function (data) {
+                // remove all rows first
+                $("#sch tbody tr").remove();
+                
+                var tbl = document.getElementById("sch");
+                
+                data.forEach(function(row){                
+                    txt = '<span> <strong>' + row.date + ' </strong></span> <span class=\"text-primary pull-right\"><strong>' + row.subject + '</strong></span><br/><span>' + row.start_time + '&nbsp;-&nbsp;' + row.end_time + ' </span><br/><span>Plan\&nbsp;-\&nbsp;' + row.planned_hours + '\&nbsp;hrs</span> <span class=\"pull-right\">Actual\&nbsp;-\&nbsp;' + row.actual_hours + '\&nbsp;hrs</span>'
+                    //console.log(txt);
+                    //rows.push(txt);
+                    //$("#test").append(txt);
+                    //schTable.row(rows).add(txt).draw();
+                    
+                    var row = tbl.insertRow(-1);
+                    var cell = row.insertCell(0);
+                    cell.innerHTML = txt;
+                });
+
+                //Disable print button is there no rows fetched
+                if (data.length <= 0) {
+                    $("#print").prop('disabled', true);
+                } else {
+                    $("#print").prop('disabled', false);
+                }    
+
+            }
+        });    
+        
+    }
+    
+    function getResultByDate(){
+        // Get from and to dates
+        datefrom = $("#datefrom").val();
+        dateto = $("#dateto").val();
+
+        // Making an ajax call to get the data 
+        $.ajax({
+            url: '{% url "getStudyHours" %}',
+            data: {
+            'datefrom': datefrom, 'dateto':dateto
+            },
+            dataType: 'json',
+            success: function (data) {
+                // remove all rows first
+                $("#sch tbody tr").remove();
+                
+                var tbl = document.getElementById("sch");
+                
+                data.forEach(function(row){                
+                    txt = '<span> <strong>' + row.date + ' </strong></span> <span class=\"text-primary pull-right\"><strong>' + row.subject + '</strong></span><br/><span>' + row.start_time + '&nbsp;-&nbsp;' + row.end_time + ' </span><br/><span>Plan\&nbsp;-\&nbsp;' + row.planned_hours + '\&nbsp;hrs</span> <span class=\"pull-right\">Actual\&nbsp;-\&nbsp;' + row.actual_hours + '\&nbsp;hrs</span>'
+                    
+                    var row = tbl.insertRow(-1);
+                    var cell = row.insertCell(0);
+                    cell.innerHTML = txt;
+                });
+
+                //Disable print button is there no rows fetched
+                if (data.length <= 0) {
+                    $("#print").prop('disabled', true);
+                } else {
+                    $("#print").prop('disabled', false);
+                }    
+
+            }
+        });    
+    
+    
+    }
+    
+
+    function getMonthFromString(mon){
+
+        var d = Date.parse(mon + "1, 2012");
+        if(!isNaN(d)){
+          return new Date(d).getMonth() + 1;
+        }
+        return -1;
+    }
+
+    function printData()
+    {
+    //   var divToPrint=document.getElementById("sch");
+     //  newWin= window.open("");
+      // newWin.document.write(divToPrint.outerHTML);
+      // newWin.print();
+      // newWin.close();
+    
+        //Get the HTML of div
+        var divElements = document.getElementById("sch").innerHTML;
+    
+        //Get the HTML of whole page
+        var oldPage = document.body.innerHTML;
+    
+        //Reset the page's HTML with div's HTML only
+        document.body.innerHTML = "<html><head><title></title></head><body>" + divElements + "</body>";
+    
+        //Print Page
+        window.print();
+    
+        //Restore orignal HTML
+        document.body.innerHTML = oldPage;
+    }
+
+</script>
+{% endblock features %}
+
+{% block registration %}
+{% endblock registration %}
+<!-- Footer-section remains as it is, no override -->
+

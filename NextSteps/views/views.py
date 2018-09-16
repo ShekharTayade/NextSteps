@@ -131,11 +131,10 @@ def index(request):
     
     return response
 
-
+'''
 def loggedIn_index(request):
     regPending = False
     activeSubs = False
-
 
     # Check if it's a registered user
     if isUserRegistered(request):
@@ -180,7 +179,7 @@ def loggedIn_index(request):
             'rank_range':rank_range})
 
     return response
-
+'''
 
 def NextStepslogin(request):
     
@@ -234,12 +233,9 @@ def signup(request):
 
 def checkSubscription(request):
     
-    print("Checking subscription===================================")
     if isSubsActive:
-        print("TRUE")
         return redirect('index')
     else:
-        print("FALSE")
         return render(request, 'NextSteps/checkSubsWithUser.html')
         
 
@@ -311,7 +307,10 @@ def subscriptionStart(request):
         percentDisc = '0'
     
     #Get subscription end date
+    # Calling add_year method twice as the subsription period is 2 years.
     subs_end = add_year(datetime.datetime.now())
+    subs_end = add_year(subs_end)
+
 
     #Set default as status PASS and the success message
     pass_fail = 'PASS'      
@@ -342,7 +341,6 @@ def subscriptionStart(request):
     return render(request, 'NextSteps/subscription_start.html', {'save':pass_fail, 'msg':msg})
 
 @login_required
-@subscription_active
 def renewSubscription(request):
     
     #Get o=logged in userobj
@@ -358,12 +356,12 @@ def renewSubscription(request):
             validSubscription=True
         regDate = ua.registration_date
         
-    
+    print(regDate)
+
     return render(request, 'NextSteps/renew_subscription.html',{
         'useraccount':useraccount, 'regDate': regDate, 'validSubscription':validSubscription})    
 
 @login_required
-@subscription_active
 def renewSubscriptionConfirm(request):
     
     regFee = 0
@@ -382,6 +380,10 @@ def renewSubscriptionConfirm(request):
 
     pass_fail = 'PASS'
     msg = 'Subscription Renewed!'
+    
+    print("RegStr - " + regStr)
+    print("subsStartStr - " + regStr)
+    
     
     if regDate == "01/01/1900" or subsStartDate == "01/01/1900" or subsEndDate == "01/01/1900":
         pass_fail = 'FAIL'
@@ -455,7 +457,7 @@ def userAccountInformation(request):
         subs_active = True
 
     return render(request, 'NextSteps/userAccount.html', {'useraccount':useraccount, 
-            'reg_found':reg_found, 'subs_end_dt':subs_end_dt1, 
+            'reg_found':reg_found, 'subs_end_dt':subs_end_dt, 
             'subs_active': subs_active})
 
 
@@ -534,13 +536,49 @@ def referNextSteps_confirm(request):
  
 def feature_instt_search(request):
 
-    return render(request, 'NextSteps/feature_instt_search.html')
+    activeSubs = isSubsActive(request)
+    regUser = isUserRegistered(request)
+
+    return render(request, 'NextSteps/feature_instt_search.html',
+            {'activeSubs':activeSubs, 'regUser':regUser})
         
     
 def feature_important_info(request):
+    activeSubs = isSubsActive(request)
+    regUser = isUserRegistered(request)
 
-    return render(request, 'NextSteps/feature_instt_search.html')
-        
+
+    return render(request, 'NextSteps/feature_important_info.html',
+            {'activeSubs':activeSubs, 'regUser':regUser})
     
        
-           
+def feature_calendar(request):
+    activeSubs = isSubsActive(request)
+    regUser = isUserRegistered(request)
+
+    return render(request, 'NextSteps/feature_calendar.html',
+            {'activeSubs':activeSubs, 'regUser':regUser})
+
+
+def feature_seat_chances(request):
+    activeSubs = isSubsActive(request)
+    regUser = isUserRegistered(request)
+
+    return render(request, 'NextSteps/feature_seat_chances.html',
+            {'activeSubs':activeSubs, 'regUser':regUser})
+
+
+def feature_study_planner(request):
+    activeSubs = isSubsActive(request)
+    regUser = isUserRegistered(request)
+
+    return render(request, 'NextSteps/feature_study_planner.html',
+            {'activeSubs':activeSubs, 'regUser':regUser})
+
+
+def feature_application_record(request):
+    activeSubs = isSubsActive(request)
+    regUser = isUserRegistered(request)
+
+    return render(request, 'NextSteps/feature_application_record.html',
+            {'activeSubs':activeSubs, 'regUser':regUser})

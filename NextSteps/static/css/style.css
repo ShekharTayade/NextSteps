@@ -1461,8 +1461,9 @@ blockquote:after {
   clear: both;
 }
 blockquote p {
-  padding: 0 1em 1em 160px;
+  padding: 0 1em 1em 50px;
   text-align: center;
+  font-size: 14px !important;
   font-style: italic;
   font-family: Georgia, "Times New Roman", Times, serif;
   font-weight: normal;
@@ -1517,7 +1518,6 @@ img {
   display: block;
   max-width: 100%;
   height: auto;
-}
 body,
 html {
   font-family: "Roboto", sans-serif;
@@ -1526,6 +1526,7 @@ h1,
 h2,
 h3,
 h4 {
+}
   font-weight: 100;
 }
 a {
@@ -1769,6 +1770,8 @@ a.btn-hh-trigger.target-open:after {
 @media (min-width: 768px) {
   .navbar-default .navbar-collapse {
     clear: none;
+    float: right;
+    display: block;
   }
 }
 .navbar-btn {
@@ -1792,7 +1795,7 @@ a.btn-hh-trigger.target-open:after {
   margin-bottom: 13px;
 }
 .navbar-toggle {
-  float: left;
+  float: right !important;
   margin-right: 0;
   margin-left: 8px;
   -webkit-border-radius: 0;
@@ -1849,7 +1852,7 @@ a.btn-hh-trigger.target-open:after {
   background-color: black !important;
 }
 
-.fa-2x{
+.nfa-2x{
   vertical-align: middle;
   font-size: 90%;
 }
@@ -2048,7 +2051,7 @@ a.btn-hh-trigger.target-open:after {
 }
 
 .page-header {
-  margin: 10px 0 20px 0;
+  margin: 5px 0 5px 0;
   margin-left: 15px;
   font-size: 25px;
 }
@@ -2077,13 +2080,15 @@ a.btn-hh-trigger.target-open:after {
   font-size: 25px;
   font-weight: 300;
   text-shadow: 0 1px 1px rgba(0,0,0,0.2);
-  color: #ECECEC;
+  /*color: #ECECEC; */
+  color: #000;
   font-weight: 300;
 }
 
 .widget-user .widget-user-desc {
   margin-top: 0;
-  color: #ECECEC;
+  /*color: #ECECEC;*/
+  color: #000;
   font-weight: 300;
 }
 
@@ -2125,7 +2130,10 @@ img {
   background-color: #fff;
 }
 .bg-black {
-  background-color: #00a7d0 !important;
+  /* background-color: #00a7d0 !important; /* 
+  /* background-color: #ff5821 !important; */
+  /* background-color: #686868 !important; */
+  background-color: #fff !important;
 }
 
 .description-block {
@@ -2146,7 +2154,8 @@ img {
   position: relative;
   border-radius: 3px;
   background: #ffffff;
-  border-top: 3px solid #d2d6de;
+  /*border-top: 3px solid #d2d6de;*/
+  border-top: 1px solid #ff5821;
   margin-bottom: 20px;
   width: 100%;
   box-shadow: 0 1px 1px rgba(0,0,0,0.1);
@@ -2155,7 +2164,7 @@ img {
   border-top: 0;
 }
 .box.box-success {
-  border-top-color: #00a7d0;
+  border-top-color: #ff5821;
 }
 
 .box-header {
@@ -2180,6 +2189,7 @@ img {
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
   padding: 10px;
+  margin-left: 5px;
 }
 .box-footer {
   border-top-left-radius: 0;
@@ -2318,6 +2328,7 @@ img {
   .navbar-default .navbar-nav li {
     border-right: 1px solid #D3D3D3;
     border-bottom: none;
+    float:right;
   }
 }
 .navbar-default .navbar-nav li:first-child {
@@ -3403,10 +3414,10 @@ button.qty-change{
 
 }
 
-.modal-body, .modal-content {
+.promo-modal-body, .promo-modal-content {
     padding:0px; 
 }
-.modal-header{
+.promo-modal-header{
     font-size:12px;
     padding:2px; 
     color:#ffffff;
@@ -3714,12 +3725,68 @@ body,html{
     background-color: #686868;   
     color: #ffffff;   
     padding: 5px;
-    border-radius: 5px;
+    /* Vijay: 07-09-2018 Edits to border radius */
+    /* border-radius: 5px; */
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     font-size:13px;
-    margin:5px 0px;
+    /* Vijay: 07-09-2018 commented */
+    /* margin:5px 0px; */
     text-align:center;
     height:50px;
 }
+
+/* Vijay: 07-09-2018 Banded Category 2 classes of instt-compare-details below */
+.instt-compare-details-odd {
+    font-size:12px;
+    text-align:center;
+    border:2px solid #ffffff;
+    padding: 5px;
+    background-color: inherit;   
+    color: #686868;   
+}
+
+.instt-compare-details-even {
+  font-size:12px;
+  text-align:center;
+  border:2px solid #ffffff;
+  padding: 5px;
+  background-color:#bdc3c7 ;   
+  color: #686868;   
+}
+
+.instt-compare-margin {
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+.instt-compare-details-sub{
+    font-size:12px;
+    margin:5px 0px;
+    text-align:center;
+    border:2px solid #ffffff;
+}
+
+/* Vijay: 07-09-2018 Banded Category 2 classes of compare-category below */
+.compare-category-odd {
+    border:2px solid #ffffff;
+    border-color:#ffffff !important; 
+    text-align:right;
+    background-color: inherit;   
+    color: #686868;   
+    padding: 5px;
+}
+
+.compare-category-even {
+  border:2px solid #ffffff;
+  border-color:#ffffff !important; 
+  text-align:right;
+  background-color:#bdc3c7 ;   
+  color: #686868;   
+  padding: 5px;
+}
+
 
 .instt-compare-details{
     font-size:12px;
@@ -3889,13 +3956,6 @@ thead input {
     transition:0.2s ease all; 
   }
   
-  /* input:focus ~ .sign-label,
-  input:not(:placeholder-shown) ~ .sign-label,
-   {
-    top:-20px;
-    font-size:14px;
-    color:#5264AE;
-  } */
   
   /* active state */
   input:focus ~ .sign-label, input:valid ~ .sign-label     {
@@ -4025,10 +4085,12 @@ thead input {
     padding-top: 4.3%;
   }
   
+  /*
   .form-control {
     border-radius: 0 !important;
+    width:100% !important;
   }
-  
+  */
   
   
   .hgt-34px {
@@ -4119,4 +4181,278 @@ thead input {
     text-align:center;
 }
 
+.popover-content {
+    font-size : 14px;
+    border-radius : 15px;
+}
+
+.arrow {
+    border-right-color: red !important;
+}
+
+.print-study-box {
+    margin : 10 px;
+    font-size : 14px;
+    border-radius : 10px;
+    padding: 5px;
+    border: 1px solid #e34619;
+}
+
+#sch tr{
+    float:left;
+    border-radius : 10px;
+}
+
+#schUpd tr{
+    float:left;
+    border-radius : 10px;
+}​
+
+.actualhrs {
+    width : 75px;
+}
+   
 /********************* Study Planner End *****************/
+
+
+
+
+/************** Vijay - Institute List Begin *************/
+
+#instt a p{
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  #instt a {
+    text-decoration: none;
+    color : black;
+  }
+  .inst-state-p {
+    margin-top : -10px !important;
+  }
+  .inst-address {
+    font-size: 12px;
+    font-weight: 300;
+  }
+  
+  .adj-def {
+    white-space: unset !important;
+  }
+  
+  .instt-col-2-div {
+    margin-bottom: 15px !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+  }
+  
+  checkbox, .radio {
+    position: relative;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .checkbox input[type=checkbox], .checkbox-inline input[type=checkbox], .radio input[type=radio], .radio-inline input[type=radio] {
+    position: absolute;
+    margin-top: 4px;
+    margin-left: -20px !important;
+  }
+  
+  fixed-table-container input[type="checkbox"] {
+    margin-left: -20px !important;
+  }
+  .text-footer {
+    position: relative;
+    padding-top: 10px;
+    font-size: 12px;
+    color: #f4511e !important;
+    color: #fff;
+    color: rgba(255,255,255,0.8);
+    display: block;
+    z-index: 10;
+    text-decoration: none;
+  }
+  .fixed-table-toolbar .search {
+    min-width: 500px !important;
+  }
+  
+  input {
+    font-family: inherit;
+  }
+  @media (max-width: 768px) {
+    .fixed-table-toolbar .search {
+      display: -webkit-box;
+    }
+    .fixed-table-toolbar .search {
+      min-width: 90px !important;
+    }
+    .filter-by-text  {
+      display: none;
+    }
+    .search-container .sub-container {
+      margin: 0;
+      width: 309px !important;
+    }
+    .sub-container-w {
+      width: 320px !important;
+    }
+  }
+  
+  .search-container {
+    margin-bottom: 30px;
+    border-radius: 4.4px;
+    background-color: #fff;
+  }
+  
+  .search-container .sub-container {
+    margin: 0;
+    width: 193px;
+  }
+  
+  .sub-container h4 {
+    background-color: #d2d6de;
+    margin-left: -14px;
+    margin-right: 6px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 400;
+  }
+  
+  .search-box {
+    font-size: 10.7px;
+    letter-spacing: .4px;
+    color: #d4d4d4;
+    font-weight: 600;
+    box-shadow: none;
+    border: 1px solid #EDEFF0;
+    padding: 3px 27px;
+    height: 32px;
+    margin: 6px auto 2px;
+  }
+  
+  .list {
+    padding: 4px 0 5px;
+    margin-bottom: 10px;
+    max-height: 155px;
+    overflow: auto;
+  }
+  .list-li {
+    color: #AAA;
+    display: block;
+    position: relative;
+    left: -20px;
+    margin-bottom: 3px!important;
+    margin-top: -5px!important;
+  }
+  .checkbox {
+    position: relative;
+    display: block;
+    min-height: 20px;
+    margin-top: 5px;
+    margin-left: 27px;
+  }
+  body::-webkit-scrollbar {
+    width: 0.5em;
+  }
+  
+  body::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  }
+  
+  body::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+  }
+  
+  #ns-scroll::-webkit-scrollbar-track
+  {
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  }
+  
+  #ns-scroll::-webkit-scrollbar
+  {
+    width: 0.5em;
+  }
+  
+  #ns-scroll::-webkit-scrollbar-thumb
+  {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+  }
+  
+  .vns-scroll::-webkit-scrollbar-track
+  {
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  }
+  
+  .vns-scroll::-webkit-scrollbar
+  {
+    width: 0.5em;
+  }
+  
+  .vns-scroll::-webkit-scrollbar-thumb
+  {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+  }
+  filter-btn {
+    background-color: white;
+    width: 323px;
+    border-radius: 0;
+    font-size: 20px;
+    color: #f4511e;
+  }
+  
+  .search-list {
+    margin-top: 60px;
+  }
+  
+  .sub-container-w {
+    width: 187px;
+  }
+  
+  .search-value {
+    padding-left: 0 !important;
+    font-size: 12px;
+    font-weight: 400;
+    min-height: 15px !important;
+  }
+  
+  .dataTables_filter {
+    float: left !important;
+  }
+  .dataTables_filter input[type="search"] {
+    width: 350px !important;
+    display: inline-block !important;
+  }
+  .dataTables_length {
+    float: right !important;
+    margin-top: 16px;
+    margin-right: 12px;
+  }
+  
+  /* Vijay - Institute List End */
+  
+
+/*********** Marketing Features *********/
+  .block-feature {
+  padding: 1em 1em;
+  background-color: #f3f3f3;
+  border-bottom: 1px solid #ff5821;
+  margin: 10px
+}
+
+
+/** For the screenshots in the marketting features pages  **/
+
+.screenshot {
+    width: 100%;
+    max-height="100%" max-width="100%"
+ }
+/***********End Marketting Fearures *******************************/
+
+#tnc {
+    width:550px;
+    height:300px
+}

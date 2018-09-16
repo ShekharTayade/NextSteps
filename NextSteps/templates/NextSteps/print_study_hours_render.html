@@ -1,0 +1,27 @@
+                        <div class="row" style = "margin:25px !important">
+                            {% for i in StudyHours %} 
+                            <div class = "col-sm-4 print-study-box">
+                                <div class = "row">
+                                    <div class = "col-sm-5">                                    
+                                        <span> <strong>{{ i.date }} </strong></span>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <span class = "text-primary"><strong>{{ i.subject }}</strong></span>
+                                    </div>
+                                </div>
+                                <div class = "row">
+                                    <div class = "col-sm-12">
+                                        <span>{{ i.start_time }}&nbsp;-&nbsp;{{ i.end_time }}</span>
+                                    </div>
+                                </div>
+                                <div class = "row">
+                                    <div class = "col-sm-5">
+                                        <span>Plan&nbsp;-&nbsp;{{ i.planned_hours }}&nbsp;hrs</span>
+                                    </div>
+                                    <div class = "col-sm-7">
+                                        <span>Actual&nbsp;-&nbsp;{{ i.actual_hours }}&nbsp;hrs</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>

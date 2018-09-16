@@ -1,0 +1,102 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps_base_vj.html' %}
+
+{% load static %}
+
+{% load django_bootstrap_breadcrumbs %}
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+{% endblock slide-show %}
+
+<!-- Override first block from parent -->
+{% block instt-prog-menu %}
+{% endblock instt-prog-menu %}
+
+<!-- Override features block -->
+{% block features %}
+    <div class="block" style="padding-top: 5%; padding-bottom: 5%; ">
+        <div class="container">
+
+            <div class = "row">
+                <div id = "breadcrumb">
+                    {% block breadcrumbs %}
+                        {% breadcrumb "Home" "index" %}
+                    {% endblock %}        
+                </div>
+            </div>
+                
+            <h3 class="block-title" style = "margin-bottom:15px;">Record Institute Application Details</h3>
+            <br />
+
+            <blockquote><p>The "Application Details Record" feature is available to the subscribed users.<br />
+                {% if regUser %}
+                    You have signed up and we recommend that you 
+                    <a href="{% url 'payment' %}"  class="text-primary"> Subscribe</a> now and get access to the powerful 
+                    NextSteps features that give you access to useful tools, customizes to you, and saves your valuable time & effort.
+                {% else %}
+                    NextSteps has powerful fearures that give you access to useful tools, customizes to you and saves a lot of time & effort.
+                    To get these benefits we recommed that you <a href="{% url 'signup' %}"  class="text-primary"> Sign Up </a>, 
+                    Subscribe and get started!.
+                {% endif %}</p>
+            </blockquote>                 
+
+
+            <n_note>
+                <h4>This feature helps you keep in one place all the details required for institute applications</h4>
+            </n_note>
+            
+            <div class = "right-pane">
+                <div class = "block-feature">
+                    <p>This feature allows you to keep all your important information required for various institutes 
+                    applications in once place. This is handy feature that will save you time and effort in looking
+                    for information and documents each time you apply to an institute.</p>
+                    <p>It becomes quite cumbersome to keep locating documents and papers and referring to those each
+                    time you apply to an institute. This feature will save your all the effort and time.</p>
+                    <p>We concerned about your privacy and personal data. Rest assured that we will not share this information 
+                    with anyone without your consent. This is only for you to keep it all in one place and refer whenever
+                    and wherever required.</p>
+                </div>
+                <br/>
+                <br/>
+
+                <div class="text-fancy">Application Details</div>
+                <img class ="screenshot"  src="{% static 'img/screenshots/application_record.png' %}" alt="Calendar 1" >
+                <br/>
+            </div>
+        </div>
+    </div>
+                
+{% endblock features %}
+
+{% block registration %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock registration %}
+
+<!-- Footer-section remains as it is, no override -->
+
+
+
+
+
+
+
+

@@ -1,417 +1,502 @@
 <!-- Extend the logged in user home page to keep the same styling for header and footer sections. -->
-{% extends 'NextSteps/NextSteps_base.html' %}
 
-
+{% extends 'NextSteps/NextSteps_base_vj.html' %}
+{% load widget_tweaks %}
+{% load trim %}
+{% load to_underscore %}
 <!-- Override slide-show block from parent -->
-{% block slide-show %}
+{% block slide-show %} 
 {% endblock slide-show %}
 
 <!-- Override news-ad block from parent -->
-{% block news-ad %}
-{% endblock news-ad %}
+{% block news-ad %} 
+{% endblock news-ad %} 
 
+{% block instt-prog-menu %} 
+{% endblock instt-prog-menu %} 
+
+{% block registration%} 
+{% endblock registration %}
 <!-- Override features block -->
 {% block features %}
-<div class="block" style="padding-top: 5%;">
-    <div class="container">
-    
-        <h3 class="block-title">Institutes</h3>
-
-        <!--<div class ="userHome"> -->
+<div class="showcase block block-border-bottom-grey">
+    <div id="sticky">
+        <form id="compareform" action="{% url 'compare_instts' %}" method="post">
+            {% csrf_token %}
+            <a href="#" id="comparelink">Compare</a>
+            <select hidden id = "selectedInsttCodes" name="selectedInsttCodes" multiple size=4></select>
+        </form>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2" style="margin-top: 60px; padding-right: 0 !important">
+                <button id="filter-btn" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#search" aria-expanded="false"
+                    aria-controls="navbar" style="width: 325px;background-color: white;">
+                    <span class="glyphicon glyphicon-filter"></span>Filter By
+                </button>
                 
-            <!-- Sort Filter (invoked on click of Sort button)  -->
-            <div style = "display: none;" id="dialog" title="Sort By">
-                <div class="row">
-                    <div class = "col-sm-6">
-                        <label for="selProg">Sort Options:</label>
-                        <div class = "hscroll">
-                            <select ondblclick = "toSelected()" id="options" multiple='multiple' size='4' name="sel">
-                                <option>State</option>
-                                <option>City</option>
-                                <option>Institute Name</option>
-                                <option>Institute Type</option>
-                            </select>           
+                <div class="box navbar-collapse collapse" id="search">
+                    <div class="box-header with-border filter-by-text" style="font-size: 13px;font-weight: 600;color: #e34619;">
+                        Filter By
+                    </div>
+
+                    <section class="search-container">
+                        <div class="sub-container ">
+                            <h4 data-toggle="collapse" data-target="#State">State</h4>
+                        
+                            <div class="collapse in sub-container-w" id="State">
+                                <div>
+                                    <i class="fa fa-search" aria-hidden="true" style="position: absolute;color: #d4d4d4;margin-top: 10px;margin-left: 15px;"></i>
+                                    <!-- inputE, ulE, liE, labelE -->
+                                    <input type="text" class="search-box" placeholder="Search State" id="stateInput" onkeyup="filterValues('stateInput','stateUl','stateLi','stateLabel')">
+                                </div>
+                                <ul class="list vns-scroll" id="stateUl">
+                                    {% if geostates %} 
+                                        <form method="post" action="{% url 'instt_list' %}">
+                                            {% csrf_token %}
+                                                {% for s in geostates %}
+                                                    <li class="checkbox" id="stateLi">
+                                                        <input type="checkbox" id="{{s.state|trim|to_underscore}}" value="{{s.state}}" onclick="checkBoxAction(this,'{{s.state}}','state')">
+                                                        <label class="search-value" id="stateLabel">{{s.state}}</label>
+                                                    </li>
+                                                {% endfor %} 
+                                        </form>
+                                    {% endif %}
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                    <div class = "col-sm-6">
-                        <label for="selProg">Sort Order:</label>
-                        <div class = "hscroll">
-                            <select ondblclick = "fromSelected()" id="order" multiple='multiple' size='4' name="order">
-                            </select>           
+                        <div class="sub-container ">
+                            <h4 data-toggle="collapse" data-target="#city">City</h4>
+                        
+                            <div class="collapse in sub-container-w" id="city">
+                                <div>
+                                    <i class="fa fa-search" aria-hidden="true" style="position: absolute;color: #d4d4d4;margin-top: 10px;margin-left: 15px;"></i>
+                                    <input type="text" class="search-box" placeholder="Search City" id="cityInput" onkeyup="filterValues('cityInput','cityUl','cityLi','cityLabel')">
+                                </div>
+
+                                <ul class="list vns-scroll" id="cityUl">
+                                    {% if geocities %} 
+                                        {% for c in geocities %}
+                                            <li class="checkbox" id="cityLi">
+                                                <input type="checkbox" id="{{c.city|trim|to_underscore}}" value="{{c.city}}" onclick="checkBoxAction(this,'{{c.city}}','city')" >
+                                                <label class="search-value" id="cityLabel">{{c.city}}</label>
+                                            </li>
+                                        {% endfor %} 
+                                    {% endif %}
+                                </ul>
+                            </div>
                         </div>
+                        <div class="sub-container ">
+                            <h4 data-toggle="collapse" data-target="#instType">Institue Type</h4>
+                        
+                            <div class="collapse in sub-container-w" id="instType">
+                                <ul class="list" id="ns-scroll">
+                                    {% if instTypes %} 
+                                        {% for i in instTypes %}
+                                            <li class="checkbox">
+                                                <input type="checkbox" id="type" value="{{i.description}}" onclick="checkBoxAction(this,'{{i.description}}','type')">
+                                                <label class="search-value">{{i.description}}</label>
+                                            </li>
+                                        {% endfor %} 
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                
+            </div>
+
+            <div class="col-md-10">        
+                <div class="box search-list">
+                    <div class="box-body">
+                        <table id="insttTbl" class="table custom-tbl" data-toggle="table"  data-show-export="false" data-minimum-count-columns="2"
+                            data-pagination="true" data-id-field="instt" data-page-list="[10, 25, 50, 100]" data-show-footer="false" 
+                            data-classes="table table-no-bordered" data-height="auto" >
+                            <thead>
+                                <tr class="adj-def">
+                                    <!-- <th><input name="select_all" value="1" type="checkbox" style="display: none;"></th> -->
+                                    <th style="width:100%" data-field="state"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <h3 style="margin-top: 0;">Institutes</h3>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                    
-                <div class = "row">
-
-                    <div class = "col-sm-6" style="text-align:center">
-                        <span onclick = "toSelected()"> <i class = "fa fa-chevron-circle-right fa-2x"></i></span>
-                    </div>
-                    <div class = "col-sm-6" style="text-align:center">
-                        <span onclick = "fromSelected()"> <i class = "fa fa-chevron-circle-left fa-2x"></i></span>
-                    </div>
-                </div>
-                <br />
-                <br />
-                <div class = "row">
-                    <div class = "text-center">
-                        <button class = "btn btn-more" type = "submit" >
-                            <i class="fa fa-close"></i>Cancel
-                        </button>
-                        <button class = "btn btn-more" type = "submit" >
-                            <i class="fa fa-check-circle"></i>Apply
-                        </button>
-                    </div>
-                </div>
             </div>
-            <!-- End of Sort Filter (invoked on click of Sort button)  -->
-
-            <span class="pull-left">
-                <small>Showing {{insttCount}}&nbsp;institutes</small>
-            </span>
-            <span class = "pull-right"> 
-                <form id="compareform" action= "{% url 'compare_instts' %}" method="post">
-                    {% csrf_token %}
-                    <button class = 'btn btn-more ' form = 'sort' data-toggle="tooltip" title="Sort Institutes" data-placement="bottom" onclick="$('#dialog').dialog('open');"> 
-                        <i class="fa fa-sort"></i> Sort
-                    </button>
-                    &nbsp;&nbsp;
-                        <button class = 'btn btn-more' form = 'filter' data-toggle="tooltip" title="Filter Institutes" data-placement="bottom"> 
-                        <i class="fa fa-filter"></i>Filter
-                    </button>    
-                    &nbsp;&nbsp;
-                    <select hidden id = "selectedInsttCodes" name="selectedInsttCodes" multiple size=4>
-                    </select>
-                    {% if isSubscribed %}
-                        <button class = 'btn btn-more' form = 'compareform' type= "submit" data-toggle="tooltip" title="Compare Institutes" data-placement="bottom"> 
-                            <i class="fa fa-tachometer"></i> Compare
-                        </button>
-                    {% endif %}
-                </form>
-            </span>
-                
-            <br />
-            <!-- Display the already applied filters -->
-            <div>
-                {% if stateVals %}
-                    {% for s in stateVals %}
-                        <span class = "global-filter">{{s}}&nbsp;<i class="fa fa-check"></i></span>
-                    {% endfor %}
-                    
-                {% endif %}
-            </div>
-            <div>
-                {% if cityVals %}
-                    <br />
-                    {% for s in cityVals %}
-                        <span class = "global-filter">{{s}}&nbsp;<i class="fa fa-check"></i></span>
-                    {% endfor %}
-                        
-                {% endif %}
-            </div>
-            <div>
-                {% if insttTypeVals %}
-                    {% for s in insttTypeVals  %}
-                        <span class = "global-filter">{{s}}&nbsp;<i class="fa fa-check"></i></span>
-                    {% endfor %}
-                        
-                {% endif %}
-            </div>
-            <div>
-                {% if programVals %}
-                    <br />
-                    {% for s in programVals  %}
-                        <span class = "global-filter">{{s}}&nbsp;<i class="fa fa-check"></i></span>
-                    {% endfor %}
-                        
-                {% endif %}
-            </div>
-                
-            <table id="insttTbl" class="table custom-tbl" 
-                data-toggle="table"
-                data-search="true"
-                data-show-export="true"
-                data-minimum-count-columns="2"
-                data-pagination="true"
-                data-id-field="instt"
-                data-page-list="[10, 25, 50, 100]"
-                data-show-footer="false"
-                data-row-style="rowStyle"
-                data-classes="table table-no-bordered"
-                data-height="1200">
-        
-                <thead>
-                    <tr>                        
-                        <th style="width:10%" data-field="state" data-visible="false"></th>
-                        <th style="width:10%" data-field="city" data-visible="false"></th>
-                        <th style="width:10%" data-field="instt_code" data-visible="false"></th>
-                        <th style="width:70%" data-field="instt" data-sortable="false"></th>
-                        <th style="width:30%" data-field="oth" data-sortable="false"></th>
-                        <th style="width:0%" data-field="rank" data-visible="false"></th>
-                    </tr>
-                </thead>
-
-                <tbody>            
-                
-                    {% autoescape off %}
-                    {% for il in insttList %}
-                    <tr>
-                        <td id = "state" name="state">{{il.state}}</td>
-                        <td id = "city" name="city">{{il.city}}</td>
-                        <td class="insttcd" name="instt_code">{{il.instt_code}}</td>
-                        <td class = "pull-left" id = "instt" name="instt"> 
-                            <form id={{il.instt_code}} action= "{% url 'instt_all_details' %}" method="post">
-                                {% csrf_token %}
-                                <strong><a href ="javascript:;" onclick="document.getElementById({{il.instt_code}}).submit();">{{il.instt_name}}</a></strong>
-                                <select hidden name="instt_code" >
-                                    <option value={{il.instt_code}} selected >{{il.instt_code}}</option>
-                                </select>
-                            </form>
-                    
-                            {{ il.address_1 }} 
-                            
-                            {% if il.address_2 %}
-                                &nbsp;{{ il.address_2 }}<br />
-                            {% endif %}
-                            
-                            {% if il_.address_3 %}
-                                &nbsp;{{ il.address_3 }}<br />
-                            {% endif %}
-                            
-                            {{ il.city }} &nbsp; {{ il.state }} &nbsp; {{ il.pin_code }} &nbsp;
-                            
-                            {{ il.country }} <br />
-                            {% if il.phone_number %}
-                               <i class="fa fa-fw fa-phone-square"></i>&nbsp; {{il.phone_number}}&nbsp; &nbsp;
-                            {% endif %}   
-                            {% if il.email_id %}
-                                <i class="fa fa-fw fa-paper-plane"></i>&nbsp; {{ il.email_id }};
-                            {% endif %}
-                            <br />
-                            {% if il.website %}
-                                <i class="fa fa-globe"></i> &nbsp; <a href = "{{ il.website }}" target="_blank"> {{il.website}} </a>
-                            {% endif %}
-
-                        </td>
-
-
-            
-                        <td id = "oth" name="oth"> <strong>Type:</strong> &nbsp;{{il.InstituteType__description}}<br /> 
-                            {% for iRank in insttRanking %}
-                                {% if iRank.Institute_id == il.instt_code %}
-                                    <strong>Rank: &nbsp;</strong><span class="label label-primary">{{ iRank.rank }}</span>
-                                {% endif %}
-                            {% endfor %} 
-                            {% if isSubscribed %}
-                                <br />
-                                <br />
-                                <input type="checkbox" id = "compare" class = "compare" name="compare" onclick="checkAll(this, '{{il.instt_code}}')"> Compare
-                            {% endif %}
-                            <p style="visibility:hidden" class="insttcd" name="instt_code">{{il.instt_code}}</p>
-                       </td>
-                        <td id = "rank" name="rank">{{iRank.rank}}</td>
-                    </tr>
-                    {% endfor %}
-                    {% endautoescape %}
-                </tbody>
-            </table>                   
-        <!--</div> end user-home div -->  
-        <p class="text-primary"><small >* The Institue rank is displayed as published by NIRF.</small></p>
-
-
-    </div>                            
+        </div>
+        <!--</div> end user-home div -->
+        <p class="text-primary">
+            <small>* The Institue rank is displayed as published by NIRF.</small>
+        </p>
+    </div>
 </div>
 
-    <script>
-
-        //Global array of instt codes
-        insttcode = [];
-        
-        // Function to check if compare count and to update an arrary
-        function checkAll(ele, instt_code) {
-            var cnt = 0;
-            $('[name=compare]:checked').each(function () {
-                cnt++;
-                if (cnt > 4) {
-                    $(this).prop('checked', false);
-                    alert("Please select only up to 4 institutes to compare!");
-                    return;
-                } 
-            });
-
-            var index = insttcode.indexOf(instt_code);
-            
-            if (ele.checked) {
-                if (index = -1) {
-                    if ($('select#selectedInsttCodes option').length > 3) {
-                        alert("Please select only up to 4 institutes to compare!");
-                        return;
-                    } 
-                    insttcode.push(instt_code); 
-                    $("#selectedInsttCodes").append("<option selected value='" + instt_code + "'>" + instt_code + "</option>");
-                }
-            } else {
-                if (index > -1) {   
-                    insttcode.splice(index, 1);
-                    $("#selectedInsttCodes option[value='" + instt_code + "']").remove();
-                } 
-            }
-            $('#selectedInsttCodes').prop('selected', true);
-        }
-        
-        function getSelectedInsttCodes(){
-            return insttcode;
-        }
-        
-    </script>
-    
-    
-    <script>
-        $(document).ready(function(){
-            sortTable(1);
-        });
-    </script>
-
-   <script> 
-        function rowStyle(row, index) {
-          return {
-            classes: 'text-nowrap another-class',
-            css: {"border": "0px", "font-size": "12px"}
-          };
-        }
-        
-    </script>    
-    
-
+{% block javascript %}
 <script>
-function sortTable(n) {
-  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-  table = document.getElementById("insttTbl");
-  switching = true;
-  // Set the sorting direction to ascending:
-  dir = "asc"; 
-  /* Make a loop that will continue until
-  no switching has been done: */
-  while (switching) {
-    // Start by saying: no switching is done:
-    switching = false;
-    rows = table.getElementsByTagName("TR");
-    /* Loop through all table rows (except the
-    first, which contains table headers): */
-    for (i = 1; i < (rows.length - 1); i++) {
-      // Start by saying there should be no switching:
-      shouldSwitch = false;
-      /* Get the two elements you want to compare,
-      one from current row and one from the next: */
-      x = rows[i].getElementsByTagName("TD")[n];
-      y = rows[i + 1].getElementsByTagName("TD")[n];
-      /* Check if the two rows should switch place,
-      based on the direction, asc or desc: */
-      if (dir == "asc") {
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-          // If so, mark as a switch and break the loop:
-          shouldSwitch= true;
-          break;
-        }
-      } else if (dir == "desc") {
-        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-          // If so, mark as a switch and break the loop:
-          shouldSwitch= true;
-          break;
-        }
-      }
-    }
-    if (shouldSwitch) {
-      /* If a switch has been marked, make the switch
-      and mark that a switch has been done: */
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-      // Each time a switch is done, increase this count by 1:
-      switchcount ++; 
-    } else {
-      /* If no switching has been done AND the direction is "asc",
-      set the direction to "desc" and run the while loop again. */
-      if (switchcount == 0 && dir == "asc") {
-        dir = "desc";
-        switching = true;
-      }
-    }
-  }
-}
-</script>    
     
- <script>
- //    $( "#dialog" ).dialog({
-  //    hide: { effect: "explode", duration: 1000 }
- //   });
-    $(function() {
-        $( "#dialog" ).dialog({autoOpen: false});
+    //Globals
+    var myCriteria;
+    var insttcode = [];
+    var states = []
+    var cities = []
+    var types = []
+    var table;
+    var processed = false;
+
+    if (sessionStorage.cities) {
+        myCriteria = {
+            'stateList' : states,
+            'cityList' : sessionStorage.cities.split(","),
+            'insttTypeList'  : types
+        }
+
+        var stateCities = (("{{statecity | safe}}"))
+        
+        console.log(stateCities);
+        
+        stateCities = stateCities.replace(/'/g, '"')
+        
+        
+        
+        stateCities = JSON.parse(stateCities)
+
+        cities = sessionStorage.cities.split(",");
+        var vCities = (("{{geocities | safe}}"))
+        vCities = vCities.replace(/'/g, '"')
+        vCities = JSON.parse(vCities)
+
+        ssCities = sessionStorage.cities.split(",");
+        ssCities.forEach(ssCity => {
+            cityIndex = _.findIndex(vCities, function(o) { return o.city == ssCity; });
+            if (cityIndex > -1 ){
+                $("#"+ssCity.trim().replace(" ","_")).prop("checked", true);
+            }
+
+            stateIndex = _.findIndex(stateCities, function(o) { return o.city == ssCity; });
+            if (stateIndex > -1 ){
+                states.push(stateCities[stateIndex].state)
+                $("#"+stateCities[stateIndex].state.trim().replace(" ","_")).prop("checked", true);
+            }
+        });
+    }
+        
+    $(document).ready(function () {
+
+        //Vijay: Compare Institutes Submit Action associated with sticky
+        $('#comparelink').click(function(e){
+            $("#compareform").submit();
+        })
+
+        $('#insttTbl').DataTable({
+            "responsive": true,
+            "drawCallback": function( settings ) {
+                processSessionStore()
+            },
+            "processing": true,
+            "serverSide": true,
+            "dom" : "<'row'<'col-sm-6'f><'col-sm-6'l>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
+            "deferRender" : true,
+            "paging"    : true,
+            "pagingType": "full",
+            "language": {
+                "search": "_INPUT_",
+                "searchPlaceholder": "Search...",
+                 "paginate": {
+                    "first": '<i class="fa fa-fw fa-step-backward">',
+                    "next": '<i class="fa fa-fw fa-long-arrow-right">',
+                    "previous": '<i class="fa fa-fw fa-long-arrow-left">',
+                    "last": '<i class="fa fa-fw fa-step-forward">'
+                },
+                "zeroRecords": "No Institutue(s) found that you wanted",
+                "lengthMenu": "_MENU_ Institues per page",
+            },
+            "search" : {
+                "search" : sessionStorage.freeText
+            },
+            "ajax": {
+                "url": '{% url "InstitueListUnRegistered" %}',
+                "data": function(d) {
+                    if (!d.search.value) {
+                        sessionStorage.freeText = ""
+                    } else if (d.search.value) {
+                        sessionStorage.freeText = d.search.value
+                    } else if (sessionStorage.freeText) {
+                        d.search.value = sessionStorage.freeText
+                    }
+                    console.log(myCriteria);
+                    d.criteria = JSON.stringify(myCriteria);
+                },
+                "dataSrc": function (json) {
+                    return json.aaData
+                }
+            },
+            "columns": [
+                {"data": "state"},
+            ],
+            "createdRow": function ( row, data, index ) {
+
+                var addressString = data.address_1;
+                var rank;
+                var geoString = data.city + ', ' + data.state + ' - ' + data.pin_code;
+
+                if ((data.address_2.trim())  && (data.address_3.trim()))
+                    addressString = addressString + ', ' + data.address_2 + ', ' + data.address_3
+
+                if ((data.address_2.trim())  && (!data.address_3.trim()))
+                    addressString = addressString + "," + data.address_2
+
+                if ((!data.address_2.trim())  && (data.address_3.trim()))
+                    addressString = addressString + ', ' + data.address_3
+                
+                if (!data.rank) 
+                    rank = 'NA'
+                else
+                    rank = data.rank
+
+                $(row)
+                    .html('<td id="instt" name="instt">'+
+                                '<div class="row crow box-body" style="background-color: #f7f7f7;">' +
+                                    '<div class="col-md-6">' +
+                                        '<form id=' + data.instt_code + ' action={% url "instt_all_details" %}' +' method="post">' +
+                                            '<input type="hidden" name="csrfmiddlewaretoken" value=' + getCookie("csrftoken") +'>' +
+                                            '<div>' +                                                
+                                                '<a href="javascript:;" onclick="document.getElementById('+data.instt_code + ').submit();"> <p> ' + data.instt_name + '</p></a>'+                                                
+                                            '</div>' +
+                                            '<select hidden name="instt_code">' +
+                                                '<option value=' + data.instt_code + ' selected>' + data.instt_code + '</option>' +
+                                            '</select>' +
+                                        '</form>' +
+                                        '<div class="inst-state-p inst-address">' +
+                                            '<span>' + addressString + '</span>' +
+                                        '</div>' +
+                                        '<div class="inst-address">' +
+                                            '<p>' + geoString + '</p>' +
+                                        '</div>' +
+                                        '<div class="inst-address">' +
+                                            '<div>' +
+                                                '<i class="fa fa-fw fa-phone-square"></i>' + data.phone_number +
+                                            '</div> ' +
+                                            '<div> ' +
+                                                '<i class="fa fa-fw fa-envelope"></i>' + data.email_id +
+                                            '</div>' +
+                                            '<div>' +
+                                                '<i class="fa fa-fw fa-globe"></i>' +
+                                                '<a href=' + data.website + ' target="_blank"> ' + data.website + '</a>' +
+                                            '</div>' +
+                                        '</div>' +
+                                    '</div>' +
+                                    '<div class="col-md-4">' +
+                                        '<div class="row col-md-12 instt-col-2-div">' +
+                                            '<span>' + 
+                                                'Institution Type : ' + data.InstituteType__description +
+                                            '</span>' +
+                                        '</div>' +
+                                        '<div class="row col-md-12 instt-col-2-div">' +
+                                            '<span>Rank :' + 
+                                                // '<span class="label label-primary"> NA </span>' +
+                                                '<span class="label label-primary"> ' + rank + ' </span> ' +
+                                            '</span>' +
+                                        '</div>' +
+                                        '<div class="row col-md-12 instt-col-2-div">' +
+                                            '<div class="col-md-6" style="padding-left: 0 !important;">' +
+                                                '<span>Programs</span>' +
+                                            '</div> ' +
+                                            '<div class="col-md-6" style="padding-left: 0 !important;">' +
+                                                '<span>Reviews</span>' +
+                                            '</div>' +
+                                        '</div>' +
+                                    '</div>' +
+                                    '<div class="col-md-2">' +
+                                        '{% if user.is_authenticated %}' +
+                                            '<div class="checkbox" >' +
+                                                '<label>' +
+                                                    '<input type="checkbox" style="margin-left:-20px !important;margin-top: 5px !important" id="compare'+data.instt_code+'" name="compare" onclick="checkAll(this, ' +  data.instt_code + ')">' +
+                                                    ' Compare ' +
+                                                '</label>' +
+                                                '<p style="visibility:hidden"  name="instt_code">' + data.instt_code + '</p>' +
+                                            '</div>' +
+                                            '<div style="margin-top: -10px">' +
+                                                '<button type="submit" class="btn btn-primary" style="border-radius: 0 !important;">Add to Wish List</button>' +
+                                            '</div>'+
+                                            '<div>' +
+                                                '<form id=' + data.instt_code + ' action="{% url "instt_all_details" %}" method="post">'+
+                                                    '<div>' +
+                                                        '<a href="javascript:;" onclick="document.getElementById(' + data.instt_code + ').submit();"' + ' class="text-footer"> Know More <i class="fa fa-arrow-circle-right"></i> </a> ' +
+                                                    '</div>' + 
+                                                    
+                                                    '<select hidden name="instt_code">' +
+                                                        '<option value=' + data.instt_code + 'selected>' + data.instt_code + '</option>' +
+                                                    '</select>' +
+                                                '</form>' +
+                                            '</div>' +
+                                        '{% endif %}' +
+                                    '</div>' +
+                                '</div>' +
+                        '</td>'
+                )
+            }
+        });
     });
 
-</script>   
-
-
-    <script>
-    function toSelected() {
-        optLen = options.length ;
-        for ( i=0; i < optLen ; i++){
-            if (options.options[i].selected == true ) {
-                orderLen = order.length;
-                order.options[orderLen]= new Option(options.options[i].text);
-            }
+    function checkBoxAction(ele, content, what) {
+        switch(what){
+            case 'state':
+                processCheckBox(ele, states, content);
+                break;
+            case 'city':
+                processCheckBox(ele, cities, content);
+                processSessionStorage(cities);
+                break;
+            case 'type':
+                processCheckBox(ele, types, content);
+                break;
         }
 
-        for ( i = (optLen - 1); i>=0; i--){
-            if (options.options[i].selected == true ) {
-                    options.options[i] = null;
+        myCriteria = {
+            'stateList' : states,
+            'cityList' : cities,
+            'insttTypeList'  : types
+        }
+        table = $("#insttTbl").DataTable();
+        table.draw();
+    }
+
+    function getCookie(c_name)
+    {
+        if (document.cookie.length > 0)
+        {
+            c_start = document.cookie.indexOf(c_name + "=");
+            if (c_start != -1)
+            {
+                c_start = c_start + c_name.length + 1;
+                c_end = document.cookie.indexOf(";", c_start);
+                if (c_end == -1) c_end = document.cookie.length;
+                return unescape(document.cookie.substring(c_start,c_end));
+            }
+        }
+        return "";
+    }
+
+    function processCheckBox(ele,arrayContent, content){
+        var contentFound = arrayContent.indexOf(content);
+        if (ele.checked) {
+            if (contentFound = -1 ){
+                arrayContent.push(content)
+            }
+        } else {
+            if (contentFound > -1 ){
+                arrayContent.splice(contentFound,1)
             }
         }
     }
 
-    function fromSelected() {
-        ordLen = order.length ;
-        for ( i=0; i < ordLen ; i++){
-            if (order.options[i].selected == true ) {
-                optLen = options.length;
-                options.options[optLen]= new Option(order.options[i].text);
+    function processSessionStorage(content) {
+        sessionStorage.cities = cities
+    }
+
+    function processSessionStore() {
+        if (sessionStorage.institutesToCompare) {
+            institutesToCompared = JSON.parse(sessionStorage.institutesToCompare);
+
+            if ((sessionStorage.institutesToCompare) && !(insttcode)) {
+                insttcode = JSON.parse(sessionStorage.institutesToCompare)                
+            }
+
+            for (let index = 0; index < institutesToCompared.length; index++) {
+                $("#compare"+institutesToCompared[index]).prop("checked", true);
+            }
+
+            if (!processed) {
+                for (let index = 0; index < institutesToCompared.length; index++) {
+                    $("#compare"+institutesToCompared[index]).prop("checked", true);
+                    $("#selectedInsttCodes").append("<option selected value='" + institutesToCompared[index] + "'>" + institutesToCompared[index] + "</option>");
+                }
+                processed = true
+            }
+
+            if (JSON.parse(sessionStorage.institutesToCompare).length > 1 ) {
+                $("#sticky").css("display", "block");
+            } else {
+                $("#sticky").css("display", "none");
             }
         }
 
-        for ( i = (ordLen - 1); i>=0; i--) {
-            if (order.options[i].selected == true ) {
-                order.options[i] = null;
-            }
-        }
-    }    
-    </script>
+    }
 
-   <!-- JQuery solution to get all the institute codes checked by user -->
-    <script>
-        $(document).ready(function(){
-            var insttcode= [];
-            $("#compareform").submit(function(){
-                $('#insttTbl input[type="checkbox"]:checked').each(function(){
-                    var pp = $(this).parents('tr'); 
-                    var $row = pp.parents('tr'); 
-                    //cd = $row.find('td:eq(2)').html();
-                    //cd = $.trim(Inst.replace("&amp;", "&"));
-                    cd = $row.find(".insttcd:hidden").html();
-                    insttcode.push[cd];
-                });
-            });
-        });
-    </script>
-
+    // Vijay : Function to filter search values
+    function filterValues(inputE, ulE, liE, labelE) {
         
-{% endblock features %}
+        var input, filter, ul, li, a, i;
+        input = document.getElementById(inputE);
+        filter = input.value.toUpperCase();
+        ul = document.getElementById(ulE);
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByTagName("label")[0];
+            if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+    }
+
+    // Function to check if compare count and to update an arrary
+    function checkAll(ele, instt_code) {
+
+        if (sessionStorage.institutesToCompare) {
+            insttcode = JSON.parse(sessionStorage.institutesToCompare)            
+        }
+        var index = insttcode.indexOf(instt_code);
+
+        if (ele.checked) {
+            if (index = -1) {
+                if ($('select#selectedInsttCodes option').length > 3) {
+                    $("#compare"+instt_code).prop("checked", false);
+                    alert("Please select only up to 4 institutes to compare!");
+                    return;
+                }
+                insttcode.push(instt_code);
+                $("#selectedInsttCodes").append("<option selected value='" + instt_code + "'>" + instt_code + "</option>");
+            }
+        } else {
+            if (index > -1) {
+                insttcode.splice(index, 1);
+                $("#selectedInsttCodes option[value='" + instt_code + "']").remove();
+            }
+        }
+
+        sessionStorage.institutesToCompare =JSON.stringify(insttcode);
+
+        if (sessionStorage.institutesToCompare) {
+            if (JSON.parse(sessionStorage.institutesToCompare).length > 1 ) {
+                $("#sticky").css("display", "block");
+            } else {
+                $("#sticky").css("display", "none");
+            }
+        }
+
+        $('#selectedInsttCodes').prop('selected', true);
+    }
+
+    function getSelectedInsttCodes() {
+        return insttcode;
+    }
+
+</script>
+ 
+{% endblock %}
+
+{% endblock features %} 
 
 {% block misson-statement %}
 <!-- Nothing here, just override the block from parent -->
-{% endblock misson-statement %}
-
+{% endblock misson-statement %} 
 {% block jointhem-blog %}
 <!-- Nothing here, just override the block from parent -->
 {% endblock jointhem-blog %}
 
 <!-- Footer-section remains as it is, no override -->
-

@@ -10,7 +10,7 @@ from allauth.account.views import LoginView
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^login/$', views.NextStepslogin, name='login'),
-    url(r'^home/$', views.loggedIn_index, name='loggedInHome'),
+    #url(r'^home/$', views.loggedIn_index, name='loggedInHome'),
     
     url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
     url(r'^oauth/', include('social_django.urls', namespace='social')),    
@@ -63,15 +63,17 @@ urlpatterns = [
 
     url(r'^ajax/Get_Instt_States_Cities/$', views.insttStatesCities, name='get_instt_states_cities'),    
 
+    url(r'^ajax/InstituteListUnregistered/$', views.InstitueListUnRegistered, name='InstitueListUnRegistered'),    
 
 
     url(r'^featureSearchInstt/$', views.feature_instt_search, name = 'feature_instt_search'),
-    url(r'^featureSearchInstt/$', views.feature_important_info, name = 'feature_important_info'),
-    url(r'^featureSearchInstt/$', views.feature_important_info, name = 'feature_calendar'),
-    url(r'^featureSearchInstt/$', views.feature_important_info, name = 'feature_ifThenAnalysis'),
+    url(r'^featureImportantInfo/$', views.feature_important_info, name = 'feature_important_info'),
+    url(r'^featureCalendar/$', views.feature_calendar, name = 'feature_calendar'),
+    url(r'^featureSeatChances/$', views.feature_seat_chances, name = 'feature_seat_chances'),
     url(r'^featureSearchInstt/$', views.feature_important_info, name = 'feature_user_app_details'),
-    url(r'^featureSearchInstt/$', views.feature_important_info, name = 'feature_study_planner'),
+    url(r'^featureStudyPlanner/$', views.feature_study_planner, name = 'feature_study_planner'),
     url(r'^featureSearchInstt/$', views.feature_important_info, name = 'feature_compare_instts'),
+    url(r'^featureApplicationRecord/$', views.feature_application_record, name = 'feature_application_record'),
 
 
     url(r'^SearchFilter/$', views.SearchFilter, name = 'search_filter'),
@@ -109,8 +111,18 @@ urlpatterns = [
     url(r'^ajax/getInsttProgramByType/$', views.getInsttProgramByType, name='get_instt_progs_by_type'),
     url(r'^ajax/getUserInsttProgramByType/$', views.getUserInsttProgramByType, name='get_user_instt_progs_by_type'),
     url(r'^todolist/$', views.toDoList, name='to_do_list'),
-    url(r'^studyPlanner/$', views.studyPlanner, name='study_planner'),
+    url(r'^studyPlanner/(?P<active_tab>\w*)/$', views.studyPlanner, name='study_planner'),
     url(r'^getUserSubjectSchedule/$', views.getUserSubjectSchedule, name='getUserSubjectSchedule'),
+    url(r'^getStudyHours/$', views.getStudyHours, name='getStudyHours'),
+    url(r'^saveStudyHours/$', views.saveStudyHours, name='save_studyhours'),
+    url(r'^printStudySchdule/$', views.printStudySchedule, name='print_study_schedule'),
+    url(r'^updateStudySchedule/$', views.updateStudySchedule, name='update_study_schedule'),
+    url(r'^ajax/getMonthStudyHours/$', views.getMonthStudyHours, name='getMonthStudyHours'),
+    url(r'^ajax/getMonthSubjHours/$', views.getMonthSubjHours, name='getMonthSubjHours'),
+    url(r'^ajax/getDayRows/$', views.getDayRows, name='getDayRows'),
+    url(r'^ajax/saveStudySchedule/$', views.saveStudySchedule, name='saveStudySchedule'),
+    url(r'^ajax/saveSubjSch/$', views.saveSubjSch, name='saveSubjSch'),
+    url(r'^ajax/saveDaySch/$', views.saveDaySch, name='saveDaySch'),
 
 
     url(r'^ajax/getInsttsForPrograms/$', views.getInsttsForProgs, name='get_insttsForProgs'),

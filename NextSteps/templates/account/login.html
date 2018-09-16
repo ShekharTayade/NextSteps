@@ -95,10 +95,10 @@
             </div>
             <div class="row">
                 <div class="col-sm-8 col-sm-offset-2">
-                    <div class="panel panel-info">
+                    <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title">
-                            <strong>Use Your NextSteps Account or Social Media Account</strong>
+                            <div class="text-center"> <strong>Use Your NextSteps Account or Social Media Account</strong></div>
                             </h3>
                         </div>
                         <div class="panel-body">
@@ -106,89 +106,96 @@
                             {% load socialaccount %}
                             {% providers_media_js %}
 
-
-<!--                            <div class="fb-login-button" data-width="30" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div> -->
-<!--                            <a class="btn" style="background:#1818e3; color: #ffffff" href="{% provider_login_url "facebook" method="js_sdk" %}">Login with Facebook </a>  -->
-                            <div class="well">
-                            <div class = "row">
-                                <div class = "col-sm-4">
-                                    <a href="{% provider_login_url "facebook" method="js_sdk" %}">
-                                      <img src="{% static 'img/fb_login.png' %}" alt="Facebook Login" style="height:38px;border:0;">
-                                    </a>
-                                </div>
-                                <div class = "col-sm-4">
-        <!--                           <div class="g-signin2" data-onsuccess="onSignIn"></div>                            -->
-                                    <a href="{% provider_login_url 'google' %}">
-                                      <img src="{% static 'img/google_login.png' %}" alt="Google Login" style="height:38px;border:0;">
-                                    </a>                            
-                                </div>
-                                <div class = "col-sm-4">
-                                    <a href="{% provider_login_url "twitter" %}">
-                                      <img src="{% static 'img/twitter_login.png' %}" alt="Twitter Login" style="height:38px;border:0;">
-                                    </a>
-                                </div>
-                            </div>
-                            </div>
-                            
-<!--                            <br />
-
-                            <div class="row">
-                                <div class="col-sm-5"><hr></div>
-                                <div class="col-sm-2">OR</div>
-                                <div class="col-sm-5"><hr></div>
-                            </div>
--->                                                        
-                            <div class="text_primary"><strong>NextSteps Account</strong></div>
+                            <div><strong>NextSteps Account</strong></div>
                             
                             <div class = "well">
 
-                            <form accept-charset="UTF-8" role="form" method="POST" action="{% url 'account_login' %}">
-                                {% csrf_token %}
-                                <fieldset>
-
-                                <div class="form-group has-float-label">
-                                    <div class="input-group input-group-lg">
-                                        <span class="input-group-addon"><i class="fa fa-user-circle-o "></i></span>
-                                        <input name = "login" type="text" class="form-control" placeholder="Username or Email">
+                                <form accept-charset="UTF-8" role="form" method="POST">
+                                    {% csrf_token %}
+                                    <fieldset>
+                                    <div class="text-muted"><small>Enter (Username or Email) and Password to login</small></div>
+                                    <div class="row">
+                                        <div style = "width:94%;">
+                                        <div class = "col-sm-6">
+                                            <div class="form-group has-float-label">
+                                                <div class="input-group input-group-lg">
+                                                    <span class="input-group-addon"><i class="fa fa-user-circle-o "></i></span>
+                                                    <input name = "username" type="text" class="form-control" placeholder="Username">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class = "col-sm-6">
+                                            <div class="form-group has-float-label">
+                                                <div class="input-group input-group-lg">
+                                                    <span class="input-group-addon"><i class="fa fa-envelope "></i></span>
+                                                    <input name = "email" type="text" class="form-control" placeholder="Email">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <div class="form-group has-float-label ">
-                                    <div class="input-group input-group-lg">
-                                            <span class="input-group-addon"><i class="fa fa-fw fa-lock"></i></span>
-                                            <input name = "password" type="password" class="form-control" placeholder="Password">
+    
+                                    <div class="form-group has-float-label ">
+                                        <div class="input-group input-group-lg">
+                                                <span class="input-group-addon"><i class="fa fa-fw fa-lock"></i></span>
+                                                <input name = "password" type="password" class="form-control" placeholder="Password">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="checkbox">
-                                    <label>
-                                        <input name="remember" type="checkbox" value="Remember Me" checked>
-                                        Remember Me
-                                    </label>
-                                </div>
-
-                                <!-- To check if user is not authenticated and display an error message if not autheticated -->
-                                <!-- The view returns a value "invalid" in invalid key if use if not authenticated. -->
-                                {% if invalid == 'invalid' %}
-                                    <div class="alert alert-danger">
-                                      <button type="button" class="close" data-dismiss="alert"></button>
-                                      <h4>
-                                          Error!
-                                        </h4> Your username and password didn't match! Please try again.
+                                    <div class="checkbox">
+                                        <label>
+                                            <input name="remember" type="checkbox" value="Remember Me" checked>
+                                            Remember Me
+                                        </label>
                                     </div>
-                                {% endif %}
-                  
-                                <input class="btn btn-lg btn-primary btn-block" type="submit" value="Login">
-                
-                                </fieldset>
-                            </form>
-
+    
+                                    <!-- To check if user is not authenticated and display an error message if not autheticated -->
+                                    <!-- The view returns a value "invalid" in invalid key if use if not authenticated. -->
+                                    {% if invalid == 'invalid' %}
+                                        <div class="alert alert-danger">
+                                          <button type="button" class="close" data-dismiss="alert"></button>
+                                          <h4>
+                                              Error!
+                                            </h4> Your username and password didn't match! Please try again.
+                                        </div>
+                                    {% endif %}
+                      
+                                    <input class="btn btn-lg btn-primary btn-block" type="submit" value="Login">
+                    
+                                    </fieldset>
+                                </form>
+    
+                                <p class="m-b-0 m-t">
+                                    <span style="float:left">Not signed up? <a href="{% url 'signup' %}">Sign up here</a></span>
+                                    <span style="float:right"><a href="{% url 'password_reset' %}">Forgot Username or Password?</a></span>
+                                </p>
                             </div> 
 
-                            <p class="m-b-0 m-t">
-                                <span style="float:left">Not signed up? <a href="{% url 'signup' %}">Sign up here</a></span>
-                                <span style="float:right"><a href="{% url 'password_reset' %}">Forgot Username or Password?</a></span>
-                            </p>
+                            <div>
+                                <strong>Login Using Your Social Media Account</strong>
+                            </div>
+                            <div class = "well">
+                            <div class = "row">
+                                <div class="col-sm-4 auth-provider-padding">
+                                        <a href="{% provider_login_url 'facebook' method='js_sdk' %}">
+                                          <img src="{% static 'img/facebook_logo.svg' %}" alt="Facebook Login" style="height:38px;border:0;">
+                                        </a>
+                                </div>
+                                <div class="col-sm-4 auth-provider-padding">
+                                        <a href="{% provider_login_url 'google' %}">
+                                          <img src="{% static 'img/google_logo.svg' %}" alt="Google Login" style="height:38px;border:0;">
+                                        </a>
+                                </div>
+                                <div class="col-sm-4 auth-provider-padding">
+                                        <a href="{% provider_login_url 'twitter' %}">
+                                          <img src="{% static 'img/Twitter_Logo.svg' %}" alt="Twitter Login" style="height:38px;border:0;">
+                                        </a>
+                                </div>
+                            </div>
+                            </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>

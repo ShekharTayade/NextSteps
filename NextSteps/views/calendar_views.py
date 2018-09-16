@@ -13,7 +13,7 @@ import datetime
 from NextSteps.decorators import subscription_active
 
 from NextSteps.models import InsttUserPref, UserCalendar
-from NextSteps.models import InstituteProgramImpDates
+from NextSteps.models import InstituteProgramImpDates, InstituteImpDates
 
 from .common_views import *
 
@@ -31,7 +31,6 @@ def getUserInstts(request):
     userCalendar = UserCalendar.objects.filter(User__in=userid).values(
         'id', 'Institute__instt_name', 'event', 'event_date', 'event_order', 'start_date', 'end_date', 
         'event_duration_days', 'remarks').distinct('Institute__instt_name', 'event')
-
     
     if userCalendar.exists():
         return JsonResponse(list(userCalendar), safe=False)
@@ -39,9 +38,15 @@ def getUserInstts(request):
     
         insttUserList = InsttUserPref.objects.filter(User__in=userid).values('Institute_id')
         
+        '''
         insttList = InstituteProgramImpDates.objects.filter(Institute_id__in=insttUserList).values(
             'id', 'Institute_id', 'Institute__instt_name', 'event', 'event_date', 'event_order', 'start_date', 'end_date', 
             'event_duration_days', 'remarks').distinct('Institute__instt_name', 'event')
+        '''
+        insttList = InstituteImpDates.objects.filter(Institute_id__in=insttUserList).values(
+            'id', 'Institute_id', 'Institute__instt_name', 'event', 'start_date', 'end_date', 
+            'remarks').distinct('Institute__instt_name', 'event')
+
 
     return JsonResponse(list(insttList), safe=False)     
 
@@ -51,10 +56,17 @@ def getInsttImpDates(request):
     
     
     insttUserList = InsttUserPref.objects.filter(User__in=userid).values('Institute_id')
-        
+
+    '''        
     insttList = InstituteProgramImpDates.objects.filter(Institute_id__in=insttUserList).values(
             'id', 'Institute_id', 'Institute__instt_name', 'event', 'event_date', 'event_order', 'start_date', 'end_date', 
             'event_duration_days', 'remarks').distinct('Institute__instt_name', 'event')
+    '''
+    
+    insttList = InstituteImpDates.objects.filter(Institute_id__in=insttUserList).values(
+        'id', 'Institute_id', 'Institute__instt_name', 'event', 'start_date', 'end_date', 
+        'remarks').distinct('Institute__instt_name', 'event')
+
 
     return JsonResponse(list(insttList), safe=False)     
 
