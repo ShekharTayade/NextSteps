@@ -1866,6 +1866,7 @@ a.btn-hh-trigger.target-open:after {
 
 .row-margin {
   margin: 0%;
+
 }
 .pl-0, .px-0 {
   padding-left: 0!important;
@@ -2054,19 +2055,11 @@ a.btn-hh-trigger.target-open:after {
   margin: 5px 0 5px 0;
   margin-left: 15px;
   font-size: 25px;
+  text-shadow: 5px 5px 5px rgba(0,0,0,0.3);
 }
 .box-widget {
   border: none;
   position: relative;
-}
-.box {
-  position: relative;
-  /* border-radius: 3px; */
-  background: #ffffff;
-  /* border-top: 3px solid #d2d6de; */
-  margin-bottom: 20px;
-  width: 100%;
-  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
 }
 .widget-user .widget-user-header {
   padding: 20px;
@@ -2158,8 +2151,19 @@ img {
   border-top: 1px solid #ff5821;
   margin-bottom: 20px;
   width: 100%;
-  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
 }
+
+.box-home {
+  position: relative;
+  border-radius: 3px;
+  background: #ffffff;
+  /*border-top: 3px solid #d2d6de;*/
+  border-top: 1px solid #ff5821;
+  margin-bottom: 20px;
+  width: 100%;
+  box-shadow: 8px 8px 8px rgba(0,0,0,0.3);
+}
+
 .box.box-solid {
   border-top: 0;
 }
@@ -3839,6 +3843,52 @@ body,html{
 .box-body .fixed-table-body {
   overflow: hidden;
 }
+
+/* Vijay: sticky for Institute Compare */
+#sticky {
+  display: none;
+    height: 0px;
+    width: 85px;
+    position: fixed;
+    right: 0;
+    top: 50%;
+    z-index: 1000;
+    transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+#sticky a {
+    display: block;
+    background:#95a5a6;
+    height: 52px;
+    padding-top: 10px;
+    width: 155px;
+    text-align: center;
+    color: whitesmoke;
+    font-family: Arial, sans-serif;
+    font-size: 17px;
+    font-weight: bold;
+    text-decoration: none;
+}
+#sticky a:hover {
+  color:whitesmoke;
+    background:#ff5821;
+}
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+  #sticky {
+   display: block;
+    width: 40%;
+    position: fixed;
+    bottom: 90%;
+    left: 80%;
+    margin: 0 0 0 -20%;
+  }
+}
+
+/* END - Vijay: sticky for Institute Compare */
+
 
 /***************************/
 

@@ -60,6 +60,7 @@ urlpatterns = [
     #url(r'^insttdetails/(?P<instt_code>\d+)/$', views.instt_all_details, name = 'instt_all_details'),
     url(r'^insttdetails/$', views.instt_all_details, name = 'instt_all_details'),
     url(r'^compareInstitutess/$', views.compare_instts, name = 'compare_instts'),
+    url(r'^ajax/add_to_preferences/$', views.add_to_preferences, name='add_to_preferences'),    
 
     url(r'^ajax/Get_Instt_States_Cities/$', views.insttStatesCities, name='get_instt_states_cities'),    
 
@@ -76,25 +77,12 @@ urlpatterns = [
     url(r'^featureApplicationRecord/$', views.feature_application_record, name = 'feature_application_record'),
 
 
-    url(r'^SearchFilter/$', views.SearchFilter, name = 'search_filter'),
-    url(r'^SearchInstts/', views.SearchInstts, name = 'Search_Instts'),
-    url(r'^SearchInsttTypeFilter/$', views.instituteTypeSearchFilter, name = 'instt_type_filter'),
-    url(r'^SearchInsttSearch/$', views.instituteTypeSearchResults, name = 'instt_type_search_results'),
-
-    url(r'^InsttsPrograms/$', views.ProgramSeatQuotaDetails, name='Institute_Programs'),
-
-
     url(r'^JEERanksFilter/$', views.JEERanksFilter, name='JEE_ranks_filter'),
     #url(r'^JEERanks/$', views.JEEOpeningClosingRanks, name='JEE_ranks'),
     url(r'^JEE_Ranks/$', views.JEERanks, name='JEE_ranks'),
     
-    url(r'^insttCutOffsFilter/$', views.insttCutOffFilter, name='instt_cut_off_filter'),
-    url(r'^InstituteCutOff/$', views.insttCutOff, name='instt_cut_off'),
     url(r'^InstituteRankings/$', views.insttRankingFilter, name='instt_ranking_filter'),
-    url(r'^ProgramFilter/$', views.programFilter, name='program_filter'),
     url(r'^ProgramResults/$', views.searchProgram, name='program_search_results'),
-    url(r'^SeatQuotaFilter/$', views.seatQuotaFilter, name='seat_quota_filter'),
-    url(r'^SeatQuotaResults/$', views.searchSeatQuota, name='seat_quota_search_results'),
     url(r'^EntranceExams/$', views.searchEntranceExams, name='search_entrance_exams'),
 
     url(r'^ajax/GetJeeRankYears/$', views.getJeeRankYears, name='jee_rank_years'),    

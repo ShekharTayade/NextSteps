@@ -146,7 +146,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <h3 style="margin-top: 0;">Institutes</h3>
+                                <h3 class="block-title">Institutes</h3>
                             </tbody>
                         </table>
                     </div>
@@ -340,7 +340,7 @@
                                                     '<p style="visibility:hidden"  name="instt_code">' + data.instt_code + '</p>' +
                                                 '</div>' +
                                                 '<div style="margin-top: -10px">' +
-                                                    '<button type="submit" class="btn btn-primary" style="border-radius: 0 !important;">Add to Wish List</button>' +
+                                                    '<button type="submit" class="btn btn-primary" style="border-radius: 0 !important;" onclick="addToPref(' + data.instt_code + ')">Add to Preferences</button>' +
                                                 '</div>'+
 
                                             '<div>' +
@@ -668,6 +668,37 @@
         return insttcode;
     }
 
+
+    function addToPref (instt_code) {
+    
+        $.ajax({
+            url: '{% url "add_to_preferences" %}',
+            data: {
+            'instt_code': instt_code
+            },
+            dataType: 'json',
+            success: function (data) {
+                
+                status = data.status;
+            
+                switch(status){
+                    case '00':
+                        alert("Insitute added to your Preferences Successfully");
+                        break;
+                    case "01":
+                        alert("This Institute is already add to your Preferences");
+                        break;
+                    case "02":
+                        alert("Sorry, We have encounter some issue while updating. Let us know your preference and we will add it for you.");
+                        break;
+                }
+            },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }                
+        });
+    }
+    
 </script>
  
 {% endblock %}

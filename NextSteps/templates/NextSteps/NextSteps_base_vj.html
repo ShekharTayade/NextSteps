@@ -17,11 +17,11 @@
     <meta content="" name="description">
 
     <!-- Facebook Opengraph integration: https://developers.facebook.com/docs/sharing/opengraph -->
-    <meta property="og:title" content="">
-    <meta property="og:image" content="">
-    <meta property="og:url" content="">
-    <meta property="og:site_name" content="">
-    <meta property="og:description" content="">
+    <meta property="og:title" content="NextSteps">
+    <meta property="og:image" content="website">
+    <meta property="og:url" content="https://www.NextSteps.co.in">
+    <meta property="og:site_name" content="NextSteps">
+    <meta property="og:description" content="Online Assistant - NextSteps to Bright Future!!">
 
     <!-- Twitter Cards integration: https://dev.twitter.com/cards/  -->
     <meta name="twitter:card" content="summary">
@@ -124,6 +124,9 @@
     <script src="{% static 'lib/bootstrap-table/extensions/editable/bootstrap-table-editable.js' %}"></script>
     <!--<script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>-->
     <script src="{% static 'lib/bootstrap-table/extensions/editable/bootstrap-editable.js' %}"></script>    
+
+    <!-- Google+ share -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 
     <!--Your custom colour override - predefined colours are: colour-blue.css, colour-green.css, colour-lavander.css, orange is default-->
     <!--  <link href="#" id="colour-scheme" rel="stylesheet"> -->
@@ -287,7 +290,7 @@
                                         <span class="text-primary">Insight</span>
                                     </h2>
                                     <h4>
-                                        We make things easier for you
+                                        We make things clear for you
                                     </h4>
                                     <ul>
                                         <li>Study Planner - Dashboard and Insights</li>
@@ -559,7 +562,7 @@
                     <a href="{% url 'feature_instt_search' %}" style = "text-decoration: none !important;">
                 {% endif %}
                 
-                <div class="box box-widget widget-user">
+                <div class="box-home box-widget widget-user">
                     <div class="widget-user-header bg-black">
                         <h3 class="widget-user-username">Set Preferences</h3>
                         <h5 class="widget-user-desc">To get focused information</h5>
@@ -605,7 +608,7 @@
                 
 
 
-                <div class="box box-widget widget-user">
+                <div class="box-home box-widget widget-user">
                     <div class="widget-user-header bg-black">
                         <h3 class="widget-user-username">Get Important Info</h3>
                         <h5 class="widget-user-desc">on your preferred institutes</h5>
@@ -655,7 +658,7 @@
                 {% endif %}
                 
 
-                <div class="box box-widget widget-user">
+                <div class="box-home box-widget widget-user">
                     <div class="widget-user-header bg-black">
                         <h3 class="widget-user-username">Calendar</h3>
                         <h5 class="widget-user-desc">Never miss important dates</h5>
@@ -668,14 +671,14 @@
                             <div class="row row-margin">
                                 <div class="col-sm-6 border-right">
                                     <div class="description-block">
-                                        <h5 class="description-header">Exam</h5>
-                                        <span class="description-text">Dates</span>
+                                        <h5 class="description-header">Exams</h5>
+                                        <!-- <span class="description-text">Dates</span> -->
                                     </div>
                                 </div>
                                 <div class="col-sm-6 border-right">
                                     <div class="description-block">
-                                        <h5 class="description-header">Application</h5>
-                                        <span class="description-text">Dates</span>
+                                        <h5 class="description-header">Applications</h5>
+                                        <!-- <span class="description-text">Dates</span> -->
                                     </div>
                                 </div>
                             </div>
@@ -702,7 +705,7 @@
                 {% endif %}
 
 
-                <div class="box box-widget widget-user">
+                <div class="box-home box-widget widget-user">
                     <div class="widget-user-header bg-black">
                         <h3 class="widget-user-username">JEE Seat Chances</h3>
                         <h5 class="widget-user-desc">if-then-analysis:- chances based on expected ranks</h5>
@@ -750,7 +753,7 @@
                 {% endif %}
 
 
-                <div class="box box-widget widget-user">
+                <div class="box-home box-widget widget-user">
                     <div class="widget-user-header bg-black">
                         <h3 class="widget-user-username">Study Planner</h3>
                         <h5 class="widget-user-desc">Plan, Organize, & track your studies</h5>
@@ -802,7 +805,7 @@
                 {% endif %}
 
 
-                <div class="box box-widget widget-user">
+                <div class="box-home box-widget widget-user">
                     <div class="widget-user-header bg-black">
                         <h3 class="widget-user-username">Compare Institutes</h3>
                         <h5 class="widget-user-desc">Side by side comparison</h5>
@@ -852,7 +855,7 @@
                 {% endif %}
 
 
-                <div class="box box-widget widget-user">
+                <div class="box-home box-widget widget-user">
                     <div class="widget-user-header bg-black">
                         <h3 class="widget-user-username">Application Details</h3>
                         <h5 class="widget-user-desc">Never waste effort looking for information</h5>
@@ -879,7 +882,7 @@
                         </div>
                     </div>
                 </div>
-                <a/>
+                </a>
             </div>
         </div>
     </div>
@@ -920,7 +923,7 @@
     <div class="row row-margin">
         <!-- <div class="col-md-1"></div> -->
         <div class="col-md-5">
-            <div class="box box-success">
+            <div class="box-home box-success">
                 <div class="box-header with-border">
                     <h2 class="box-header-text">Sign-Up</h2>
                 </div>
@@ -944,7 +947,7 @@
             </div>
         </div>
         <div class="col-md-5">
-            <div class="box box-success">
+            <div class="box-home box-success">
                 <div class="box-header with-border">
                     <h2 class="box-header-text">Subscription</h2>
                 </div>
@@ -1016,10 +1019,21 @@
     <footer id="footer" class="block block-bg-grey-dark" data-block-bg-img="{% static 'img/bg_footer-map.png' %}" data-stellar-background-ratio="0.4">
         <div class="row row-margin" id="contact">
             <ul class="footer-line-left">
+                <!-- FB share button code -->
+                <div class="fb-share-button" data-href="https://www.NextSteps.co.in" data-layout="button" data-size="small" data-mobile-iframe="true">
+                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.NextSteps.co.in%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a>
+                </div>
+               <!--<a href="#" class="cmargin-15" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="fa fa-facebook"></i></a> -->
+                &nbsp;&nbsp;&nbsp;
+                <!-- G+ share button code -->
+                <li>
+                <div class="g-plus" data-action="share" data-height="15" data-href="https://www.NextSteps.co.in"></div>
+                </li>
+                <!-- <a href="#" class="cmargin-15" data-toggle="tooltip" data-placement="top" title="Google +"><i class="fa fa-google-plus fa-fw"></i></a> -->
+                <!--
                 <a href="#" class="cmargin-15" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="fa fa-twitter"></i></a>
-                <a href="#" class="cmargin-15" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="fa fa-facebook"></i></a>
                 <a href="#" class="cmargin-15" data-toggle="tooltip" data-placement="top" title="LinkedIn"><i class="fa fa-linkedin fa-fw"></i></a>
-                <a href="#" class="cmargin-15" data-toggle="tooltip" data-placement="top" title="Google +"><i class="fa fa-google-plus fa-fw"></i></a>
+                -->
             </ul>
 
             <ul class="footer-line-right">
