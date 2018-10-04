@@ -3,59 +3,133 @@
 
 {% load static %}
 <head>
-  <meta charset="utf-8">
-  <title>NextSteps...Your Buddy!</title>
-  <link rel="icon" href="{% static 'img/target.ico' %}" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <meta content="" name="keywords">
-  <meta content="" name="description">
+    <meta charset="utf-8">
+    <title>NextSteps - Search for the best engineering college, save your time and effort, Manage admission process. Features
+        such as details of engineering colleges in India, shortlist, track important dates, assess probability of a seat
+        in IITs, NITs, customized report, calendar for tracking the application process, know college opening/closing
+        JEE ranks, cut offs, Study Panner and much more.
+    </title>
+    <meta name="keywords" content="search engineering colleges, engineering colleges, engineering college admission, engineering college application, engineering collges in India, engineering institutes, JEE seat probability, Study Planner, IIT, JEE, NIT, "/> 
+    {% load static %}
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
 
-  <!-- Facebook Opengraph integration: https://developers.facebook.com/docs/sharing/opengraph -->
-  <meta property="og:title" content="">
-  <meta property="og:image" content="">
-  <meta property="og:url" content="">
-  <meta property="og:site_name" content="">
-  <meta property="og:description" content="">
+    <!-- Facebook Opengraph integration: https://developers.facebook.com/docs/sharing/opengraph -->
+    <meta property="og:title" content="NextSteps">
+    <meta property="og:image" content="website">
+    <meta property="og:url" content="https://www.NextSteps.co.in">
+    <meta property="og:site_name" content="NextSteps">
+    <meta property="og:description" content="Online Assistant - NextSteps to Bright Future!!">
 
-  <!-- Twitter Cards integration: https://dev.twitter.com/cards/  -->
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:site" content="">
-  <meta name="twitter:title" content="">
-  <meta name="twitter:description" content="">
-  <meta name="twitter:image" content="">
+    <!-- Twitter Cards integration: https://dev.twitter.com/cards/  -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="">
+    <meta name="twitter:title" content="">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image" content="">
 
-  <meta name="google-signin-client_id" content="292426078075-v5p5r6dq0t6vnqvm679h4bbncukjubpu.apps.googleusercontent.com">
+    <!-- Fav and touch icons -->
+    <link rel="shortcut icon" href="{% static 'img/target.png' %}">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'img/icons/114x114.png' %}">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'img/icons/72x72.png' %}">
+    <link rel="apple-touch-icon-precomposed" href="{% static 'img/icons/default.png' %}">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-  <!-- Fav and touch icons -->
-  <link rel="shortcut icon" href="{% static 'img/target.png' %}">
-  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'img/icons/114x114.png' %}">
-  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'img/icons/72x72.png' %}">
-  <link rel="apple-touch-icon-precomposed" href="{% static 'img/icons/default.png' %}">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900" rel="stylesheet">
 
-  <!-- Bootstrap CSS File -->
-  <link href="{% static 'lib/bootstrap/css/bootstrap.min.css' %} " rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.0-rc.1/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.11.3.js"></script>
+    <script src="//code.jquery.com/ui/1.12.0-rc.1/jquery-ui.js"></script>
 
-  <!-- Libraries CSS Files -->
-  <link href="{% static 'lib/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
-  <link href="{% static 'lib/owlcarousel/owl.carousel.min.css' %}" rel="stylesheet">
-  <link href="{% static 'lib/owlcarousel/owl.theme.min.css' %}" rel="stylesheet">
-  <link href="{% static 'lib/owlcarousel/owl.transitions.min.css' %}" rel="stylesheet">
- 
-  <!-- Main Stylesheet File -->
-  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <!-- Bootstrap CSS File -->
+    <link href="{% static 'lib/bootstrap/css/bootstrap.min.css' %} " rel="stylesheet">
+    <link href="https://cdn.rawgit.com/tonystar/float-label-css/v1.0.2/dist/float-label.min.css" rel="stylesheet">
+    <link href="{% static 'js/css/bootstrap-datepicker.css' %} " rel="stylesheet">
 
-  <!--Your custom colour override - predefined colours are: colour-blue.css, colour-green.css, colour-lavander.css, orange is default-->
-<!--  <link href="#" id="colour-scheme" rel="stylesheet"> -->
 
-  <!-- =======================================================
-    Theme Name: Flexor
-    Theme URL: https://bootstrapmade.com/flexor-free-multipurpose-bootstrap-template/
-    Author: BootstrapMade.com
-    Author URL: https://bootstrapmade.com
-  ======================================================= -->
+    <!-- Libraries CSS Files -->
+    <link href="{% static 'lib/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/owlcarousel/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/owlcarousel/owl.theme.min.css' %}" rel="stylesheet">
+    <link href="{% static 'lib/owlcarousel/owl.transitions.min.css' %}" rel="stylesheet">
+
+
+    <link href='https://fonts.googleapis.com/css?family=Economica' rel='stylesheet' type='text/css'>
+
+    <!-- Main Stylesheet File -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <!-- Calendar stylsheet -->
+    <link rel='stylesheet' href="{% static 'fullcalendar/css/fullcalendar.css' %}">
+    <link rel='stylesheet' href="{% static 'fullcalendar/css/fullcalendar.print.css' %}" media="print">
+
+    <script src="{% static 'fullcalendar/moment.min.js' %}"></script>
+    <script src="{% static 'fullcalendar/fullcalendar.min.js' %}"></script>
+
+
+    <!-- Required libraries for "SelectBoxIt"
+    <link type="text/css" rel="stylesheet" href="http://gregfranko.com/jquery.selectBoxIt.js/css/jquery.selectBoxIt.css" />
+    <script src="{% static 'lib/SelectBoxIt/jquery.selectBoxIt.js' %}"></script> -->
+
+
+    <!-- bootstrap- multiselect -->
+    <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap-multiselect.css' %}" type="text/css" />
+
+    <!-- Bootstrap-table -->
+    <link rel="stylesheet" href="{% static 'lib/bootstrap-table/bootstrap-table.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/bootstrap-table/extensions/editable/bootstrap-editable.css' %}">
+
+    <!-- Bootstrap-table-expandable -->
+    <link rel="stylesheet" href="{% static 'lib/bootstrap-table-expandable/css/bootstrap-table-expandable.css' %}">
+
+    <!-- JQuery DataTables -->
+    <link rel="stylesheet" type="text/css" href="{% static 'lib/DataTables/datatables.min.css' %}" />
+
+    <!-- Required JavaScript Libraries -->
+    <script src="{% static 'lib/popper.js/dist/umd/popper.js' %}"></script>
+    <script src="{% static 'lib/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'lib/stellar/stellar.min.js' %}"></script>
+    <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
+    <script src="{% static 'lib/counterup/counterup.min.js' %}"></script>
+
+    <!-- Required JavaScript Library for editable table -->
+    <script src="{% static 'bootstable/bootstable.js' %}"></script>
+    <script src="{% static 'lib/easyJqueryTable/js/table.js' %}"></script>
+    <!-- Conflicts    <script src="{% static 'js/bootstrap-datepicker.js' %}"></script> -->
+
+
+    <!-- Vijay jquery news ticker -->
+    <script src="{% static 'lib/news-ticker/jquery.bootstrap.newsbox.min.js' %}"></script>
+
+    <!-- Vijay lodash -->
+    <script src="{% static 'lib/lodash/lodash.min.js' %}"></script>
+
+    <!-- Template Specific Custom Javascript File -->
+    <script src="{% static 'js/custom.js' %}"></script>
+    
+
+    <!--Custom scripts demo background & colour switcher - OPTIONAL -->
+    <script src="{% static 'js/color-switcher.js' %}"></script>
+    <script src="{% static 'js/bootstrap-multiselect.js' %}"></script>
+    <script type="text/javascript" src="{% static 'lib/DataTables/datatables.min.js' %}"></script>
+
+    <!-- Bootstrap-table scripts -->
+    <script src="{% static 'lib/bootstrap-table/bootstrap-table.min.js' %}"></script>
+    <script src="{% static 'lib/bootstrap-table-expandable/js/bootstrap-table-expandable.js' %}"></script>
+    <script src="{% static 'lib/bootstrap-table/extensions/editable/bootstrap-table-editable.js' %}"></script>
+    <!--<script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>-->
+    <script src="{% static 'lib/bootstrap-table/extensions/editable/bootstrap-editable.js' %}"></script>    
+
+    <!-- Google+ share -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <!--Your custom colour override - predefined colours are: colour-blue.css, colour-green.css, colour-lavander.css, orange is default-->
+    <!--  <link href="#" id="colour-scheme" rel="stylesheet"> -->
 
 </head>
 
@@ -202,26 +276,6 @@
             <!-- /row -->
         </div>
     </div>
-    <!-- Required JavaScript Libraries -->
-    <script src="{% static 'lib/bootstrap/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'lib/stellar/stellar.min.js' %}"></script>
-    <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
-    <script src="{% static 'lib/counterup/counterup.min.js' %}"></script>
-    <script src="{% static 'contactform/contactform.js' %}"></script>
-
-    <!-- Template Specisifc Custom Javascript File -->
-    <script src="{% static 'js/custom.js' %}"></script>
-    
-    <!--Custom scripts demo background & colour switcher - OPTIONAL -->
-    <script src="{% static 'js/color-switcher.js' %}"></script>
-    
-    <!--Contactform script -->
-    <script src="{% static 'contactform/contactform.js' %}"></script>
-
-
-
-
 
 </body>
 
