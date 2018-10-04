@@ -171,12 +171,15 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            userprofile = userprofile_form.save(commit=False)
-            userprofile.User = user
-            userprofile_form.save()
+            if userprofile_form.is_valid():
+                userprofile = userprofile_form.save(commit=False)
+                userprofile.User = user
+                userprofile_form.save()
             
-            # After successful sign up redirect to payment page
-            return redirect('subscription')
+                # After successful sign up redirect to payment page
+                return redirect('subscription')
+            else:
+                userprofile_form = UserProfileForm()        
     else:
         form = SignUpForm()
         userprofile_form = UserProfileForm()        
