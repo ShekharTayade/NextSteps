@@ -97,62 +97,34 @@
                                         </form>
                                     </div>
                                 </div>
-                                <div class = "col-sm-2" style="padding : 7px">
-                                    <form class="form-inline">
-                                        <div class="form-group"> 
-                                            <button type = "button" onclick = "printData()" id = "print" name = "print" class='btn btn-more pull-left'> <i class="fa fa-print"></i> Print</button>
-                                        </div>
-                                    </form>
-                                </div>
                             </div>                            
                         </div>
                         <br />
-                        <div id = "results" >    
-                        <!-- <div class="row" style = "margin:25px !important">
-                            {% for i in userStudyHours %} 
-                            <div class = "col-sm-4 print-study-box">
-                                <div class = "row">
-                                    <div class = "col-sm-5">                                    
-                                        <span> <strong>{{ i.date }} </strong></span>
-                                    </div>
-                                    <div class="col-sm-7">
-                                        <span class = "text-primary"><strong>{{ i.subject }}</strong></span>
-                                    </div>
-                                </div>
-                                <div class = "row">
-                                    <div class = "col-sm-12">
-                                        <span>{{ i.start_time }}&nbsp;-&nbsp;{{ i.end_time }}</span>
-                                    </div>
-                                </div>
-                                <div class = "row">
-                                    <div class = "col-sm-5">
-                                        <span>Plan&nbsp;-&nbsp;{{ i.planned_hours }}&nbsp;hrs</span>
-                                    </div>
-                                    <div class = "col-sm-7">
-                                        <span>Actual&nbsp;-&nbsp;{{ i.actual_hours }}&nbsp;hrs</span>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div> -->
-
                         <table id="sch" class="display table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Subject</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Planned Hrs</th>
+                                    <th>Actual Hrs</th>
+                                </tr>
+                            </thead>
                             <tbody>
                                 {% for i in userStudyHours %}
                                 <tr>
-                                    <td><span> <strong>{{ i.date }} </strong></span> <span class = "text-primary pull-right"><strong>{{ i.subject }}</strong></span>
-                                        <br />
-                                        <span>{{ i.start_time }}&nbsp;-&nbsp;{{ i.end_time }}</span>
-                                        <br />
-                                        <span>Plan&nbsp;-&nbsp;{{ i.planned_hours }}&nbsp;hrs</span> <span class="pull-right">Actual&nbsp;-&nbsp;{{ i.actual_hours }}&nbsp;hrs</span>
-                                    </td>
+                                    <td>{{i.date}}</td>
+                                    <td>{{i.subject}}</td>
+                                    <td>{{i.start_time}}</td>
+                                    <td>{{i.end_time}}</td>
+                                    <td>{{i.planned_hours}}</td>
+                                    <td>{{i.actual_hours}}</td>
                                 </tr>
+
                                 {% endfor %}
                             </tbody>
                         </table>
-                        
-                        
-                        </div>                    
                     {% else %}
                         <div class = "row">
                             <div class = "col-sm-12">
@@ -160,8 +132,6 @@
                             </div>
                         </div>
                     {% endif %}
-                    <div id = "test">
-                    </div>
                 </div>
             </div> 
         </div>
@@ -170,18 +140,7 @@
 <script>
 $(document).ready(function() {
     
-    //schTable = $('#sch').DataTable( {
-    //    retrieve: true,
-    //    responsive: true,
-    //    paging: false,
-    //    //dom: 'lBfrtip',
-    //    ordering:  false,
-    //    info:      false,
-    //    searching: false,
-
-    //});
-    
-    // Set month filter to current month 
+   // Set month filter to current month 
     mthYr ="{{currMonth}}-{{currYear}}";
     document.getElementById("selMonth").value = mthYr;    
     
@@ -199,6 +158,48 @@ $(document).ready(function() {
 </script>
 
 <script>
+    var todoTable;
+</script>
+
+<script>
+
+$(document).ready(function() {
+    todoTable = $('#sch').DataTable( {
+    ordering:  true,
+    paging:    true,
+    info:      false,
+    select: {
+        style: 'multi'
+    },    
+    
+    dom: '<"top"f>Brt<"bottom"ilp><"clear">',
+    buttons: [
+       'copy', 
+        {
+            extend: 'excel',
+            messageTop: 'To-Do List',
+            title : "NextSteps"
+        },
+        
+        {
+            extend: 'pdf',
+            messageTop: 'To-Do List',
+            title : "NextSteps"
+        },
+        {
+            extend: 'print',
+            messageTop: 'To-Do List',
+            title : "NextSteps"            }
+    ]
+    
+    } );
+
+} );    
+</script>
+
+
+
+<script>
     //$('#selectDisp').on('change', function() {
     function displayFilter(){
         val = document.getElementById('selectDisp').value;
@@ -210,8 +211,6 @@ $(document).ready(function() {
             $("#monthfilter").hide();
         }        
     };
-    
-    
 </script>
 
 <script>
@@ -230,26 +229,26 @@ $(document).ready(function() {
             },
             dataType: 'json',
             success: function (data) {
-                // remove all rows first
-                $("#sch tbody tr").remove();
-                
-                var tbl = document.getElementById("sch");
-                
-                data.forEach(function(row){                
-                    txt = '<span> <strong>' + row.date + ' </strong></span> <span class=\"text-primary pull-right\"><strong>' + row.subject + '</strong></span><br/><span>' + row.start_time + '&nbsp;-&nbsp;' + row.end_time + ' </span><br/><span>Plan\&nbsp;-\&nbsp;' + row.planned_hours + '\&nbsp;hrs</span> <span class=\"pull-right\">Actual\&nbsp;-\&nbsp;' + row.actual_hours + '\&nbsp;hrs</span>'
-                    //console.log(txt);
-                    //rows.push(txt);
-                    //$("#test").append(txt);
-                    //schTable.row(rows).add(txt).draw();
+                array = [];
+                data.forEach(function(row){
+                    var rec = [];
+                    rec.push(row.date);
+                    rec.push(row.subject);
+                    rec.push(row.start_time);
+                    rec.push(row.end_time);
+                    rec.push(row.planned_hours);
+                    rec.push(row.actual_hours);
+                    array.push (rec);
                     
-                    var row = tbl.insertRow(-1);
-                    var cell = row.insertCell(0);
-                    cell.innerHTML = txt;
                 });
-
+            
+                todoTable.rows().remove().draw();
+                todoTable.rows.add(array).draw();
+                
                 //Disable print button is there no rows fetched
                 if (data.length <= 0) {
                     $("#print").prop('disabled', true);
+                    alert("No data found!");
                 } else {
                     $("#print").prop('disabled', false);
                 }    
@@ -272,29 +271,31 @@ $(document).ready(function() {
             },
             dataType: 'json',
             success: function (data) {
-                // remove all rows first
-                $("#sch tbody tr").remove();
-                
-                var tbl = document.getElementById("sch");
-                
+                array = [];
                 data.forEach(function(row){                
-                    txt = '<span> <strong>' + row.date + ' </strong></span> <span class=\"text-primary pull-right\"><strong>' + row.subject + '</strong></span><br/><span>' + row.start_time + '&nbsp;-&nbsp;' + row.end_time + ' </span><br/><span>Plan\&nbsp;-\&nbsp;' + row.planned_hours + '\&nbsp;hrs</span> <span class=\"pull-right\">Actual\&nbsp;-\&nbsp;' + row.actual_hours + '\&nbsp;hrs</span>'
-                    
-                    var row = tbl.insertRow(-1);
-                    var cell = row.insertCell(0);
-                    cell.innerHTML = txt;
+                    var rec = [];
+                    rec.push(row.date);
+                    rec.push(row.subject);
+                    rec.push(row.start_time);
+                    rec.push(row.end_time);
+                    rec.push(row.planned_hours);
+                    rec.push(row.actual_hours);
+                    array.push (rec);
                 });
 
+                todoTable.rows().remove().draw();
+                todoTable.rows.add(array).draw();
+                
                 //Disable print button is there no rows fetched
                 if (data.length <= 0) {
                     $("#print").prop('disabled', true);
+                    alert("No data found!");
                 } else {
                     $("#print").prop('disabled', false);
                 }    
 
             }
         });    
-    
     
     }
     
@@ -306,30 +307,6 @@ $(document).ready(function() {
           return new Date(d).getMonth() + 1;
         }
         return -1;
-    }
-
-    function printData()
-    {
-    //   var divToPrint=document.getElementById("sch");
-     //  newWin= window.open("");
-      // newWin.document.write(divToPrint.outerHTML);
-      // newWin.print();
-      // newWin.close();
-    
-        //Get the HTML of div
-        var divElements = document.getElementById("sch").innerHTML;
-    
-        //Get the HTML of whole page
-        var oldPage = document.body.innerHTML;
-    
-        //Reset the page's HTML with div's HTML only
-        document.body.innerHTML = "<html><head><title></title></head><body>" + divElements + "</body>";
-    
-        //Print Page
-        window.print();
-    
-        //Restore orignal HTML
-        document.body.innerHTML = oldPage;
     }
 
 </script>

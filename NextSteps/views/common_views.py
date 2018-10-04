@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.db import IntegrityError, DatabaseError, Error
+from django.contrib.auth.decorators import login_required
 
 import datetime
 from django.utils import timezone
@@ -9,6 +10,7 @@ from django.utils import timezone
 from NextSteps.models import CountryUserPref, DisciplineUserPref, LevelUserPref
 from NextSteps.models import ProgramUserPref, InsttUserPref, UserAccount
 
+from django.db.models import Max
 
 def getLoggedInUserObject(request):
 
@@ -34,6 +36,7 @@ def isUserRegistered(request):
     
     return ret
 
+@login_required
 def isSubsActive(request):
 
     ret=False
@@ -52,6 +55,28 @@ def isSubsActive(request):
         ret = False
 
     return ret
+
+@login_required
+def isSubsExpired(request):
+    ret=False
+    
+    # Get logged in user id
+    userid = User.objects.filter(username = request.user).values('id')        
+
+    subsMax = UserAccount.objects.filter(User_id__in=userid).aggregate(Max('subscription_end_date'))
+    maxdate = subsMax['subscription_end_date__max']
+
+    if maxdate != None:
+            
+        if maxdate > timezone.now() :
+            ret=False
+        else:
+            ret=True
+    else:
+        ret=False
+        
+    return ret
+    
 
 # Get user preferences
 def getUserPrefs(username, type) :

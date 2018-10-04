@@ -7,9 +7,11 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError, DatabaseError, Error
 from django.db.models import Q
+from django.core import serializers
+
+from random import randrange
 
 from datetime import datetime, timedelta, date
-
 
 from NextSteps.decorators import subscription_active
 
@@ -1135,7 +1137,8 @@ def JEE_prog_instt_rank_results(request):
         
         
         
-@login_required        
+@login_required  
+@subscription_active      
 def userAppDetailsView(request):
     
     if request.method == 'POST':
@@ -1181,40 +1184,20 @@ def userAppDetailsView(request):
         'form': form    
     })
         
-
+@subscription_active
 def userAppDetailsConfirm(request):
     
     return render(request, 'NextSteps/userAppConfirm.html')
 
 @login_required
-def toDoList(request):
-
-    # Get user id
-    userid = User.objects.filter(username = request.user).values('id')
-    
-    userCalendar = UserCalendar.objects.filter(User__in=userid).values(
-        'id', 'Institute__instt_name', 'event', 'event_date', 'event_order', 'start_date', 'end_date', 
-        'event_duration_days', 'remarks').distinct('Institute__instt_name', 'event')
-
-    if userCalendar.exists():
-        event_list = userCalendar
-    else:
-    
-        insttUserList = InsttUserPref.objects.filter(User__in=userid).values('Institute_id')
-        
-        event_list = InstituteProgramImpDates.objects.filter(Institute_id__in=insttUserList).values(
-            'id', 'Institute_id', 'Institute__instt_name', 'event', 'event_date', 'event_order', 'start_date', 'end_date', 
-            'event_duration_days', 'remarks').distinct('Institute__instt_name', 'event')
-
-    print(event_list)
-
-    return render(request, 'NextSteps/to_do_list.html', {'event_list':event_list})
-
-@login_required
+@subscription_active
 def studyPlanner(request, active_tab):
 
     userid = User.objects.filter(username = request.user).values('id')
 
+    ''' current date '''
+    today = datetime.date.today()
+    
     ##### Get All Subject List
     cnt = request.POST.get('country', 'BLANK')
     disc = request.POST.get('discipline', 'BLANK')
@@ -1245,7 +1228,20 @@ def studyPlanner(request, active_tab):
     # and use that to get the latest subject schedule
     subjSchMax = UserSubjectSchedule.objects.filter(User_id__in = userid).aggregate(Max('date_updated'))
     maxdate = subjSchMax['date_updated__max']
-    userSubjectList = UserSubjectSchedule.objects.filter(User_id__in = userid, date_updated = maxdate)
+    userSubjectList = UserSubjectSchedule.objects.filter(User_id__in = userid, 
+                date_updated = maxdate)
+    
+    '''
+    u = latest_userSch.objects.filter(User_id=OuterRef('study_hours_per_day'))
+    s = UserSubjectSchedule.objects.annotate(subhrs=Subquery(s.values('User_id')[:1]))
+    rawq = UserSubjectSchedule.objects.raw('SELECT a.subject,  (a.percentage_Weight * b.study_hours_per_day) as subjhrs FROM "NextSteps_usersubjectschedule" AS a, "NextSteps_userstudyschedule" AS b WHERE a."User_id" = 2 AND b."User_id" = 2 AND a."User_id" = b."User_id"')
+    '''
+        
+    hrs = {}
+    for s in userSubjectList:
+        for l in latest_userSch:
+            hrs[s.subject] = str(s.percentage_weight * l.study_hours_per_day / 100)
+    subj_hrs = json.dumps(hrs)
     
     # Similary for Day Schdule
     daySchMax = UserDaySchedule.objects.filter(User_id__in = userid).aggregate(Max('date_updated'))
@@ -1278,15 +1274,35 @@ def studyPlanner(request, active_tab):
             Max('date') )
     
     # Get the study hours - planned Vs actual 
-    hrsPlannedOverall = StudyHours.objects.filter(User_id__in = userid).aggregate( planned_hours__sum=Coalesce(Sum('planned_hours'),0))
-    hrsActualOverall = StudyHours.objects.filter(User_id__in = userid).aggregate( actual_hours__sum=Coalesce(Sum('actual_hours'),0) )
+    hrsPlannedOverall = StudyHours.objects.filter(User_id__in = userid, date__lte = today ).aggregate( 
+            planned_hours__sum=Coalesce(Sum('planned_hours'),0))
+    hrsActualOverall = StudyHours.objects.filter(User_id__in = userid, date__lte = today).aggregate( 
+            actual_hours__sum=Coalesce(Sum('actual_hours'),0) )
     # Get the subjectwise study hours - planned Vs actual 
-    hrsPlannedSubj = StudyHours.objects.filter(User_id__in = userid).values('subject').annotate(
-        Sum('planned_hours')).order_by('subject')
-    hrsActualSubj = StudyHours.objects.filter(User_id__in = userid).values('subject').annotate(
-        actual_hours=Coalesce(Sum('actual_hours'), 0)).order_by('subject')
+    hrsPlannedSubj = StudyHours.objects.filter(User_id__in = userid, date__lte = today).values(
+            'subject').annotate(Sum('planned_hours')).order_by('subject')
+    hrsActualSubj = StudyHours.objects.filter(User_id__in = userid, date__lte = today).values(
+        'subject').annotate(actual_hours=Coalesce(Sum('actual_hours'), 0)).order_by('subject')
 
-    # Get subject wise percentage of actual hours compare to overall hours
+
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    ''' Check if schedule calendar needs to be generated '''
+    ''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    '''
+    Get laster user day schedule
+    Here we need to get max datetime ('date_updated' column),
+    and use that to get the latest day schedule
+    '''
+    daySchMax = UserDaySchedule.objects.filter(User_id__in = userid).aggregate(Max('date_updated'))
+    maxDaySchDate = daySchMax['date_updated__max']
+    daySchGen = UserDaySchedule.objects.filter(User_id__in = userid, date_updated = maxDaySchDate, schedule_generated = False)
+    daySchGenFlag = False
+    
+    if daySchGen:
+        daySchGenFlag = True
+    
+
+    ''' Get subject wise percentage of actual hours compared to overall hours '''
     subjPercentage = {}
     perc = 0
     
@@ -1310,12 +1326,14 @@ def studyPlanner(request, active_tab):
     hrsActualWeek = StudyHours.objects.filter(User_id__in = userid).values(week=Extract(
         'date', 'week')).annotate(Sum('actual_hours')).order_by('week')
 
-
     # Setting current month and year
-    today = datetime.date.today()
-    
     currMonth = str(today.month)
     currYear = str(today.year)
+
+    # Get the study hours for logging tab
+    schStudyHrs = StudyHours.objects.filter(User_id__in = userid,
+                date__month=currMonth, date__year=currYear ).order_by('date')
+
     
     #currMonth = str(datetime.now().month)
     #currYear = str(datetime.now().year)
@@ -1342,7 +1360,7 @@ def studyPlanner(request, active_tab):
         except UserSubjectSchedule.DoesNotExist:
             form = UserSubjectScheduleForm()
         
-    return render(request, 'NextSteps/study_planner.html', {'allSubjectList':
+    return render(request, 'NextSteps/study_planner11.html', {'allSubjectList':
             allSubjectList, 'userSubjectList':userSubjectList, 'form':form,
             'userSch': userSch, 'userDaySch' : userDaySch,'months':months, 
             'dateMin':dateMin, 'dateMax':dateMax, 'currMonth':currMonth, 
@@ -1350,10 +1368,12 @@ def studyPlanner(request, active_tab):
             'hrsPlannedOverall':hrsPlannedOverall, 'hrsActualOverall':
             hrsActualOverall, 'hrsPlannedSubj':hrsPlannedSubj,
             'hrsActualSubj':hrsActualSubj, 'subjPercentage':subjPercentage,
-            'latest_userSch':latest_userSch, 'actualHrsMaxDate':actualHrsMaxDate})
+            'latest_userSch':latest_userSch, 'actualHrsMaxDate':actualHrsMaxDate,
+            'subj_hrs':subj_hrs, 'daySchGen':daySchGen, 'schStudyHrs':schStudyHrs})
 
 
 @login_required
+@subscription_active
 def getUserSubjectSchedule(request):
 
     userid = User.objects.filter(username = request.user).values('id')
@@ -1365,6 +1385,7 @@ def getUserSubjectSchedule(request):
     
     return JsonResponse(list(userSubjectList), safe=False)    
 
+@subscription_active
 def getStudyHours(request):
     month = request.GET.get('month', "")
     year = request.GET.get('year', "")
@@ -1373,7 +1394,6 @@ def getStudyHours(request):
     dateto = request.GET.get('dateto', "")
     
     userid = User.objects.filter(username = request.user).values('id')
-
 
     # Create the base queryset and then apply each filter
     userStudyHours = StudyHours.objects.filter( User_id__in = userid).values(
@@ -1392,23 +1412,19 @@ def getStudyHours(request):
 
     if (datefrom != ""):
         fromdate = datetime.datetime.strptime(datefrom, "%Y-%m-%d").date()
-        print("fromdate")
-        print(fromdate)
         userStudyHours = userStudyHours.filter( date__gte = fromdate).values(
             'id', 'subject', 'date', 'start_time', 'end_time', 'planned_hours', 
             'actual_hours').order_by('date', 'start_time')
         
     if (dateto != ""):
         todate = datetime.datetime.strptime(dateto, "%Y-%m-%d").date()
-        print("todate")
-        print(todate)
         userStudyHours = userStudyHours.filter( date__lte = todate).values(
             'id', 'subject', 'date', 'start_time', 'end_time', 'planned_hours', 
             'actual_hours').order_by('date', 'start_time')
 
     return JsonResponse(list(userStudyHours), safe=False)    
 
-
+@subscription_active
 def getMonthStudyHours(request):
     month = request.GET.get('month', "")
     year = request.GET.get('year', "")
@@ -1443,10 +1459,10 @@ def getMonthStudyHours(request):
         monthStudyHours = monthStudyHours.filter( date__lte = todate).values(
         'date').annotate( Sum('planned_hours'), Sum('actual_hours') ).order_by('date')
 
+    return JsonResponse(list(monthStudyHours), safe=False)   
 
-    return JsonResponse(list(monthStudyHours), safe=False)    
 
-
+@subscription_active
 def getMonthSubjHours(request):
     month = request.GET.get('month', "")
     year = request.GET.get('year', "")
@@ -1483,6 +1499,7 @@ def getMonthSubjHours(request):
     return JsonResponse(list(monthStudyHours), safe=False)    
 
 
+@subscription_active
 # This function is used by the Study Planner -> Dashboard - > Stacked Column CHart
 def getDayRows(request):
     month = request.GET.get('month', "")
@@ -1577,8 +1594,8 @@ def getDayRows(request):
     return JsonResponse(list(data), safe=False)    
 
 
-
-
+@login_required
+@subscription_active
 def printStudySchedule(request):
 
     month = request.POST.get('month', "")
@@ -1618,12 +1635,19 @@ def printStudySchedule(request):
     
     # Setting current month to a string value
     currMonth = calendar.month_abbr[int(month)]
-    
+
+    '''    
     return render(request, 'NextSteps/printStudySchedule.html', 
         {'userStudyHours': userStudyHours, 'months':months, 'dateMin':dateMin,
          'dateMax':dateMax, 'currMonth':currMonth, 'currYear':year})
+    '''
+    return render(request, 'NextSteps/print_study_schedule.html', 
+        {'userStudyHours': userStudyHours, 'months':months, 'dateMin':dateMin,
+         'dateMax':dateMax, 'currMonth':currMonth, 'currYear':year})
 
-@login_required
+
+
+''' Saving the Schedule Calendar '''
 @csrf_exempt
 def saveStudyHours (request):
     
@@ -1642,6 +1666,7 @@ def saveStudyHours (request):
             pass_fail = 'PASS'
             msg = 'SUCCESS'
 
+            today = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             for i in json_data:
                 start = i.get("start", "")
                 end = i.get("end", "")
@@ -1670,7 +1695,8 @@ def saveStudyHours (request):
                             # save the data
                             studyhours  = StudyHours(User = usr, subject = subject, 
                                         date = date, start_time= start_time, 
-                                        end_time= end_time, planned_hours= planned_hours) 
+                                        end_time= end_time, planned_hours= planned_hours,
+                                        date_updated = today) 
                             studyhours .save()
             
                         except IntegrityError as e:
@@ -1685,7 +1711,8 @@ def saveStudyHours (request):
                         
                         studyhours  = StudyHours(User = usr, subject = subject, 
                                     date = start_date, start_time= start_time, 
-                                    end_time= end_time, planned_hours= planned_hours) 
+                                    end_time= end_time, planned_hours= planned_hours,
+                                    date_updated = today) 
                         studyhours .save()
         
                     except IntegrityError as e:
@@ -1697,7 +1724,68 @@ def saveStudyHours (request):
 
     return HttpResponse(pass_fail)
     
+''' Saving the actual hours logged '''
+@csrf_exempt
+def saveLoggedHours(request):
+    if request.is_ajax():
+        if request.method == 'POST':
 
+            # Get data from the request.
+            json_data = json.loads(request.body.decode("utf-8"))
+
+            # Get the user object for the logged in user
+            usr = get_object_or_404(User, username=request.user)
+
+            # delete the existing data
+            #StudyHours.objects.filter(User=usr).delete()
+            
+            pass_fail = 'PASS'
+            msg = 'SUCCESS'
+
+            today = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+            for i in json_data:
+               
+                id = i.get("id", "")
+                subject = i.get("subject", "")
+                dt = i.get("date", "")
+                date = datetime.datetime.strptime(dt, "%Y-%m-%d")
+                start_time = i.get("start_time", "")
+                end_time = i.get("end_time", "")
+                planned_hours = i.get("planned_hours", "")
+                actual_hours = i.get("actual_hours", "")
+               
+                if actual_hours == "None" or actual_hours == "Empty" or actual_hours == "":
+                    continue
+
+                try: 
+                    # save the data
+                    studyhours  = StudyHours(
+                                id = int(id), 
+                                User = usr, 
+                                subject = subject, 
+                                date = date, 
+                                start_time= start_time, 
+                                end_time= end_time, 
+                                planned_hours= planned_hours,
+                                actual_hours = actual_hours,
+                                date_updated = today
+                                ) 
+                    studyhours.save(force_update = True)
+    
+                except IntegrityError as e:
+                    pass_fail = 'FAIL'
+                    
+                except Error as e:
+                    pass_fail = 'FAIL'
+                
+
+    return HttpResponse(pass_fail)
+    
+
+
+@login_required
+@subscription_active
 def updateStudySchedule(request):
 
     month = request.POST.get('month', "")
@@ -1743,6 +1831,8 @@ def updateStudySchedule(request):
         {'userStudyHours': userStudyHours, 'months':months, 'dateMin':dateMin,
          'dateMax':dateMax, 'currMonth':currMonth, 'currYear':year})
     
+@login_required
+@subscription_active
 def saveStudySchedule(request):
 
     days = request.GET.get('daysperweek', "")
@@ -1783,6 +1873,7 @@ def saveStudySchedule(request):
     return JsonResponse(msg, safe=False)    
             
 @login_required
+@subscription_active
 def saveSubjSch(request):
         
     rows = request.GET.getlist('rows[]', [])
@@ -1824,22 +1915,49 @@ def saveSubjSch(request):
     return JsonResponse(msg, safe=False)    
 
 @login_required
+@subscription_active
 def saveDaySch(request):
     
     rows = request.GET.getlist('day_data[]', [])
+    days_of_week = request.GET.getlist('days_of_week[]', [])
 
     if not rows:
-        msg = 'Nothing to Save'
+        msg = 'Update the data to save'
+        return JsonResponse(msg, safe=False)    
+    if not days_of_week:
+        msg = 'Days of the week not selected'
         return JsonResponse(msg, safe=False)    
     
     today = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     msg = 'Your day schedule is saved successfully'
+    
+    mon=tue=wed=thu=fri=sat=sun = False
+    for d in days_of_week:
+        if d == '0':
+            mon = True
+            continue
+        if d == '1':
+            tue = True
+            continue
+        if d == '2':
+            wed = True
+            continue
+        if d == '3':
+            thu = True
+            continue
+        if d == '4':
+            fri = True
+            continue
+        if d == '5':
+            sat = True
+            continue
+        if d == '6':
+            sun = True
+            continue
   
     # Get the user object for the logged user
     usr = get_object_or_404(User, username=request.user)
     
-    # Get existing study schedule for the user
-
     try :
         for r in rows:
             
@@ -1852,9 +1970,16 @@ def saveDaySch(request):
                                 start_time = start_time,
                                 end_time = end_time,
                                 planned_hours = float(row[3]),
-                                date_updated = today)
+                                date_updated = today,
+                                mon = mon,
+                                tue = tue,
+                                wed = wed,
+                                thu = thu,
+                                fri = fri,
+                                sat = sat,
+                                sun = sun)
             newDaySch.save()
-        print("Updated")
+
     except IntegrityError as e:
         msg = 'Apologies!! Could not save your day schedule. Please use the "Contact Us" link at the bottom of this page and let us know. We will be glad to help you.'
 
@@ -1862,4 +1987,180 @@ def saveDaySch(request):
         msg = 'Apologies!! Could not save day schedule. Please use the "Contact Us" link at the bottom of this page and let us know. We will be glad to help you.'
 
     return JsonResponse(msg, safe=False)    
-        
+
+@login_required
+@subscription_active
+def generateSchCalendar (request):
+
+    # Get the user object for the logged user
+    usr = get_object_or_404(User, username=request.user)
+    userid = User.objects.filter(username = request.user).values('id')
+     
+    '''
+    Get laster user Subject schedule
+    Here we need to get max datetime ('date_updated' column),
+    and use that to get the latest subject schedule
+    '''
+    subjSchMax = UserSubjectSchedule.objects.filter(User_id__in = userid).aggregate(Max('date_updated'))
+    maxdate = subjSchMax['date_updated__max']
+    userSubSch = UserSubjectSchedule.objects.filter(User_id__in = userid, 
+                date_updated = maxdate)
+
+    '''
+    Get laster user day schedule
+    Here we need to get max datetime ('date_updated' column),
+    and use that to get the latest day schedule
+    '''
+    daySchMax = UserDaySchedule.objects.filter(User_id__in = userid).aggregate(Max('date_updated'))
+    maxDaySchDate = daySchMax['date_updated__max']
+    daySch = UserDaySchedule.objects.filter(User_id__in = userid, date_updated = maxDaySchDate)
+    
+    if not userSubSch:
+        msg = 'No schedule found to be generated. Have you updated Subject Schedule yet?'
+        return JsonResponse(msg, safe=False)    
+    
+    if not daySch:
+        msg = 'No schedule found to be generated. Have you updated Day Schedule yet?'
+        return JsonResponse(msg, safe=False)    
+
+    days_of_week = []
+    
+    for u in daySch:
+        if u.mon :
+            days_of_week.append('0')
+        if u.tue :
+            days_of_week.append('1')
+        if u.wed:
+            days_of_week.append('2')
+        if u.thu :
+            days_of_week.append('3')
+        if u.fri :
+            days_of_week.append('4')
+        if u.sat :
+            days_of_week.append('5')
+        if u.sun :
+            days_of_week.append('6')
+        break; ''' All subjects would have the same days, so no need go through rest of the rows'''
+
+    if not days_of_week:
+        msg = 'No study days found in Day Schedule to be able to generate the schedule. Please update Day Schedule with days of week.'
+        return JsonResponse(msg, safe=False)    
+
+    #rows = request.GET.getlist('day_data_with_dates[]', [])
+    #days_of_week = request.GET.getlist('days_of_week[]', [])
+    
+    msg = ''
+    #mon=tue=wed=thu=fri=sat=sun = False
+    
+    today = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    ''' Let's get the latest date which user has entered the actual hours.'''
+    actDateMax = StudyHours.objects.filter(User_id__in = userid, actual_hours__gt = 0).aggregate(Max('date'))
+    dtMax = actDateMax['date__max']
+    
+    try :
+        #for r in rows:
+        for r in userSubSch:
+            #row = r.split(",")
+
+            #start_date = datetime.datetime.strptime(row[1], "%Y-%m-%d").date() 
+            #end_date = datetime.datetime.strptime(row[2], "%Y-%m-%d").date()
+
+            ''' We update the planned hours only from actual_hours date, if present '''
+            ''' We won't overwrite if the actual hours are already entered'''
+            dateFrom = r.start_date 
+            if dtMax:
+                if dtMax > r.start_date:
+                     dateFrom = dtMax + datetime.timedelta(days=1)
+                     
+            for single_date in daterange(dateFrom, r.end_date):
+                #dt = datetime.datetime.strptime(single_date, "%Y-%m-%d").date()
+                #single_date.strftime("%Y-%m-%d").date()
+
+                ''' if this day is NOT planned as study day by user, then continue with next date'''
+                if not str(single_date.weekday()) in days_of_week:
+                    continue
+
+                startTime = datetime.time(0, 0)
+                endTime = datetime.time(0, 0)
+                plannedHours = 0
+
+                '''Get start, end time, and planned_hours from DaySch'''
+                ''' Day Sch is already filtered for the current user and the latest schedule date'''
+                ''' filtering further on subject should yield only one row '''
+                thisDaySch = daySch.filter(subject = r.subject)
+                for t in thisDaySch:
+                    startTime = t.start_time
+                    endTime = t.end_time
+                    plannedHours = t.planned_hours
+                    updID = t.id
+                    dtUpdated = t.date_updated
+
+                #start_time = datetime.datetime.strptime(row[3], "%H:%M")
+                #end_time = datetime.datetime.strptime(row[4], "%H:%M")
+
+                ''' Get date to check if the row for this date already exists '''
+                #existing_data = StudyHours.objects.filter(User_id__in = userid,
+                #            date = single_date, subject = row[0] )
+                existing_data = StudyHours.objects.filter(User_id__in = userid,
+                            date = single_date, subject = r.subject )
+                
+                rec_id = randrange(1000000000)
+                ''' StudyHours will have only have 1 row for a user, a subject and a date'''
+                for d in existing_data:
+                    rec_id = d.id
+    
+                # data coming in....
+                #day_rec_with_dates = [subj, lstart_date, lend_date, starttime, endtime, planned_hours];
+                if existing_data:
+                    newSch = StudyHours(
+                                    id = rec_id,
+                                    User = usr,
+                                    subject = r.subject,
+                                    date = single_date,
+                                    start_time = startTime,
+                                    end_time = endTime,
+                                    planned_hours = plannedHours,
+                                    date_updated = today)
+                    newSch.save(force_update=True)
+                else:
+                    newSch = StudyHours(
+                                    User = usr,
+                                    subject = r.subject,
+                                    date = single_date,
+                                    start_time = startTime,
+                                    end_time = endTime,
+                                    planned_hours = plannedHours,
+                                    date_updated = today)
+                    newSch.save(force_insert=True)
+
+                    
+                '''Update the schedule generated flag in day schedule'''
+                daySchUpd = UserDaySchedule(
+                                id = updID,
+                                User = usr,
+                                subject = r.subject,
+                                start_time = startTime,
+                                end_time = endTime,
+                                planned_hours = plannedHours,
+                                date_updated = dtUpdated,
+                                schedule_generated = True,
+                                schedule_generated_date = today)
+                daySchUpd.save(force_update = True)
+                    
+            msg = 'Schedule Calendar is generated successfully'
+                
+    except IntegrityError as e:
+        msg = 'Apologies!! Could not save your day schedule. Please use the "Contact Us" link at the bottom of this page and let us know. We will be glad to help you.'
+
+    except Error as e:
+        msg = 'Apologies!! Could not save day schedule. Please use the "Contact Us" link at the bottom of this page and let us know. We will be glad to help you.'
+
+    return JsonResponse(msg, safe=False)    
+
+
+
+def daterange(start_date, end_date):
+    for n in range(int ((end_date - start_date).days)):
+        yield start_date + timedelta(n)
+

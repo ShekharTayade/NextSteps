@@ -328,9 +328,10 @@
   clear: both;
 }
 .block .block-title {
-  margin-top: 0;
+  margin-top: 10px;
   position: relative;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+  text-shadow : 3px 3px 3px Gainsboro;
 }
 .block .block-title:after {
   width: 80px;
@@ -1469,6 +1470,18 @@ blockquote p {
   font-weight: normal;
   line-height: 1.55;
 }
+
+blockquote .big {
+  padding: 0 1em 1em 50px;
+  text-align: center;
+  font-size: 20px !important;
+  font-style: italic;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-weight: normal;
+  line-height: 1.55;
+}
+
+
 blockquote img {
   position: absolute;
   bottom: 0;
@@ -1815,6 +1828,9 @@ a.btn-hh-trigger.target-open:after {
   }
   .footer-line-right {
     float : none !important;
+  }
+  .item-slider ul li {
+    font-size: 12px !important;
   }
 }
 
@@ -2274,7 +2290,7 @@ img {
 }
 .navbar-slogan {
   float: left;
-  width: 200px;
+  width: 250px;
   padding-left: 1.5em;
   margin-left: 1.5em;
   border-left: 2px dotted #bcbfc4;
@@ -4278,15 +4294,20 @@ thead input {
     border: 1px solid #e34619;
 }
 
-#sch tr{
-    float:left;
-    border-radius : 10px;
-}
+//#sch tr{
+//    float:left;
+//    border-radius : 10px;
+//}
 
-#schUpd tr{
-    float:left;
-    border-radius : 10px;
-}​
+//#schUpd tr{
+//    float:left;
+//    border-radius : 10px;
+//}​
+
+#schUpd tr.group,
+#schUpd tr.group:hover {
+    background-color: #ddd !important;
+}
 
 .actualhrs {
     width : 75px;
@@ -4525,14 +4546,75 @@ thead input {
 
 
 /** For the screenshots in the marketting features pages  **/
-
 .screenshot {
     width: 100%;
-    max-height="100%" max-width="100%"
+    /* max-height="100%" max-width="100%" */
  }
+ 
 /***********End Marketting Fearures *******************************/
 
 #tnc {
     width:550px;
     height:300px
 }
+
+/***************  Plain panel styling  ***********************/
+.panelbox {
+  background:#fff;
+  transition:all 0.2s ease;
+  border:2px solid Gainsboro;
+  margin-top: 10px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  background-clip: padding-box;
+  padding:0 20px 20px 20px;
+  min-height:340px;
+}
+
+.panelbox span.box-title {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 300;
+    text-transform: uppercase;
+}
+
+.panelbox .box-content {
+  padding: 16px;
+  border-radius: 0 0 2px 2px;
+  background-clip: padding-box;
+  box-sizing: border-box;
+}
+.panelbox .panelbox-content p {
+  color:#515c66;
+  text-transform:none;
+}
+
+.panelbox-no-min {
+  background:#fff;
+  transition:all 0.2s ease;
+  border:2px solid Gainsboro;
+  box-sizing: border-box;
+  border-radius: 5px;
+  background-clip: padding-box;
+  padding:0 20px 20px 20px;
+  min-height:130px;
+}
+.panelbox-no-min span.panelbox-title {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 300;
+    text-transform: uppercase;
+}
+
+.panelbox-no-min .panelboxno-min-content {
+  padding: 16px;
+  border-radius: 0 0 2px 2px;
+  background-clip: padding-box;
+  box-sizing: border-box;
+}
+.panelbox-no-min .panelboxno-min-content p {
+  color:#515c66;
+  text-transform:none;
+}
+
+

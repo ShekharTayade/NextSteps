@@ -47,22 +47,27 @@
             <h3 class="block-title" style = "margin-bottom:15px;">Calendar- Never Miss Exam, Admission Process Dates</h3>
             <br />
 
-            <blockquote><p>The "Calendar" feature is available to the subscribed users.<br />
+            <blockquote>
+                <p class = "big">
+                    Keep track of important exam, admission process dates, get a to-do list
+                </p>
+            </blockquote>  
+
+
+            <n_note>
+                <p>The "Calendar" feature is available to the subscribed users.
                 {% if regUser %}
                     You have signed up and we recommend that you 
-                    <a href="{% url 'payment' %}"  class="text-primary"> Subscribe</a> now and get access to the powerful 
-                    NextSteps features that give you access to useful tools, customizes to you, and saves your valuable time & effort.
+                    <a href="{% url 'subscription' %}"  class="text-primary"> Subscribe</a> now and get access to the powerful 
+                    NextSteps features.
                 {% else %}
                     NextSteps has powerful fearures that give you access to useful tools, customizes to you and saves a lot of time & effort.
                     To get these benefits we recommed that you <a href="{% url 'signup' %}"  class="text-primary"> Sign Up </a>, 
                     Subscribe and get started!.
                 {% endif %}</p>
-            </blockquote>                 
+            </n_note>                 
 
 
-            <n_note>
-                <h4> This powerful feature helps keep track and remind you of important dates of exams, admission process</h4>
-            </n_note>
             
             <div class = "right-pane">
                 <div class = "block-feature">

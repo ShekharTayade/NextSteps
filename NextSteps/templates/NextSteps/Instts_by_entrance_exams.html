@@ -34,39 +34,65 @@
     <div class="block" style="padding-top: 5%; padding-bottom: 5%; ">
         <div class="container">
 
-            <h3 class="block-title" style = "margin-bottom:15px;">Entrance Exams</h3>
+            <h3 class="block-title" style = "margin-bottom:15px;">Institutes by Entrance Exam</h3>
             
             <n_note>
-                <p>Entrance exams, for admissions to various B.E./B.Tech courses, conduted by various states, universities and colleges in India.</p>
+                <p>List of Insitutes that conduct admission based on {{entrance_exam_code}}:</p>
             </n_note>
             
-            <table id="tableOne" class="display table table-striped table-bordered">
+            <table id="insttTbl" class="table custom-tbl" 
+                data-toggle="table"
+                data-search="true"
+                data-show-export="true"
+                data-minimum-count-columns="2"
+                data-pagination="true"
+                data-id-field="instt"
+                data-page-list="[10, 25, 50, 100]"
+                data-show-footer="false"
+                data-row-style="rowStyle"
+                data-classes="table table-no-bordered"
+                data-height="1200">
+        
                 <thead>
                     <tr>
-                        <th style="width:20%">Entrance Exam</th>
-                        <th style="width:40%">Description</th>
-                        <th style="width:15%">Exam Level</th>
-                        <th style="width:20%">State Applies to</th>
+                        <th style="width:100%"></th>
                     </tr>
                 </thead>
                 <tbody>            
-                    {% for i in examList %}      
-                        <tr>       
-                            <td class="align-middle text-primary" > 
+                    {% for il in instt_list %}      
+                    <tr>
+                        <td class = "pull-left" id = "instt" name="instt"> <strong>{{il.Institute__instt_name}}</strong>
+                    
+                            <br />{{ il.Institute__address_1 }} 
+                            
+                            {% if il.address_2 %}
+                                &nbsp;{{ il.Institute__address_2 }}<br />
+                            {% endif %}
+                            
+                            {% if il_.Institute__address_3 %}
+                                &nbsp;{{ il.Institute__address_3 }}<br />
+                            {% endif %}
+                            
+                            {{ ilInstitute__city }} &nbsp; {{ il.Institute__state }} &nbsp; {{ il.Institute__pin_code }} &nbsp;
+                            
+                            {{ il.Institute__country }} <br />
+                            {% if il.Institute__phone_number %}
+                               <i class="fa fa-fw fa-phone-square"></i>&nbsp; {{ilInstitute__phone_number}}&nbsp; &nbsp;
+                            {% endif %}   
+                            {% if il.Institute__email_id %}
+                                <i class="fa fa-fw fa-paper-plane"></i>&nbsp; {{ il.Institute__email_id }}
+                            {% endif %}
+                            <br />
+                            {% if il.Institute__website %}
+                                <i class="fa fa-globe"></i> &nbsp; <a href = "{{ il.Institute__website }}"> {{il.Institute__website}} </a>
+                            {% endif %}
 
-                                <form id='{{i.entrance_exam_code}}' action="{% url 'instts_by_entrance_exam_code' %}" method="get"> 
-                                    <a  class = "text-primary" href="javascript:;" onclick="document.getElementById('{{i.entrance_exam_code}}').submit();"> {{i.entrance_exam_code}}</a>
-                                    <select hidden name="entrance_exam_code">
-                                        '<option value='{{i.entrance_exam_code}}' selected> {{i.entrance_exam_code }} </option>'
-                                    </select>
-                                </form>                          
-                          </td>
-                            <td class="align-middle" > {{ i.description}}</td>
-                            <td class="align-middle" > {{ i.exam_level }}</td>
-                            <td class="align-middle" > {{i.state }}</td>
-                        </tr>
+                        </td>
+                    </tr>
+                       
+ 
                     {% empty %}
-                        <p>No Entrance Exams found.</p>
+                        <p>No Institutes found.</p>
                     {% endfor %}
                 </tbody>
             </table>

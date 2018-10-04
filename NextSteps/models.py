@@ -449,10 +449,13 @@ class ContactForm(models.Model):
 # Model - PromotionCode
 # This model stores promotion codes for the promotions that NextSteps runs.
 class PromotionCode(models.Model):
-    promotion_code = models.CharField(max_length=20, primary_key=True)
+    promotion_code = models.CharField(max_length=50, primary_key=True)
     start_date = models.DateField(blank=False, null=False)
     end_date = models.DateField()
     discount_percent = models.DecimalField(max_digits=5, decimal_places=2, blank=False, null=False)
+
+    class meta:
+        unique_together = (('promotion_code', 'start_date'),)
     
     def __str__(self):
         return self.promotion_code
@@ -472,12 +475,46 @@ class UserAccount (models.Model):
     PromotionCode = models.ForeignKey(PromotionCode, on_delete = models.PROTECT, blank=True, null=True)
     discount_percent = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True)
     promotion_sys_msg = models.CharField(max_length=2, blank=True, default='')
+    payment_txn_status = models.CharField(max_length=10, blank=True, default='')
+    payment_txn_id = models.CharField(max_length=250, blank=True, default='')
+    payment_txn_amount=models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    payment_txn_posted_hash=models.CharField(max_length=250, blank=True, default='')
+    payment_txn_key=models.CharField(max_length=250, blank=True, default='')
+    payment_txn_productinfo=models.CharField(max_length=250, blank=True, default='')
+    payment_txn_email=models.CharField(max_length=250, blank=True, default='')
+    payment_txn_salt=models.CharField(max_length=250, blank=True, default='')
+    payment_firstname = models.CharField(max_length=250, blank=True, default='')
+    payment_lastname = models.CharField(max_length=250, blank=True, default='')
+    payment_email = models.CharField(max_length=250, blank=True, default='')
+    payment_phone = models.CharField(max_length=20, blank=True, default='')
+    payment_address1 = models.CharField(max_length=250, blank=True, default='')
+    payment_address2 = models.CharField(max_length=250, blank=True, default='')
+    payment_city = models.CharField(max_length=250, blank=True, default='')
+    payment_state = models.CharField(max_length=250, blank=True, default='')
+    payment_country = models.CharField(max_length=250, blank=True, default='')
+    payment_zip_code = models.CharField(max_length=20, blank=True, default='')
+
+
+    def __str__(self):
+        return str(self.User)
+
+''' Store details before user proceeds to payment.
+    To be used to know if user tried to subscribe but didn't go forward with payment '''
+class BeforePayment(models.Model):
+    User = models.ForeignKey(User, on_delete=models.CASCADE,)
+    registration_date = models.DateTimeField(blank=True, null=True)
+    registration_amount = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    subscription_amount = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    total_amount = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
+    promotionCode = models.CharField(max_length=50, blank=True, default='')
+    discount_percent = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True)
+    promotion_sys_msg = models.CharField(max_length=2, blank=True, default='')
+    date_updated = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return str(self.User)
 
     
-
 class UserAppDetails(models.Model):    
     
     GENDER_CHOICES = (
@@ -485,7 +522,7 @@ class UserAppDetails(models.Model):
         ('FEMALE', 'Female'),
     )
     
-    User = models.ForeignKey(User, on_delete=models.CASCADE,)
+    User = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     name = models.CharField(max_length=200, blank=False, null=False)
     date_of_birth = models.DateField(blank=True, null=True)
     gender = models.CharField(
@@ -546,7 +583,7 @@ class UserProfile(models.Model):
         ('FEMALE', 'Female'),
     )
     
-    User = models.OneToOneField(User, on_delete=models.CASCADE)
+    User = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
     date_of_birth = models.DateField(null=True, blank=True, default='')
     gender = models.CharField(
         max_length=6,
@@ -578,6 +615,9 @@ class UserCalendar(models.Model):
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     remarks= models.CharField(max_length=2000, blank=True, default='')
+
+    class meta:
+        unique_together = (('User', 'event', 'event_date'),)
     
     def __str__(self):
         return str(self.User)   
@@ -608,6 +648,9 @@ class UserStudySchedule(models.Model):
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     date_updated = models.DateTimeField(blank=True, null=True)
+
+    class meta:
+        unique_together = (('User', 'date_updated'),)
     
 
 class UserSubjectSchedule(models.Model):
@@ -619,7 +662,9 @@ class UserSubjectSchedule(models.Model):
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     date_updated = models.DateTimeField(blank=True, null=True)
-
+    
+    class meta:
+        unique_together = (('User', 'subject', 'date_updated'),)
 
 class UserDaySchedule(models.Model):
     User = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -629,6 +674,18 @@ class UserDaySchedule(models.Model):
     planned_hours = models.DecimalField(max_digits=4, decimal_places=2, 
             blank=True, null=True, validators=[validate_max24hrs])
     date_updated = models.DateTimeField(blank=True, null=True)
+    schedule_generated = models.NullBooleanField(default=False)
+    schedule_generated_date = models.DateTimeField(blank=True, null=True)
+    mon = models.NullBooleanField(blank=True, null=True)
+    tue = models.NullBooleanField(blank=True, null=True)
+    wed = models.NullBooleanField(blank=True, null=True)
+    thu = models.NullBooleanField(blank=True, null=True)
+    fri = models.NullBooleanField(blank=True, null=True)
+    sat = models.NullBooleanField(blank=True, null=True)
+    sun = models.NullBooleanField(blank=True, null=True)
+
+    class meta:
+        unique_together = (('User', 'subject', 'date_updated'),)
     
     
 class StudyHours(models.Model):
@@ -641,4 +698,7 @@ class StudyHours(models.Model):
             blank=True, null=True, validators=[validate_max24hrs])
     actual_hours = models.DecimalField(max_digits=4, decimal_places=2, 
             blank=True, null=True, validators=[validate_max24hrs])
-        
+    date_updated = models.DateTimeField(blank=True, null=True) 
+
+    class meta:
+        unique_together = (('User', 'subject', 'date', 'date_updated'),)

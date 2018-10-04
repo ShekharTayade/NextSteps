@@ -247,6 +247,9 @@ SESSION_COOKIE_AGE = 1209600
 SOCIAL_AUTH_FACEBOOK_KEY = '422941031462052'  # App ID
 SOCIAL_AUTH_FACEBOOK_SECRET = 'd3a4babaafb10e5e352b018d419921e3'  # App Secret
 
+SOCIAL_AUTH_TWITTER_KEY = '0BW82yGMWoD2BlcuFKFOhoCQo'
+SOCIAL_AUTH_TWITTER_SECRET = 'pCmaskkenrWwSX8568Gp9qCq03e8aWBQrWq7HFhgDK3AnduMWe'
+
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')

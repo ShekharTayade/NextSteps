@@ -41,92 +41,45 @@ from .common_views import *
 
 def index(request):
 
-    regPending = False
+    SUBS_MENU = "SHOW_NOSUBS"
     activeSubs = False
+    subsExpired = False
 
-    # Check if it's a registered user
-    if isUserRegistered(request):
-        regPending = False
-        # If user is registered then Check if subscription is active
-        if isSubsActive(request):
-            activeSubs = True
-        else:
-            activeSubs = False
-    else:
-        regPending  = True
-        activeSubs = False
- 
-        
-    if regPending == True:
-        REG_MENU = "SHOW_REG_MENU"
-        SUBS_MENU = "NOSHOW_SUBS_MENU"
-    else:
-        if activeSubs:
-            SUBS_MENU = "NOSHOW_SUBS_MENU"
-            REG_MENU = "NOSHOW_REG_MENU"
-        else:
-            REG_MENU = "NOSHOW_REG_MENU"
-            SUBS_MENU = "SHOW_SUBS_MENU"
-    
+    #regPending = False
     au = request.user.is_authenticated
+
+    if au:
+        activeSubs = isSubsActive(request)
+        subsExpired = isSubsExpired(request)
     
-    url = 'NextSteps/NextSteps_base.html'
-    # Redirect based on the user category - anonymous, signed-up or subscribed
-        
-    if request.user.is_anonymous:
-        url = 'NextSteps/NextSteps_base_vj.html'
-    else:
         if activeSubs:
-            url = 'NextSteps/NextSteps_base_vj.html'
-            #url = 'NextSteps/subscribed_user_home.html'
+            SUBS_MENU = "SHOW_NOSUBS"
         else:
-            url = 'NextSteps/NextSteps_base_vj.html'
-            #url = 'NextSteps/signedup_user_home.html'
+            if subsExpired:
+                SUBS_MENU = "SHOW_RENEWSUBS"
+            else:
+                SUBS_MENU = "SHOW_SUBS"
             
-    
+    url = 'NextSteps/NextSteps_base_vj.html'
+        
     if au == False: 
         #response = render(request, 'NextSteps/NextSteps_base.html', {'REG_MENU':REG_MENU,
         #            'SUBS_MENU':SUBS_MENU})
-        response = render(request, url, {'REG_MENU':REG_MENU,
-                    'SUBS_MENU':SUBS_MENU, 'regPending': regPending, 
+        response = render(request, url, {
+                    'SUBS_MENU':SUBS_MENU,
                     'activeSubs' : activeSubs})
     else:
-        
         showReg = request.COOKIES.get('SHOW_REG', '')
         
         if showReg == 'YES' or showReg == '':
-            if regPending:
+            if activeSubs == False:
                 response =  render(request, 'NextSteps/checkSubsWithUser.html')
             else:     
-                if au == False:   
-                    #response = render(request, 'NextSteps/NextSteps_base.html', {'REG_MENU':REG_MENU,
-                    #                'SUBS_MENU':SUBS_MENU})
-                    response = render(request, url, {'REG_MENU':REG_MENU,
-                    'SUBS_MENU':SUBS_MENU, 'regPending' : regPending, 
-                    'activeSubs' : activeSubs})
-                else:
-                    #return redirect('loggedInHome')
-                    #response = render(request, 'NextSteps/NextSteps_base.html', {'REG_MENU':REG_MENU,
-                    #    'SUBS_MENU':SUBS_MENU})
-                    response = render(request, url, {'REG_MENU':REG_MENU,
-                        'SUBS_MENU':SUBS_MENU, 'regPending': regPending,
-                    'activeSubs' : activeSubs})
-                
+                response = render(request, url, {'SUBS_MENU':SUBS_MENU,
+                'activeSubs' : activeSubs})
         else:
-            if au == False:   
-                #return redirect('loggedInHome')
-                #response = render(request, 'NextSteps/NextSteps_base.html', {'REG_MENU':REG_MENU,
-                #        'SUBS_MENU':SUBS_MENU})
-                response = render(request, url, {'REG_MENU':REG_MENU,
-                        'SUBS_MENU':SUBS_MENU, 'regPending' : regPending, 
-                    'activeSubs' : activeSubs})
-            else:
-                    #return redirect('loggedInHome')
-                    #response = render(request, 'NextSteps/NextSteps.html', {'REG_MENU':REG_MENU,
-                    #    'SUBS_MENU':SUBS_MENU})
-                    response = render(request, url, {'REG_MENU':REG_MENU,
-                        'SUBS_MENU':SUBS_MENU, 'regPending' : regPending, 
-                    'activeSubs' : activeSubs})
+            response = render(request, url, {'SUBS_MENU':SUBS_MENU, 
+            'activeSubs' : activeSubs})
     
     
     return response
@@ -223,7 +176,7 @@ def signup(request):
             userprofile_form.save()
             
             # After successful sign up redirect to payment page
-            return redirect('payment')
+            return redirect('subscription')
     else:
         form = SignUpForm()
         userprofile_form = UserProfileForm()        
@@ -273,8 +226,40 @@ def userProfileConfirm(request):
 
 
 @login_required
-def payment (request):
-    return render(request, 'NextSteps/payment.html')
+def subscription (request):
+    
+    if isSubsActive(request):
+        username = request.user
+        
+        # Get logged in user id
+        user = getLoggedInUserObject(request)
+    
+        useraccount = UserAccount.objects.filter(User=user).order_by('-subscription_end_date')
+    
+        # Get latest subscription end date
+        acct = useraccount.order_by('-subscription_end_date')[:1]
+    
+        subs_end_dt = datetime.datetime.strptime("1900-11-01T01:01:01-0100", "%Y-%m-%dT%H:%M:%S%z")
+    
+        reg_found = False
+    
+        for ua in acct:
+            subs_end_dt = ua.subscription_end_date
+            reg_found = True
+    
+        subs_end_dt1 = subs_end_dt.strftime("%d-%m-%Y")
+        
+        if subs_end_dt < timezone.now():
+            subs_active = False
+        else:
+            subs_active = True
+    
+        return render(request, 'NextSteps/subcription_already_active.html', {'useraccount':useraccount, 
+                'reg_found':reg_found, 'subs_end_dt':subs_end_dt, 
+                'subs_active': subs_active})
+        
+    else:
+        return render(request, 'NextSteps/subscription.html')
 
 @login_required
 def subscriptionStart(request):
@@ -334,11 +319,13 @@ def subscriptionStart(request):
         useracct.save()
 
     except Error as e:
-        msg = 'Apologies!! Could not process the payment. Please use the contact us link at the bottom of this page to let us the details and we will help you.'
+        msg = 'Apologies!! Could not process the payment. Please use the contact us link at the bottom of this page to let us know the details and we will help you.'
         pass_fail = 'FAIL'
+    
+    return render(request, 'NextSteps/payment_confirmation.html', {'save':pass_fail, 
+                                        'msg':msg})
 
-
-    return render(request, 'NextSteps/subscription_start.html', {'save':pass_fail, 'msg':msg})
+    #return render(request, 'NextSteps/subscription_start.html', {'save':pass_fail, 'msg':msg})
 
 @login_required
 def renewSubscription(request):

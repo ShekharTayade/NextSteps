@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from NextSteps.models import ContactForm, UserAppDetails, UserProfile
 from NextSteps.models import ReferNextSteps, UserSubjectSchedule
 from NextSteps.validators import validate_NextSteps_email, validate_contact_name
-from NextSteps.validators import validate_image_size
+from NextSteps.validators import validate_image_size, validate_india_mobile_no
 
 from django.core.validators import validate_slug, MinLengthValidator
 
@@ -73,6 +73,12 @@ class UserProfileForm(forms.ModelForm):
         required=False
     )
 
+    phone_number= forms.CharField( widget=forms.TextInput(
+        attrs={'placeholder': 'Enter your 10 digit mobile number without prefix +91, or 0.'}
+        ),
+        required=False,
+        validators=[validate_india_mobile_no]
+    )
     
     class Meta:
         model = UserProfile

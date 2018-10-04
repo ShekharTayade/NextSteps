@@ -11,7 +11,7 @@
     </title>
     <meta name="keywords" content="search engineering colleges, engineering colleges, engineering college admission, engineering college application, engineering collges in India, engineering institutes, JEE seat probability, Study Planner, IIT, JEE, NIT, "/> 
     {% load static %}
-    <link rel="icon" href="{% static 'img/target.ico' %}" />
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -159,8 +159,8 @@
                             </a>
 
                             <div class="navbar-slogan">
-                                Your Online Assistant
-                                <br/> NextSteps to Bright Future
+                                Your Online Admission Assistant
+                                <br/> Take NextSteps to Bright Future
 
                                 <a href="{% url 'user_guide' %} " class="userguide pull-right" data-toggle="tooltip" title="User Guide" data-placement="right">
                                     <i class="fa fa-book fa-lg"></i>
@@ -206,11 +206,11 @@
                                             <li><a href="{% url 'user_profile' %}">My Profile</a></li>
                                             <li><a href="{% url 'password_change' %}">Change Password</a></li>
 
-                                            {% if REG_MENU == "SHOW_REG_MENU" %}
+                                            {% if SUBS_MENU == "SHOW_SUBS" %}
                                                 <li class="divider"></li>
-                                                <li><a href="{% url 'payment' %}">Subscribe</a></li>
+                                                <li><a href="{% url 'subscription' %}">Subscribe</a></li>
                                             {% endif %} 
-                                            {% if SUBS_MENU == "SHOW_SUBS_MENU" %}
+                                            {% if SUBS_MENU == "SHOW_RENEWSUBS" %}
                                                 <li class="divider"></li>
                                                 <li><a href="{% url 'renew_subscription' %}">Renew Subscription</a></li>
                                             {% endif %}
@@ -294,14 +294,11 @@
                                     </h4>
                                     <ul>
                                         <li>Study Planner - Dashboard and Insights</li>
-                                        <li>Plan, Track, Manage Study hours</li>
+                                        <li>Plan, Track, Manage Study Hours</li>
                                         <li>Assess Your JEE Seat Chances</li>
                                         <li>Calendar of Important Dates/To-Do</li>
                                         <li>Record Institute Application Details</li>
                                     </ul>
-                                    <br>
-                                    <br>
-                                    <br>
                                     <a href="#" class="btn btn-more" style="padding-right: 5%">
                                         <i class="fa fa-plus"></i> Learn More</a>
                                 </div>
@@ -323,15 +320,11 @@
                                         We care about you
                                     </h4>
                                     <ul>
-                                        <li>Get Customized Information on Preferences</li>
-                                        <li>Calendar - Important Dates</li>
+                                        <li>Customized Information on Preferences</li>
+                                        <li>Calendar of Important Dates</li>
                                         <li>Compare Institutes</li>
                                         <li>Opening-Closing Ranks/Cut-Offs</li>
                                     </ul>
-
-                                    <br>
-                                    <br>
-                                    <br>
                                     <a href="#" class="btn btn-more" style="padding-right: 5%">
                                         <i class="fa fa-plus"></i> Learn More</a>
                                 </div>
@@ -518,7 +511,7 @@
                     {% else %}
                         <blockquote>
                         <p>
-                        <strong><a href="{% url 'payment' %}"  class="text-primary"> Subscribe</a> </strong> now and get access to the powerful 
+                        <strong><a href="{% url 'subscription' %}"  class="text-primary"> Subscribe</a> </strong> now and get access to the powerful 
                         NextSteps features that give you access to useful tools, customizes to you, and saves your valuable time & effort. 
                         Click on the features below to learn more.
                         </p>
@@ -739,7 +732,7 @@
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <!-- If it's a singed up used -->                
                 {% if user.is_authenticated %}
-                    {% if SUBS_MENU == "NOSHOW_SUBS_MENU" %}
+                    {% if activeSubs %}
                         <!-- User has active subscription (Paid user)  -->
                         <a href="{% url 'study_planner' active_tab='dashboard' %}" style = "text-decoration: none !important;">
                     {% else %}
@@ -791,7 +784,7 @@
             <div class="col-md-3 col-sm-6 col-xs-12">
                 <!-- If it's a singed up used -->                
                 {% if user.is_authenticated %}
-                    {% if SUBS_MENU == "NOSHOW_SUBS_MENU" %}
+                    {% if activeSubs %}
                         <!-- User has active subscription (Paid user)  -->
                         <a href="{% url 'instt_list' %}" style = "text-decoration: none !important;">
                     {% else %}
@@ -983,21 +976,21 @@
                                 <li class="news-item">
                                     <table cellpadding="4">
                                         <tr>
-                                            <td>Introductory Offer - 20% off. Use Coupan code "MY20OFF". Limited period offer. Avail Now!!</td>
+                                            <td>Study Planner available to subrscribed users <a class="text-primary" href="{% url 'study_planner' active_tab='dashboard' %}"> click here...</a></td>
                                         </tr>
                                     </table>
                                 </li>
                                 <li class="news-item">
                                     <table cellpadding="4">
                                         <tr>
-                                            <td>Study Planner available to subrscribed users<a href="{% url 'study_planner' active_tab='dashboard' %}">click here...</a></td>
+                                            <td>Learn how you will enrich your NextStep experience. <a class="text-primary"  href="#"> Read more...</a></td>
                                         </tr>
                                     </table>
                                 </li>
                                 <li class="news-item">
                                     <table cellpadding="4">
                                         <tr>
-                                            <td>Learn how you will enrich your NextStep experience<a href="#">Read more...</a></td>
+                                            <td>Introductory Offer on subscription - 20% off. Use Coupan code "MY20OFF". Limited period offer. Avail Now!!</td>
                                         </tr>
                                     </table>
                                 </li>
@@ -1020,15 +1013,27 @@
         <div class="row row-margin" id="contact">
             <ul class="footer-line-left">
                 <!-- FB share button code -->
-                <div class="fb-share-button" data-href="https://www.NextSteps.co.in" data-layout="button" data-size="small" data-mobile-iframe="true">
-                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.NextSteps.co.in%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a>
-                </div>
+                <li>
+                    <div class="fb-share-button" data-href="https://www.NextSteps.co.in" data-layout="button" data-size="small" data-mobile-iframe="true">
+                        <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.NextSteps.co.in%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a>
+                    </div>
+                </li>
                <!--<a href="#" class="cmargin-15" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="fa fa-facebook"></i></a> -->
                 &nbsp;&nbsp;&nbsp;
                 <!-- G+ share button code -->
                 <li>
-                <div class="g-plus" data-action="share" data-height="15" data-href="https://www.NextSteps.co.in"></div>
+                    <div class="g-plus" data-action="share" data-height="20" data-href="https://www.NextSteps.co.in"></div>
                 </li>
+                
+                &nbsp;&nbsp;&nbsp;
+                <!-- <li>                
+                    <a href="https://twitter.com/ShekharRT" class="twitter-follow-button" data-show-count="false">
+                    Follow @NextSteps</a>
+                    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                </li>
+                -->
+
+
                 <!-- <a href="#" class="cmargin-15" data-toggle="tooltip" data-placement="top" title="Google +"><i class="fa fa-google-plus fa-fw"></i></a> -->
                 <!--
                 <a href="#" class="cmargin-15" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="fa fa-twitter"></i></a>
@@ -1624,7 +1629,7 @@
             autoplay: true,
             pauseOnHover:true,
             direction: 'up',
-            newsTickerInterval: 7000,
+            newsTickerInterval: 3000,
             navigation: false,
             onToDo: function () {
                 // console.log(this);

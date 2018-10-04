@@ -1,0 +1,216 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps_base_vj.html' %}
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+{% endblock slide-show %}
+
+<!-- Override block from parent -->
+{% block instt-prog-menu %}
+{% endblock instt-prog-menu %}
+
+
+<!-- Override features block -->
+{% block features %}
+    <div class="block" style="padding-top: 5%; padding-bottom: 5%; ">
+        <div class="container">
+
+            <h3 class="block-title">Payment Details</h3>
+            {% if error %}
+                <span style="color:red">Please fill all mandatory fields.</span>
+                <br/>
+                <br/>
+            {% endif %}
+            <form class="form-horizontal" id = "paydetails" action="{% url 'payment_submit' %}" method="post" name="paydetails">
+                {% csrf_token %}
+                <div class = "row">
+                    <div class = "col-sm-8">
+                        <div class="panelbox-no-min">
+                            <div class="panelbox-no-min-content">
+                                
+                                <h4 class="tag-title"> <span class = "pull-left"> You will pay: <i class="fa fa-inr" aria-hidden="true">&nbsp;</i>{{ posted.amount|default:'' }}</span></h4>
+                                {% if posted.udf1 %}
+                                    <span class="pull-right">Promo Code: {{ posted.udf1}}</span>
+                                {% endif %}
+                                <div class="form-group row">
+                                  <div style="display:none;" class="col-xs-4">
+                                    <label for="amt">Amount <i class="fa fa-inr" aria-hidden="true">&nbsp;</i></label>
+                                    <input id="amt" class="form-control" name="amount" value="{{ posted.amount|default:'' }}" required />
+                                  </div>
+                                </div>
+                                <h4>Bill To:</h4>
+                                <div class="form-group">
+                                    <span class="col-md-2">Name</span>
+                                    <div class="col-md-10">
+                                        <div class="form-group row">
+                                            <div class="col-md-6">
+                                                <input class="form-control" name="firstname" id="firstname" value="{{ posted.firstname|default:'' }}" required placeholder="First Name"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input class="form-control" name="lastname" id="lastname" value="{{ posted.lastname }}" placeholder="Last Name"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                                        
+                                <div class="form-group">
+                                    <span class="col-md-2">Contact Info</span>
+                                    <div class="col-md-10">
+                                        <div class="form-group row">
+                                            <div class="col-md-6">
+                                                <input type = "email" class="form-control" name="email" id="email" value="{{ posted.email }}" required placeholder="Email"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input class="form-control" name="phone" pattern = "^[6-9]\d{9}$" value="{{ posted.phone|default:'' }}" required placeholder="10 digit mobile no. without prefix +91, or 0"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                                
+
+                                <div class="form-group">
+                                    <span class="col-md-2">Address</span>
+                                    <div class="col-md-10">
+                                        <div class="form-group row">
+                                            <div class="col-md-6">
+                                                <input class="form-control" name="address1" value="{{ posted.address1 }}" placeholder="Address1"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input class="form-control" name="address2" value="{{ posted.address2 }}" placeholder="Adress2" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                                
+                                <div class="form-group">
+                                    <span class="col-md-2"></span>
+                                    <div class="col-md-10">
+                                        <div class="form-group row">
+                                            <div class="col-md-6">
+                                                <input class="form-control" name="city" value="{{ posted.city }}" placeholder="City"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input class="form-control" id = "state" name="state" value="{{ posted.state }}" placeholder="State" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <span class="col-md-2">Country</span>
+                                    <div class="col-md-5">
+                                        <input class="form-control" name="country" value="{{ posted.country }}" placeholder="Country" />
+                                    </div>
+                                    <span class="col-md-3">
+                                        <span class = "pull-right">
+                                        Post/Zip Code
+                                        </span>
+                                    </span>
+                                    <div class="col-md-2">
+                                        <input class="form-control" name="zipcode" value="{{ posted.zipcode }}"  placeholder="Pin/Zip Code" />
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class = "text-center">
+                                <h5 class="text-fancy">For the payment, you will now be redirected to the website outside of NextSteps</h5>
+                                <button class="btn btn-primary text-center" type='submit' formmethod='post' value='submit' onclick="">Pay</button>
+                            </div>                
+                            
+                        </div>
+                    </div>
+                </div>
+                        
+                        
+
+                <table>
+                    <tr style="display:none;">
+                        <td>Product Info: </td>
+                        <td colspan="3"><input name="productinfo" required value="{{ posted.productinfo|default:'' }}" /></td>
+                    </tr>
+                    <tr style="display:none;" >
+                        <td>Success URI: </td>
+                        <td colspan="3"><input name="surl" value="{{ posted.surl }}" size="64" required/></td>
+                    </tr>
+                    <tr style="display:none;" >
+                        <td>Failure URI: </td>
+                        <td colspan="3"><input name="furl" value="{{ posted.furl }}" size="64" requied/></td>
+                    </tr>
+            
+                    <tr style="display:none;" >
+                        <td colspan="3"><input type="hidden" name="service_provider" value="payu_paisa" size="64" required/></td>
+                    </tr >
+                        <tr style="display:none;" >
+                        <td><b>Optional Parameters</b></td>
+                    </tr>
+                    <tr style="display:none;" >
+                        <td>Cancel URI: </td>
+                        <td><input name="curl" value="" /></td>
+                    </tr>
+                    <tr style="display:none;" >
+                        <td>UDF1: </td>
+                        <td><input name="udf1" value="{{ posted.udf1 }}" /></td>
+                        <td>UDF2: </td>
+                        <td><input name="udf2" value="{{ posted.udf2 }}" /></td>
+                    </tr>
+                    <tr style="display:none;" >
+                        <td>UDF3: </td>
+                        <td><input name="udf3" value="{{ posted.udf3 }}" /></td>
+                        <td>UDF4: </td>
+                        <td><input name="udf4" value="{{ posted.udf4 }}" /></td>
+                    </tr>
+                    <tr style="display:none;" >
+                        <td>UDF5: </td>
+                        <td><input name="udf5" value="{{ posted.udf5 }}" /></td>
+                        <td>PG: </td>
+                        <td><input name="pg" value="{{ posted.PG }}" /></td>
+                    </tr>
+                    
+                </table>
+            </form>
+
+        </div>
+     </div>
+     
+     
+    <script>
+        // Pass lastname and state in udf 4 and udf5.
+        // For PayUmoney, the last name and the state are not part of request response, so 
+        // using udf4 and udf 5 to achieve the same.
+        $(document).ready(function(){
+            $("#paydetails").on('submit', function() {
+                var lname = $("#lastname").val();
+                $("#udf4").val( lname )   
+                
+                var state = $("#state").val();
+                $("#udf5").val( lname )   
+            });
+        })
+    </script>
+
+{% endblock features %}
+
+{% block registration %}
+{% endblock registration %}
+<!-- Footer-section remains as it is, no override -->
+
+

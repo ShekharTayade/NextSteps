@@ -132,7 +132,6 @@ def InstitueListUnRegistered(request):
 
     allInstitutes = insttList
     
-    '''
     #Apply filters
     if global_search:
         query_list = global_search.split()
@@ -150,7 +149,7 @@ def InstitueListUnRegistered(request):
             reduce(operator.and_,
                     (Q(state__icontains=q) for q in query_list))
         )
-    '''
+
     if stateVals:
         insttList = insttList.filter(state__in = stateVals)
 
@@ -159,10 +158,11 @@ def InstitueListUnRegistered(request):
 
     if insttTypeVals:
         insttList = insttList.filter(InstituteType__description__in = insttTypeVals)
-      
+    
+    '''  
     if global_search:
         insttList = insttList.filter(instt_name__in = global_search)
-         
+    '''  
       
     # Get the Institute ids to get the respective rankings 
     insttIds = insttList.values('instt_code')
@@ -319,7 +319,6 @@ def compare_instts(request):
     ranking_years =  InstituteSurveyRanking.objects.values(
         'year').distinct().order_by('year')
 
-    print(ranking_years)
     
     # Get JEE opening/closing ranks
     jee_ranks = InstituteJEERanks.objects.filter(Institute_id__in = instt_code).order_by(
@@ -375,13 +374,13 @@ def insttRankingFilter(request):
     return render(request, 'NextSteps/instt_ranking_filter.html',{
         'insttList':insttList})
             
-
+'''
 @login_required
 def JEERanksFilter(request):
     
     
     return render(request, 'NextSteps/JEERanksFilter.html',{})
-
+'''
 
 @login_required
 def getJeeRankYears(request):
@@ -485,14 +484,6 @@ def JEERanks(request):
             
     return render(request, 'NextSteps/JEERanks.html', {"insttList" : insttList})
     
-
-
-@login_required
-def insttCutOffFilter(request):
-    return render(request, 'NextSteps/insttCutOffFilter.html',{})
-    
-
-
 
 @login_required
 def searchProgram (request):
@@ -633,4 +624,17 @@ def insttStatesCities(request):
     return JsonResponse(stateCityList, safe=False)
     
     
+def instts_by_entrance_exam_code(request):
+    
+    examVals = request.GET.getlist('entrance_exam_code', [])
+    print(examVals)
+    instt_list = InstituteEntranceExam.objects.filter(EntranceExam_id__in = examVals).values(
+        'Institute__instt_name', 'Institute__address_1', 'Institute__address_2',
+        'Institute__address_3', 'Institute__city', 'Institute__state', 'Institute__Country_id',
+        'Institute__pin_code', 'Institute__phone_number', 'Institute__email_id',
+        'Institute__website', 'Institute__InstituteType', 'Institute__instt_code',
+        'Institute__InstituteType__description').distinct().order_by('Institute__instt_name')
+        
+    return render (request, 'NextSteps/instts_by_entrance_exams.html', {'instt_list':instt_list,
+                        'entrance_exam_code':examVals})
 

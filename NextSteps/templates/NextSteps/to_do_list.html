@@ -19,7 +19,7 @@
 <!-- Extend the home page to keep the same styling for header and footer sections. -->
 {% extends 'NextSteps/NextSteps_base_vj.html' %}
 
-
+{% load django_bootstrap_breadcrumbs %}
 
 <!-- Override slide-show block from parent -->
 {% block slide-show %}
@@ -29,16 +29,35 @@
 {% block instt-prog-menu %}
 {% endblock instt-prog-menu %}
 
-
-
 <!-- Override features block -->
 {% block features %}
     <div class="block" style="padding-top: 5%; padding-bottom: 5%; ">
         <div class="container">
 
+            <div class = "row">
+                <div id = "breadcrumb">
+                    {% block breadcrumbs %}
+                        {% breadcrumb "Home" "index" %}
+                        {% breadcrumb "Calendar" "calendar" %}
+                        {% breadcrumb "To Do List" "to_do_list" %}
+                        {% render_breadcrumbs  "django_bootstrap_breadcrumbs/bootstrap3.html" %}
+                    {% endblock %}        
+                </div>
+            </div>
+            
             <h3 class="block-title">To-Do List</h3>
 
             <div class="block">
+
+                <div style="margin-top:5px; margin-left:5px" class = "pull-left"> 
+                    <small>Select the tasks that are complete and click on "Delete Selected Rows" button to remove those tasks</small>
+                </div>
+
+                <div style="margin-top:5px; margin-right:5px" class = "pull-right">
+                    <button class="btn btn-more" type = "button" onclick = "deleteCheckedEvents()">
+                        <i class = "fa fa-close"></i>Delete Selected Rows
+                    </button>
+                </div>
 
                 <form action="{% url 'if_then_analysis_results' %}" method='post' id='getAnalysis'>
                     {% csrf_token %}
@@ -46,11 +65,12 @@
                             <table id="todoTbl" class="display table table-striped table-bordered">
                                 <thead>
                                     <tr>
+                                        <th style ="display:none;"></th>
                                         <th style="width:30%; text-align:center">Institute:</th>
                                         <th style="width:35%; text-align:center">To Do:</th>
                                         <th style="width:15%; text-align:center">Start Date:</th>
                                         <th style="width:15%; text-align:center">End Date:</th>
-                                        <th style="width:5%; text-align:center"><i class="fa fa-check"></i></th>
+                                        <!-- <th style="width:5%; text-align:center"><i class="fa fa-check"></i></th> -->
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -61,71 +81,14 @@
                                 <tbody>
                                     {% for i in event_list %}
                                         <tr>
+                                            <td  style ="display:none;">{{ i.id }}
                                             <td>{{ i.Institute__instt_name }}</td>
                                             <td>{{ i.event }} </td>
                                             <td>{{ i.start_date | date:"d M Y" }}</td>
                                             <td>{{ i.end_date | date:"d M Y" }}</td>
-                                            <td> <span style= "text-align:center; display:inline-block"><input type="checkbox"></span></td>
+                                            <!--<td> <span style= "text-align:center; display:inline-block"><input type="checkbox"></span></td>-->
                                         </tr>
                                     {% endfor %}
-
-
-<!--                                    <tr>
-                                        <td> Indian Institute of Tehcnology Bombay</td>
-                                        <td> JEE (MAIN) Application</td>
-                                        <td> 15-11-2017</td>
-                                        <td> 01-01-2018</td>
-                                        <td> <span style= "text-align:center; display:inline-block"><input type="checkbox"></span></td>
-                                    </tr>
-                                    <tr>
-                                        <td> Indian Institute of Tehcnology Bombay</td>
-                                        <td> JEE (MAIN) Application</td>
-                                        <td> 15-11-2017</td>
-                                        <td> 01-01-2018</td>
-                                        <td> <input type="checkbox"></td>
-                                    </tr>
-                                    <tr>
-                                        <td> Indian Institute of Tehcnology Bombay</td>
-                                        <td> JEE (MAIN) Application</td>
-                                        <td> 15-11-2017</td>
-                                        <td> 01-01-2018</td>
-                                        <td> <input type="checkbox"></td>
-                                    </tr>
-                                    <tr>
-                                        <td> Indian Institute of Tehcnology Bombay</td>
-                                        <td> JEE (MAIN) Application</td>
-                                        <td> 15-11-2017</td>
-                                        <td> 01-01-2018</td>
-                                        <td> <input type="checkbox"></td>
-                                    </tr>
-                                    <tr>
-                                        <td> Indian Institute of Tehcnology Bombay</td>
-                                        <td> JEE (MAIN) Application</td>
-                                        <td> 15-11-2017</td>
-                                        <td> 01-01-2018</td>
-                                        <td> <input type="checkbox"></td>
-                                    </tr>
-                                    <tr>
-                                        <td> Indian Institute of Tehcnology Bombay</td>
-                                        <td> JEE (MAIN) Application</td>
-                                        <td> 15-11-2017</td>
-                                        <td> 01-01-2018</td>
-                                        <td> <input type="checkbox"></td>
-                                    </tr>
-                                    <tr>
-                                        <td> Indian Institute of Tehcnology Bombay</td>
-                                        <td> JEE (MAIN) Application</td>
-                                        <td> 15-11-2017</td>
-                                        <td> 01-01-2018</td>
-                                        <td> <input type="checkbox"></td>
-                                    </tr>
-                                    <tr>
-                                        <td> Indian Institute of Tehcnology Bombay</td>
-                                        <td> JEE (MAIN) Application</td>
-                                        <td> 15-11-2017</td>
-                                        <td> 01-01-2018</td>
-                                        <td> <input type="checkbox"></td>
-                                    </tr> -->
                                 </tbody>
                             </table>
                         </div>
@@ -138,28 +101,37 @@
     <script>
     $(document).ready(function() {
         todoTable = $('#todoTbl').DataTable( {
-        ordering:  false,
-        paging:    false,
+        ordering:  true,
+        paging:    true,
         info:      false,
         select: {
             style: 'multi'
-        },
+        },    
+        
         dom: '<"top"f>Brt<"bottom"ilp><"clear">',
         buttons: [
-           'copy', 
             {
                 extend: 'excel',
+                exportOptions: {
+                    columns: [ 1, 2, 3, 4 ]
+                },
                 messageTop: 'To-Do List',
                 title : "NextSteps"
             },
             
             {
                 extend: 'pdf',
+                exportOptions: {
+                    columns: [ 1, 2, 3, 4 ]
+                },
                 messageTop: 'To-Do List',
                 title : "NextSteps"
             },
             {
                 extend: 'print',
+                exportOptions: {
+                    columns: [ 1, 2, 3, 4 ]
+                },
                 messageTop: 'To-Do List',
                 title : "NextSteps"            }
         ]
@@ -167,6 +139,49 @@
         } );
 
     } );    
+    </script>
+    
+    <script>
+    
+    function deleteCheckedEvents() {
+    
+        var table = $('#todoTbl').DataTable();
+        var data = table.rows( { selected: true } ).data();
+        var IDsToDelete = []
+        for (var i=0; i < data.length ;i++){
+            IDsToDelete.push(data[i][0]);
+        }
+        // Delete these rows from UserCanlendar
+        $.ajax({
+            url: "{% url 'delCalendarEventsByIDs' %}",
+            data: {
+            'IDsToDelete[]': IDsToDelete
+            },
+            dataType: 'json',
+            type: 'POST',
+            success: function (data) {
+                
+                status = data.status;
+            
+                switch(status){
+                    case '00':
+                        alert("Selected Tasks Deleted!");
+                        break;
+                    case '01': 
+                        alert("No Tasks Selected for Deletion!");
+                        break;
+                    case "02":
+                        alert("Sorry, We have encountered some issue while deleting tasks. Let us know the details and we will help sort it out.");
+                        break;
+                }
+            },
+            error: function(xhr){
+                alert("An error occured: " + xhr.status + " " + xhr.statusText);
+            }                
+        });
+        
+        table.rows('.selected').remove().draw();
+    }
     </script>
 
 {% endblock features %}

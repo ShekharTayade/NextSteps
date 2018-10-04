@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 import json
 from django.views.decorators.csrf import csrf_exempt
-
+from decimal import Decimal
 import datetime
 
 from NextSteps.decorators import subscription_active
@@ -119,3 +119,54 @@ def save_user_events(request):
                     pass_fail = 'FAIL'
 
     return HttpResponse(pass_fail)
+
+
+@login_required
+@subscription_active
+def toDoList(request):
+
+    # Get user id
+    userid = User.objects.filter(username = request.user).values('id')
+    
+    userCalendar = UserCalendar.objects.filter(User__in=userid).values(
+        'id', 'Institute__instt_name', 'event', 'event_date', 'event_order', 'start_date', 'end_date', 
+        'event_duration_days', 'remarks').distinct('Institute__instt_name', 'event')
+
+    if userCalendar.exists():
+        event_list = userCalendar
+    else:
+    
+        insttUserList = InsttUserPref.objects.filter(User__in=userid).values('Institute_id')
+        
+        event_list = InstituteProgramImpDates.objects.filter(Institute_id__in=insttUserList).values(
+            'id', 'Institute_id', 'Institute__instt_name', 'event', 'event_date', 'event_order', 'start_date', 'end_date', 
+            'event_duration_days', 'remarks').distinct('Institute__instt_name', 'event')
+
+    return render(request, 'NextSteps/to_do_list.html', {'event_list':event_list})
+
+
+
+@login_required
+@csrf_exempt
+def delCalendarEventsByIDs(request):
+    
+    ids = request.POST.getlist("IDsToDelete[]",[])
+
+    status = ''
+    
+    if not ids:
+        status = '01'
+        return JsonResponse({"status":status})
+
+    for i in ids:
+        delRec = UserCalendar.objects.filter(id = Decimal(i)).delete()
+        if not delRec:
+            status = "02"
+            return JsonResponse( {"status":status} )
+        
+         
+    status = "00" #Success
+        
+    return JsonResponse( {"status":status} )
+    
+    

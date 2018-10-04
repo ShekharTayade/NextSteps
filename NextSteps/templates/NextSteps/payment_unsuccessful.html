@@ -18,8 +18,8 @@
 
 <!-- Extend the home page to keep the same styling for header and footer sections. -->
 {% extends 'NextSteps/NextSteps_base_vj.html' %}
-
-<!-- Override slide-show block from parent -->
+{% load static %}
+!-- Override slide-show block from parent -->
 {% block slide-show %}
 {% endblock slide-show %}
 
@@ -30,53 +30,44 @@
 
 <!-- Override features block -->
 {% block features %}
-    <div class="block" style="padding-top: 5%; padding-bottom: 5%; ">
+    <div class="block"  style="padding-top: 5%; padding-bottom: 5%;">
         <div class="container">
+            <h3 class="block-title">Payment Unsuccessful</h3>
+                
+                <div class = "col-sm-6">
+                <div class="panelbox" style = "height:270px">
+                    <div class="panelbox-content">
+                        <h4 class="tag-title">Hey {{firstname}}, the payment didn't not go through!</h4>
+                        <div class = "alert alert-danger">
+                        <P>Transaction status is: {{ status | upper}}</p>
+                        <P>ID for this transaction is: {{ txnid }}</p>
+                        </div>
+                        <p>&nbsp;</p>
+                        <p>&nbsp;</p>
+                        <p>&nbsp;</p>
+                        <div>
+                            <span class="pull-left">
+                                <p>Please try again</p>
+                                <a class = "btn btn-primary" href="{% url 'subscription' %}">Subscribe</a>
+                            </span>
 
-            <h3 class="block-title">Register and Subscribe</h3>
-    
-    
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-xs-6 col-sm-6 col-md-6">
-                        <div class="panel panel-info">
-                            <!-- Default panel contents -->
-                            <div class="panel-heading">
-                                <h6 class="panel-title">You're not subcribed yet</h6>
-                            </div>
-
-                            <div class="panel-body">
-                                <p>Would you like to subscribe to get access to the real power of NextSteps?.</p>
-                                <a href="{% url 'subscription' %}" class="btn btn-primary" role="button">Yes</a>
-                            </div>
-                          
-                        </div>            
+                            <span class="pull-right">
+                                <p>Return to home page</p>
+                                <a class = "btn btn-primary" href="{% url 'index' %}">Home</a>
+                            </span>
+                        </div>
                     </div>
-                    
                 </div>
-                    <a href="{% url 'index' %}" class="btn-sm btn-primary" role="button" onclick = "setRegVal()">Don't show again</a>
-                    <small>(You will have an option to subscribe in the menu set on your login name)</small>
-                <br />
-                <br />
-    
-
+                </div>
+            </div>
+            
         </div>
      </div>
 
-    <script>
-    
-    function setRegVal() {
-        var d = new Date();
-        d.setTime(d.getTime() + (365*24*60*60*1000));
-        var expires = "expires="+ d.toUTCString();
-        document.cookie = "SHOW_REG=NO" + ";" + expires + ";";
-    }
-    </script>
-        
 {% endblock features %}
+
 
 {% block registration %}
 {% endblock registration %}
 <!-- Footer-section remains as it is, no override -->
-
 

@@ -15,6 +15,7 @@ from NextSteps.models import StudentCategory, StudentCategoryUserPref
 from NextSteps.models import InstituteEntranceExam, InstituteSurveyRanking
 from NextSteps.models import InstituteJEERanks, InstituteCutOffs, InstituteAdmRoutes
 
+from django.db.models import Max
 
 PAGE_HEIGHT=defaultPageSize[1]
 PAGE_WIDTH=defaultPageSize[0]
@@ -176,23 +177,27 @@ def buildConsRep(response, request):
             if il["Institute__instt_code"] == ip["Institute__instt_code"] :
                 
                 
-                
-                progDetailsTxt = "<b>" + ip["Program_id"] + "</b>"
+                if ip["Program_id"]:
+                    progDetailsTxt = "<b>" + ip["Program_id"] + "</b>"
+                else:
+                    progDetailsTxt = ""
                 
                 # Get seats for the student category and current program 
-                progSeats = InstituteProgramSeats.objects.filter(
-                    Institute_id=il["Institute__instt_code"], Program_id=ip["Program_id"], 
-                    StudentCategory_id=stuCatId)
-                progDetailsTxt =  progDetailsTxt + "<br /><font name=Courier-Bold size=10><b>Number of Seats:</b></font> " 
-                if progSeats.exists():
-                    for ps in progSeats:
-                        if ps.number_of_seats > 0:
-                            progDetailsTxt =  progDetailsTxt + " <font name=Courier size=10>" + str(ps.number_of_seats) + " (" + ps.quota + " quota) </font>"
-                        else:
-                            progDetailsTxt =  progDetailsTxt + "<font name=Courier size=10> *N/A<font>"            
-                else:
-                    progDetailsTxt =  progDetailsTxt + "<font name=Courier size=10> *N/A</font>"            
-                
+                if ip["Program_id"]:
+                    progSeats = InstituteProgramSeats.objects.filter(
+                        Institute_id=il["Institute__instt_code"], Program_id=ip["Program_id"], 
+                        StudentCategory_id=stuCatId)
+
+                    progDetailsTxt =  progDetailsTxt + "<br /><font name=Courier-Bold size=10><b>Number of Seats:</b></font> " 
+                    if progSeats.exists():
+                        for ps in progSeats:
+                            if ps.number_of_seats > 0:
+                                progDetailsTxt =  progDetailsTxt + " <font name=Courier size=10>" + str(ps.number_of_seats) + " (" + ps.quota + " quota) </font>"
+                            else:
+                                progDetailsTxt =  progDetailsTxt + "<font name=Courier size=10> *N/A<font>"            
+                    else:
+                        progDetailsTxt =  progDetailsTxt + "<font name=Courier size=10> *N/A</font>"            
+                    
                 
                 # Get Eetrance Exam Details
                 entExam = InstituteEntranceExam.objects.filter(
@@ -203,13 +208,12 @@ def buildConsRep(response, request):
                     for ee in entExam:
                         progDetailsTxt = progDetailsTxt + ">>&nbsp;&nbsp;&nbsp;&nbsp;<font name=Courier size=10>" + ee["EntranceExam__description"] + "</font> <br />"
                     
-                year = "2017"
+                rankyear = InstituteJEERanks.objects.all().aggregate(Max('year'))
+                year = rankyear['year__max']
 
                 # Get the JEE opening-closing ranks
                 insttJEERanks = InstituteJEERanks.objects.filter(year=year, Institute_id=il["Institute__instt_code"],
                                 Program_id=ip["Program_id"], StudentCategory_id=stuCatId)
-
-                year = "2017"
 
                 if insttJEERanks.exists():
                     progDetailsTxt = progDetailsTxt + "<br /><font name=Courier-Bold size=10><b>" + year + " " + "JEE Opening and Closing Ranks:</b></font><br />" 
@@ -247,7 +251,7 @@ def buildConsRep(response, request):
     l = HRFlowable(width="100%", thickness=1, lineCap='round', color=colors.grey, spaceBefore=1, spaceAfter=1, hAlign='LEFT', vAlign='BOTTOM', dash=None)
     Story.append(l)
 
-    disclaimerTxt = "<font name=Courier size=7>* Disclaimer: The information in this report is for your references only. While we do take all the care to ensure that information in our database is current and relevant, due to changes that can happen at any time or we may not have the information available at the time you are printing report, we may not have the current information. Hence we do not claim that all the information is accurate. It is advised that students/parents may seek information directly from the institute for the latest.</font>" 
+    disclaimerTxt = "<font name=Courier size=7>* Disclaimer: The information in this report is for your reference only. While we do take all the care to ensure that information in our database is current and relevant, due to changes that can happen at any time or we may not have the information available at the time you are printing report, we may not have the current information. Hence we do not claim that all the information is accurate. It is advised that students/parents seek information directly from the institute for the latest.</font>" 
     disclaimer = Paragraph(disclaimerTxt, style)
     Story.append(disclaimer)   
 

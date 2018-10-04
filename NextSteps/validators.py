@@ -36,5 +36,11 @@ def validate_max7days(value):
 
     if value > 7 :
          raise ValidationError(_('Please enter a value less than 7 days.'))
-     
+
+def validate_india_mobile_no (value):
+    regex = r'^[6-9]\d{9}$'
+    isValid = re.match(regex, value)
+  
+    if not isValid:
+         raise ValidationError(_('Please enter 10-digit mobile number without prefix +91 or 0'))
     

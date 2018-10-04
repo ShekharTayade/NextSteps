@@ -37,20 +37,8 @@
     <div class="block" style="padding-top: 5%;">
        <div class="container">
 
-            <h3 class="block-title">Save Your College Application Details</h3>
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h5 class="panel-title">Privacy Note</h5>
-                </div>
-                <div class="panel-body">
-                    <div class="col-xs-12" >
-                        <small>You can record the details that you wish to keep so those can be readily referred
-                        to whenever and wherever required.
-                        We understand your privacy concerns. We will not share this information with anyone or use it in any manner without your consent.
-                        This is only for you to keep this information in one place, have it easily accesible and use it as and when required. You can skip the details that you don't want to save.</small>
-                    </div>
-                </div>
-            </div>
+            <h3 class="block-title">Save Your Institute Application Details</h3>
+
             <form method='post' enctype='multipart/form-data' id='save' novalidate>
             {% csrf_token %}
 
@@ -1332,8 +1320,17 @@
                         </div>
                     </div>
                     
-                    <div class="text-center"><button class="btn-primary btn-sm" type="submit">Save Details</button></div>
-                    
+                    <div class="text-center">
+                        <button class="btn-primary btn-sm" type="submit">Save Details</button>
+                    </div>
+                    <br />                
+                    <div class="col-xs-12" >
+                        Privacy Note: <small>You can record the details that you wish to keep so those can be readily referred
+                        to whenever and wherever required.
+                        We understand your privacy concerns. We will not share this information with anyone or use it in any manner without your consent.</small>
+                    </div>
+                <br />
+                  
                     
                 </div>
                 

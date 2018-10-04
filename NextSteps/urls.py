@@ -7,6 +7,8 @@ from django.conf.urls.static import static
 
 from allauth.account.views import LoginView
 
+#from NextSteps.payment_views import paymentForm, success, failure
+
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^login/$', views.NextStepslogin, name='login'),
@@ -41,12 +43,6 @@ urlpatterns = [
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^MyProfile/$', views.userProfile, name='user_profile'),
     url(r'^ProfileSave/$', views.userProfileConfirm, name='userProfile_Confirm'),
-    url(r'^payment/$', views.payment, name='payment'),
-    url(r'^ajax/GetPromo/$', views.getPromoDetails, name='Get_Promo_Details'),    
-    url(r'^subscriptionstart/$', views.subscriptionStart, name='subscription_start'),
-    url(r'^userAccount/$', views.userAccountInformation, name='user_account'),
-    url(r'^renewSubscription/$', views.renewSubscription, name='renew_subscription'),
-    url(r'^SubscriptionConfirm/$', views.renewSubscriptionConfirm, name='renew_subscription_confirm'),
 
 
     url(r'^userprefs/$', views.userPref, name='prefs'),
@@ -77,13 +73,16 @@ urlpatterns = [
     url(r'^featureApplicationRecord/$', views.feature_application_record, name = 'feature_application_record'),
 
 
-    url(r'^JEERanksFilter/$', views.JEERanksFilter, name='JEE_ranks_filter'),
+    #url(r'^JEERanksFilter/$', views.JEERanksFilter, name='JEE_ranks_filter'),
     #url(r'^JEERanks/$', views.JEEOpeningClosingRanks, name='JEE_ranks'),
     url(r'^JEE_Ranks/$', views.JEERanks, name='JEE_ranks'),
     
     url(r'^InstituteRankings/$', views.insttRankingFilter, name='instt_ranking_filter'),
     url(r'^ProgramResults/$', views.searchProgram, name='program_search_results'),
     url(r'^EntranceExams/$', views.searchEntranceExams, name='search_entrance_exams'),
+    url(r'^instts_by_entrance_exam_code/$', views.instts_by_entrance_exam_code, name='instts_by_entrance_exam_code'),
+
+
 
     url(r'^ajax/GetJeeRankYears/$', views.getJeeRankYears, name='jee_rank_years'),    
     
@@ -98,11 +97,11 @@ urlpatterns = [
     url(r'^ifThenAnalysisResults/$', views.ifThenAnalysisResults, name='if_then_analysis_results'),
     url(r'^ajax/getInsttProgramByType/$', views.getInsttProgramByType, name='get_instt_progs_by_type'),
     url(r'^ajax/getUserInsttProgramByType/$', views.getUserInsttProgramByType, name='get_user_instt_progs_by_type'),
-    url(r'^todolist/$', views.toDoList, name='to_do_list'),
     url(r'^studyPlanner/(?P<active_tab>\w*)/$', views.studyPlanner, name='study_planner'),
     url(r'^getUserSubjectSchedule/$', views.getUserSubjectSchedule, name='getUserSubjectSchedule'),
     url(r'^getStudyHours/$', views.getStudyHours, name='getStudyHours'),
     url(r'^saveStudyHours/$', views.saveStudyHours, name='save_studyhours'),
+    url(r'^saveLoggedHours/$', views.saveLoggedHours, name='save_LoggedHours'),
     url(r'^printStudySchdule/$', views.printStudySchedule, name='print_study_schedule'),
     url(r'^updateStudySchedule/$', views.updateStudySchedule, name='update_study_schedule'),
     url(r'^ajax/getMonthStudyHours/$', views.getMonthStudyHours, name='getMonthStudyHours'),
@@ -111,6 +110,7 @@ urlpatterns = [
     url(r'^ajax/saveStudySchedule/$', views.saveStudySchedule, name='saveStudySchedule'),
     url(r'^ajax/saveSubjSch/$', views.saveSubjSch, name='saveSubjSch'),
     url(r'^ajax/saveDaySch/$', views.saveDaySch, name='saveDaySch'),
+    url(r'^ajax/generate_sch_calendar/$', views.generateSchCalendar, name='generate_sch_calendar'),
 
 
     url(r'^ajax/getInsttsForPrograms/$', views.getInsttsForProgs, name='get_insttsForProgs'),
@@ -122,9 +122,12 @@ urlpatterns = [
     url(r'^rankRsults/$', views.JEE_prog_instt_rank_results, name='JEE_prog_instt_rank_results'),
 
     url(r'^calendar/$', views.calendar, name='calendar'),
+    url(r'^todolist/$', views.toDoList, name='to_do_list'),
     url(r'^ajax/getUserInstts/$', views.getUserInstts, name='get_user_instts'),
     url(r'^ajax/saveEvents/$', views.save_user_events, name='save_user_events'),
     url(r'^ajax/getInsttsDates/$', views.getInsttImpDates, name='getInsttImpDates'),
+    url(r'^ajax/deleteCalendarEvents/$', views.delCalendarEventsByIDs, name='delCalendarEventsByIDs'),
+    
     
     url(r'^userAppDetails/$', views.userAppDetailsView, name='user_app_details'),
     url(r'^userAppDetailsConfirm/$', views.userAppDetailsConfirm, name='user_app_confirm'),
@@ -134,6 +137,23 @@ urlpatterns = [
     url(r'^refer/$', views.referNextSteps, name='refer_NextSteps'),
     url(r'^referdone/$', views.referNextSteps_confirm, name='referNextSteps_confirm'),
 
+
+    url(r'^subscription/$', views.subscription, name='subscription'),
+    url(r'^ajax/GetPromo/$', views.getPromoDetails, name='Get_Promo_Details'),    
+    
+    url(r'^subscription_begin/$', views.subscriptionBegin, name='subscription_begin'),
+    url(r'^payment_details/$', views.payment_details, name='payment_details'),
+    url(r'^payment_submit/$', views.payment_submit, name='payment_submit'),
+    url(r'^payment_unsuccessful/$', views.payment_unsuccessful, name='payment_unsuccessful'),
+                                       
+    url(r'^userAccount/$', views.userAccountInformation, name='user_account'),
+    url(r'^renewSubscription/$', views.renewSubscription, name='renew_subscription'),
+    url(r'^SubscriptionConfirm/$', views.renewSubscriptionConfirm, name='renew_subscription_confirm'),
+
+
+    #url(r'^payment_details/', paymentForm),
+    #url(r'^Success/', success),
+    #url(r'^Failure/', failure),
     
 ]
 

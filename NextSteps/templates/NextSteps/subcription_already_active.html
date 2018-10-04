@@ -32,60 +32,37 @@
 {% block features %}
     <div class="block"  style="padding-top: 5%; padding-bottom: 5%;">
         <div class="container">
-            <h3 class="block-title">Your Account Information</h3>
-
+            <h3 class="block-title">Your Subscription is Active</h3>
             
             <div class="row" id="contact">
     
                 <div class="col-xs-12 col-sm-6 col-md-3">
 
                     {% if reg_found %}
-                    <div class="panelbox-no-min">
-                        <div class="panelbox-content-no-min">
-                            <h4 class="tag-title">Subscription!</h4>
-                            <hr />
-                        <!-- <div class="panel panel-info">
-                            <div class="panel-heading">
-                                <h5 class="panel-title">Subscription!</h5>
-                            </div> -->
+                        <div class="panelbox-no-min">
+                            <div class="panelbox-no-min-content">
+                                <h4 class="tag-title">Subcription</h4>
                                 {% if subs_active %}
-                                    <!-- <div class="panel-body">  -->
-                                        <p> Your subscription is valid up to {{ subs_end_dt | date:"d-M-Y" }}</p>
-                                    <!-- </div>-->
-                                    <small>
-                                        <i class="fa fa-info-circle"></i>&nbsp;You may renew subscription before expiry date so you don't pay for registration again!
-                                    </small>
+                                    <p> Your subscription is active and valid up to {{ subs_end_dt | date:"d-M-Y" }}</p>
                                 {% else %}
-                                    <!-- <div class="panel-body"> -->
-                                        <p class="text-primary"> Your subscription expired on {{ subs_end_dt | date:"d-M-Y" }}!!</p>
-                                    <!-- </div> -->
-                                    <small>
-                                        Please subscribe <a href="{% url 'payment' %}">here!</a>
-                                    </small>
-                                {% endif %}            
+                                    <p class="text-primary"> Your subscription expired on {{ subs_end_dt | date:"d-M-Y" }}!!</p>
+                                    Please subscribe <a href="{% url 'subscription' %}">here!</a>
+                                {% endif %}
                             </div>
                         </div>
                     {% else %}
-                    
-                    <div class="panelbox-no-min">
-                        <div class="panelbox-content-no-min">
-                            <h4 class="tag-title">Please Subscribe!</h4>
-
-                        <!-- <div class="panel panel-info">
-                            <div class="panel-heading">
-                                <h5 class="panel-title">Please Subscribe!</h5>
-                            </div>
-                            <div class="panel-body"> -->
+                        <div class="panelbox-no-min">
+                            <div class="panelbox-no-min-content">
+                                <h4 class="tag-title">Please Subcribe</h4>
                                 <p> You have not subscribed to use the powerful features of NextSteps</p>
-                            <!-- </div> -->  
-                            <small>
-                               Please subscribe <a href="{% url 'subscription' %}">here!</a>
-                            </small>
+                                <p> Please subscribe <a href="{% url 'subscription' %}">here!</a></p>
+                            </div>
                         </div>
-                    </div>
                     {% endif %}                        
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-7">
+                            
+                    <!-- <table id="tableOne" class="table no-border custom_table dataTable no-footer dtr-inline"> -->
                     <table id="tableOne" class="display table table-striped table-bordered">
                         <thead>
                             <tr>
@@ -113,7 +90,9 @@
                         </tbody>
                     </table>
                 </div>
+                
             </div>
+            
         </div>
      </div>
 

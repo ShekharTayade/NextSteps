@@ -47,23 +47,26 @@
             <h3 class="block-title" style = "margin-bottom:15px;">Record Institute Application Details</h3>
             <br />
 
-            <blockquote><p>The "Application Details Record" feature is available to the subscribed users.<br />
+            <blockquote>
+                <p class = "big">
+                    Keep in one place all details required for institute applications
+                </p>
+            </blockquote>  
+
+
+            <n_note>
+                <p>The "Application Details Record" feature is available to the subscribed users.
                 {% if regUser %}
                     You have signed up and we recommend that you 
-                    <a href="{% url 'payment' %}"  class="text-primary"> Subscribe</a> now and get access to the powerful 
-                    NextSteps features that give you access to useful tools, customizes to you, and saves your valuable time & effort.
+                    <a href="{% url 'subscription' %}"  class="text-primary"> Subscribe</a> now and get access to the powerful 
+                    NextSteps features.
                 {% else %}
                     NextSteps has powerful fearures that give you access to useful tools, customizes to you and saves a lot of time & effort.
                     To get these benefits we recommed that you <a href="{% url 'signup' %}"  class="text-primary"> Sign Up </a>, 
                     Subscribe and get started!.
                 {% endif %}</p>
-            </blockquote>                 
+            </n_note>  
 
-
-            <n_note>
-                <h4>This feature helps you keep in one place all the details required for institute applications</h4>
-            </n_note>
-            
             <div class = "right-pane">
                 <div class = "block-feature">
                     <p>This feature allows you to keep all your important information required for various institutes 
