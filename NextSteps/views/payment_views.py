@@ -91,9 +91,7 @@ def payment_details(request):
 	udf2 = request.POST.get('percentDisc', '0')
 	posted['udf3'] = request.POST.get('promocode_err_msg', '')
 	posted['udf4'] = user.last_name
-	
-	import pdb
-	pdb.set_trace()
+
 	
 	if udf2 == '':
 		posted['udf2'] = '0'
