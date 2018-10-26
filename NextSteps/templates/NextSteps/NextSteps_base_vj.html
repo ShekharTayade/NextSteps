@@ -4,12 +4,9 @@
 {% block head %}
 <head>
     <meta charset="utf-8">
-    <title>NextSteps - Search for the best engineering college, save your time and effort, Manage admission process. Features
-        such as details of engineering colleges in India, shortlist, track important dates, assess probability of a seat
-        in IITs, NITs, customized report, calendar for tracking the application process, know college opening/closing
-        JEE ranks, cut offs, Study Panner and much more.
+    <title>NextSteps - Online Admission Assistant! Save your time and effort using tools to manage admission process, manage your studies with study planner, search for best-fit engineering colleges.
     </title>
-    <meta name="keywords" content="search engineering colleges, engineering colleges, engineering college admission, engineering college application, engineering collges in India, engineering institutes, JEE seat probability, Study Planner, IIT, JEE, NIT, "/> 
+    <meta name="keywords" content="engineering colleges, engineering college admission, engineering college application, engineering collges in India, engineering institutes, JEE seat probability, Study Planner, IIT, JEE, NIT, "/> 
     {% load static %}
     <link rel="icon" href="{% static 'img/favicon.ico' %}" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -534,7 +531,7 @@
 
     {% block features%}
     <h2 class="page-header">
-        Features
+        NextSteps Features
     </h2>
     <div class="row row-margin">
         <div class="row row-margin">
@@ -927,7 +924,8 @@
                     <li>Subscribe to unlock the powerful features of NextSteps</li>
                 </div>
                 <div class="box-footer">
-                    <form action="#" method="post">
+                    <form action="{% url 'signup' %}" method="post">
+                        {% csrf_token %}
                         <div class="input-group">
                             {% if not user.is_authenticated %}
                             <span class="input-group-btn">
@@ -951,12 +949,17 @@
                     <li>One time fee! you will not regret</li>
                 </div>
                 <div class="box-footer">
-                    <form action="#" method="post">
+                    <form action="{% url 'subscription' %}" method="post">
+                        {% csrf_token %}
                         <div class="input-group">
                             {% if not activeSubs %}
-                            <span class="input-group-btn">
-                                <button type="submit" class="btn btn-primary btn-flat">Subscribe</button>
-                            </span>
+                                <span class="input-group-btn">
+                                    {% if not user.is_authenticated %}
+                                    <button type = "button" class="btn btn-flat">Please Sign Up & Proceed to Subscribe</button>
+                                    {% else %}
+                                    <button type="submit" class="btn btn-primary btn-flat">Subscribe</button>
+                                    {% endif %}
+                                </span>
                             {% endif %}
                         </div>
                     </form>
@@ -965,7 +968,7 @@
         </div>
 
         <div class="col-md-2">
-            <div class="panel panel-default">
+            <div class="panel panel-default" style="border-top: 1px solid #ff5821;">
                 <div class="box-header with-border">
                     <h2 class="box-header-text"><span class="glyphicon glyphicon-bullhorn" style="color:#ff5821;"></span> Just for you</h2>
                 </div>

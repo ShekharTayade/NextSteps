@@ -87,7 +87,7 @@ class UserProfileForm(forms.ModelForm):
 class ContactUsForm(forms.ModelForm):
 
     name = forms.CharField( widget=forms.TextInput(
-        attrs={'placeholder': 'Please use only letter, numbers. Use your login name in case you are registered.'}
+        attrs={'placeholder': 'Please use only letter, numbers. Use your login name in case you have signed up.'}
         ),
         validators=[validate_contact_name]
     )

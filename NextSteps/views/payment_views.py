@@ -97,19 +97,21 @@ def payment_details(request):
 		posted['udf2'] = '0'
 	else:
 		posted['udf2'] = udf2
-		
-	''' Let's save this info before proceeding to payment.'''
-	prePay = BeforePayment (
-					User = user,
-					registration_date = datetime.datetime.now(),
-					total_amount = posted['amount'], 
-					promotionCode = posted['udf1'],
-					discount_percent = float(posted['udf2']), 
-					promotion_sys_msg = posted['udf3'],
-					date_updated = datetime.datetime.now() 
-					)
 	
-	prePay.save()
+	''' Let's save this info before proceeding to payment.'''
+	''' If the promo used used "NSBPPYNT_NCT", then we dont need to save'''
+	if posted['udf1'] != 'NSBPPYNT_NCT':
+		prePay = BeforePayment (
+						User = user,
+						registration_date = datetime.datetime.now(),
+						total_amount = posted['amount'], 
+						promotionCode = posted['udf1'],
+						discount_percent = float(posted['udf2']), 
+						promotion_sys_msg = posted['udf3'],
+						date_updated = datetime.datetime.now() 
+						)
+	
+		prePay.save()
 	
 	return render (request, 'NextSteps/payment_details.html', {"posted":posted})
 
@@ -170,16 +172,85 @@ def payment_submit(request):
 		hash_string+='|'
 	hash_string+=SALT
 	hashh=hashlib.sha512(hash_string.encode('utf8')).hexdigest().lower()
-	action =PAYU_BASE_URL
 
-	if(posted.get("key")!=None and posted.get("txnid")!=None and posted.get("productinfo")!=None and posted.get("firstname")!=None and posted.get("email")!=None):
-		return render (request, 'NextSteps/payment_submit.html', {"posted":posted,"hashh":hashh,
-						"MERCHANT_KEY":MERCHANT_KEY,"txnid":txnid,"hash_string":hash_string,
-						"action":PAYU_BASE_URL })
-	else:		
-		return render (request, 'NextSteps/payment_submit.html', {"posted":posted,"hashh":hashh,
+	''' If this promo code is used then bypass payment gateway ''' 
+	if posted['udf1'] == 'NSBPPYNT_NCT':  
+		return render (request, 'NextSteps/payment_submit_nocost.html', {"posted":posted,"hashh":hashh,
 						"MERCHANT_KEY":MERCHANT_KEY,"txnid":txnid,"hash_string":hash_string,
 						"action":"." })
+
+	else:
+		action =PAYU_BASE_URL
+
+		if(posted.get("key")!=None and posted.get("txnid")!=None and posted.get("productinfo")!=None and posted.get("firstname")!=None and posted.get("email")!=None):
+			return render (request, 'NextSteps/payment_submit.html', {"posted":posted,"hashh":hashh,
+							"MERCHANT_KEY":MERCHANT_KEY,"txnid":txnid,"hash_string":hash_string,
+							"action":action })
+		else:		
+			return render (request, 'NextSteps/payment_submit.html', {"posted":posted,"hashh":hashh,
+							"MERCHANT_KEY":MERCHANT_KEY,"txnid":txnid,"hash_string":hash_string,
+							"action":"." })
+
+
+@login_required
+@subscription_not_active
+def payment_submit_nocost(request):
+	
+	'''''''''''''''''''''''''''''''''''''''''''''''
+	Create Payment Form and submit (it is to get auto submitted when rendered)
+	'''''''''''''''''''''''''''''''''''''''''''''''
+	action = ''
+	posted={}
+	# Merchant Key and Salt provided y the PayU.
+
+	for i in request.POST:
+		posted[i]=request.POST[i]
+	
+	user = get_object_or_404(User, username=request.user)			
+	posted['firstname'] = request.POST.get("firstname",'')
+	posted['lastname'] = request.POST.get("lastname",'')
+	posted['amount'] = request.POST.get('amount', '0')
+	posted['email'] = request.POST.get("email",'')
+	posted['phone'] = request.POST.get("phone",'')
+	posted['productinfo'] = 'NextSteps Subscription'
+	posted['surl'] = 'http://localhost:7000/subscription_begin/'
+	posted['furl'] = 'http://localhost:7000/payment_unsuccessful/'
+	posted['service_provider'] = 'NextSteps Solutions'
+	posted['curl'] = 'NextSteps/payment_aborted.html'
+	posted['udf1'] = request.POST.get("udf1",'').upper()
+	udf2 = request.POST.get('udf2', '')
+	posted['udf3'] = request.POST.get('udf3', '')
+	posted['udf4'] = request.POST.get('lastname', '')
+	posted['udf5'] = request.POST.get('state', '')
+
+	if udf2 == '':
+		posted['udf2'] = '0'
+	else:
+		posted['udf2'] = udf2
+		
+	
+	hash_object = hashlib.sha256(b'randint(0,20)')
+	txnid=hash_object.hexdigest()[0:20]
+	hashh = ''
+	posted['txnid']=txnid
+	hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10"
+	posted['key']=key
+	hash_string=''
+	hash_string+= MERCHANT_KEY
+	
+	hashVarsSeq=hashSequence.split('|')
+	for i in hashVarsSeq:
+		try:
+			hash_string+=str(posted[i])
+		except Exception:
+			hash_string+=''
+		hash_string+='|'
+	hash_string+=SALT
+	hashh=hashlib.sha512(hash_string.encode('utf8')).hexdigest().lower()
+
+
+	return render (request, 'NextSteps/payment_submit_nocost.html', {"posted":posted,"hashh":hashh,
+						"MERCHANT_KEY":MERCHANT_KEY,"txnid":txnid,"hash_string":hash_string})
 
 @csrf_protect
 @csrf_exempt
@@ -268,6 +339,9 @@ def subscriptionBegin(request):
 	#Set default as status PASS and the success message
 	pass_fail = 'PASS'	  
 	msg = ''
+
+	import pdb
+	pdb.set_trace()
 
 	try:
 		# Save the registration, subscription, payment, promotion code details 

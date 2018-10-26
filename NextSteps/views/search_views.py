@@ -103,7 +103,6 @@ def InsttList(request):
 # Vijay : Method Begin
 def InstitueListUnRegistered(request):
 
-    print("I reached InstitueListUnRegistered")
 
     draw = request.GET['draw']
     start = int(request.GET['start'])
@@ -112,9 +111,7 @@ def InstitueListUnRegistered(request):
     # order_direction = '' if request.GET['order[0][dir]'] == 'desc' else '-'
     column = [i.name for n, i in enumerate(Institute._meta.get_fields()) if n == order_column][0]
     global_search = request.GET['search[value]']
-    print('global_search ', global_search)
     criteria = request.GET.getlist('criteria')
-    print('criteria ', criteria)
     stateVals = []
     cityVals = []
     insttTypeVals = []
@@ -627,7 +624,6 @@ def insttStatesCities(request):
 def instts_by_entrance_exam_code(request):
     
     examVals = request.GET.getlist('entrance_exam_code', [])
-    print(examVals)
     instt_list = InstituteEntranceExam.objects.filter(EntranceExam_id__in = examVals).values(
         'Institute__instt_name', 'Institute__address_1', 'Institute__address_2',
         'Institute__address_3', 'Institute__city', 'Institute__state', 'Institute__Country_id',

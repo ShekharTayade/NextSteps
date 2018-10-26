@@ -144,6 +144,7 @@ urlpatterns = [
     url(r'^subscription_begin/$', views.subscriptionBegin, name='subscription_begin'),
     url(r'^payment_details/$', views.payment_details, name='payment_details'),
     url(r'^payment_submit/$', views.payment_submit, name='payment_submit'),
+    url(r'^payment_submit_nocost/$', views.payment_submit_nocost, name='payment_submit_nocost'),
     url(r'^payment_unsuccessful/$', views.payment_unsuccessful, name='payment_unsuccessful'),
                                        
     url(r'^userAccount/$', views.userAccountInformation, name='user_account'),

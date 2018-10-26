@@ -30,7 +30,7 @@
 
 <!-- Override features block -->
 {% block features %}
-    <div class="block" style="padding-top: 5%; padding-bottom: 5%; ">
+    <div class="block" style="padding-top: 5%; padding-bottom: 5%; display:none;">
         <div class="container">
 
             <h3 class="block-title">Payment Details</h3>
@@ -40,7 +40,7 @@
                 <br/>
             {% endif %}
             URL ==== {{action}}
-            <form class="form-horizontal" id = "payuForm" action="{{ action|safe }}" method="post" name="payuForm">
+            <form class="form-horizontal" id = "payuForm" action="{% url 'subscription_begin' %}" method="post" name="payuForm">
                 {% csrf_token %}
                 <input name="key" value="{{ MERCHANT_KEY }}" />
                 <input id = "hash_string" name="hash_string" value="{{ hash_string }}" />
@@ -57,7 +57,7 @@
                                 <div class="form-group row">
                                   <div class="col-xs-4">
                                     <label for="amt">Amount <i class="fa fa-inr" aria-hidden="true">&nbsp;</i></label>
-                                    <input id="amt" class="form-control" name="amount" value="{{ posted.amount|default:'' }}" required />
+                                    <input id="amt" class="form-control" name="amount" value="00" required />
                                   </div>
                                 </div>
                                 <h4>Bill To:</h4>
@@ -174,7 +174,7 @@
                         <td>UDF1: </td>
                         <td><input name="udf1" value="{{ posted.udf1 }}" /></td>
                         <td>UDF2: </td>
-                        <td><input name="udf2" value="{{ posted.udf2 }}" /></td>
+                        <td><input name="udf2" value="99.99" /></td>
                     </tr>
                     <tr >
                         <td>UDF3: </td>
@@ -188,6 +188,13 @@
                         <td>PG: </td>
                         <td><input name="pg" value="{{ posted.PG }}" /></td>
                     </tr>
+
+                    <tr >
+                        <td><input name="status" value="SUCCESS" /></td>
+                        <td><input name="txnid" value="N/A" /></td>
+                        <td><input name="hash" value="N/A" /></td>
+                        <td><input name="key" value="N/A" /></td>
+                    </tr>
                     
                 </table>
             </form>
@@ -198,7 +205,7 @@
     <script type="text/javascript">
         $(document).ready(function(){
     
-           //$("#payuForm").submit();
+           $("#payuForm").submit();
         })
     </script>
             
