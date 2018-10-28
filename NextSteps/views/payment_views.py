@@ -83,10 +83,10 @@ def payment_details(request):
 	posted['email'] = user.email
 	posted['phone'] = phone_number
 	posted['productinfo'] = 'NextSteps Subscription'
-	posted['surl'] = 'http://localhost:7000/subscription_begin/'
-	posted['furl'] = 'http://localhost:7000/payment_unsuccessful/'
+	posted['surl'] = 'https://www.NextSteps.co.in/subscription_begin/'
+	posted['furl'] = 'https://www.NextSteps.co.in/payment_unsuccessful/'
 	posted['service_provider'] = 'NextSteps Solutions'
-	posted['curl'] = 'http://localhost:7000/payment_unsuccessful/'
+	posted['curl'] = 'https://www.NextSteps.co.in/payment_unsuccessful/'
 	posted['udf1'] = request.POST.get("promoCode",'').upper()
 	udf2 = request.POST.get('percentDisc', '0')
 	posted['udf3'] = request.POST.get('promocode_err_msg', '')
@@ -97,6 +97,8 @@ def payment_details(request):
 		posted['udf2'] = '0'
 	else:
 		posted['udf2'] = udf2
+	
+	eff_date = datetime.datetime.now()
 	
 	''' Let's save this info before proceeding to payment.'''
 	''' If the promo used used "NSBPPYNT_NCT", then we dont need to save'''
@@ -113,7 +115,8 @@ def payment_details(request):
 	
 		prePay.save()
 	
-	return render (request, 'NextSteps/payment_details.html', {"posted":posted})
+	return render (request, 'NextSteps/payment_details.html', {"posted":posted,
+				"eff_date":eff_date})
 
 @login_required
 @subscription_not_active
@@ -138,10 +141,10 @@ def payment_submit(request):
 	posted['email'] = request.POST.get("email",'')
 	posted['phone'] = request.POST.get("phone",'')
 	posted['productinfo'] = 'NextSteps Subscription'
-	posted['surl'] = 'http://localhost:7000/subscription_begin/'
-	posted['furl'] = 'http://localhost:7000/payment_unsuccessful/'
+	posted['surl'] = 'https://www.NextSteps.co.in/subscription_begin/'
+	posted['furl'] = 'https://www.NextSteps.co.in/payment_unsuccessful/'
 	posted['service_provider'] = 'NextSteps Solutions'
-	posted['curl'] = 'NextSteps/payment_aborted.html'
+	posted['curl'] = 'https://www.NextSteps.co.in/payment_aborted.html'
 	posted['udf1'] = request.POST.get("udf1",'').upper()
 	udf2 = request.POST.get('udf2', '')
 	posted['udf3'] = request.POST.get('udf3', '')
@@ -213,10 +216,10 @@ def payment_submit_nocost(request):
 	posted['email'] = request.POST.get("email",'')
 	posted['phone'] = request.POST.get("phone",'')
 	posted['productinfo'] = 'NextSteps Subscription'
-	posted['surl'] = 'http://localhost:7000/subscription_begin/'
-	posted['furl'] = 'http://localhost:7000/payment_unsuccessful/'
+	posted['surl'] = 'https://www.NextSteps.co.in/subscription_begin/'
+	posted['furl'] = 'https://www.NextSteps.co.in/payment_unsuccessful/'
 	posted['service_provider'] = 'NextSteps Solutions'
-	posted['curl'] = 'NextSteps/payment_aborted.html'
+	posted['curl'] = 'https://www.NextSteps.co.in/payment_aborted.html'
 	posted['udf1'] = request.POST.get("udf1",'').upper()
 	udf2 = request.POST.get('udf2', '')
 	posted['udf3'] = request.POST.get('udf3', '')
