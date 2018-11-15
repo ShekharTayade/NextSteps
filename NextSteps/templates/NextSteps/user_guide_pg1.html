@@ -1,0 +1,64 @@
+
+{% extends 'NextSteps/user_guide_base.html' %}
+{% load static %}
+
+
+{% block user_guide_page %}
+
+    <div class="jumbotron">
+        <blockquote>
+            <p class = "big">
+                While you study hard to secure admission to your preferred Institute, 
+                you need all the help you can get on the admission processes, important information, 
+                dates, assessment of your chances, maintain a calendar of when-to-do-what and more. 
+                Missing out on an important piece of information or a date may mean missing out on a great chance.
+                NextSteps helps with the features and tools that give you information, data and more. 
+                It will save your precious time and effort and help you organize yourself, 
+                manage the admission process better.
+            </p>
+        </blockquote>
+    </div>    
+
+    <div class="jumbotron">
+        <h4 class="block-title">Search Features</h4>
+        <ul >
+            <li>Search institutes across India with detailed information on the institutes</li>
+            <li >Details on institutes entrance exams, programs offered, survey ranks, JEE opening/closing ranks etc.</li>
+            <li >Consolidated information on your preferred institutes</li>
+        </ul>
+    </div>
+    <div class="jumbotron">
+        <h4 class="block-title">“NextSteps” Features and Tools</h4>
+        <ul >
+            <li >Excellent admission calendar – keep track of all the important dates, customize it yourself</li>
+            <li >Assess your chances through JEE – gives you possibility of securing a seat through JEE</li>
+            <li >Powerful Study Planner – An advanced tool to manage your study hours. Has a graphical dashboard to show where you stand w.r.t. your plan</li>
+            <li >Compare Institutes – A tool you can use to compare various institutes on various parameters</li>
+            <li >Record Application Details – A handy tool to record all the details you need while applying to various college. Helps you save time and effort.</li> 
+        </ul>
+    </div>
+    
+    <div class="jumbotron">
+        <a  class = "inline"  href="{% url 'index' %}">NextSteps.co.in</a> is a website dedicated to helping students who are looking forward to undergraduate engineering college admission. 
+        NextSteps has a database of over 3000 undergraduate engineering colleges across India. It is <strong>“Your Online Admission Assistant”.</strong>            
+    </div>
+    
+
+    <h4 class = "block-title">Access to NextSteps</h4>
+    You can search institute details even without sign up. Just go to <a class = "inline" href="{% url 'index' %}">NextSteps.co.in </a> 
+    and start searching institutes. It is <strong>free</strong>.<br/>
+    Access to all other “Search” options on the website is <strong>free</strong>. You just <a  class = "inline" href = "{% url 'signup' %}">sign up</a> and start using. Once signed up, 
+    you can search Institutes/Colleges by programs/courses, location, type of Institute, get information on programs, seats and quotas, 
+    survey ranking, opening & closing JEE ranks, and cut offs for various Institutes. These are essential ingredients in looking for 
+    colleges that are best fit for you. This section can be accessed from the home page under Search section.
+    You can use a range of more useful <strong>"NextSteps features, and tools</strong>" as you 
+    subscribe to NextSteps. These help save a lot of time and effort so you can concentrate on your studies. 
+    <br />
+    <br />
+    <br />
+{% endblock user_guide_page %}
+
+
+{% block user_guide_bottom_nav %}
+    <a class = "btn btn-primary" href = "{% url 'user_guide_pg2' %}"><i class = "fa fa-chevron-right">&nbsp;Next</i></a>
+{% endblock user_guide_bottom_nav %}

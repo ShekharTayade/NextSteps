@@ -1,0 +1,55 @@
+{% extends 'NextSteps/user_guide_base.html' %}
+{% load static %}
+
+
+{% block user_guide_page %}
+
+    <h4 class="block-title">Overview - Admission Assistant Features</h4>
+    <br/>
+    <table class = "table table-borderless">
+        <tbody>
+            <tr>
+                <td style = "width :20%"><strong>Admission Calendar</strong></td> 
+                <td><span class = "text-fancy"><strong>Never miss important dates (that can cost dearly!).</strong></span> 
+                A calendar that shows important dates for the preferred (shortlisted) institutess. 
+                This helps you manage and track all the dates and get the reminded of. You can also print out a to-do list</td>
+            </tr>
+            <tr>
+                <td><strong>JEE Seat Chances</strong></td> 
+                <td><span class = "text-fancy"><strong>Highly useful tool to check your chances of a seat through JEE. </strong></span>
+                Based on anticipated JEE rank and previous year opening/closing ranks, find out the probability of getting a seat in 
+                chosen institutes, program. Play out an if-then-analysis using this tool</td>
+            </tr>
+            <tr>
+                <td><strong>Study Planner</strong></td>
+                <td><span class = "text-fancy"><strong>Powerful graphical dashboard to know where you are with respect to your plan. </strong></span> 
+                With this feature you can plan, track and manage your study hours and get a graphical dashboard.</td>
+            </tr>
+            <tr>
+                <td><strong>Compare Institute</strong></td>
+                <td><span class = "text-fancy"><strong>Compare various institutes on various parameter. </strong></span> 
+                This features helps you to search institutes, select them and compare.</td>
+            </tr>
+            <tr>
+                <td><strong>View/Set Preferences</strong></td>
+                <td><span class = "text-fancy"><strong>View and set the program, institutes preferences</strong></span> (shortlist institutes that you want to target). 
+                This features helps you customize other NextSteps features so as to work with your preferred institutes.)</td>
+            </tr>
+        </tbody>
+    </table>
+    <br/>
+    All these search results further let you narrow your search so you find precisely what you are looking for.
+    <br/>
+    <br/>
+    <img src = "{% static 'img/user_guide/pg3_p1.png' %}" class = "img-fluid">
+
+    <br />
+
+{% endblock user_guide_page %}
+
+{% block user_guide_bottom_nav %} 
+    <a class = "btn btn-primary" href = "{% url 'user_guide_pg2' %}"><i class = "fa fa-chevron-left">&nbsp;Prev</i></a>
+    <a class = "btn btn-primary" href = "{% url 'user_guide_pg1' %}"><i class = "fa fa-home">&nbsp;User Guide Home</i></a>
+    <a class = "btn btn-primary" href = "{% url 'user_guide_pg4' %}"><i class = "fa fa-chevron-right">&nbsp;Next</i></a>
+{% endblock user_guide_bottom_nav %}             
+

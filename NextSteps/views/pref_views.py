@@ -1360,7 +1360,7 @@ def studyPlanner(request, active_tab):
         except UserSubjectSchedule.DoesNotExist:
             form = UserSubjectScheduleForm()
         
-    return render(request, 'NextSteps/study_planner11.html', {'allSubjectList':
+    return render(request, 'NextSteps/study_planner.html', {'allSubjectList':
             allSubjectList, 'userSubjectList':userSubjectList, 'form':form,
             'userSch': userSch, 'userDaySch' : userDaySch,'months':months, 
             'dateMin':dateMin, 'dateMax':dateMax, 'currMonth':currMonth, 

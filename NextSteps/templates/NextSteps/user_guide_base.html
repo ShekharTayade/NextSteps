@@ -1,0 +1,96 @@
+
+{% extends 'NextSteps/NextSteps_base_vj.html' %}
+{% load static %}
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+{% endblock slide-show %}
+
+<!-- Override block from parent -->
+{% block instt-prog-menu %}
+{% endblock instt-prog-menu %}
+
+
+<!-- Override features block -->
+{% block features %}
+    <div class="block" style="padding-top: 5%; padding-bottom: 5%;">
+        <div class="container">
+
+            <h3 class="block-title">NextSteps.co.in</h3>
+
+            <div class = "row">
+                    
+                <div id ="userguide" class = "col-sm-9">
+                    {% block user_guide_page %}
+                
+                    {% endblock user_guide_page %}
+                    
+                    {% block user_guide_bottom_nav %}
+                    <a class = "btn btn-primary" href = "{% url 'user_guide_pg2' %}"><i class = "fa fa-chevron-right">&nbsp;Next</i></a>
+                    {% endblock user_guide_bottom_nav %}
+                </div>
+
+                <div class = "col-sm-3">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                        aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    {% block user_guide_toc %}
+                    
+                    <div class = "toc-nav">
+                        <h5 class = "block-title">Table of Content</h5>
+                         <a name="inst"></a><a name="exam"></a><a name="programs"></a><a name="survey"></a><a name="jee_ranks"></a>
+                        
+                        <nav class="navbar navbar-light bg-light">
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                <!--<span class="navbar-toggler-icon"></span> -->
+                                <i class="fa fa-bars"></i>
+                            </button>                        
+                            
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav mr-auto">
+                                    <li class="nav-item"><a href = "{% url 'user_guide_pg1' %}">User Guide Home</a></li>
+                                    <li class="nav-item"><a href = "{% url 'user_guide_pg2' %}">Overview of Search Features</a></li>
+                                    <li class="nav-item"><a href = "{% url 'user_guide_pg3' %}">Overview of NextSteps Features</a></li>
+                                    <li class="nav-item"><a href = "{% url 'user_guide_pg4' %}">Sign Up and Subscribe</a></li>
+                                    <li class="nav-item"><a href = "{% url 'user_guide_pg5' %}">Search Features</a></li>
+                                    <ul class="nav-item">
+                                        <li class="nav-item"><a href = "{% url 'user_guide_pg5' %}#inst">Insitutes</a>
+                                        <li class="nav-item"><a href = "{% url 'user_guide_pg5' %}#exam">Exams</a>
+                                        <li class="nav-item"><a href = "{% url 'user_guide_pg5' %}#programs">Programs</a>
+                                        <li class="nav-item"><a href = "{% url 'user_guide_pg5' %}#survey">Suvery Ranking</a>
+                                        <li class="nav-item"><a href = "{% url 'user_guide_pg5' %}#jee_ranking ">JEE Ranking</a>
+                                    </ul>    
+                                    <li class="nav-item"><a href = "{% url 'user_guide_pg6' %}">NextSteps Features</a></li>
+                                    <ul class="nav-item">
+                                        <li class="nav-item"><a href = "{% url 'user_guide_pg6' %}#set_view_pref">Set/View Pref</a>
+                                        <li class="nav-item"><a href = "{% url 'user_guide_pg6' %}#imp_info">Get Imp Info</a>
+                                        <li class="nav-item"><a href = "{% url 'user_guide_pg6' %}#adm_calendar">Adm Calendar</a>
+                                        <li class="nav-item"><a href = "{% url 'user_guide_pg6' %}#jee_seat_chances">JEE Seat Chances</a>
+                                        <li class="nav-item"><a href = "{% url 'user_guide_pg6' %}#study_planner">Study Planner</a>
+                                        <li class="nav-item"><a href = "{% url 'user_guide_pg6' %}#compare_insts">Compare Instts</a>
+                                        <li class="nav-item"><a href = "{% url 'user_guide_pg6' %}#app_details">Instt Appl Details</a>
+                                    </ul>                            
+                                    <li class="nav-item"><a href = "{% url 'user_guide_adm_calendar' %}">Admission Calendar</a></li>
+                                    <li class="nav-item"><a href = "{% url 'user_guide_study_planner' %}">Study Planner</a></li>
+                                    
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                    {% endblock user_guide_toc %}
+                
+                </div>
+
+            </div>                    
+        </div>
+     </div>
+
+{% endblock features %}
+
+{% block registration %}
+{% endblock registration %}
+<!-- Footer-section remains as it is, no override -->

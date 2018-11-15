@@ -1,0 +1,263 @@
+{% extends 'NextSteps/user_guide_base.html' %}
+{% load static %}
+
+
+{% block user_guide_page %}
+
+    <h4 class="block-title">NextSteps Features</h4>
+    <br/>
+    
+    With active subscription you will be able to use these powerful features.
+    
+    <hr>
+    <table id = "set_view_pref" class = "table table-borderless">
+        <tbody>
+            <tr>
+                <td style = "width :20%; font-size:1.25em;"><strong>Set/View Preferences</strong></td> 
+                <td>View and Set the programs, institutes that you want to shortlist/target for admission / have preference for.
+                    This will facilitate us to bring you the focused information and customize NextSteps features and tools for you.</td>
+            </tr>
+       </tbody>
+    </table>
+
+    <ul>
+        <li>On the home page, click on “Set Preference” under Features section.</li>
+        <img src = "{% static 'img/user_guide/pg6_set_view_pref.png' %}" class = "img-fluid">
+    </ul>
+    <ul>
+        <li>There are two pages within this – one to set the general preferences (important one being student category. 
+            lease your category here), and the second one is where you will set the program and institute preferences.</li>
+        <li>The preferences you set here will be used to customize other features for you</li>
+        <li>Use the "Programs" section to select the programs you are interested in</li> 
+        <li>Clicking on a program highlights it and clicking again un-highlights it. You can also double click a program to move 
+            it directly to preferred box. Clicking on the chevron will move the highlighted programs to the “Your Preferences” box. 
+            Clicking on X sign against the program if you want to remove a program from preferences</li>
+        <li>In the similar fashion select the institutes that you prefer (want to shortlist)</li>
+        <li>Once you are finished selecting the preferred programs and institutes, click on the “Save” button at the bottom. 
+            This saves your preferences.</li>
+    </ul>            
+    <br />
+
+    <hr>
+    <table id = "imp_info" class = "table table-borderless">
+        <tbody>
+            <tr>
+                <td style = "width :20%; font-size:1.25em;"><strong>Get Important Info</strong></td> 
+                <td>Get a consolidated information in PDF format on your preferred institutes and programs.</td>
+            </tr>
+       </tbody>
+    </table>
+    <ul>    
+        <li>On the home page, click on “Get Important Info” under Features section.</li>
+        <img src = "{% static 'img/user_guide/pg6_imp_info.png' %}" class = "img-fluid">
+        <img src = "{% static 'img/user_guide/pg6_imp_info_1.png' %}" class = "img-fluid">    
+    </ul>    
+    <ul>
+        <li>Save this PDF file or print it out</li>
+    </ul>
+    <br />
+
+    <hr>
+    <table id = "adm_calendar" class = "table table-borderless">
+        <tbody>
+            <tr>
+                <td style = "width :20%; font-size:1.25em;"><strong>Admission Calendar</strong></td> 
+                <td>A Powerful feature that creates a calendar for you of the important dates for your preferred institutes.</td> 
+            </tr>
+            <tr>
+                <td></td>
+                <td>For a detailed guide on calendar, please <a class = "inline" href = "#">click here</a>.</td>
+            </tr>
+       </tbody>
+    </table>
+    <ul>           
+        <li>NextSteps will fetch the important dates for admission process for your preferred institutes 
+            from it's database and creates the calendar for you.</li>
+        <img src = "{% static 'img/user_guide/pg6_adm_cal.png' %}" class = "img-fluid">
+    </ul>
+    <ul>
+        <li>You can customize the calendar to suit you</li>
+        <li>You can add or remove any of events on given date</li>
+        <li>You can create a to-do list from this calendar and print it out</li>
+    </ul>
+    <br />
+
+    <hr>
+    <table id = "jee_seat_chances" class = "table table-borderless">
+        <tbody>
+            <tr>
+                <td style = "width :20%; font-size:1.25em;"><strong>JEE Seat Chances</strong></td> 
+                <td>Displays a list of institutes and programs where you have chances to get a seat</td>
+            </tr>
+       </tbody>
+    </table>
+    <ul> 
+        <li>NextSteps uses historic data on opening, closing ranks and your predicted JEE rank to 
+            display the list of institutes and programs where you may get the admission</li>
+        <li>Please note that this tool is only meant to give a guidance based on historic data and 
+            in no way be construed as a tool to know where you will get admission for sure</li>
+        <img src = "{% static 'img/user_guide/pg6_jee_seat_chances_1.png' %}" class = "img-fluid">
+        <img src = "{% static 'img/user_guide/pg6_jee_seat_chances_2.png' %}" class = "img-fluid">
+    </ul>
+    <ul>
+        <li>Select whether you want to use your preferences to display the ranks. Select 'Yes' if you would like to use 
+            the preferences that you have saved (Home page-> Features -> Set Preferences). 
+            These Programs and Institutes will be used in seat probability analysis. If you select ‘No’, then the list of 
+            all the programs and institutes will be displayed and an additional question “Would you like to choose any 
+            Institutions and Programs for seat chance assessment?” will be displayed.</li>
+        <li>Select whether you would like select any programs and institutes from the displayed lists. If you select ‘No’ 
+            then the list of programs and institutes will become removed from the page and all the programs and institute will be used.</li>
+        <li>From ‘Get Results By”, select whether you want to use JEE MAINS and JEE ADV. If you choose MAINS, then the 
+            ‘Home State’ selection box will be enabled and the programs and institutes will be filtered for MAINS. 
+            If you choose ADV, then the ‘Home State’ selection box will be disabled and the programs and institutes 
+            will be filtered for ADV.</li>
+        <li>If the program and institutes selection boxes are visible then select programs and institutes that you want to 
+            choose for assessing the seat chances.</li>
+        <li>Enter the JEE expected rank ‘from’ and ‘to’ in respective boxes.</li>
+        <li>Click on the “Analyze” button to obtain of the institutes and programs where you have chances to get a seat.</li>
+        <img src = "{% static 'img/user_guide/pg6_jee_seat_chances_3.png' %}" class = "img-fluid">
+    </ul>
+    <ul>
+        <li>Use this tool effectively to play an “if-then-analysis” on various scenarios.</li> 
+    </ul>
+    <br />
+
+    <hr>
+    <table id = "study_planner" class = "table table-borderless">
+        <tbody>
+            <tr>
+                <td style = "width :20%; font-size:1.25em;"><strong>Study Planner</strong></td> 
+                <td>This is a powerful feature to manage and track your study hours, which is key to your success.</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>For a detailed guide on Study Planner, please <a class = "inline" href = "#">click here</a>.</td>
+            </tr>
+       </tbody>
+    </table>
+    <ul> 
+        <li>NextSteps provides a graphical dashboard of your progress</li>
+        <li>Record your plan, update your study hours regularly and this tool will tell you where you stand with respect to your plan</li>
+    </ul>
+    
+    <p style = "padding-left:25px;"><strong>Dashboard</strong></p>
+    
+    <ul>
+        <li>The graphical dashboard tab shows you your programs compared to the plan. You don’t update anything on this tab.</li>
+        <li>Rest of tabs are used to plan and record your study hours</li>
+        <img src = "{% static 'img/user_guide/pg6_study_planner_dashboard.png' %}" class = "img-fluid">
+    </ul>
+
+    <p style = "padding-left:25px;"><strong>Study Schedule</strong></p>
+    
+    <ul>
+        <li>Firstly, you create your overall study plan using “Study Schedule” tab. The top section 
+            shows you your current overall study plan. Use bottom section if you want to create a new plan. 
+            Record how many days a week and how many hours a day you plan to study, then record the start and end dates.</li>
+        <li>Click on “Save” button to record this plan.</li>
+        <img src = "{% static 'img/user_guide/pg6_study_planner_study_sch.png' %}" class = "img-fluid">
+    </ul>
+    
+    
+    <p style = "padding-left:25px;"><strong>Subject Schedule</strong></p>
+    
+    <ul>
+        <li>Having created the overall schedule, you now create the subject-wise study plan using.
+        <li>Select the subjects you want to study and then assign the percentage of time you want spend on a 
+            subject and the start and end dates.</li> 
+        <li>Click on “Save” button to record subject-wise plan.</li>
+        <img src = "{% static 'img/user_guide/pg6_study_planner_subject_sch.png' %}" class = "img-fluid">
+    </ul>
+    
+
+    <p style = "padding-left:25px;"><strong>Day Schedule</strong></p>
+    
+    <ul>
+        <li> Now plan how your typical study day would be.</li>
+        <li>Enter the hours you plan to study that subject (this will be derived from the subject 
+            percentage time you have allocated in the “Subject Schedule” tab. But you can override it here”).</li>
+        <li>Enter the start and end time for each subject.</li> 
+        <li>Select which days of the week you will study (this should same as number of days per week in overall “Study Schedule).</li>
+        <li>Click on “Save” button to record the day plan.</li>
+        <li>Click on the “Generate Schedule” to create a study calendar for you. This will create your day-wise 
+            schedule from the start to end date and based on the subject wise start and end time.</li>
+        <img src = "{% static 'img/user_guide/pg6_study_planner_day_sch.png' %}" class = "img-fluid">
+    </ul>
+
+    
+    <p style = "padding-left:25px;"><strong>Schedule Calendar</strong></p>
+    <ul>
+        <li>Based on the plan you created using “Study Schedule”, “Subject Schedule” 
+            and “Day Schedule” NextSteps will create a calendar for you.</li>
+        <li>You can customize the schedule on day to day basis using this Calendar.</li>
+        <li>You can add or remove any of the study hours in the calendar.</li>
+        <li>Click on “Save” button to record the changes you make here.</li>
+        <li>Click on the Print icon to print out your schedule.</li>
+        <img src = "{% static 'img/user_guide/pg6_study_planner_sch_calendar.png' %}" class = "img-fluid">
+    </ul>
+
+
+    <p style = "padding-left:25px;"><strong>Log Study Hours</strong></p>
+    <ul>
+        <li>Use this tab to record your actual study hours.</li>
+        <li>By default the current month study plan is displayed on the page.</li>
+        <li>You can change the plan by selecting a particular month or specifying a date range.</li>
+        <li>Click on “Save” button to record the actual study hours.</li>
+        <img src = "{% static 'img/user_guide/pg6_study_planner_log_study_hours.png' %}" class = "img-fluid">
+    </ul>
+    <br />
+
+    <hr>
+    <table id = "compare_insts" class = "table table-borderless">
+        <tbody>
+            <tr>
+                <td style = "width :20%; font-size:1.25em;"><strong>Compare Insitutes</strong></td> 
+                <td>Search and compare institutes side-by-side.</td> 
+            </tr>
+       </tbody>
+    </table>
+    <ul>           
+        <li>On the home page Features sections, click on “Compare Institutes”.</li>
+        <li>Select up to 4 institutes to compare.</li>
+        <img src = "{% static 'img/user_guide/pg6_ompare_insts.png' %}" class = "img-fluid">
+    </ul>
+    <ul>
+        <li>Search the institutes that you are interested. Use the filters on the left to narrow the institutes search</li>
+        <li>Click the checkbox against the institute to select it for comparison</li>
+        <li>Select up to 4 institutes for comparison</li>
+        <li>As you select more than one institutes, a “Compare” button appear. Click it to get the results</li>
+        <li>Clicking on “Add to Preferences” will add that institute in your preferences</li>
+        <img src = "{% static 'img/user_guide/pg6_ompare_insts_results.png' %}" class = "img-fluid">
+    </ul>
+    <br />
+
+    <hr>
+     <table id = "app_details" class = "table table-borderless">
+        <tbody>
+            <tr>
+                <td style = "width :20%; font-size:1.25em;"><strong>Institute Application Details</strong></td> 
+                <td>Save the details you would typically need while filling up the application forms for various institutions.</td> 
+            </tr>
+       </tbody>
+    </table>
+    <ul>           
+        <img src = "{% static 'img/user_guide/pg6_app_details.png' %}" class = "img-fluid">
+    </ul>
+    <ul>
+        <li>Use the left side navigation bar to go to respective set of information to save.</li>
+        <li>Please note that only name is mandatory. You can choose whatever other information you want to save.</li>
+        <li>There are four sets of information – Name and Personal Details, Address and Contact Details, Education 
+            Details, Parents & Guardian, Photo and Signatures.</li>
+        <li>The images to be uploaded in Photo and Signatures section should be less than 50 KB, as most of the 
+        institutions won’t allow images of size larger than that.</li>
+    </ul>
+   
+
+{% endblock user_guide_page %}
+
+{% block user_guide_bottom_nav %} 
+    <a class = "btn btn-primary" href = "{% url 'user_guide_pg5' %}"><i class = "fa fa-chevron-left">&nbsp;Prev</i></a>
+    <a class = "btn btn-primary" href = "{% url 'user_guide_pg1' %}"><i class = "fa fa-home">&nbsp;User Guide Home</i></a>
+    <a class = "btn btn-primary" href = "{% url 'user_guide_adm_calendar' %}"><i class = "fa fa-chevron-right">&nbsp;Next</i></a>
+{% endblock user_guide_bottom_nav %}             
+

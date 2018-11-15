@@ -67,11 +67,9 @@
     <script src="{% static 'fullcalendar/moment.min.js' %}"></script>
     <script src="{% static 'fullcalendar/fullcalendar.min.js' %}"></script>
 
-
     <!-- Required libraries for "SelectBoxIt"
     <link type="text/css" rel="stylesheet" href="http://gregfranko.com/jquery.selectBoxIt.js/css/jquery.selectBoxIt.css" />
     <script src="{% static 'lib/SelectBoxIt/jquery.selectBoxIt.js' %}"></script> -->
-
 
     <!-- bootstrap- multiselect -->
     <link rel="stylesheet" href="{% static 'lib/bootstrap/css/bootstrap-multiselect.css' %}" type="text/css" />
@@ -158,10 +156,6 @@
                             <div class="navbar-slogan">
                                 Your Online Admission Assistant
                                 <br/> Take NextSteps to Bright Future
-
-                                <a href="{% url 'user_guide' %} " class="userguide pull-right" data-toggle="tooltip" title="User Guide" data-placement="right">
-                                    <i class="fa fa-book fa-lg"></i>
-                                </a>
                             </div>
                         </div>
 
@@ -180,7 +174,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="menu-text" href="#">
+                                    <a class="menu-text" href="{% url 'user_guide_pg1' %}">
                                         <i class="fa fa-info nfa-2x"></i>
                                         <b>Learn More</b>
                                     </a>
@@ -268,7 +262,7 @@
                                         <li>Admission Processes</li>
                                     </ul>
 
-                                    <a href="#" class="btn btn-more" style="padding-right: 5%">
+                                    <a href="{% url 'user_guide_pg1' %}" class="btn btn-more" style="padding-right: 5%">
                                         <i class="fa fa-plus"></i> Learn More</a>
                                 </div>
                                 <div class="col-md-6 col-md-pull-6 hidden-xs">
@@ -296,7 +290,7 @@
                                         <li>Calendar of Important Dates/To-Do</li>
                                         <li>Record Institute Application Details</li>
                                     </ul>
-                                    <a href="#" class="btn btn-more" style="padding-right: 5%">
+                                    <a href="{% url 'user_guide_pg1' %}" class="btn btn-more" style="padding-right: 5%">
                                         <i class="fa fa-plus"></i> Learn More</a>
                                 </div>
                                 <div class="col-md-6 col-md-pull-6 hidden-xs">
@@ -322,7 +316,7 @@
                                         <li>Compare Institutes</li>
                                         <li>Opening-Closing Ranks/Cut-Offs</li>
                                     </ul>
-                                    <a href="#" class="btn btn-more" style="padding-right: 5%">
+                                    <a href="{% url 'user_guide_pg1' %}" class="btn btn-more" style="padding-right: 5%">
                                         <i class="fa fa-plus"></i> Learn More</a>
                                 </div>
                                 <div class="col-md-6 col-md-pull-6 hidden-xs">
@@ -986,7 +980,7 @@
                                 <li class="news-item">
                                     <table cellpadding="4">
                                         <tr>
-                                            <td>Learn how you will enrich your NextStep experience. <a class="text-primary"  href="#"> Read more...</a></td>
+                                            <td>Learn how you will enrich your NextStep experience. <a class="text-primary"  href="{% url 'user_guide_pg1' %}"> Read more...</a></td>
                                         </tr>
                                     </table>
                                 </li>
@@ -1048,7 +1042,7 @@
                 <li><a href="{% url 'contact_us' %}" class="cmargin-15">Contact us</a></li>
                 <li><button data-toggle="modal" class="cmargin-15 btn-link text-primary" data-target = "#terms">Terms</button></li>
                 <li><button data-toggle="modal" class="cmargin-15 btn-link text-primary" data-target = "#privacy">Privacy</button></li>
-                <li><a href="" class="cmargin-15"><i class="fa fa-copyright" aria-hidden="true"></i> NextSteps</a></li>
+                <li><a class="cmargin-15"><i class="fa fa-copyright" aria-hidden="true"></i> NextSteps</a></li>
             </ul>
             
             {% include "NextSteps/NextSteps_terms_and_conditions.html" %}
@@ -1089,7 +1083,7 @@
                 <div class="modal-body">
                     <p class = "text-center"> Would you like a brief on how to use this website?</p>
                     <div class="text-center">
-                        <a href="{% url 'user_guide' %}" class="btn btn-info" role="Yes">Yes </a>                
+                        <a href="{% url 'user_guide_pg1' %}" class="btn btn-info" role="Yes">Yes </a>                
                     </div>
                     <br />
                     <br />
@@ -1333,13 +1327,13 @@
     $(document).ready(function() {
         $('#state-city').multiselect({
             enableFiltering: true,
-            maxHeight: 200,
+            maxHeight: 300,
             dropUp: true,
             enableHTML: true,
             buttonClass: 'btn small btn-primary',
             templates: {
             button: '<button type="button" class="multiselect dropdown-toggle" data-toggle="dropdown"><span class="multiselect-selected-text"></span> &nbsp;<b class="fa fa-caret-down"></b></button>',
-            ul: '<ul class="multiselect-container dropdown-menu" style="min-width:225px;"></ul>',
+            ul: '<ul class="multiselect-container dropdown-menu" style="min-width:325px;"></ul>',
             filter: '<li class="multiselect-item filter"><div class="input-group"><span class="input-group-addon"><i class="fa fa-search" style="margin-left:-6px;"></i></span><input class="form-control multiselect-search" type="text" style="width:70%;"></div></li>',
             filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default btn-white btn-grey multiselect-clear-filter" type="button"><i class="fa fa-times-circle red2"></i></button></span>',
             li: '<li><a tabindex="0"><label></label></a></li>',
@@ -1372,13 +1366,13 @@
 
         $('#examLevels').multiselect({
             enableFiltering: true,
-            maxHeight: 200,
+            maxHeight: 300,
             dropUp: true,
             enableHTML: true,
             buttonClass: 'btn small btn-primary',
             templates: {
             button: '<button type="button" class="multiselect dropdown-toggle" data-toggle="dropdown"><span class="multiselect-selected-text"></span> &nbsp;<b class="fa fa-caret-down"></b></button>',
-            ul: '<ul class="multiselect-container dropdown-menu" style="min-width:225px;"></ul>',
+            ul: '<ul class="multiselect-container dropdown-menu" style="min-width:325px;"></ul>',
             filter: '<li class="multiselect-item filter"><div class="input-group"><span class="input-group-addon"><i class="fa fa-search" style="margin-left:-6px;"></i></span><input class="form-control multiselect-search" type="text" style="width:70%;"></div></li>',
             filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default btn-white btn-grey multiselect-clear-filter" type="button"><i class="fa fa-times-circle red2"></i></button></span>',
             li: '<li><a tabindex="0"><label></label></a></li>',
@@ -1408,7 +1402,7 @@
             buttonClass: 'btn small btn-primary',
             templates: {
             button: '<button type="button" class="multiselect dropdown-toggle" data-toggle="dropdown"><span class="multiselect-selected-text"></span> &nbsp;<b class="fa fa-caret-down"></b></button>',
-            ul: '<ul class="multiselect-container dropdown-menu" style="min-width:225px;min-height:200px !important;"></ul>',
+            ul: '<ul class="multiselect-container dropdown-menu" style="min-width:325px;min-height:300px !important;"></ul>',
             filter: '<li class="multiselect-item filter"><div class="input-group"><span class="input-group-addon"><i class="fa fa-search" style="margin-left:-6px;"></i></span><input class="form-control multiselect-search" type="text" style="width:70%;"></div></li>',
             filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default btn-white btn-grey multiselect-clear-filter" type="button"><i class="fa fa-times-circle red2"></i></button></span>',
             li: '<li><a tabindex="0"><label></label></a></li>',

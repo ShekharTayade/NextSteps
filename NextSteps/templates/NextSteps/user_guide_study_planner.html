@@ -1,0 +1,198 @@
+{% extends 'NextSteps/user_guide_base.html' %}
+{% load static %}
+
+
+{% block user_guide_page %}
+<div id = "user-guide-adm-calender">
+    <h4 class="block-title">Study Planner</h4>
+    <table id = "set_view_pref" class = "table table-borderless">
+        <tbody>
+            <tr>
+                <td> Plan, Track and Manage Study Hours</td>
+            </tr>
+       </tbody>
+    </table>
+
+    You plan your study through the month(s), year(s). This is a tool that will keep you company 
+    through your study journey. Using the Study Planner you can plan your study hours well, track the progress and 
+    and graphically see where you stand.
+    <br/>
+    Study Planner has an excellent graphical "Dashboard". It shows your progress with respect to the plan and gives 
+    insights that can be useful.
+    <hr>
+    <div class = "card bg-light text-dark" style = "padding:10px; border:2px solid #bcbcbc; box-sizing: border-box; background-clip: padding-box;">
+        <h4 class="card-title">
+            How to use Study Planner
+        </h4>
+        <div class = "card-body">
+            Study Planner has a series of tabs. The first one is a "Dashboard" that graphically shows your progress.
+            It doesn't need any input from you.<br />
+            Start with "Overall Study Schedule" tab and enter the required details, then move on to "Subject Schedule" to break it down by 
+            subjects, then move on to "Day Schedule" tab to plan your typical day. When you have entered all the required
+            details in these three tabs, you can generate your schedule calendar. The generated schedule calendar is 
+            available in "Schdule Calendar" tab where your further update/refine it as you like.<br />
+            The last tab is "Log Study Hours". Use this tab to enter your actual study hours against your plan.
+            When all the above details are entered the "Dashboard" will show your progress and show some tips for you.<br />
+            <div class = "text-primary">
+                <i class="fa fa-lightbulb-o fa-2x"></i>&nbsp; 
+                The typical sequence of your updates will be 
+                "Study Schedule" to enter overall study sch 
+                <i class = "fa fa-arrow-right"></i> &nbsp;"Suject Sch" to break it down by subjects 
+                <i class = "fa fa-arrow-right"></i>&nbsp; "Day Sch" to plan your typical study day. 
+                <br />
+                When you make changes to any of "Study Schedule", "Subject Sch" or "Day Sch" tabs, 
+                please follow the sequence above and use the "Generate Schedule Calendar" button in "Day Sch" 
+                tab to generate the updated study calendar.
+            </div> 
+        </div>
+    </div>
+    <hr>
+    <ul>
+        <li>On the home page, click on “Study Planner” under NextSteps Features section.</li>
+    </ul>
+
+    <p style = "padding-left:25px; font-size:1.25em;"><strong>Dashboard</strong></p>
+    <ul>
+        <img src = "{% static 'img/user_guide/user_guide_study_planner_dashboard.png' %}" class = "img-fluid">
+        <li>The Dashboard is your snapshot of where you stand with respect to your plan.</li>
+        <li>This is a "display only" tab and doesn't need any input from you. 
+            When there is no plan or no actual data entered by you, it will not show the graphs and just </li>
+        
+         <table id = "app_details" class = "table table-borderless">
+            <tbody>
+                <tr>
+                    <td style = "width :30%; font-size:1em;"><strong>Overall Planned Vs Actual Hours</strong></td> 
+                    <td>shows, as of the date, the toal hours planned by you (since the 
+                            beginning of your plan) and how many actual study hours logged by you</td> 
+                </tr>
+                <tr>
+                    <td style = "width :30%; font-size:1em;"><strong>Subject-wise Actual Study hours</strong></td> 
+                    <td>shows, as of the date, subjectwise break-up of actual study hours logged by you</td> 
+                </tr>
+                <tr>
+                    <td style = "width :30%; font-size:1em;"><strong>Current Month Actual Study hours</strong></td> 
+                    <td>shows actual study hours logged by you during current month</td> 
+                </tr>
+                <tr>
+                    <td style = "width :20%; font-size:1em;"><strong>Current Month Subject-wise Actual Study hours</strong></td> 
+                    <td>shows subject-wise actual study hours logged by you during current month</td> 
+                </tr>
+            </tbody>
+        </table>
+    </ul>
+
+
+    <hr>
+    <p style = "padding-left:25px; font-size:1.25em;"><strong>Study Schedule</strong></p>
+    <ul>
+        <img src = "{% static 'img/user_guide/user_guide_study_planner_study_sch.png' %}" class = "img-fluid">
+        <li>This is where you put in your overall study plan. It will be the basis as you plan subject-wise and then plan your 
+            typical study day.</li>
+        <li>The top part shows your current study schedule. You can view your ealrier versions of the study schedule by clicking
+            "View Your All Schedules Here" link. These can't be used though.</li>
+        <li>If you want to create a new schedule, then use "Create New Study Schedule" section.</li>
+        <li>When you are done answering the three questions, click on "Save" button.</li>
+        <li>This now becomes your new study schedule.</li>
+    </ul>
+
+    <hr>
+    <p style = "padding-left:25px; font-size:1.25em;"><strong>Subject Sch</strong></p>
+    <ul>
+        <img src = "{% static 'img/user_guide/user_guide_study_planner_sub_sch.png' %}" class = "img-fluid">
+        <li>Having planned for your overall studies, break it down subject-wise here.</li>
+        <li>Select subjects you plan to study, assign a percentage of your study time you want to dedicate to each
+            subject and then define the start and end dates for each subject. </li>
+        <li>You can choose from the existing subjects. Click on the subjects that you plan to study. Then click on 
+            <i class = "fa fa-chevron-circle-right fa-2x"></i>button to move selected subject(s) to "Subject Schedule" section.</li>
+        <li>If the subject you plan study is not listed, then click on "Add New Subject" button, enter the subject name 
+            and click OK. It will be added to "Subject Schedule" section.</li>
+        <li>Now, for each of the subject in "Subject Schedule" section, enter the percentage of time your want to 
+            allocate by clicking in "% Alloc" column.</li>
+        <li>Next, enter the start and end dates for each subject (please note that these dates should be within overall 
+            study schedule from previsous tab.</li>
+        <li>The total percentage allocation should not exceed 100%. Click on "Calculate %" button to verify it.</li>
+        <li>Once you have finshed entering all the details, click on "Save" button to save your changes.</li>
+        <li>Move on to "Day Sch" to plan your typical day.</li>
+    </ul>
+    
+  
+    <hr>
+    <p style = "padding-left:25px; font-size:1.25em;"><strong>Day Sch</strong></p>
+    <ul>
+        <img src = "{% static 'img/user_guide/user_guide_study_planner_day_sch.png' %}" class = "img-fluid">
+        <li>Let's plan your typical study day here. You would have already entered your overall study schedule and then broken it down
+                by subjects in Subject Sch tab.</li>
+        <li>In this tab, the left hand side section shows the subjects you have selected, start and end time and the hours. The right hand side 
+            graphically shows how does your day look like.</li>
+        <li>For each subject, enter the start and end time of the day, the planned hours will get calculated.</li>
+        <li>NOTE: PLEASE ENTER TIME IN 24 HR FORMAT. For an example 2:30 pm is entered as 14:30.</li> 
+        <li>In the "Study Schedule" tab you mentioned how many days of the week you plan to study. In this tab, mention which 
+                are those days of the week. Check the checkbox for the desired day.</li>
+        <li>NOTE: THE NUMBER OF DAYS YOU SELECT SHOULD MATCH WITH NUMBER OF DAYS IN "STUDY SCHEDULE" TAB.</li> 
+        <li>After the start and end time, planned hours are entered, the desired days are selected and you are satisfied with
+            your planning, click on "Save" button to save your changes.</li>
+        <li>If you have latest changes for which the schedule calendar is not generated, then "Generate Sch Calendar" button will
+            get enabled.</li>
+        <li>Click on "Generate Sch Calendar" button to generate the calendar. This will update calendar in "Sch Calendar" tab.</li>
+        <li>NOTE: FOR THE DAYS WHERE YOU HAVE ALREADY LOGGED ACTUAL HOURS WILL NOT BE AFFECTED AND SCHEDULE FOR THOSE DAYS 
+                WILL NOT BE CHANGED.</li>
+
+    </ul>
+     
+
+
+    <hr>
+    <p style = "padding-left:25px; font-size:1.25em;"><strong>Sch Calendar</strong></p>
+    <ul>
+        <img src = "{% static 'img/user_guide/user_guide_study_planner_sch_cal.png' %}" class = "img-fluid">
+        <li>This tab shows your day-wise study schedule</li>
+        <li>You can further update/refine your shceudle here</li>
+        <li>Keeping cursor on a subject will popup the start and end time of that subject.</li>
+        <li>Clicking a subject toggles between selecting and unslecting it</li>        
+        <li>Changes by Dragging Subjects
+            <ul>
+                <li>You can click-and-drag a subject to another date</li>
+                <li>you can extend or shrink a suject by draging it's edge</li>
+            </ul>
+        </li>        
+        <li>To add a study scheudle directly here, click on  <a class = "text-primary"><i class="fa fa-plus-square"></i></a>.</li>
+        <li>To remove selected schedule(s), click on  <a class = "text-primary"><i class="fa fa-minus-square"></i></a></li>
+        <li><strong>Reset Calendar :</strong> Clicking on <a class = "text-primary"><i class="fa fa-refresh"></i></a> will discard all of 
+            current schedule and new schedule calendar will get generated based on the latest "Day Schedule" tab data.</li>
+        <li>After you have finished making changes, please click on <a class = "text-primary"><i class="fa fa-save"></i></a> 
+            to save the change. PLEASE NOTE CHANGES ARE NOT SAVED UNTILL YOU CLICK SAVE BUTTON.</li>
+        <li>Print Schdule Calendar
+            <ul>
+                <li>To print your study schedule click on <a class = "text-primary"><i class="fa fa-print" ></i></a></li>
+                <img src = "{% static 'img/user_guide/user_guide_study_planner_sch_print.png' %}" class = "img-fluid">
+                <li> You can filter the display by a date range or a month. Click on "Go" button after you select the filter.</li>
+                <li>You can use the search box to further narrow the result set. For an example, to display on the 
+                    Mathematics schedule enther "Mathematics" in the search box.</li>
+                <li>You can copy to clipboard, export as Excel file, export as PDF file, or print on a printer connected to
+                    your computer by clicking n respective buttons.</li> 
+            </ul>
+        </li>
+    </ul> 
+
+
+    <hr>
+    <p style = "padding-left:25px; font-size:1.25em;"><strong>Log Study Hours</strong></p>
+    <ul>
+        <img src = "{% static 'img/user_guide/user_guide_study_planner_log_hrs.png' %}" class = "img-fluid">
+        <li>Use this tab to log your actual study hours against the planned hours.</li>
+        <li>Use this tab to log your actual study hours against the planned hours.</li>
+        <li> You can filter the display by a date range or a month. Click on "Go" button after you select the filter.</li>
+        <li>You can use the search box to further narrow the result set. For an example, to display on the 
+            Mathematics schedule enther "Mathematics" in the search box.</li>
+        <li>You can only enter the actual study hours here. Please use "Actual Hours" column to log hours 
+            against the plan displayed.</li>
+        <li> After you entered the actual hours, click on "Save" button to log the hours.  
+    </ul>
+</div>
+{% endblock user_guide_page %}
+
+{% block user_guide_bottom_nav %} 
+    <a class = "btn btn-primary" href = "{% url 'user_guide_adm_calendar' %}"><i class = "fa fa-chevron-left">&nbsp;Prev</i></a>
+    <a class = "btn btn-primary" href = "{% url 'user_guide_pg1' %}"><i class = "fa fa-home">&nbsp;User Guide Home</i></a>
+{% endblock user_guide_bottom_nav %}             
+

@@ -1,0 +1,142 @@
+{% extends 'NextSteps/user_guide_base.html' %}
+{% load static %}
+
+
+{% block user_guide_page %}
+
+    <h4 class="block-title">Search Features</h4>
+    <br/>
+    
+    With free or subscribed access you will be able to search <a class = "inline" href = "#inst">Insitutes</a>, 
+    <a class = "inline" href="#exam">Entrance Exams</a>,<a class = "inline" href="#programs">Programs (Courses)</a>,
+    <a class = "inline" href="#survey">Survey Ranks</a>, <a class = "inline" href="#jee_ranks">JEE Opening/Closing Ranks</a>
+    
+    <hr>
+    <table id = "inst" class = "table table-borderless">
+        <tbody>
+            <tr>
+                <td style = "width :20%"><strong>Institutes</strong></td> 
+                <td>Search Colleges/Institutes by states and cities, name or institute type</td>
+            </tr>
+       </tbody>
+    </table>
+
+    <ul>
+        <li>From home page, click on “Location” dropdown to select states and cities to search in</li>
+        <li>You can enter the name if you want to search for a particular institute</li>
+        <li>Click on the magnifying glass button to obtain the list of institutes</li>
+        <img src = "{% static 'img/user_guide/pg5_search_institutes.png' %}" class = "img-fluid">
+    </ul>
+    <ul>
+        <li>Search the institutes that you are interested. Use the filters on the left to narrow the institutes search</li>
+        <li>Click the checkbox against the institute to select it for comparison</li>
+        <li>Select up to 4 institutes for comparison</li>
+        <li>As you select more than one institutes, a “Compare” button appear. Click it to get the results</li>
+        <li>Clicking on “Add to Preferences” will add that institute in your preferences</li>
+        <li>You can further narrow the search result using the “Search…” box at the top of the page. This is a free text search that will search in name, address or any information displayed for the institute.</li>
+    </ul>            
+    <br />
+
+    <hr>
+    <table id = "exam" class = "table table-borderless">
+        <tbody>
+            <tr>
+                <td style = "width :20%"><strong>Exams</strong></td> 
+                <td>Get a list of institutes that have the selected entrance exams as admission criteria</td>
+            </tr>
+       </tbody>
+    </table>
+    <ul>    
+        <li>On the home page search section, click on the “Exams” tab</li>
+        <li>Use the “Exam Level” dropdown to select the level of exam such as national, state, university or institute level exam</li> 
+        <li>You can also enter the exam name/acronym if you want to search for a particular institute</li>
+        <li>Click on magnifying button icon to obtain the list of exams</li>
+        <img src = "{% static 'img/user_guide/pg5_search_exams.png' %}" class = "img-fluid">
+    </ul>    
+    <ul>
+        <li>Click on the entrance exam name/acronym to get the list of institutes that have
+            the given entrance exam as criteria for admissions.</li>
+        <li>You can further narrow the search result using the “Search…” box at the top of the page. 
+            This is a free text search that will search in any information displayed.</li>
+    </ul>
+    <br />
+
+    <hr>
+    <table id = "programs" class = "table table-borderless">
+        <tbody>
+            <tr>
+                <td style = "width :20%"><strong>Programs</strong></td> 
+                <td>Get a list of programs and the institutes that offer those</td>
+            </tr>
+       </tbody>
+    </table>
+    <ul>           
+        <li>On the home page search section, click on the “Programs” tab and click then on the “Programs” dropdown to select the program you are interested in</li>
+        <li>Enter the name of the institute if you are interested in a particular institute</li>
+        <li>Click on the magnifying glass button</li>
+        <li>A list of institutes offering those programs is displayed</li>
+        <img src = "{% static 'img/user_guide/pg5_search_programs.png' %}" class = "img-fluid">
+    </ul>
+    <ul>
+        <li>You can further narrow the search result using the “Search…” box at the top of the page. 
+        This is a free text search that will search in any information displayed.</li>
+        <li>You can export this data for your reference in various formats such as Excel, PDF or print it on the connected printer.</li>
+    </ul>
+    <br />
+
+    <hr>
+    <table id = "survey" class = "table table-borderless">
+        <tbody>
+            <tr>
+                <td style = "width :20%"><strong>Survey Ranking</strong></td> 
+                <td>Find the ranking of institutes as published by National Institutional Ranking Framework (NIRF).</td>
+            </tr>
+       </tbody>
+    </table>
+    <ul> 
+        <li>On the home page search section, click on the “Survey Rank” tab</li>
+        <li>Enter the name of the institute if you are interested in a particular institute</li>
+        <li>Click on the magnifying glass button</li>
+        <li>A list of institutes and their ranking is displayed</li>
+        <img src = "{% static 'img/user_guide/pg5_search_survey_ranks.png' %}" class = "img-fluid">
+    </ul>
+    <ul>
+        <li>You can further narrow the search result using the “Search…” box at the top of the page. 
+            This is a free text search that will search in any information displayed.</li>
+        <li>You can export this data for your reference in various formats such as Excel, PDF 
+            or print it on the connected printer.</li>
+    </ul>
+    <br />
+
+    <hr>
+    <table id = "jee_ranks" class = "table table-borderless">
+        <tbody>
+            <tr>
+                <td style = "width :20%"><strong>JEE Opening/Closing Ranking</strong></td> 
+                <td>Obtain the opening and closing ranks for various programs and institutes.</td>
+            </tr>
+       </tbody>
+    </table>
+    <ul> 
+        <li>On the home page search section, click on the “JEE Ranks” tab</li>
+        <li>Select rank type from (ADV or MAIN) the from Rank Type dropdown and select the year from “Year” dropdown</li>
+        <li>Click on the magnifying glass button obtain the list of institutes, programs and opening and closing ranks</li>
+        <img src = "{% static 'img/user_guide/pg5_search_jee_ranks.png' %}" class = "img-fluid">
+    </ul>
+    <ul>
+        <li>You can further narrow the search result using the “Search…” box at the top of the page. 
+            This is a free text search that will search in any information displayed. 
+            For an example, if you want search only for the Mechanical Engineering opening, closing ranks, 
+            then enter “Mechanical Engineering” in the “Search Program” search box.</li>
+        <li>You can export this data for your reference in various formats such as Excel, PDF 
+            or print it on the connected printer.</li>
+    </ul>
+
+{% endblock user_guide_page %}
+
+{% block user_guide_bottom_nav %} 
+    <a class = "btn btn-primary" href = "{% url 'user_guide_pg4' %}"><i class = "fa fa-chevron-left">&nbsp;Prev</i></a>
+    <a class = "btn btn-primary" href = "{% url 'user_guide_pg1' %}"><i class = "fa fa-home">&nbsp;User Guide Home</i></a>
+    <a class = "btn btn-primary" href = "{% url 'user_guide_pg6' %}"><i class = "fa fa-chevron-right">&nbsp;Next</i></a>
+{% endblock user_guide_bottom_nav %}             
+

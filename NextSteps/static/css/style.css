@@ -1474,7 +1474,7 @@ blockquote p {
 blockquote .big {
   padding: 0 1em 1em 50px;
   text-align: center;
-  font-size: 20px !important;
+  font-size: 16px !important;
   font-style: italic;
   font-family: Georgia, "Times New Roman", Times, serif;
   font-weight: normal;
@@ -4618,3 +4618,42 @@ thead input {
 }
 
 
+#userguide .inline{
+    font-weight: normal!important;
+    text-decoration: underline;
+    margin: 0px;
+}
+
+#userguide a {
+    font-weight: bold !important;
+    text-decoration: italic;
+    margin : 15px;
+}
+
+#userguide table td {
+    padding: 10px;
+}
+
+#userguide img {
+    border : 2px solid gainsboro;
+    margin : 15px 0px 15px 0px; 
+}
+
+.toc-nav {
+  padding: 5px;
+  border-left: 1px solid #bcbcbc;
+  background-clip: padding-box;
+  box-sizing: border-box;
+}
+
+.toc-nav li {
+    padding-left:10px;
+}
+
+.toc-nav ul {
+    padding-left:20px;
+}
+
+#user-guide-adm-calender a {
+    margin : 0px;
+}

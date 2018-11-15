@@ -132,7 +132,15 @@ urlpatterns = [
     url(r'^userAppDetails/$', views.userAppDetailsView, name='user_app_details'),
     url(r'^userAppDetailsConfirm/$', views.userAppDetailsConfirm, name='user_app_confirm'),
     
-    url(r'^user_guide/$', views.user_guide, name='user_guide'),
+    url(r'^user_guide_pg1/$', views.user_guide_pg1, name='user_guide_pg1'),
+    url(r'^user_guide_pg2/$', views.user_guide_pg2, name='user_guide_pg2'),
+    url(r'^user_guide_pg3/$', views.user_guide_pg3, name='user_guide_pg3'),
+    url(r'^user_guide_pg4/$', views.user_guide_pg4, name='user_guide_pg4'),
+    url(r'^user_guide_pg5/$', views.user_guide_pg5, name='user_guide_pg5'),
+    url(r'^user_guide_pg6/$', views.user_guide_pg6, name='user_guide_pg6'),
+    url(r'^user_guide_adm_calendar/$', views.user_guide_adm_calendar, name='user_guide_adm_calendar'),
+    url(r'^user_guide_study_planner/$', views.user_guide_study_planner, name='user_guide_study_planner'),
+
 
     url(r'^refer/$', views.referNextSteps, name='refer_NextSteps'),
     url(r'^referdone/$', views.referNextSteps_confirm, name='referNextSteps_confirm'),

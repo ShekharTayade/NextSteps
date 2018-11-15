@@ -1,0 +1,106 @@
+{% extends 'NextSteps/user_guide_base.html' %}
+{% load static %}
+
+
+{% block user_guide_page %}
+<div id = "user-guide-adm-calender">
+    <h4 class="block-title">Admission Calendar</h4>
+    <table id = "set_view_pref" class = "table table-borderless">
+        <tbody>
+            <tr>
+                <td>Keep track of important exam, admission process dates, get a to-do list</td>
+            </tr>
+       </tbody>
+    </table>
+
+    As you prepare to apply to institutes that you are interested in, the Admission Calendar informs you of all the important dates and actions you need to take.
+    <hr>
+    <ul>
+        <li>On the home page, click on “Admission Calendar” under NextSteps Features section.</li>
+        <img src = "{% static 'img/user_guide/user_guide_adm_calendar_1.png' %}" class = "img-fluid">
+    </ul>
+    <ul>
+        <li>Based on the preferred insititutes and availability of data calendar shows you the important dates such as application open/close, 
+            entrance exam date, results date etc.</li>
+        <li>When you access the calendar for the first time, NextSteps fetches the importants for your preferred institutes. You can
+            then change those dates, add your own and remove the ones you don't want to track. Once make any changes, 
+            please save your changes using using <a class = "text-primary"><i class="fa fa-save"></i></a>. 
+            Those are then retained in your calendar. </li>
+        <li>An event can span over multiple dates</li>
+        <li>Navigate the month and year using the buttons at the top</li>
+        <li>Important date in a month will show up as an event on a particular date. Keep your cursor on the event and a popup will 
+            show name of the institute and complete details of the event.</li>
+        <li>Clicking an event toggles between selecting and unslecting it</li>
+        <li>
+            <ul>Changes by Dragging Events
+                <li>You can click-and-drag an event to another date</li>
+                <li>you can extend or shrink an event by draging it's edge</li>
+            </ul>
+        </li>
+    </ul>
+
+    <p style = "padding-left:25px;"><strong>Add Your Own Event </strong><a class = "text-primary"><i class="fa fa-plus-square fa-2x"></i></a></p>
+    <ul>
+        <img src = "{% static 'img/user_guide//user_guide_adm_calendar_2.png' %}" class = "img-fluid">
+        <li>To add your own event click on the <a class = "text-primary"><i class="fa fa-plus-square"></i></a></li>
+        <li>A small window will popup where you can enter the details of the event - Institutes Name, Event, Start and End Dates.
+            Leave End Date empty if its only one day event.</li>
+        <li> Click on Create button to show this new event on the calendar or close the pop up window to cancel.</li>
+        <li> Don't forget to save the calendar using <a class = "text-primary"><i class="fa fa-save"></i></a>. 
+            Your changes are not saved permanently until you save.</li>
+    </ul>
+
+    <p style = "padding-left:25px;"><strong>Remove Event(s) </strong> <a class = "text-primary"><i class="fa fa-minus-square fa-2x"></i></a></p>
+    <ul>
+        <li>To remove/delete an event click on the event to select it</li>
+        <li> Make sure the event to be removed is selected (it's background color will become red when selected) and 
+            then click on <a class = "text-primary"><i class="fa fa-minus-square"></i></a></li>
+        <li>Selected event will be immediately removed</li>
+        <li>To remove multiple events, select all to be deleted and click on <a class = "text-primary"><i class="fa fa-minus-square"></i></a></li>
+        <li> Don't forget to save the calendar using <a class = "text-primary"><i class="fa fa-save"></i></a>. 
+            Your changes are not saved permanently until you save.</li>
+    </ul>
+
+    <p style = "padding-left:25px;"><strong>Remove All Events </strong> <a class = "text-primary"><i class="fa fa-trash fa-2x"></i></a></p>
+    <div style = "padding-left:30px;">
+        Use this when you basically want to start a fresh. Having made some changes you may want to revert to the important dates that 
+        NextSteps has in it;s database. So you can remove all the events and then re-fetch (click on rest calendar 
+        <a class = "text-primary"><i class="fa fa-trash"></i></a>) from the NextSteps database so that the important dates for your 
+        preferred institutes are restored on your calendar.
+    </div>
+    <br/>
+    <ul>
+        <li>To remove all the events from you calendar click on <a class = "text-primary"><i class="fa fa-trash"></i></a></li>
+        <li>All event will be immediately removed</li>
+        <li> Don't forget to save the calendar using <a class = "text-primary"><i class="fa fa-save"></i></a>. You changes are not saved permanently until you save.</li>
+    </ul>
+    
+    
+    <p style = "padding-left:25px;"><strong>Reset Calendar </strong> <a class = "text-primary"><i class="fa fa-refresh fa-2x"></i></a> </p>
+    <ul>
+        <li>To Reset your calendar (fetch the dates again from NextSteps database), click on <a class = "text-primary"><i class="fa fa-refresh"></i></a></li>
+        <li>All your current event will be removed and calendar will be populated with the events (important dates) as available 
+            for your preferred institutes from the NextSteps database.</li>
+        <li> Don't forget to save the calendar using <a class = "text-primary"> <i class="fa fa-save"></i></a>. You changes are not saved permanently until you save.</li>
+    </ul>
+    
+    <p style = "padding-left:25px;"><strong>To-Do List </strong><a class = "text-primary"><i class="fa fa-list-ul fa-2x"></i></a></p>
+    <ul>
+        <img src = "{% static 'img/user_guide//user_guide_adm_calendar_3.png' %}" class = "img-fluid">
+        <li>Click on <a class = "text-primary"><i class="fa fa-list-ul"></i></a> to display all events in your calendar in format of a to-do list.</li>
+        <li>The Search box at the top is free form search. The text you enter here will be searched in all the columns displayed.
+            For an example to dispaly only the events/dates for institutes with name containing Bombay, just enter Bombay.</li>
+        <li>This list can be exported in Excel or PDF format or printed on the printer connnected to your computer.</li>
+        <li>You can sort in ascending or descending order by clicking on the headers of the columns.</li>
+        <li>You can also remove event using this page. Select a row by clickin it and then click on "Delete Selected Row" button. 
+            If you are done with a particular event you can use this option.</li>
+    </ul>
+ </div>
+{% endblock user_guide_page %}
+
+{% block user_guide_bottom_nav %} 
+    <a class = "btn btn-primary" href = "{% url 'user_guide_pg6' %}"><i class = "fa fa-chevron-left">&nbsp;Prev</i></a>
+    <a class = "btn btn-primary" href = "{% url 'user_guide_pg1' %}"><i class = "fa fa-home">&nbsp;User Guide Home</i></a>
+    <a class = "btn btn-primary" href = "{% url 'user_guide_study_planner' %}"><i class = "fa fa-chevron-right">&nbsp;Next</i></a>
+{% endblock user_guide_bottom_nav %}             
+

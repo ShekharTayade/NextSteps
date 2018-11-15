@@ -1,0 +1,82 @@
+
+{% extends 'NextSteps/user_guide_base.html' %}
+{% load static %}
+
+
+{% block user_guide_page %}
+
+       <h4 class="block-title">Sign Up, Subscribe</h4>
+       <br/>
+    
+    
+       <h4> Sign up</h4>
+       Please sign up by clicking “Sign Up” link at top right hand corner of the home page 
+       <img src = "{% static 'img/user_guide/pg4_signup.png' %}">
+    
+       <table class = "table table-borderless">
+           <tbody>
+               <tr>
+                   <td style = "width :20%"><strong>Username</strong></td>
+                   <td>This will be your id at this website. Please remember the username for login.
+               </tr>
+               <tr>
+                   <td><strong>Email</strong></td>
+                   <td>Please enter your valid email id. This will used for communication with you. You can also login using this email id</td>
+               </tr>
+               <tr>
+                   <td><strong>First and Last Name </strong></td>
+                   <td> Please enter your first and last name</td>
+               </tr>
+               <tr>
+                   <td><strong>Password</strong></td>
+                   <td>Please enter your password</td> 
+               </tr>
+           </tbody>
+       </table>
+    
+    
+       <table class = "table table-borderless">
+           <tbody>
+               <tr>
+                   <td style = "width :20%"><strong>Profile</strong></td>
+                   <td>Enter the details. These will be used to customize the information, data and features for you</td>
+               </tr>
+           </tbody>
+       </table>
+       Please enter the details and click on “Sign Up”. As you sign up a NextSteps account will be created for you. 
+       If you want to use your social media account such as facebook, Google or Twitter, then you don’t need to sign up, just go to login and click on the social media icons.
+       <br />
+       <hr>
+       <h4>Subscribe</h4>
+       <img src = "{% static 'img/user_guide/pg4_subscribe.png' %}">
+       <ul>
+       <li>As you sign up, you will be redirected to the subscribe page. You can use this page to subscribe to NextSteps.</li> 
+       <li>Subscription is for the period of two years from the date of subscription.</li>
+       <li>If you have a promotion code, please enter the code and click “Apply” button. The applicable discount will be displayed and applied for you.</li> 
+       <li>You can choose to subscribe later, however, you will miss out on a whole lot of NextSteps features that save a lot of time and effort. If you don’t want to subscribe, please click the “Subscribe later” link.</li>
+       <li>Please read the terms and conditions by clicking the link and checking the checkbox. Once you check the checkbox, the “Proceed to Pay” button will be enabled to take you to the payment information page.</li>
+       </ul>
+       <br />
+       <hr>
+       <h4>Payment Details</h4>
+       <img src = "{% static 'img/user_guide/pg4_payment.png' %}">
+    
+       <ul>
+       <li>This page displays the payment details and your billing information</li>
+       <li>Please the billing information such as your first, last name, email, phone number, and address</li>
+       <li>Click on the “Pay” button to proceed to payment</li>
+       <li>As you proeed to pay, you will redirected to a payment gateway for payment processing. You can use various payment modes such as credit/debit card, netbanking. UPI etc. As you complete the payment you will come back to the NextSteps website as a subscribed user and start using the powerful NextSteps features.</li>
+       </ul>
+        <img src = "{% static 'img/user_guide/pg4_subscription_done.png' %}">
+       <ul>
+       <li>After payment Navigate to various features that you have access to now or go to the home page and start using NextSteps.</li> 
+       </ul>
+       <br />    
+    
+    
+{% endblock user_guide_page %}
+{% block user_guide_bottom_nav %} 
+    <a class = "btn btn-primary" href = "{% url 'user_guide_pg3' %}"><i class = "fa fa-chevron-left">&nbsp;Prev</i></a>
+    <a class = "btn btn-primary" href = "{% url 'user_guide_pg1' %}"><i class = "fa fa-home">&nbsp;User Guide Home</i></a>
+    <a class = "btn btn-primary" href = "{% url 'user_guide_pg5' %}"><i class = "fa fa-chevron-right">&nbsp;Next</i></a>
+{% endblock user_guide_bottom_nav %}  

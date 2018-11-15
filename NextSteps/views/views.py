@@ -500,11 +500,39 @@ def getPromoDetails(request):
     return JsonResponse(promoDetails, safe=False)    
 
 
-def user_guide(request):
+# User Guide Home
+def user_guide_pg1(request):
     
-        return render(request, 'NextSteps/user_guide.html')
-    
+        return render(request, 'NextSteps/user_guide_pg1.html')
 
+# Search Feature Overview
+def user_guide_pg2(request):
+        return render(request, 'NextSteps/user_guide_pg2.html')
+
+# Admission Assistant Feature OVerview        
+def user_guide_pg3(request):
+        return render(request, 'NextSteps/user_guide_pg3.html')
+
+# Sign up and Subscribe
+def user_guide_pg4(request):
+        return render(request, 'NextSteps/user_guide_pg4.html')   
+    
+# Search Feature
+def user_guide_pg5(request):
+        return render(request, 'NextSteps/user_guide_pg5.html')    
+
+# NextSteps Feature
+def user_guide_pg6(request):
+        return render(request, 'NextSteps/user_guide_pg6.html') 
+
+# Admission Calendar
+def user_guide_adm_calendar(request):
+        return render(request, 'NextSteps/user_guide_adm_calendar.html') 
+
+# Study Planner
+def user_guide_study_planner(request):
+        return render(request, 'NextSteps/user_guide_study_planner.html') 
+            
 @ login_required
 def referNextSteps(request):
 
