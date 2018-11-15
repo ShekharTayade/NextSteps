@@ -570,7 +570,7 @@ def searchProgram (request):
     except EmptyPage:
         insttList = paginator.page(paginator.num_pages)
     '''
-    
+ 
     return render(request, 'NextSteps/program_search_results.html', {
         'insttList':insttList,'programVals':programVals, 'insttcount':insttcount})
 

@@ -113,7 +113,7 @@
                                             <td class="align-middle" > {{il.Institute__InstituteType__description}}</td>
                                         </tr>
                                     {% empty %}
-                                        <p >- No Institutes found, please <a href="{% url 'program_filter' %}">revise</a> your filter -</p>
+                                        <p >- No Institutes found, please <a href="{% url 'index' %}">revise</a> your filter. Please select atleast one program. -</p>
                                     {% endfor %}
                         </tbody>
                     </table>                   
