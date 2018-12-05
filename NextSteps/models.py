@@ -71,7 +71,7 @@ class InstituteType(models.Model):
 # Model - InstituteType
 # This model stores the Seat Quotas    
 class SeatQuota(models.Model):    
-    seat_quota_code = models.CharField(max_length=50, primary_key=True)
+    seat_quota_code = models.CharField(max_length=200, primary_key=True)
     description = models.CharField(max_length=1000, blank=True, null=True, unique=True)
     
     def __str__(self):
@@ -196,7 +196,7 @@ class InstituteProgramSeats(models.Model):
     Discipline = models.ForeignKey(Discipline, on_delete=models.PROTECT)
     Level = models.ForeignKey(Level, on_delete=models.PROTECT)
     Program = models.ForeignKey(Program, on_delete=models.PROTECT)
-    quota = models.CharField(max_length=50, blank=True, default='')
+    quota = models.CharField(max_length=200, blank=True, default='')
     StudentCategory = models.ForeignKey(StudentCategory, on_delete=models.PROTECT, 
         blank=True, null=True)
     number_of_seats = models.IntegerField(blank=True, null=True)
@@ -315,7 +315,7 @@ class InstituteJEERanks(models.Model):
     Level = models.ForeignKey(Level, on_delete=models.PROTECT)
     Program = models.ForeignKey(Program, on_delete=models.PROTECT)
     year = models.CharField(max_length=4, blank=True, default='')
-    quota = models.CharField(max_length=50, blank=True, default='')
+    quota = models.CharField(max_length=200, blank=True, default='')
     StudentCategory = models.ForeignKey(StudentCategory, on_delete=models.PROTECT, 
         blank=True, null=True)
     opening_rank = models.IntegerField(blank=True, null=True)
@@ -352,7 +352,7 @@ class InstituteCutOffs(models.Model):
     Level = models.ForeignKey(Level, on_delete=models.PROTECT)
     Program = models.ForeignKey(Program, on_delete=models.PROTECT)
     year = models.CharField(max_length=4, blank=False, null=False)    
-    quota = models.CharField(max_length=50, blank=True, default='')
+    quota = models.CharField(max_length=200, blank=True, default='')
     StudentCategory = models.ForeignKey(StudentCategory, on_delete=models.PROTECT, 
         blank=True, null=True)
     cutOff = models.CharField(max_length=500, blank=True, default='')
