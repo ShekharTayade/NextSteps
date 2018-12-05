@@ -103,7 +103,7 @@
                         <div class="col-sm-12">
                             <!-- <div class = "clearfix"> -->
                                 <!-- <div class = "pull-right"> -->
-                                    <div id="homestateList" class = "form-inline pull-right">                
+                                    <div id="homestateList" class = "form-inline">                
                                         Select your Home State
                                         <select style= "border-top:none; border-left:none; border-right:none;" id="homestate" class = "form-control" name="homestate">
                                             {% for s in stateList %}
@@ -122,6 +122,32 @@
                     </div>
                     
                     <br />
+                    <div class = "row">
+                        <div class="col-sm-12">
+                            <div id="stu_cat" class = "form-inline">
+                                {% if stuCategory %}
+                                    {% if validStuCat %}
+                                        Your Student Category is "{{stuCategory}}".
+                                        <input style = "display: none; border-top:none; border-left:none; border-right:none; background-color:#ffffff; border-bottom: 2 px solid Gainsboro;" class="stu_cat form-control" name = "stuCategory" value="{{stuCategory}}"/>
+                                        &nbsp;
+                                        Want to use a different one? Please select from:&nbsp;
+                                    {% else %}
+                                        Your Student Category "{{stuCategory}}" is not used by NTA any more. Please select from:&nbsp; 
+                                    {% endif %}
+                                {% else %}
+                                    Please select your student category: &nbsp;
+                                {% endif %}
+                                <select id = "cat-select" class="form-control selectpicker" data-container= 'body' data-width="275px" multiple data-live-search="true" style= "border-top:none; border-left:none; border-right:none;" name="stuCatSelect">
+                                    {% for s in stuCatList %}
+                                        <option>{{ s.category }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <br />
+
 
                     
                     <div id = "prefDiv">
@@ -336,6 +362,8 @@
                         </select>
                     </div>
                     
+                    <!-- Preferred Student Category -->
+                    <input hidden name = "stuCategory" value = "{{stuCategory}}" />  
                 </form>
 
             </div>
@@ -413,6 +441,8 @@
             $("#radiono").prop("checked", true);
             setProgInsttList();
             setMainAdv('MAIN');    
+            
+            $('#cat-select').selectpicker();
         });    
     </script>
 

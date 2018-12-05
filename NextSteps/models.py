@@ -83,6 +83,7 @@ class SeatQuota(models.Model):
 class StudentCategory(models.Model):
     category = models.CharField(max_length=50, primary_key=True)
     description = models.CharField(max_length=100, blank=True, null=True, unique=True)
+    jee_flag = models.CharField(max_length=1, blank=True, default='')
 
     def __str__(self):
         return self.category
@@ -297,7 +298,7 @@ class InstituteSurveyRanking(models.Model):
     Country = models.ForeignKey(Country, on_delete = models.PROTECT)
     Discipline = models.ForeignKey(Discipline, on_delete=models.PROTECT)
     Survey = models.ForeignKey(Survey, on_delete=models.PROTECT)
-    rank = models.IntegerField(blank=True, null=True)
+    rank = models.CharField(max_length=10, blank=False, null=False)
     
     def __str__(self):
         return models.Model.__str__(self)

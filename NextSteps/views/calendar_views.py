@@ -13,7 +13,7 @@ import datetime
 from NextSteps.decorators import subscription_active
 
 from NextSteps.models import InsttUserPref, UserCalendar
-from NextSteps.models import InstituteProgramImpDates, InstituteImpDates
+from NextSteps.models import InstituteImpDates
 
 from .common_views import *
 
@@ -138,9 +138,9 @@ def toDoList(request):
     
         insttUserList = InsttUserPref.objects.filter(User__in=userid).values('Institute_id')
         
-        event_list = InstituteProgramImpDates.objects.filter(Institute_id__in=insttUserList).values(
-            'id', 'Institute_id', 'Institute__instt_name', 'event', 'event_date', 'event_order', 'start_date', 'end_date', 
-            'event_duration_days', 'remarks').distinct('Institute__instt_name', 'event')
+        event_list = InstituteImpDates.objects.filter(Institute_id__in=insttUserList).values(
+            'id', 'Institute_id', 'Institute__instt_name', 'event', 'start_date', 'end_date', 'remarks'
+                ).distinct('Institute__instt_name', 'event')
 
     return render(request, 'NextSteps/to_do_list.html', {'event_list':event_list})
 

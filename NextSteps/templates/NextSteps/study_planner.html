@@ -240,7 +240,12 @@
             </div>
             
              <div class ="row">
-                <h3 class="block-title ">Study Planner</h3>
+                <h3 class="block-title ">
+                    Study Planner
+                    <a class = "pull-right" href = "{% url 'user_guide_study_planner' %}" >
+                        <small class="text-primary"><i class = "fa fa-info-circle fa-2x"></i>&nbsp;&nbsp;How to Use</small>
+                    </a>
+                </h3>
                 <div class = "pull-right">
                     <small >This page is best viewed on large screens, such as laptops, tablets.</small>
                 </div>
@@ -2565,7 +2570,7 @@
     google.charts.load("current", {packages:["corechart"]});
     
     if ( ({{hrsPlannedOverall.planned_hours__sum}} === 0) && ({{hrsActualOverall.actual_hours__sum}} === 0 ) ){
-        $("#charts").html("<br /><br /><p style = 'background-color:Gainsboro; font-size:16px; text-align:center;'>Cannot generate the Dashboard! Please record your planned study hours and log the actual study hours.</p><br /><br />");
+        $("#charts").html("<br /><br /><p style = 'background-color:Gainsboro; font-size:16px; text-align:center;'>Cannot generate the Dashboard! Please record your planned study hours and log the actual study hours.</p><br /><a href= \"{% url 'user_guide_study_planner' %}\"><span class='text-primary' style = 'font-size:18px;'>Please refer to a guide on how to use Study Planner <i class = 'fa fa-chevron-right'></i></span></a><br/ >");
     } else {
         google.charts.setOnLoadCallback(drawChart);
         google.charts.setOnLoadCallback(drawColChart);
@@ -2843,9 +2848,7 @@
 
         var tbl = $('#schUpd');
         json = JSON.stringify(tbl.bootstrapTable('getData'));
-        
-        console.log(json);
-    
+            
         $.ajax({url: '{% url "save_LoggedHours" %}', data: json, dataType: 'text', type: 'POST',
             success: function (data) {
                 alert("Your logged hours are saved!"); 

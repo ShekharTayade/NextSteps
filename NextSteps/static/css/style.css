@@ -3314,6 +3314,13 @@ button.qty-change{
     text-align: center;
 }
 
+.stu_cat{
+    margin: auto;
+    height: 30px;
+    width: 150px !important;
+    text-align: center;
+}
+
 
 /********** Left Side bar (User Application Details)  **********************/
 .left{

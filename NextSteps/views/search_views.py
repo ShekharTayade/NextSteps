@@ -460,7 +460,7 @@ def JEERanks(request):
     
     # Get Insititues
     insttList = InstituteJEERanks.objects.filter(Institute__jee_flag="Y").values(
-            'year', 'Institute__instt_name', 'Institute__city', 'Program_id', 'quota', 'opening_rank',
+            'year', 'Institute__instt_name', 'Institute__city', 'Program_id', 'quota', 'StudentCategory_id', 'opening_rank',
             'closing_rank').order_by('year', 'Program_id', 'closing_rank' )
 
     if year != []:

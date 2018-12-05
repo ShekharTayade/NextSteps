@@ -19,6 +19,7 @@
 <!-- Extend the home page to keep the same styling for header and footer sections. -->
 {% extends 'NextSteps/NextSteps_base_vj.html' %}
 {% load static %}
+{% load django_bootstrap_breadcrumbs %}
 
 <!-- Override slide-show block from parent -->
 {% block slide-show %}
@@ -35,6 +36,17 @@
      <!--<div class="showcase block block-border-bottom-grey"> -->
     <div class="block" style="padding-top: 5%;">
         <div class="container">
+
+            <div class = "row">
+                <div id = "breadcrumb" style = "margin-bottom:0px !important;">
+                    {% block breadcrumbs %}
+                        {% breadcrumb "Home" "index" %}
+                        {% breadcrumb "JEE Seat Chances - If-Then Analysis" "if_then_analysis" %}
+                        {% breadcrumb "Analysis Results" "if_then_analysis_results" %}
+                        {% render_breadcrumbs  "django_bootstrap_breadcrumbs/bootstrap3.html" %}
+                    {% endblock %}        
+                </div>
+            </div>
 
             <h3 class="block-title">
                 Seat Assessment Analysis Results
@@ -81,7 +93,13 @@
                     </tr>
                 </tbody>
             </table>            
-
+            
+            {%if stuCategories %}
+                Student Categories Selected:&nbsp
+                {% for s in stuCategories %}
+                  {{s}}&nbsp;&nbsp;&nbsp;
+                {% endfor %}
+            {% endif %}                
             <br />
             <div class = "row">
                 <!-- <div class="w3-container w3-text-deep-orange"> -->
@@ -95,12 +113,13 @@
             <table id="tabletwo" class="display table table-striped table-bordered">
                 <thead>
                     <tr>
-                        <th style="width:35%">Program</th>
-                        <th style="width:35%">Institute</th>
+                        <th style="width:30%">Program</th>
+                        <th style="width:30%">Institute</th>
                         <th style="width:5%">Year</th>
                         <th style="width:10%">Opening Rank</th>
                         <th style="width:10%">Closing Rank</th>
                         <th style="width:5%">Quota</th>
+                        <th style="width:10%">Category</th>
                     </tr>
                 </thead>
                 <tbody> 
@@ -123,6 +142,9 @@
                             </td>
                              <td>
                                 {{ r.quota }}
+                            </td>
+                             <td>
+                                {{ r.StudentCategory_id }}
                             </td>
                    </tr>
                         {% endfor %}

@@ -39,11 +39,12 @@
             <table id="tableOne" class="display table table-striped table-bordered">
                 <thead>
                     <tr>
-                        <th style="width:13%">Year</th>
+                        <th style="width:8%">Year</th>
                         <th style="width:25%">Instt Name</th>
-                        <th style="width:22%">Program</th>
-                        <th style="width:15%">Quota</th>
-                        <th style="width:25%">Opening-Closing Rank</th>
+                        <th style="width:25%">Program</th>
+                        <th style="width:12%">Quota</th>
+                        <th style="width:15%">Category</th>
+                        <th style="width:15%">Opening-Closing Rank</th>
                     </tr>
                 </thead>
                 <tbody>            
@@ -53,6 +54,7 @@
                             <td class="align-middle" > {{ i.Institute__instt_name }},&nbsp;{{i.Institute__city}}</td>
                             <td class="align-middle" > {{ i.Program_id }}</td>
                             <td class="align-middle" > {{i.quota }}</td>
+                            <td class="align-middle" > {{i.StudentCategory_id}}</td>
                             <td class="align-middle" > {{i.opening_rank }}&nbsp; - &nbsp;{{i.closing_rank }}</td>
                         </tr>
                     {% empty %}

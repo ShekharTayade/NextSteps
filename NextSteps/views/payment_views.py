@@ -20,7 +20,8 @@ from .common_views import *
 MERCHANT_KEY = "oeIVpyez"
 key=""
 SALT = "kJZV7rwzYo"
-PAYU_BASE_URL = "https://sandboxsecure.payu.in/_payment"
+#####   PAYU_BASE_URL = "https://sandboxsecure.payu.in/_payment"  # Testing
+PAYU_BASE_URL = "https://secure.payu.in/_payment "  # LIVE 
 
 
 @login_required

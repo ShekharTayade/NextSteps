@@ -689,12 +689,26 @@ def ifThenAnalysis(request):
     insttUserList = InsttUserPref.objects.filter(User__in=userid).filter(
         Institute__jee_flag = "Y").values(
         'Institute__instt_name',  'Institute__InstituteType').distinct().order_by('Institute__instt_name')
+        
+    stuCatList = StudentCategory.objects.filter(jee_flag = "Y")
+    
+    stuUserCat = StudentCategoryUserPref.objects.filter(User_id__in = userid)
+    stuCategory = {}
+    for c in stuUserCat:
+        stuCategory = c.StudentCategory_id
+    
+    if stuCategory not in stuUserCat:
+        validStuCat = False
+    else:
+        validStuCat = true
+        
     
     return render(request, 'NextSteps/seat_chances_assessment.html', 
             {'programUserList':programUserList, 'insttUserList':insttUserList,
             'countryUserList':countryUserList, 'disciplineUserList':disciplineUserList,
             'levelUserList':levelUserList, 'progList':progList, 
-            'insttList':insttList, 'stateList':stateList  })
+            'insttList':insttList, 'stateList':stateList, 'stuCatList':stuCatList,
+            'stuCategory':stuCategory, 'validStuCat':validStuCat })
     
     
 @login_required
@@ -713,18 +727,23 @@ def ifThenAnalysisResults(request):
     #insttUserVals = request.POST.getlist('insttUserList', [])
     progVals  = request.POST.getlist('progList', [])
     insttVals = request.POST.getlist('insttList', [])
-    #button = request.POST.get('submitbuttonMAIN', 'BLANK')
-    #button1 = request.POST.get("submitbuttonADV", 'BLANK')
+    stuCategories = request.POST.getlist('stuCatSelect', [])
+    stuUserCategory = request.POST.get('stuCategory', '')
+    
+    ''' If stuCategories is empty which mean user didn't select from the drop down
+    then we use stuUserCaegory (preferred category) '''
+    if stuCategories == []:
+        stuCategories.append(stuUserCategory)
 
     # Get the student Category
     userid = User.objects.filter(username = request.user).values('id')
-    stuUserCat = StudentCategoryUserPref.objects.filter(User_id__in = userid)
+    #stuUserCat = StudentCategoryUserPref.objects.filter(User_id__in = userid)
  
-    category = ''
-    for c in stuUserCat:
-        category = c.StudentCategory_id
-    
-    stuCat = StudentCategory.objects.filter(category = category)
+    stuCat = StudentCategory.objects.filter(category__in = stuCategories)
+
+    # Get max ranking year from DB
+    max_year = InstituteJEERanks.objects.aggregate(Max('year'))
+    maxyear = max_year['year__max']
     
     # Get user preferences. JEE is India specific and The Institute JEE Ranking table doesn't have Country,
     # hence not using the Country preference.
@@ -751,18 +770,18 @@ def ifThenAnalysisResults(request):
         #    'Program_id', 'Institute__instt_name', 'Institute_id', 'Institute__state', 'year', 'opening_rank', 
         #    'closing_rank', 'quota').order_by('Program_id', 'closing_rank')
 
-        results = InstituteJEERanks.objects.filter(Institute__jee_flag = "Y").exclude(
+        results = InstituteJEERanks.objects.filter(Institute__jee_flag = "Y", year = maxyear).exclude(
             Institute__InstituteType_id = 'IIT').values('Discipline_id', 'Level_id',
             'Program_id', 'Institute__instt_name', 'Institute_id', 'Institute__state', 'year', 'opening_rank', 
-            'closing_rank', 'quota').order_by('Program_id', 'closing_rank')
+            'closing_rank', 'quota', 'StudentCategory_id').order_by('Program_id', 'closing_rank')
 
     
     if rankType == 'ADV':
         results = InstituteJEERanks.objects.filter( 
-            Institute__jee_flag = "Y", Institute__InstituteType_id = 'IIT').values(
+            Institute__jee_flag = "Y", Institute__InstituteType_id = 'IIT', year = maxyear).values(
             'Discipline_id', 'Level_id', 'Program_id', 'Institute_id', 
             'Institute__instt_name', 'Institute__state', 'year', 'opening_rank', 
-            'closing_rank', 'quota').order_by('Program_id', 'closing_rank')
+            'closing_rank', 'quota', 'StudentCategory_id').order_by('Program_id', 'closing_rank')
 
     if len(progVals) > 0 :
         results = results.filter(Program__description__in=progVals ).order_by('Program_id', 'closing_rank')
@@ -777,7 +796,7 @@ def ifThenAnalysisResults(request):
 
     if results == [] :
         err = True
-        results = InstituteJEERanks.objects.filter(Institute__instt_name__in=insttVals).order_by('Program_id', 'closing_rank')
+        results = InstituteJEERanks.objects.filter(Institute__instt_name__in=insttVals, year = maxyear).order_by('Program_id', 'closing_rank')
 
 
     #limiting results to 20 rows
@@ -798,6 +817,7 @@ def ifThenAnalysisResults(request):
             this.update({'opening_rank': r['opening_rank']})
             this.update({'closing_rank': r['closing_rank']})
             this.update({'quota': r['quota']})
+            this.update({'StudentCategory_id' : r['StudentCategory_id']})
             resultSet.append(this)
                     
     elif rankType == 'ADV':
@@ -810,6 +830,7 @@ def ifThenAnalysisResults(request):
             this.update({'opening_rank': r['opening_rank']})
             this.update({'closing_rank': r['closing_rank']})
             this.update({'quota': r['quota']})
+            this.update({'StudentCategory_id' : r['StudentCategory_id']})
             resultSet.append(this)
     
     resultCnt = len(resultSet)
@@ -817,7 +838,8 @@ def ifThenAnalysisResults(request):
     return render(request, 'NextSteps/ifThenAnalysisResults.html', 
             {'resultSet':resultSet, 'err':err,'rankFrom':rankFrom, 
              'rankTo':rankTo, 'progs':progVals, 'instts':insttVals,
-             'rankType':rankType, 'resultCnt':resultCnt, 'homestate':homestate})     
+             'rankType':rankType, 'resultCnt':resultCnt, 'homestate':homestate,
+             'stuCategories':stuCategories})     
     
  
 def getUserInsttProgramByType(request):
