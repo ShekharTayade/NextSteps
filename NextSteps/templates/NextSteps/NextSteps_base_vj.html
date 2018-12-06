@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load promo_display from show_promotion %}
 
 {% block head %}
 <head>
@@ -1099,6 +1100,8 @@
         </div>
     </div> -->
 
+    {% promo_display request %}
+<!--
     <div class="modal fade" id="promocode" tabindex="-1" role="dialog" data-backdrop ="true" aria-labelledby="mySmallModalLabel" aria-hidden="true">
         <div id="promocontent" class="modal-dialog modal-sm">
             <div class="modal-content">
@@ -1120,14 +1123,14 @@
                         </div>
                         <div class="coupan-container">
                             <p>Use Promo Code: <span id= "pcode" class="promo">MY20OFF</span></p>
-                            <p class="expire">Expires: Nov 30, 2018</p>
+                            <p class="expire">Expires: Jan 31, 2019</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+-->
 
     <!-- Scripts required for popper dropdown menu being used on user link, after user is logged in -->
     <!-- <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script> -->

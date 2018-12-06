@@ -454,7 +454,8 @@ class PromotionCode(models.Model):
     start_date = models.DateField(blank=False, null=False)
     end_date = models.DateField()
     discount_percent = models.DecimalField(max_digits=5, decimal_places=2, blank=False, null=False)
-
+    display_in_homepage = models.NullBooleanField(default=False)
+    
     class meta:
         unique_together = (('promotion_code', 'start_date'),)
     

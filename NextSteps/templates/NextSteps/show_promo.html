@@ -1,0 +1,31 @@
+{% load static  %}
+
+    <div class="modal fade" id="promocode" tabindex="-1" role="dialog" data-backdrop ="true" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div id="promocontent" class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header" style = "background-color:#ff5821">
+                    <button type="button" class="close" data-dismiss="modal">X</button>
+                    <p class="modal-title"><strong>An Offer...</strong></p>
+                </div>
+                <div class="modal-body">
+                    <div class="coupon">
+                        <div class="coupan-container text-center" style="background-color:#000000">
+                            <img src="{% static 'img/NextStepsLogo2.png' %} " alt="NextSteps">
+                        </div>
+                        <div class="coupan-container" style="background-color:white">
+                            <h4><b>{{disp_promo.discount_percent|floatformat}} % OFF ON SUBSCRIPTION</b></h4>         
+                            <p>
+                                Hi {{request.user}},
+                                Specially for you! Avail a discount of <strong>{{disp_promo.discount_percent|floatformat}} %</strong> when you Subscribe.
+                            </p>
+                        </div>
+                        <div class="coupan-container">
+                            <p>Use Promo Code: <span id= "pcode" class="promo">{{disp_promo.promotion_code}}</span></p>
+                            <p class="expire">Expires: {{disp_promo.end_date|date:"D d M Y"}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
