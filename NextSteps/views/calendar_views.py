@@ -31,10 +31,7 @@ def getUserInstts(request):
     userCalendar = UserCalendar.objects.filter(User__in=userid).values(
         'id', 'Institute__instt_name', 'event', 'event_date', 'event_order', 'start_date', 'end_date', 
         'event_duration_days', 'remarks').distinct('Institute__instt_name', 'event')
-    
-    import pdb
-    pdb.set_trace()
-    
+
     if userCalendar.exists():
         return JsonResponse(list(userCalendar), safe=False)
     else:

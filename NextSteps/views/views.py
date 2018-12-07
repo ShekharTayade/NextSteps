@@ -14,9 +14,6 @@ from time import gmtime, strftime
 from django.contrib import messages
 from datetime import datetime
 
-
-import pdb
-
 from django.template.context_processors import request
 
 from NextSteps.decorators import subscription_active
@@ -345,8 +342,6 @@ def renewSubscription(request):
         if ua.subscription_end_date > timezone.now():
             validSubscription=True
         regDate = ua.registration_date
-        
-    print(regDate)
 
     return render(request, 'NextSteps/renew_subscription.html',{
         'useraccount':useraccount, 'regDate': regDate, 'validSubscription':validSubscription})    
@@ -370,10 +365,6 @@ def renewSubscriptionConfirm(request):
 
     pass_fail = 'PASS'
     msg = 'Subscription Renewed!'
-    
-    print("RegStr - " + regStr)
-    print("subsStartStr - " + regStr)
-    
     
     if regDate == "01/01/1900" or subsStartDate == "01/01/1900" or subsEndDate == "01/01/1900":
         pass_fail = 'FAIL'

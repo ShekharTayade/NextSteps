@@ -145,7 +145,7 @@ def payment_submit(request):
 	posted['surl'] = 'https://www.NextSteps.co.in/subscription_begin/'
 	posted['furl'] = 'https://www.NextSteps.co.in/payment_unsuccessful/'
 	posted['service_provider'] = 'NextSteps Solutions'
-	posted['curl'] = 'https://www.NextSteps.co.in/payment_aborted.html'
+	posted['curl'] = 'https://www.NextSteps.co.in/payment_unsuccessful/'
 	posted['udf1'] = request.POST.get("udf1",'').upper()
 	udf2 = request.POST.get('udf2', '')
 	posted['udf3'] = request.POST.get('udf3', '')
@@ -220,7 +220,7 @@ def payment_submit_nocost(request):
 	posted['surl'] = 'https://www.NextSteps.co.in/subscription_begin/'
 	posted['furl'] = 'https://www.NextSteps.co.in/payment_unsuccessful/'
 	posted['service_provider'] = 'NextSteps Solutions'
-	posted['curl'] = 'https://www.NextSteps.co.in/payment_aborted.html'
+	posted['curl'] = 'https://www.NextSteps.co.in/payment_unsuccessful/'
 	posted['udf1'] = request.POST.get("udf1",'').upper()
 	udf2 = request.POST.get('udf2', '')
 	posted['udf3'] = request.POST.get('udf3', '')
