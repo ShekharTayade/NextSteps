@@ -770,7 +770,8 @@ def ifThenAnalysisResults(request):
         #    'Program_id', 'Institute__instt_name', 'Institute_id', 'Institute__state', 'year', 'opening_rank', 
         #    'closing_rank', 'quota').order_by('Program_id', 'closing_rank')
 
-        results = InstituteJEERanks.objects.filter(Institute__jee_flag = "Y", year = maxyear).exclude(
+        results = InstituteJEERanks.objects.filter(Institute__jee_flag = "Y", year = maxyear,
+            closing_rank__gte = rankFrom, opening_rank__gte = rankFrom ).exclude(
             Institute__InstituteType_id = 'IIT').values('Discipline_id', 'Level_id',
             'Program_id', 'Institute__instt_name', 'Institute_id', 'Institute__state', 'year', 'opening_rank', 
             'closing_rank', 'quota', 'StudentCategory_id').order_by('Program_id', 'closing_rank')
@@ -778,7 +779,8 @@ def ifThenAnalysisResults(request):
     
     if rankType == 'ADV':
         results = InstituteJEERanks.objects.filter( 
-            Institute__jee_flag = "Y", Institute__InstituteType_id = 'IIT', year = maxyear).values(
+            Institute__jee_flag = "Y", Institute__InstituteType_id = 'IIT', year = maxyear,
+            closing_rank__gte = rankFrom, opening_rank__gte = rankFrom).values(
             'Discipline_id', 'Level_id', 'Program_id', 'Institute_id', 
             'Institute__instt_name', 'Institute__state', 'year', 'opening_rank', 
             'closing_rank', 'quota', 'StudentCategory_id').order_by('Program_id', 'closing_rank')

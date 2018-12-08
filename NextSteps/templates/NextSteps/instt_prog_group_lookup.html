@@ -1,0 +1,68 @@
+{% load static  %}
+{% if progs %}
+
+<div class="modal fade" id="progroup" tabindex="-1" role="dialog" data-backdrop ="true" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+	<div id="progroupcontent" class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header" style = "background-color:#ff5821">
+				<button type="button" class="close" data-dismiss="modal">X</button>
+				<p class="modal-title"><strong>Insitutes and Programs By Program Group</strong></p>
+			</div>
+			<div class="modal-body">
+				
+				<table id="tableOne" class="display table table-striped table-bordered" style="width:100%">
+					<thead>
+						<tr>
+							<th >Program Group</th>
+							<th >Program Name</th>
+							<th >Institute</th>
+						</tr>
+					</thead>
+					<tbody>        
+						{% for i in progs %}
+							<tr>  
+								<td class="align-middle" > {{ i.Program__program_group}}</td>
+								<td class="align-middle" > {{ i.Program_id}}</td>
+								<td class="align-middle" > {{ i.Institute__instt_name}}</td>
+							</tr>
+						{% empty %}
+							<tr>  
+								<td colspan = "5">- No results found</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}
+
+
+    <script>    
+        $(document).ready(function() {
+            // Setup - add a text input to each footer cell
+            $('#tableOne thead th').each( function (i) {
+                var title = $('#tableOne thead th').eq( $(this).index() ).text();
+                $(this).html( '<input type="text" placeholder="Search '+title+'" data-index="'+i+'" />' );
+            } );
+          
+            // DataTable
+            table = $('#tableOne').DataTable( {
+                fixedHeader: true,
+                paging: true,
+                responsive: true,
+            } );
+         
+            table.columns.adjust().draw();
+            
+            // Filter event handler
+            $( table.table().container() ).on( 'keyup', 'thead input', function () {
+                table
+                    .column( $(this).data('index') )
+                    .search( this.value )
+                    .draw();
+            } );
+        } );
+    </script>
+

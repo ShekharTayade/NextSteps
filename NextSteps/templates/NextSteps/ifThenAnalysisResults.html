@@ -101,10 +101,13 @@
                 {% endfor %}
             {% endif %}                
             <br />
+            <hr>
+            
+            {% if resultSet %}
             <div class = "row">
                 <!-- <div class="w3-container w3-text-deep-orange"> -->
-                <div class="w3-container pref-head"  style = "margin:5px 15px">
-                    <h5>Based on above selections following table displays the seat probabilitites for you</h5>
+                <div class="w3-container pref-head"   style = "margin:5px 15px;">
+                    <h5>Based on above selections, following table displays the seat chances* for you</h5>
                 </div>
                 <br />
             </div>
@@ -153,11 +156,19 @@
             {% if resultCnt > 0 %}
                 <div class="w3-container w3-text-deep-orange">
                     <small><p class="text-primary">*Disclaimer: Please note that this is purely based on pervious years opening and closing ranks
-                    of the Institutes and by no means exactly depicts your chances. The closing ranks can vary significantly year on year. 
+                    of the Institutes and by no means exactly depicts your chances. The closing ranks may vary significantly year on year. 
                     However, it would sure assist you as you assess your chances.</p></small>
                 </div>
             {% endif %}
-
+            {% else %}
+            <div class = "row">
+                <!-- <div class="w3-container w3-text-deep-orange"> -->
+                <div class="w3-container pref-head"  style = "margin:5px 15px;">
+                    <h5>Based on above selections, didn't find any seat chances. Please change the selections and try again.</h5>
+                </div>
+                <br />
+            </div>
+            {% endif %}                
         </div>
      </div>
 
