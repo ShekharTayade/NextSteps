@@ -1,4 +1,5 @@
 from django.conf.urls import url, include
+from django.urls import path
 
 from . import views
 from django.contrib.auth import views as auth_views
@@ -50,6 +51,8 @@ urlpatterns = [
     url(r'^ajax/GetInstts/$', views.getInstitutes, name='Get_Instts'),    
     url(r'^ajax/GetPrograms/$', views.getPrograms, name='Get_Programs'),    
     url(r'^ajax/GetSeatPrograms/$', views.getSeatQuotaPrograms, name='Get_SeatQuota_Programs'),    
+    url(r'^insttProgGroupLookup/', views.instt_prog_group_lookup, name='instt_prog_group_lookup'),    
+    url(r'^getinsttPrgGrp/', views.get_instt_prog_group, name='get_instt_prog_group'),    
 
 
     url(r'^institutelist/$', views.InsttList, name = 'instt_list'),

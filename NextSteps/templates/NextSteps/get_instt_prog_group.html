@@ -1,17 +1,29 @@
-{% load static  %}
-{% if progs %}
+{% extends 'NextSteps/NextSteps_base_vj.html' %}
 
-<div class="modal fade" id="progroup" tabindex="-1" role="dialog" data-backdrop ="true" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-	<div id="progroupcontent" class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header" style = "background-color:#ff5821">
-				<button type="button" class="close" data-dismiss="modal">X</button>
-				<p class="modal-title"><strong>Insitutes and Programs By Program Group</strong></p>
-			</div>
-			<div class="modal-body">
+{% load static %}
+
+<!-- Override right-side header block from parent -->
+{% block right_side_header %}
+{% endblock right_side_header %}
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+{% endblock slide-show %}
+
+<!-- Override block from parent -->
+{% block instt-prog-menu %}
+{% endblock instt-prog-menu %}
+
+
+<!-- Override features block -->
+{% block features %}
+	{% if progs %}
+    <div class="block" style="padding-top: 5%; padding-bottom: 5%; ">
+        <div class="container">
+		
+			<h3 class="block-title">Programs, Institutes by Prorgam Group</h3>
 			
-				<input type="text" id="searchText" onkeyup="search()" placeholder="Search program..">
-				
+			<div id = "tab_id">
 				<table id="tableOne" class="display table table-striped table-bordered" style="width:100%">
 					<thead>
 						<tr>
@@ -21,21 +33,20 @@
 						</tr>
 					</thead>
 					<tbody>        
-						{% for i in progs %}
+							{% for i in progs %}
 							<tr>  
 								<td class="align-middle" > {{ i.Program__program_group}}</td>
 								<td class="align-middle" > {{ i.Program_id}}</td>
 								<td class="align-middle" > {{ i.Institute__instt_name}}</td>
 							</tr>
-						{% empty %}
+							{% empty %}
 							<tr>  
 								<td colspan = "5">- No results found</td>
 							</tr>
-						{% endfor %}
+							{% endfor %}
 					</tbody>
 				</table>
-				
-				<div class="row">
+<!--				<div class="row">
 					<div class="col-md-12 col-lg-12">
 						<div class = "text-center">
 							{% if progs.has_previous %}
@@ -55,22 +66,17 @@
 							{% endif %}				
 						</div>
 					</div>
-				</div>
-				
-				
-				
+				</div> -->
+			
 			</div>
-		</div>
+		</div>		
 	</div>
-</div>
-{% endif %}
-
+	{% endif %}
 
 
 <script>    
 	$(document).ready(function() {
 	   // Setup - add a text input to each footer cell
-		console.log("Start script");
 		$('#tableOne thead th').each( function (i) {
 		   var title = $('#tableOne thead th').eq( $(this).index() ).text();
 			$(this).html( '<input type="text" placeholder="Search '+title+'" data-index="'+i+'" />' );
@@ -79,7 +85,7 @@
 		// DataTable
 		table = $('#tableOne').DataTable( {
 			fixedHeader: true,
-			paging: false,
+			paging: true,
 			responsive: true,
 			searchOnEnterKey: true,
 		} );
@@ -98,3 +104,7 @@
 
 </script>
 
+{% endblock features %}
+
+{% block registration %}
+{% endblock registration %}

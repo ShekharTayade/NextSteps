@@ -18,7 +18,7 @@
 
 <!-- Extend the home page to keep the same styling for header and footer sections. -->
 {% extends 'NextSteps/NextSteps_base_vj.html' %}
-{% load instt_prog_group_lookup from instt_prog_group_lookup %}
+
 
 <!-- Override slide-show block from parent -->
 {% block slide-show %}
@@ -85,9 +85,13 @@
                         <div class = "row">
                             <div class="col-sm-12">
                                 <div id="prog-group" class = "form-inline">
-                                    <small>Large number of programs have similar names as different institutes use slightly different names.
+                                    <i class = "text-primary fa fa-info-circle"></i><small> Large number of programs have similar names as different institutes use slightly different names.
                                     To better select the progams and institues that you are looking for, please 
-                                    <a class = "text-primary" onclick = "$('#progroup').modal('show')" ><i class = "fa fa-files-o"></i>&nbsp;click here</a> refer to a list of programs and institutes grouped by program group.</small>
+<!--                                    <a class = "text-primary" onclick = "$('#progroup').modal('show')" ><i class = "fa fa-files-o"></i>&nbsp;click here</a>-->
+                                    <a class = "text-primary" href="{% url 'instt_prog_group_lookup' %}" target="_blank"><i class = "fa fa-files-o"></i>&nbsp;click here</a>
+
+                                    refer to a list of programs and institutes grouped by program group. It will open in another tab, you can refer to it, copy the 
+                                    program/institute you are interested in and come back to this tab and search for it.</small>
                                 </div>
                             </div>
                         </div>
@@ -224,9 +228,6 @@
                 
         </div>
     </div> 
-
-    {% instt_prog_group_lookup request %}
-
 
     <!-- Forcing the default values to be selected -->
     <script>

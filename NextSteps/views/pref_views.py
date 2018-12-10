@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError, DatabaseError, Error
 from django.db.models import Q
 from django.core import serializers
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 from random import randrange
 
@@ -2187,4 +2188,32 @@ def generateSchCalendar (request):
 def daterange(start_date, end_date):
     for n in range(int ((end_date - start_date).days)):
         yield start_date + timedelta(n)
+
+
+def instt_prog_group_lookup(request):
+    
+    return render(request, 'NextSteps/instt_prog_group_lookup1.html') 
+
+
+
+def get_instt_prog_group(request):
+    
+    progGrpVal = request.GET.get('progGrpVal')
+    
+    progs_group = InstitutePrograms.objects.all().order_by ('Program__program_group').values(
+        'Program__program_group', 'Program_id', 'Institute__instt_name')
+
+    print(progGrpVal)
+
+    
+    if progGrpVal :
+        progs_group = progs_group.filter(Program__program_group__icontains = progGrpVal)
+
+    '''
+    paginator = Paginator(progs_group, 20) 
+    page = request.GET.get('page')
+    progs = paginator.get_page(page)
+    '''
+
+    return render(request, 'NextSteps/get_instt_prog_group.html', {'progs':progs_group}) 
 
