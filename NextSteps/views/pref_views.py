@@ -2192,7 +2192,7 @@ def daterange(start_date, end_date):
 
 def instt_prog_group_lookup(request):
     
-    return render(request, 'NextSteps/instt_prog_group_lookup1.html') 
+    return render(request, 'NextSteps/instt_prog_group_lookup.html') 
 
 
 

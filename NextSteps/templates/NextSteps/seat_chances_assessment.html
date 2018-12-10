@@ -41,7 +41,7 @@
                 <small class = "pull-right">This page is best viewed on large screens, such as laptops, tablets.</small>
             </div>
     
-            <div class="row">
+            <div class="row"  style = "border:2px solid gainsboro; padding:10px;">
 
                 <form action="{% url 'if_then_analysis_results' %}" method='post' id='getAnalysis'>
                     {% csrf_token %}
@@ -146,10 +146,9 @@
                         </div>
                     </div>
                     
-                    <br />
                     <div class = "row">
                         <div class="col-sm-12">
-                            <div id="prog-group" class = "form-inline">
+                            <div id="prog-group" class = "w3-panel w3-card-2" style="padding:10px;">
                                 <i class = "text-primary fa fa-info-circle"></i><small> Large number of programs have similar names as different institutes use slightly different names.
                                 To better select the progams and institues that you are looking for, please 
 <!--                                <a class = "text-primary" onclick = "$('#progroup').modal('show')" ><i class = "fa fa-files-o"></i>&nbsp;click here</a> refer to a list of programs and institutes grouped by program group.</small> -->
