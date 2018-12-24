@@ -12,6 +12,7 @@ from allauth.account.views import LoginView
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+
     url(r'^login/$', views.NextStepslogin, name='login'),
     #url(r'^home/$', views.loggedIn_index, name='loggedInHome'),
     
@@ -172,4 +173,4 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     
-    
+   
