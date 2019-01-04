@@ -1530,7 +1530,9 @@ blockquote.right small {
 img {
   display: block;
   max-width: 100%;
-  height: auto;
+  height: auto; 
+}
+
 body,
 html {
   font-family: "Roboto", sans-serif;
@@ -2071,7 +2073,7 @@ a.btn-hh-trigger.target-open:after {
   margin: 5px 0 5px 0;
   margin-left: 15px;
   font-size: 25px;
-  text-shadow: 5px 5px 5px rgba(0,0,0,0.3);
+  /*text-shadow: 5px 5px 5px rgba(0,0,0,0.3);*/
 }
 .box-widget {
   border: none;
@@ -2113,22 +2115,26 @@ a.btn-hh-trigger.target-open:after {
   border: 3px solid #fff;
 }
 
-.widget-user .widget-user-image>img {
-  width: 90px;
-  height: auto;
-  border: 3px solid #fff;
-}
+
 .img-circle {
   border-radius: 50%;
   background-color: #ECECEC;
 }
-img {
-  vertical-align: middle;
+
+.img-refer {
+  width:100% !important;
+  background-color: #ECECEC;
 }
 
+
 .widget-user .box-footer {
-  padding-top: 30px;
+  padding-top: 25px;
 }
+
+.widget-user .refer-footer {
+  padding-top: 0px;
+}
+
 .box-footer {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -2171,15 +2177,24 @@ img {
 
 .box-home {
   position: relative;
+  background: #ffffff;
+  /*border-top: 3px solid #d2d6de;*/
+  border: 1px solid lightgray;
+  margin-bottom: 20px;
+  width: 100%;
+  /* box-shadow: 8px 8px 8px rgba(0,0,0,0.3); */
+}
+
+.box-refer {
+  position: relative;
   border-radius: 3px;
   background: #ffffff;
   /*border-top: 3px solid #d2d6de;*/
-  border-top: 1px solid #ff5821;
+  border: 3px solid #ff5821;
   margin-bottom: 20px;
   width: 100%;
   box-shadow: 8px 8px 8px rgba(0,0,0,0.3);
 }
-
 .box.box-solid {
   border-top: 0;
 }
@@ -2216,7 +2231,7 @@ img {
   border-top-right-radius: 0;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
-  border-top: 1px solid #f4f4f4;
+  border-top: 1px solid #fff;
   padding: 10px;
   background-color: #fff;
 }
@@ -2269,16 +2284,26 @@ img {
 
 /* Vijay End */
 
+
 .navbar-brand {
   padding: 0;
   margin: 0;
   display: block;
   text-shadow: none;
   line-height: 1;
-  background: url(../img/NextStepsLogo2.png) left top no-repeat;
+  background: url(../img/nextsteps-1.png) left top no-repeat;
   height: 30px;
   width: 145px;
+  text-align:center;
 }
+
+.navbar-brand img {
+  display: block;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  vertical-align: middle; 
+}
+
 .navbar-brand:hover {
   text-decoration: none;
   cursor: pointer;
@@ -2291,8 +2316,8 @@ img {
 .navbar-slogan {
   float: left;
   width: 250px;
-  padding-left: 1.5em;
-  margin-left: 1.5em;
+  padding-left: 1em;
+  margin-left: 0.5em;
   border-left: 2px dotted #bcbfc4;
   font-size: 13px;
   line-height: 1.2;

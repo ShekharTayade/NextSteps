@@ -509,7 +509,7 @@ class BeforePayment(models.Model):
     subscription_amount = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     total_amount = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     promotionCode = models.CharField(max_length=50, blank=True, default='')
-    discount_percent = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True)
+    discount_percent = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     promotion_sys_msg = models.CharField(max_length=2, blank=True, default='')
     date_updated = models.DateTimeField(blank=True, null=True)
 

@@ -10,13 +10,13 @@
                 <div class="modal-body">
                     <div class="coupon">
                         <div class="coupan-container text-center" style="background-color:#000000">
-                            <img src="{% static 'img/NextStepsLogo2.png' %} " alt="NextSteps">
+                            <img src="{% static 'img/nextsteps-1.png' %} " alt="NextSteps">
                         </div>
                         <div class="coupan-container" style="background-color:white">
                             <h4><b>{{disp_promo.discount_percent|floatformat}} % OFF ON SUBSCRIPTION</b></h4>         
                             <p>
                                 Hi {{request.user}},
-                                Specially for you! Avail a discount of <strong>{{disp_promo.discount_percent|floatformat}} %</strong> when you Subscribe.
+                                Avail a discount of <strong>{{disp_promo.discount_percent|floatformat}} %</strong> when you subscribe.
                             </p>
                         </div>
                         <div class="coupan-container">

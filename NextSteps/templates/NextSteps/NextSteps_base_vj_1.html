@@ -254,7 +254,7 @@
                                         <span class="text-primary">Informed</span>
                                     </h2>
                                     <h4>
-                                        We bring you detailed information on
+                                        We bring to you detailed information on
                                     </h4>
                                     <ul>
                                         <li>Institutions</li>
@@ -308,7 +308,7 @@
                                 <div class="col-md-6 col-md-push-6 item-caption">
                                     <h2 class="h1 text-weight-light">
                                         Make
-                                        <span class="text-primary">Informed Decisions</span>
+                                        <span class="text-primary">Informed Decision</span>
                                     </h2>
                                     <h4>
                                         We care about you
@@ -505,8 +505,8 @@
                     {% else %}
                         <blockquote>
                         <p>
-                        <strong><a href="{% url 'subscription' %}"  class="text-primary"> Subscribe</a> </strong> now and gain access to a wider range of 
-                        NextSteps features that are customized for you, and save your valuable time & effort. 
+                        <strong><a href="{% url 'subscription' %}"  class="text-primary"> Subscribe</a> </strong> now and get access to the powerful 
+                        NextSteps features that give you access to useful tools, customizes to you, and saves your valuable time & effort. 
                         Click on the features below to learn more.
                         </p>
                         </blockquote>
@@ -601,7 +601,7 @@
                         <h5 class="widget-user-desc">on your preferred institutes</h5>
                     </div>
                     <div class="widget-user-image">
-                        <img class="img-circle" src="{% static 'img/infologo1.png' %}" alt="Imp Info">
+                        <img class="img-circle" src="{% static 'img/important_info.png' %}" alt="Imp Info">
                     </div>
                     <div class="box-footer">
                         <div class="row row-margin">
@@ -647,7 +647,7 @@
 
                 <div class="box-home box-widget widget-user">
                     <div class="widget-user-header bg-black">
-                        <h3 class="widget-user-username">Calendar</h3>
+                        <h3 class="widget-user-username">Admission Calendar</h3>
                         <h5 class="widget-user-desc">Never miss important dates</h5>
                     </div>
                     <div class="widget-user-image">
@@ -695,7 +695,7 @@
                 <div class="box-home box-widget widget-user">
                     <div class="widget-user-header bg-black">
                         <h3 class="widget-user-username">JEE Seat Chances</h3>
-                        <h5 class="widget-user-desc">if-then-analysis: assess your chances</h5>
+                        <h5 class="widget-user-desc">if-then-analysis:- chances based on expected ranks</h5>
                     </div>
                     <div class="widget-user-image">
                         <img class="img-circle" src="{% static 'img/chance1.png' %}" alt="JEE Seat Chances">
@@ -871,6 +871,33 @@
                 </div>
                 </a>
             </div>
+
+
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <!-- If it's a singed up used -->                
+                {% if user.is_authenticated %}
+                    {% if activeSubs %}
+                        <!-- User has active subscription (Paid user)  -->
+                        <a href="{% url 'refer_NextSteps' %}" style = "text-decoration: none !important;">
+                    {% else %}
+                        <!-- singed up user (unpaid user) -->
+                        <a href="{% url 'refer_NextSteps' %}" style = "text-decoration: none !important;">
+                    {% endif %}
+                    
+                {% else %}
+                    <!-- Anonymous user -->
+                    <a href="{% url 'feature_application_record' %}" style = "text-decoration: none !important;">
+                {% endif %}
+
+
+                <div class="box-refer box-widget widget-user">
+                    <img class="img-refer" src="{% static 'img/referral-gifts/ns-refer.jpg' %}" alt="Referral Gifts">
+                </div>
+                </a>
+            </div>
+
+
+
         </div>
     </div>
 
@@ -909,7 +936,7 @@
     </h2>
     <div class="row row-margin">
         <!-- <div class="col-md-1"></div> -->
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="box-home box-success">
                 <div class="box-header with-border">
                     <h2 class="box-header-text">Sign-Up</h2>
@@ -917,7 +944,7 @@
                 <div class="box-body">
                     <li>1 User account</li>
                     <li>No Fee</li>    
-                    <li>Access to search institute details, entrance exams, programs, survey, JEE ranks etc.</li>
+                    <li>Acess to search institute details, entrance exams, programs, survey, JEE ranks etc.</li>
                     <li>Subscribe to unlock the powerful features of NextSteps</li>
                 </div>
                 <div class="box-footer">
@@ -934,7 +961,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="box-home box-success">
                 <div class="box-header with-border">
                     <h2 class="box-header-text">Subscription</h2>
@@ -943,7 +970,7 @@
                     <li>Access to all Institutes</li>
                     <li>Unlock ever evolving NextSteps features </li>
                     <li>Unlimited access for 2 Years</li>
-                    <li>One time fee.</li>
+                    <li>One time fee! you will not regret</li>
                 </div>
                 <div class="box-footer">
                     <form action="{% url 'subscription' %}" method="post">
@@ -952,7 +979,7 @@
                             {% if not activeSubs %}
                                 <span class="input-group-btn">
                                     {% if not user.is_authenticated %}
-                                    <button type = "button" class="btn btn-flat">Please Sign-Up to Subscribe</button>
+                                    <button type = "button" class="btn btn-flat">Please Sign Up & Proceed to Subscribe</button>
                                     {% else %}
                                     <button type="submit" class="btn btn-primary btn-flat">Subscribe</button>
                                     {% endif %}
@@ -964,10 +991,10 @@
             </div>
         </div>
 
-        <div class="col-md-4" >
-            <div class="panel panel-default" style="border: 1px dotted #ff5821;">
+        <div class="col-md-2">
+            <div class="panel panel-default" style="border-top: 1px solid #ff5821;">
                 <div class="box-header with-border">
-                    <h2 class="box-header-text"><span class="glyphicon glyphicon-bullhorn" style="color:#ff5821;"></span> Latest from NextSteps</h2>
+                    <h2 class="box-header-text"><span class="glyphicon glyphicon-bullhorn" style="color:#ff5821;"></span> Just for you</h2>
                 </div>
                 <div class="panel-body">
                     <div class="row">
@@ -983,14 +1010,14 @@
                                 <li class="news-item">
                                     <table cellpadding="4">
                                         <tr>
-                                            <td>Learn how you can enrich your NextStep experience. <a class="text-primary"  href="{% url 'user_guide_pg1' %}"> Read more...</a></td>
+                                            <td>Learn how you will enrich your NextStep experience. <a class="text-primary"  href="{% url 'user_guide_pg1' %}"> Read more...</a></td>
                                         </tr>
                                     </table>
                                 </li>
                                 <li class="news-item">
                                     <table cellpadding="4">
                                         <tr>
-                                            <td>Introductory Offer on subscription - 20% off. Use Coupon code "MY20OFF". Limited period offer. Avail Now!!</td>
+                                            <td>Introductory Offer on subscription - 20% off. Use Coupan code "MY20OFF". Limited period offer. Avail Now!!</td>
                                         </tr>
                                     </table>
                                 </li>
