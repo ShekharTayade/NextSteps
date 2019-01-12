@@ -1,0 +1,48 @@
+{% extends 'NextSteps/NextSteps_base_vj.html' %}
+
+{% load static %}
+
+{% load django_bootstrap_breadcrumbs %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Social Network Login Failure" %}{% endblock %}
+
+<!-- Override slide-show block from parent -->
+{% block slide-show %}
+{% endblock slide-show %}
+
+<!-- Override first block from parent -->
+{% block instt-prog-menu %}
+{% endblock instt-prog-menu %}
+
+<!-- Override features block -->
+{% block features %}
+
+    <div class="block" style="padding-top: 5%; padding-bottom: 5%; ">
+        <div class="container">
+
+            <div class = "row">
+                <div id = "breadcrumb">
+                    {% block breadcrumbs %}
+                        {% breadcrumb "Home" "index" %}
+                        {% breadcrumb "Login" "login" %}
+                    {% endblock %}        
+                </div>
+            </div>
+                
+            <h3 class="block-title" style = "margin-bottom:15px;">Login Cancelled</h3>
+            <br />
+
+			{% url 'account_login' as login_url %}
+
+			<p>You decided to cancel logging in to our site using one of your existing accounts. If this was a mistake, please proceed to <a href="{% url 'login' %}">sign in</a>.</p>
+
+{% endblock features %}
+
+{% block registration %}
+<!-- Nothing here, just override the block from parent -->
+{% endblock registration %}
+
+<!-- Footer-section remains as it is, no override -->
+
+

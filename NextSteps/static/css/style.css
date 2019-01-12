@@ -1174,20 +1174,16 @@
   text-transform: none;
   font-weight: 100;
 }
-.panel-pricing .panel-pricing-price {
+.panel-pricing-price {
   text-shadow: none;
-  color: #b5b5b5;
-  background: #6b7175;
   text-align: center;
-  padding: 15px 0 10px 0;
-  font-weight: 100;
-  vertical-align: text-top;
+  padding: 0px;
+  font-weight: 200;
   margin: 0;
-  font-weight: 14px;
+  color:#000;
 }
-.panel-pricing .panel-pricing-price .digits {
-  font-size: 40px;
-  color: #ffffff;
+.panel-pricing-price .digits {
+  font-size: 1.5rem;
 }
 .panel-pricing .panel-body {
   background-color: white;

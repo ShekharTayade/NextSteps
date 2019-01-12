@@ -1,0 +1,96 @@
+
+<!-- READ THE INSTRUCTIONS BELOW BEFORE USING THIS TEMPLATE
+ 1. Start your page with this template and modify. Rename this template with HTML name and then modify.
+ 2. We keep as it is the header portion of the page (which is top hidden block and the navigation) 
+    and the footer portion (footer block) on each page.
+ 3. Override only the "slide-show", "features", and "jointhem-blog" blocks on each page
+ 4. Keep the top "hidden" clock and the nav-bar as it is, which forms the header section of the page.
+ 5. Overriding the parent blocks will start from "slide-show" block 
+ 6. Keep the <div>s  given below as it is in the "slide-show" and "features" blocks to keep the same styling matching the home page. 
+    If overriding the parent block without any content then remove the <div>s too, just keep block and endblock. 
+ 7. For most of the pages, you can keep the title of the page in "slide-show" block and put all the content in "features" block. 
+    The "jointhem-blog" block can be kept empty.
+ 8. PLEASE REMEBER :- 
+    TO OVERRIDE A BLOCK USE THE CORRESPONDING BLOCK AND <div>s, 
+    TO KEEP THE BLOCK EMPTY JUST USE THE BLOCK OPEN AND ENDBLOCK, 
+    AND TO KEEP ABLOCK AS IT IS DON'T USE THE BLOCK NAMES HERE SO THOSE BLOCKS FROM PARENT WILL BE USED AS IT IS. 
+ -->
+
+<!-- Extend the home page to keep the same styling for header and footer sections. -->
+{% extends 'NextSteps/NextSteps_base_vj.html' %}
+{% load static %}
+!-- Override slide-show block from parent -->
+{% block slide-show %}
+{% endblock slide-show %}
+
+<!-- Override block from parent -->
+{% block instt-prog-menu %}
+{% endblock instt-prog-menu %}
+
+
+<!-- Override features block -->
+{% block features %}
+    <div class="block"  style="padding-top: 5%; padding-bottom: 5%;">
+        <div class="container">
+            <h3 class="block-title">Account Information</h3>
+
+            
+            <div class="row" id="contact">
+                <div class="col-xs-12">
+                    <p>Total Subscriptions:&nbsp; <strong>{{ subs_details.count }}</strong></p>
+                </div>
+                <div class="col-xs-12">
+                    <table id="tableOne" class="display table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="width:30%">Student Name</th>
+                                <th style="width:15%">Subs Dt</th>
+                                <th style="width:25%">Subs Details</th>
+                                <th style="width:10%">Promo Used</th>
+                                <th style="width:10%">Amount Paid</th>
+                                <th style="width:10%">Percent</th>
+                                <th style="width:5%">Partner Fees</th>
+                            </tr>
+                        </thead>
+                        <tbody>            
+                            <!-- iterating over List -->  
+                            {% for s in subs_details %}
+                                <tr>
+                                    <td class="align-middle" > ({{ s.User.username }}) {{ s.User.first_name }} &nbsp; {{ s.User.last_name }}, Email: {{ s.User.email }}</td> 
+                                    <td class="align-middle" > {{ s.registration_date | date:"d-M-Y"}}</td> 
+                                    <td class="align-middle" > 
+                                        {{ s.subscription_start_date | date:"d-M-Y" }} <br/> 
+                                        - {{ s.subscription_end_date | date:"d-M-Y" }} 
+                                    </td>
+                                    <td class="align-middle" > {{ s.PromotionCode_id }}</td> 
+                                    <td style = "text-align:right" > 
+                                        <i class="fa fa-inr" aria-hidden="true"></i>&nbsp; {{ s.amt_withouttax|floatformat }}<br /> 
+                                    </td>
+                                    <td class="align-middle" > {{ s.PromotionCode.discount_percent}}&nbsp;%</td> 
+                                    <td style = "text-align:right" > 
+                                        <i class="fa fa-inr" aria-hidden="true"></i>&nbsp; {{ s.partner_fee|floatformat }} <br />
+                                          
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="6">Total</th>
+                                <th style = "text-align:right">{{totalFee.partner_fee__sum|floatformat}}</th>
+                            </tr>
+                        </tfoot>                   
+                    </table>
+                    <small>* (All amounts shown are without tax)</small>
+                </div>
+            </div>
+        </div>
+     </div>
+
+{% endblock features %}
+
+
+{% block registration %}
+{% endblock registration %}
+<!-- Footer-section remains as it is, no override -->
+

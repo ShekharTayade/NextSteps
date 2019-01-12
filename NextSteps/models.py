@@ -704,3 +704,29 @@ class StudyHours(models.Model):
 
     class meta:
         unique_together = (('User', 'subject', 'date', 'date_updated'),)
+
+class Partner(models.Model):
+    partner_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=600, blank=False, null=False)
+    User = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    address_1 = models.CharField(max_length=600, blank=True, default='')
+    address_2 = models.CharField(max_length=600, blank=True, default='')
+    city = models.CharField(max_length=300, blank=True, default='')
+    pin_code = models.PositiveIntegerField(blank=True, null=True)
+    state = models.CharField(max_length=100, blank=True, default = '')
+    Country = models.ForeignKey(Country, on_delete = models.PROTECT, 
+        blank=True, null=True)
+    phone_number = models.CharField(max_length=30, blank=True, default='')
+    email_id = models.EmailField(blank=True, default='')
+    contact_person =  models.CharField(max_length=2000, blank=True, default='')
+
+    def __str__(self):
+        return str(self.name)   
+    
+class Partner_promo(models.Model):
+    Partner = models.ForeignKey(Partner, on_delete=models.CASCADE, null=False)
+    PromotionCode = models.ForeignKey(PromotionCode, on_delete=models.CASCADE, null=False)
+    start_date = models.DateField(blank=False, null=False)
+    end_date = models.DateField()
+    percent = models.DecimalField(max_digits=5, decimal_places=2, blank=False, null=False)
+    

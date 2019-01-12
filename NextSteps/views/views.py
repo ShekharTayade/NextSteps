@@ -15,6 +15,8 @@ from django.contrib import messages
 from datetime import datetime
 
 from django.template.context_processors import request
+from django.db.models import Max, Min, F, Sum
+
 
 from NextSteps.decorators import subscription_active
 
@@ -23,8 +25,7 @@ from NextSteps.models import Institute, InstituteType, InstituteSurveyRanking
 from NextSteps.models import Country, Discipline, Level, Program, InstitutePrograms
 from NextSteps.models import CountryUserPref, DisciplineUserPref, LevelUserPref
 from NextSteps.models import ProgramUserPref, InsttUserPref, PromotionCode
-from NextSteps.models import UserAccount, UserProfile
-from django.db.models import Max, Min
+from NextSteps.models import UserAccount, UserProfile, Partner_promo
 from NextSteps.models import Institute, InstituteType, InstituteSurveyRanking
 from NextSteps.models import InstitutePrograms, InstituteProgramSeats
 from NextSteps.models import Country, Discipline, Level, Program
@@ -591,3 +592,33 @@ def feature_application_record(request):
 
     return render(request, 'NextSteps/feature_application_record.html',
             {'activeSubs':activeSubs, 'regUser':regUser})
+
+
+
+
+
+@login_required
+def partnerAccountInformation(request):
+    
+    username = request.user
+
+    # Get logged in user id
+    user = getLoggedInUserObject(request)
+    print (user)
+
+    userpromo = Partner_promo.objects.filter(Partner__User=user).values('PromotionCode')
+    print (userpromo)
+
+    # Get details of subscription with the Partner promo code
+    subs_details = UserAccount.objects.filter( PromotionCode__in = userpromo  ).annotate(
+        amt_withouttax = F('total_amount')  / ( 1 + (18/100) ), 
+        partner_fee = ( (F('total_amount')  / ( 1 + (18/100) )) * F('PromotionCode__discount_percent') / 100 )
+        ).select_related('User', 'PromotionCode')
+    print (subs_details)
+
+    totalFee = subs_details.aggregate( Sum('partner_fee') )
+    print(totalFee)
+                                         
+    return render(request, 'NextSteps/partner_account.html', {'subs_details':subs_details,
+                                    'totalFee':totalFee} )
+

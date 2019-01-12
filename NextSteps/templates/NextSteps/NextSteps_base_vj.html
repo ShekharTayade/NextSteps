@@ -912,7 +912,13 @@
         <div class="col-md-4">
             <div class="box-home box-success">
                 <div class="box-header with-border">
-                    <h2 class="box-header-text">Sign-Up</h2>
+                    <span class="box-header-text">Sign-Up</span>
+                    <span class = "pull-right">
+                        <div class="panel-pricing-price">
+                            <i class="fa fa-inr" aria-hidden="true">&nbsp;</i>
+                            <span class="digits">0</span>
+                        </div> 
+                    </span>
                 </div>
                 <div class="box-body">
                     <li>1 User account</li>
@@ -937,13 +943,20 @@
         <div class="col-md-4">
             <div class="box-home box-success">
                 <div class="box-header with-border">
-                    <h2 class="box-header-text">Subscription</h2>
+                    <span class="box-header-text">Subscription</span>
+                    <span class = "pull-right">
+                        <div class="panel-pricing-price">
+                            <i class="fa fa-inr" aria-hidden="true">&nbsp;</i>
+                            <span class="digits">1250</span>
+                            <span style="font-size:0.7 rem;">&nbsp;+taxes</span>
+                        </div> 
+                    </span>
                 </div>
                 <div class="box-body">
                     <li>Access to all Institutes</li>
                     <li>Unlock ever evolving NextSteps features </li>
                     <li>Unlimited access for 2 Years</li>
-                    <li>One time fee.</li>
+                    <li>One time fee</li>
                 </div>
                 <div class="box-footer">
                     <form action="{% url 'subscription' %}" method="post">

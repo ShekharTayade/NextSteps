@@ -162,6 +162,7 @@ urlpatterns = [
     url(r'^userAccount/$', views.userAccountInformation, name='user_account'),
     url(r'^renewSubscription/$', views.renewSubscription, name='renew_subscription'),
     url(r'^SubscriptionConfirm/$', views.renewSubscriptionConfirm, name='renew_subscription_confirm'),
+    url(r'^partnerAccount/$', views.partnerAccountInformation, name='partnerAccountInformation'),
 
 
     #url(r'^payment_details/', paymentForm),
