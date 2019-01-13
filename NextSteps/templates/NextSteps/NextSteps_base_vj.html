@@ -237,9 +237,9 @@
         <!-- /navbar wrapper -->
 
         <!-- Slide Show -->
+        {% block slide-show %}
         <div class="hero" id="highlighted">
             <div class="inner">
-                {% block slide-show %}
                 <!--Slideshow-->
                 <div id="highlighted-slider" class="container" style="padding-top: 10%;">
                     <div class="item-slider" data-toggle="owlcarousel" data-owlcarousel-settings='{"singleItem":true, "navigation":true, "transitionStyle":"fadeUp","autoPlay":5000, "stopOnHover":true}'>
@@ -329,9 +329,9 @@
                         </div>
                     </div>
                 </div>
-                {% endblock slide-show %}
             </div>
         </div>
+        {% endblock slide-show %}
     </div>
 
     <!-- <div class="row row-margin">

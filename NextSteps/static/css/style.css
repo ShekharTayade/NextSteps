@@ -4692,3 +4692,10 @@ thead input {
   display: -ms-flexbox;
   display:         flex;
 }
+
+@media only screen and (max-width: 600px) {
+  .row-eq-height { 
+    display: block;
+    width: 100%;
+  }
+}
