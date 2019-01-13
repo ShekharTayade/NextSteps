@@ -4685,3 +4685,10 @@ thead input {
 #user-guide-adm-calender a {
     margin : 0px;
 }
+
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
