@@ -769,7 +769,7 @@
             //});
 
             $.ajax({
-                url: '{% url "get_insttsForProgs" %}',
+                url: '{% url "get_insttsForProgsJEE" %}',
                 data: {'cntList': cntList, 'discList' : discList, 'lvlList' : lvlList, 'progList[]' : prog_arr},
                 dataType: 'json',
                 success: function (data) {

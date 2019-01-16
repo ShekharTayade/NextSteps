@@ -118,6 +118,7 @@ urlpatterns = [
 
 
     url(r'^ajax/getInsttsForPrograms/$', views.getInsttsForProgs, name='get_insttsForProgs'),
+    url(r'^ajax/getInsttsForProgramsJEE/$', views.getInsttsForProgsJEE, name='get_insttsForProgsJEE'),
     url(r'^ajax/getProgsForInstts/$', views.getProgsForInstts, name='get_progsForInstts'),
 
 

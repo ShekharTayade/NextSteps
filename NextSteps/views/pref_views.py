@@ -86,12 +86,11 @@ def userPref(request):
         'levelUserList':levelUserList, 'insttUserList':insttUserList })
 
 
-def getInsttsForProgs(request):
+def getInsttsForProgsJEE(request):
     countryVals = request.GET.getlist('cntList', [])
     disciplineVals = request.GET.getlist('discList', [])
     levelVals = request.GET.getlist('lvlList', [])
     programVals  = request.GET.getlist('progList[]', [])
-
 
     # There might be white spaces in the array items. Let's remove those
     cntList = []
@@ -137,6 +136,59 @@ def getInsttsForProgs(request):
         
     return JsonResponse(list(insttList), safe=False)    
     
+
+
+def getInsttsForProgs(request):
+    countryVals = request.GET.getlist('cntList', [])
+    disciplineVals = request.GET.getlist('discList', [])
+    levelVals = request.GET.getlist('lvlList', [])
+    programVals  = request.GET.getlist('progList[]', [])
+
+    # There might be white spaces in the array items. Let's remove those
+    cntList = []
+    for c in countryVals:
+        c = c.strip()
+        cntList.append(c)        
+
+    discList = []
+    for d in disciplineVals:
+        d = d.strip()
+        discList.append(d)        
+
+    lvlList = []
+    for l in levelVals:
+        l = l.strip()
+        lvlList.append(l)        
+
+    progList = []
+    for p in programVals:
+        p = p.strip()
+        progList.append(p)        
+
+
+    # Get country, discipline and level Codes
+    countryCodes = Country.objects.filter(country_name__in = cntList).values(
+            'country_code')
+    disciplineCodes = Discipline.objects.filter(description__in = discList).values(
+            'discipline_code')
+    levelCodes = Level.objects.filter(level_name__in = lvlList).values(
+            'level_code')
+    
+    if progList:
+        insttList = InstitutePrograms.objects.filter(Country__in=countryCodes, 
+                    Discipline__in=disciplineCodes, Level__in=levelCodes, 
+                    Program_id__in=progList ).values(
+                        'Institute__instt_name').distinct().order_by(
+                        'Institute__instt_name')
+    else:
+        insttList = InstitutePrograms.objects.filter(Country__in = countryCodes, 
+                    Discipline__in=disciplineCodes, Level__in=levelCodes
+                    ).values(
+                        'Institute__instt_name').distinct().order_by('Institute__instt_name')
+        
+    return JsonResponse(list(insttList), safe=False)    
+
+
 
 def getProgsForInstts(request):
     countryVals = request.GET.getlist('cntList', [])
@@ -271,7 +323,6 @@ def userPrefConfirm(request):
     msg = ''
     pass_fail = 'FAIL'
 
-    
     try:
     
         if stuCat.exists():    
