@@ -282,8 +282,6 @@ def userPrefConfirm(request):
         p = p.strip()
         progList.append(p)        
 
-    import pdb
-    pdb.set_trace()
     
     """
     countryVals = request.GET.get('CountryValues', 'Blank').split(";")

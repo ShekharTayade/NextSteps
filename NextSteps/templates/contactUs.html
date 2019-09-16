@@ -56,7 +56,10 @@
                         {% csrf_token %}
                     
                         {% include 'includes/form.html' %}
-                    
+						
+						<script src='https://www.google.com/recaptcha/api.js'></script>
+						<div class="g-recaptcha" data-sitekey="6Lfx64wUAAAAAKXPdmUb4pi0sG1K80u_QCgl2Z_a"></div>
+				   
                         <div class="text-center"><button class="btn-primary btn-sm" type="submit">Post Message</button></div>
                         <br />
                         <br />
